@@ -1,604 +1,2013 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Meine Lieblingsrezepte – Geburtstagsbuch</title>
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Mein Rezeptbuch</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      background-color: #fafafa;
+      color: #333;
+    }
+    header, section {
+      padding: 40px;
+      text-align: center;
+    }
+    h1, h2, h3 {
+      margin-bottom: 20px;
+    }
+    a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
 
-<style>
-:root{
-  --beige-bg:#f5e6d3; --beige-card:#fff7ea; --ink:#2b2b2b; --muted:#7a6f69;
-  --radius:20px; --shadow:0 10px 30px rgba(0,0,0,.18); --maxw:980px;
-  --breakfast-1:#fff3b0; --breakfast-2:#ffe8a1;      /* gelb */
-  --main-1:#d8f3dc; --main-2:#ccebd4;                /* grün */
-  --dessert-1:#e9ddff; --dessert-2:#e1d2ff;          /* lila */
-  --bakery-1:#ffd9e8; --bakery-2:#ffcfe0;            /* rosa */
-  --link:#0b66c3; --btn-bg:#fff; --btn-ink:#1f4d7a;
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--beige-bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
-.snap{height:100dvh;overflow-y:auto;scroll-snap-type:y mandatory}
-.page{
-  width:min(var(--maxw),94vw); margin:44px auto; padding:clamp(26px,4vw,52px);
-  background:#fff; border-radius:var(--radius); box-shadow:var(--shadow);
-  scroll-snap-align:start; scroll-margin-top:18px;
-}
+    /* Deckblatt */
+    .cover {
+      background-color: #f5f5dc; /* Beige */
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .cover h1 {
+      font-size: 3em;
+    }
+    .cover p {
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
 
-/* Cover & TOC */
-.cover{background:var(--beige-card);text-align:center}
-.cover h1{font-family:'Great Vibes',cursive;font-size:clamp(3rem,8vw,5rem);margin:0;color:#4b4b4b;text-shadow:2px 2px 4px rgba(0,0,0,.2)}
-.cover p{font-family:'Playfair Display',serif;color:var(--muted);margin:12px 0 0}
-.dedication{margin-top:18px;display:inline-block;background:#fff;padding:10px 16px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.08);font-weight:600}
-.toc{background:var(--beige-card)}
-.toc h1{margin:0 0 10px;font-family:'Playfair Display',serif}
-.toc .grid{display:grid;gap:22px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-.toc section h2{font-family:'Playfair Display',serif;margin:.3rem 0}
-.toc ul{margin:.2rem 0 0 1.1rem}
-.toc a{color:inherit;text-decoration:none}
-.toc a:hover{color:var(--link);text-decoration:underline}
+    /* Inhaltsverzeichnis */
+    .toc {
+      padding: 50px;
+      background: #fff;
+    }
+    .toc h2 {
+      margin-bottom: 30px;
+    }
+    .toc ul {
+      list-style: none;
+      padding: 0;
+    }
+    .toc li {
+      margin: 5px 0;
+    }
 
-/* Kapitel-Deckblätter */
-.section-cover{text-align:center}
-.section-cover .symbol{width:86px;height:86px;border-radius:50%;display:grid;place-items:center;font-size:36px;margin:0 auto 6px;box-shadow:inset 0 0 0 8px rgba(255,255,255,.35)}
-.section-cover h1{font-family:'Playfair Display',serif;margin:.2rem 0 .3rem}
-.section-cover p{color:var(--muted);margin:0}
-.breakfast-cover{background:linear-gradient(180deg,var(--breakfast-1),var(--breakfast-2))}
-.breakfast-cover .symbol{background:#fff7cc}
-.main-cover{background:linear-gradient(180deg,var(--main-1),var(--main-2))}
-.main-cover .symbol{background:#f2fff5}
-.dessert-cover{background:linear-gradient(180deg,var(--dessert-1),var(--dessert-2))}
-.dessert-cover .symbol{background:#f9f3ff}
-.bakery-cover{background:linear-gradient(180deg,var(--bakery-1),var(--bakery-2))}
-.bakery-cover .symbol{background:#fff1f7}
+    /* Kapitel-Deckblätter */
+    .chapter {
+      height: 60vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 2em;
+      font-weight: bold;
+    }
+    .fruehstueck { background-color: #ffec99; color: #333; }   /* Gelb */
+    .hauptgang { background-color: #b6eeb6; color: #333; }     /* Grün */
+    .snacks { background-color: #d5b6ee; color: #333; }        /* Lila */
+    .bakery { background-color: #f7c6d9; color: #333; }        /* Rosa */
 
-/* Rezeptkarten */
-.recipe header{text-align:center;margin-bottom:8px}
-.recipe h1{font-family:'Playfair Display',serif;margin:.2rem 0 0}
-.meta{display:flex;gap:18px;flex-wrap:wrap;align-items:center;justify-content:center;color:#5a4e46;margin:8px 0 16px}
-.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
-.metrics .m{border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:8px 10px;text-align:center;background:#fff}
-.two-col{display:grid;gap:22px;grid-template-columns:1.1fr .9fr}
-@media (max-width:860px){.two-col{grid-template-columns:1fr}}
-.card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 6px 16px rgba(0,0,0,.08)}
-.box{border-radius:14px;padding:18px}
-.box h3{margin:0 0 8px}
-.ingredients li,.steps li{margin:.35rem 0}
-
-/* Box-Farben pro Kategorie */
-.recipe.breakfast .box{background:var(--breakfast-1)}
-.recipe.main .box{background:var(--main-1)}
-.recipe.dessert .box{background:var(--dessert-1)}
-.recipe.bakery .box{background:var(--bakery-1)}
-
-/* Portionen */
-.controls{display:flex;gap:10px;align-items:center;justify-content:center;margin:8px 0 6px}
-.controls input[type=number]{width:92px;padding:.48rem .6rem;border:1px solid #d0bfa6;border-radius:10px;text-align:center;background:#fff;font:inherit}
-.controls output{min-width:2ch;text-align:right}
-
-/* Pager */
-.pager{position:sticky;bottom:12px;display:flex;gap:10px;justify-content:center;margin-top:14px}
-.btn, .pager button{border:1px solid rgba(0,0,0,.12);background:var(--btn-bg);color:var(--btn-ink);padding:.6rem .9rem;border-radius:999px;cursor:pointer;font-weight:600;box-shadow:0 6px 12px rgba(0,0,0,.06)}
-.btn:hover,.pager button:hover{filter:brightness(.98)}
-footer{text-align:center;color:#6f5c49;margin:26px 0 38px}
-.backlink{color:var(--link);text-decoration:none}
-.backlink:hover{text-decoration:underline}
-</style>
+    /* Rezepte */
+    .recipe {
+      padding: 40px;
+      background: #fff;
+      margin: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    .ingredients, .instructions {
+      margin-top: 20px;
+      text-align: left;
+    }
+    .back-btn {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: #0066cc;
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 0.9em;
+    }
+    .back-btn:hover {
+      background: #004999;
+    }
+  </style>
 </head>
 <body>
-<div class="snap">
-  <!-- Cover -->
-  <section class="page cover" id="cover">
-    <h1>Meine Lieblingsrezepte</h1>
-    <p>Ein Rezeptbuch für dich – zum Geburtstag, mit ganz viel Liebe 💛</p>
-    <p class="dedication">Für meinen Freund – viel Spaß beim Nachkochen!</p>
-    <div class="pager"><a class="btn" href="#toc">Zum Inhaltsverzeichnis</a></div>
+
+  <!-- Deckblatt -->
+  <div class="cover">
+    <h1>Mein Rezeptbuch</h1>
+    <p>Mit Liebe gesammelt & gestaltet</p>
+  </div>
+
+  <!-- Inhaltsverzeichnis -->
+  <section class="toc" id="inhalt">
+    <h2>📑 Inhaltsverzeichnis</h2>
+    <h3>🥐 Frühstück</h3>
+    <ul>
+      <li><a href="#rezept-baguette">Baguette</a></li>
+      <li><a href="#rezept-brot">Brot</a></li>
+      <li><a href="#rezept-granola">Granola</a></li>
+      <li><a href="#rezept-lievito">Lievito Madre</a></li>
+      <li><a href="#rezept-oats">Overnight Oats</a></li>
+      <li><a href="#rezept-walnussbutter">Walnussbutter</a></li>
+    </ul>
+
+    <h3>🥦 Hauptgang</h3>
+    <ul>
+      <li>🍲 Suppen & Eintöpfe</li>
+      <ul>
+        <li><a href="#rezept-gemuesesuppe">Gemüsesuppe</a></li>
+        <li><a href="#rezept-kartoffelsuppe">Kartoffelsuppe</a></li>
+        <li><a href="#rezept-petersilienwurzel">Petersilienwurzelsuppe</a></li>
+        <li><a href="#rezept-spargelcreme">Spargelcremesuppe</a></li>
+      </ul>
+      <li>🍝 Pasta & Nudeln</li>
+      <ul>
+        <li><a href="#rezept-kaesenudeln">Käsenudeln</a></li>
+        <li><a href="#rezept-pizzabroetchen">Pizzabrötchen</a></li>
+        <li><a href="#rezept-pizzateig">Pizzateig</a></li>
+        <li><a href="#rezept-ravioli">Ravioli mit Ricotta & Spinat</a></li>
+      </ul>
+      <li>🍚 Reis- & Getreidegerichte</li>
+      <ul>
+        <li><a href="#rezept-quinoa">Indisches Quinoa-Curry</a></li>
+        <li><a href="#rezept-pacific">Pacific Poke Bowl</a></li>
+        <li><a href="#rezept-poke">Poké Bowl</a></li>
+        <li><a href="#rezept-risotto">Risotto</a></li>
+        <li><a href="#rezept-reispfanne">Vegetarische Reispfanne</a></li>
+      </ul>
+      <li>🌍 Internationale Küche & Currys</li>
+      <ul>
+        <li><a href="#rezept-lasagne">Auberginen-Zucchini-Lasagne</a></li>
+        <li><a href="#rezept-dhal">Dhal</a></li>
+        <li><a href="#rezept-gruencurry">Grünes Curry</a></li>
+        <li><a href="#rezept-hackrolle">Hackfleischrolle</a></li>
+        <li><a href="#rezept-massaman">Massaman Curry</a></li>
+        <li><a href="#rezept-enchilada">Mexikanische Enchilada-Lasagne</a></li>
+        <li><a href="#rezept-padthai">Pad Thai</a></li>
+        <li><a href="#rezept-rotescurry">Rotes Curry</a></li>
+        <li><a href="#rezept-tacofino">Tacofino</a></li>
+      </ul>
+      <li>🥗 Snacks, Beilagen & Fingerfood</li>
+      <ul>
+        <li><a href="#rezept-bohnenpatty">Bohnenpatty</a></li>
+        <li><a href="#rezept-brokkolisalat">Brokkolisalat</a></li>
+        <li><a href="#rezept-fruehlingsrollen">Frühlingsrollen</a></li>
+        <li><a href="#rezept-gemuesespiesse">Gemüsespieße</a></li>
+        <li><a href="#rezept-gemuesepfanne">Gemüsepfanne</a></li>
+        <li><a href="#rezept-focaccia">Focaccia</a></li>
+        <li><a href="#rezept-markgloesschen">Markglößchen</a></li>
+        <li><a href="#rezept-serviettenknoedel">Serviettenknödel</a></li>
+        <li><a href="#rezept-roti">Sri Lanka Coconut Roti</a></li>
+        <li><a href="#rezept-stockbrot">Stockbrot</a></li>
+        <li><a href="#rezept-wraps">Tortilla Wrap DIY</a></li>
+      </ul>
+      <li>🥫 Saucen, Pasten & Basics</li>
+      <ul>
+        <li><a href="#rezept-bierteig">Bierteig</a></li>
+        <li><a href="#rezept-eiersauce">Eiersauce mit Bratkartoffeln</a></li>
+        <li><a href="#rezept-guacamole">Guacamole</a></li>
+        <li><a href="#rezept-knoblauchsauce">Knoblauchsauce</a></li>
+        <li><a href="#rezept-pesto">Pesto</a></li>
+        <li><a href="#rezept-salatsauce">Salatsauce</a></li>
+      </ul>
+      <li>🌶️ Curry-Pasten</li>
+      <ul>
+        <li><a href="#rezept-gruenpaste">Grüne Curry-Paste</a></li>
+        <li><a href="#rezept-massamanpaste">Massaman Curry-Paste</a></li>
+        <li><a href="#rezept-rotepaste">Rote Curry-Paste</a></li>
+      </ul>
+    </ul>
+
+    <h3>🍰 Snacks & Nachtisch</h3>
+    <ul>
+      <li><a href="#rezept-pecan">Candied Pecan</a></li>
+      <li><a href="#rezept-energy">Energiebällchen</a></li>
+      <li><a href="#rezept-banane">Frittierte Banane</a></li>
+      <li><a href="#rezept-himbeerbaiser">Himbeerbaiser</a></li>
+      <li><a href="#rezept-marzipan">Marzipanpralinen</a></li>
+      <li><a href="#rezept-mousse">Mousse au Chocolat</a></li>
+      <li><a href="#rezept-rotipancake">Roti Thai Pancake</a></li>
+      <li><a href="#rezept-sticky">Sticky Rice mit Mango</a></li>
+      <li><a href="#rezept-tiramisu">Tiramisu</a></li>
+      <li><a href="#rezept-zucchinipuffer">Zucchinipuffer</a></li>
+    </ul>
+
+    <h3>🍞 Bakery</h3>
+    <ul>
+      <li><a href="#rezept-brownie">Brownie</a></li>
+      <li><a href="#rezept-butterplaetzchen">Butterplätzchen</a></li>
+      <li><a href="#rezept-cookies">Cookies</a></li>
+      <li><a href="#rezept-dampfnudeln">Dampfnudeln</a></li>
+      <li><a href="#rezept-flammendesherz">Flammendes Herz</a></li>
+      <li><a href="#rezept-frosting">Frosting</a></li>
+      <li><a href="#rezept-kreppel">Kreppel</a></li>
+      <li><a href="#rezept-marmorkuchen">Marmorkuchen</a></li>
+      <li><a href="#rezept-nussecken">Nussecken</a></li>
+      <li><a href="#rezept-waffeln">Waffeln</a></li>
+      <li><a href="#rezept-zimtschnecken">Zimtschnecken</a></li>
+    </ul>
   </section>
 
-  <!-- TOC -->
-  <nav class="page toc" id="toc" aria-label="Inhaltsverzeichnis">
-    <h1>Inhaltsverzeichnis</h1>
-    <div class="grid">
-      <section>
-        <h2>Frühstück</h2>
-        <ul>
-          <li><a href="#acai-bowl">Açaí Bowl</a></li>
-          <li><a href="#avocado-brot">Avocado-Brot</a></li>
-        </ul>
-      </section>
-      <section>
-        <h2>Hauptgerichte</h2>
-        <ul>
-          <li><a href="#auberginen-zucchini-lasagne">Auberginen-Zucchini-Lasagne</a></li>
-          <li><a href="#bohnenburger">Bohnenburger</a></li>
-          <li><a href="#brokkoli-salat">Brokkoli-Salat</a></li>
-          <li><a href="#bierteig">Bierteig (Grundrezept)</a></li>
-        </ul>
-      </section>
-      <section>
-        <h2>Nachtisch</h2>
-        <ul>
-          <li><a href="#apfelringe">Apfelringe</a></li>
-        </ul>
-      </section>
-      <section>
-        <h2>Backen</h2>
-        <ul>
-          <li><a href="#blaetterteig-blume">Blätterteig-Blume mit Pesto</a></li>
-          <li><a href="#blaetterteig-sticks">Blätterteig-Sticks</a></li>
-          <li><a href="#baguette">Baguette</a></li>
-        </ul>
-      </section>
-    </div>
-  </nav>
-
-  <!-- Frühstück Deckblatt -->
-  <section class="page section-cover breakfast-cover">
-    <div class="symbol" aria-hidden="true">🥐</div>
-    <h1>Frühstück</h1>
-    <p>Start in den Tag – leicht & lecker</p>
-  </section>
-
-  <!-- Açaí Bowl -->
-  <article class="page recipe breakfast" id="acai-bowl">
-    <header>
-      <h1>Açaí Bowl</h1>
-      <p class="meta">Fruchtig & cremig</p>
-      <div class="metrics">
-        <div class="m"><strong>Prep</strong><br>10&nbsp;min</div>
-        <div class="m"><strong>Total</strong><br>10&nbsp;min</div>
-        <div class="m"><strong>Portionen</strong><br><span data-servings="1">1</span></div>
-      </div>
-      <form class="controls" onsubmit="return false">
-        <label for="p-acai">Portionen:</label>
-        <input type="number" id="p-acai" value="1" min="1" step="1" data-target="acai-bowl">
-      </form>
-    </header>
-    <div class="two-col">
-      <section class="box card">
-        <h3>Zutaten</h3>
-        <ul class="ingredients">
-          <li data-base="2" data-unit="EL">2 EL Açaí-Pulver</li>
-          <li data-base="1" data-unit="Stk">1 Banane</li>
-          <li data-base="100" data-unit="g">100 g gefrorene Himbeeren</li>
-          <li data-base="1" data-unit="EL">1 EL Agavensirup</li>
-          <li data-base="1" data-unit="TL">1 TL Kakao</li>
-          <li data-base="120" data-unit="ml">120 ml Milch</li>
-        </ul>
-      </section>
-      <section class="box card">
-        <h3>Zubereitung</h3>
-        <ol class="steps">
-          <li>Alle Zutaten fein pürieren.</li>
-          <li>Bei Bedarf Milchmenge anpassen, in Schüssel füllen und servieren.</li>
-        </ol>
-      </section>
-    </div>
-    <p class="pager"><a class="btn" href="#toc">← Inhaltsverzeichnis</a></p>
-  </article>
-
-  <!-- Avocado-Brot -->
-  <article class="page recipe breakfast" id="avocado-brot">
-    <header>
-      <h1>Avocado-Brot</h1>
-      <div class="metrics">
-        <div class="m"><strong>Prep</strong><br>10&nbsp;min</div>
-        <div class="m"><strong>Total</strong><br>10&nbsp;min</div>
-        <div class="m"><strong>Portionen</strong><br><span data-servings="2">2</span></div>
-      </div>
-      <form class="controls" onsubmit="return false">
-        <label for="p-avobrot">Portionen:</label>
-        <input type="number" id="p-avobrot" value="2" min="1" step="1" data-target="avocado-brot">
-      </form>
-    </header>
-    <div class="two-col">
-      <section class="box card">
-        <h3>Zutaten</h3>
-        <ul class="ingredients">
-          <li data-base="1" data-unit="Stk">1 Avocado</li>
-          <li data-base="2" data-unit="Scheiben">2 Scheiben Brot</li>
-          <li data-base="1" data-unit="EL">1 EL Olivenöl</li>
-          <li data-base="1" data-unit="TL">1 TL Limettensaft</li>
-          <li data-base="4" data-unit="Stk">4 Cherrytomaten</li>
-          <li data-base="2" data-unit="EL">2 EL Granatapfelkerne</li>
-          <li data-base="1" data-unit="Handvoll">1 Handvoll Rucola</li>
-          <li data-base="2" data-unit="Stk">2 Radieschen</li>
-          <li data-base="1" data-unit="TL">1 TL Avocado-Gewürz</li>
-          <li data-base="0.5" data-unit="TL">½ TL Salz</li>
-          <li data-base="0.25" data-unit="TL">¼ TL Pfeffer</li>
-          <li data-base="0.5" data-unit="Zehe">½ Knoblauchzehe</li>
-        </ul>
-      </section>
-      <section class="box card">
-        <h3>Zubereitung</h3>
-        <ol class="steps">
-          <li>Avocado zerdrücken, mit Öl, Limettensaft und Gewürzen abschmecken.</li>
-          <li>Brot toasten, Avocadocreme darauf, mit Tomaten, Rucola, Radieschen und Granatapfel bestreuen.</li>
-        </ol>
-      </section>
-    </div>
-    <p class="pager"><a class="btn" href="#toc">← Inhaltsverzeichnis</a></p>
-  </article>
-
-  <!-- Hauptgerichte Deckblatt -->
-  <section class="page section-cover main-cover">
-    <div class="symbol" aria-hidden="true">🍲</div>
-    <h1>Hauptgerichte</h1>
-    <p>Herzhaft & sättigend</p>
-  </section>
-
-  <!-- Auberginen-Zucchini-Lasagne -->
-  <article class="page recipe main" id="auberginen-zucchini-lasagne">
-    <header>
-      <h1>Auberginen-Zucchini-Lasagne</h1>
-      <div class="metrics">
-        <div class="m"><strong>Prep</strong><br>30&nbsp;min</div>
-        <div class="m"><strong>Total</strong><br>1&nbsp;h&nbsp;15&nbsp;min</div>
-        <div class="m"><strong>Portionen</strong><br><span data-servings="4">4</span></div>
-      </div>
-      <form class="controls"><label for="p-lasagne">Portionen:</label>
-        <input type="number" id="p-lasagne" value="4" min="2" step="1" data-target="auberginen-zucchini-lasagne">
-      </form>
-    </header>
-    <div class="two-col">
-      <section class="box card">
-        <h3>Zutaten</h3>
-        <ul class="ingredients">
-          <li data-base="500" data-unit="g">500 g Zucchini</li>
-          <li data-base="500" data-unit="g">500 g Aubergine</li>
-          <li data-base="3" data-unit="Dose">3 Dosen passierte Tomaten</li>
-          <li data-base="1" data-unit="Bund">1 Bund Basilikum</li>
-          <li data-base="2" data-unit="Zehen">2 Knoblauchzehen</li>
-          <li data-base="200" data-unit="g">200 g Bechamelsauce/Crème fraîche</li>
-          <li data-base="200" data-unit="g">200 g Lasagneblätter</li>
-          <li data-base="60" data-unit="g">60 g Parmesan, frisch gerieben</li>
-          <li data-base="1" data-unit="EL">1 EL Olivenöl</li>
-          <li data-base="1" data-unit="TL">1 TL Oregano</li>
-          <li data-base="0.5" data-unit="TL">½ TL Salz</li>
-          <li data-base="0.25" data-unit="TL">¼ TL Pfeffer</li>
-        </ul>
-      </section>
-      <section class="box card">
-        <h3>Zubereitung</h3>
-        <ol class="steps">
-          <li>Knoblauch in Öl anschwitzen. Paprika-Tomaten-Mischung (optional) kurz rühren, mit passierten Tomaten aufgießen, 20&nbsp;min köcheln. Basilikum, Oregano, Salz & Pfeffer zugeben.</li>
-          <li>Zucchini in Scheiben, Auberginen salzen, abtupfen, in Öl jeweils ~5&nbsp;min anbraten.</li>
-          <li>Form schichten: Lasagneblätter → Aubergine → Tomatensauce → Bechamel → Blätter → Zucchini → Sauce → Blätter → Bechamel → Parmesan.</li>
-          <li>Bei 190&nbsp;°C O/U 45–60&nbsp;min goldbraun backen.</li>
-        </ol>
-      </section>
-    </div>
-    <p class="pager"><a class="btn" href="#toc">← Inhaltsverzeichnis</a></p>
-  </article>
-
-  <!-- Bohnenburger -->
-  <article class="page recipe main" id="bohnenburger">
-    <header>
-      <h1>Bohnenburger</h1>
-      <div class="metrics">
-        <div class="m"><strong>Prep</strong><br>15&nbsp;min</div>
-        <div class="m"><strong>Total</strong><br>35&nbsp;min</div>
-        <div class="m"><strong>Ergibt</strong><br><span data-servings="6">6 Patties</span></div>
-      </div>
-      <form class="controls"><label for="p-bohnen">Patties:</label>
-        <input type="number" id="p-bohnen" value="6" min="2" step="1" data-target="bohnenburger">
-      </form>
-    </header>
-    <div class="two-col">
-      <section class="box card">
-        <h3>Zutaten</h3>
-        <ul class="ingredients">
-          <li data-base="400" data-unit="g">400 g rote Bohnen (Dose, abgetropft)</li>
-          <li data-base="400" data-unit="g">400 g Kichererbsen (Dose, abgetropft)</li>
-          <li data-base="1" data-unit="Zehe">1 Knoblauchzehe</li>
-          <li data-base="1" data-unit="TL">1 TL Paprikapulver</li>
-          <li data-base="1" data-unit="TL">1 TL Salz</li>
-          <li data-base="1" data-unit="Stk">1 Ei</li>
-          <li data-base="3" data-unit="EL">3 EL Mehl</li>
-          <li data-base="6" data-unit="EL">6 EL Paniermehl</li>
-          <li data-base="2" data-unit="EL">2 EL Öl zum Braten</li>
-        </ul>
-      </section>
-      <section class="box card">
-        <h3>Zubereitung</h3>
-        <ol class="steps">
-          <li>Bohnen & Kichererbsen abtropfen und pürieren. Mit Salz, Knoblauch, Paprika würzen.</li>
-          <li>Ei, Mehl und Paniermehl einarbeiten. 30&nbsp;min kalt ruhen lassen.</li>
-          <li>Patties formen und in Öl bei mittlerer Hitze goldbraun braten.</li>
-        </ol>
-      </section>
-    </div>
-    <p class="pager"><a class="btn" href="#toc">← Inhaltsverzeichnis</a></p>
-  </article>
-
-  <!-- Brokkoli-Salat -->
-  <article class="page recipe main" id="brokkoli-salat">
-    <header>
-      <h1>Brokkoli-Salat</h1>
-      <div class="metrics">
-        <div class="m"><strong>Prep</strong><br>5&nbsp;min</div>
-        <div class="m"><strong>Total</strong><br>5&nbsp;min</div>
-        <div class="m"><strong>Portionen</strong><br><span data-servings="6">6</span></div>
-      </div>
-      <form class="controls"><label for="p-brokkoli">Portionen:</label>
-        <input type="number" id="p-brokkoli" value="6" min="1" step="1" data-target="brokkoli-salat">
-      </form>
-    </header>
-    <div class="two-col">
-      <section class="box card">
-        <h3>Zutaten</h3>
-        <ul class="ingredients">
-          <li data-base="250" data-unit="g">250 g Brokkoli (roh, in Röschen fein gehackt)</li>
-          <li data-base="1" data-unit="Stk">1 rote Paprika</li>
-          <li data-base="1" data-unit="Stk">1 Apfel</li>
-          <li data-base="25" data-unit="g">25 g Olivenöl</li>
-          <li data-base="30" data-unit="g">30 g Pinienkerne (geröstet)</li>
-          <li data-base="1" data-unit="EL">1 EL Zitronensaft</li>
-          <li data-base="0.5" data-unit="TL">½ TL Salz</li>
-          <li data-base="0.25" data-unit="TL">¼ TL Pfeffer</li>
-        </ul>
-      </section>
-      <section class="box card">
-        <h3>Zubereitung</h3>
-        <ol class="steps">
-          <li>Brokkoli sehr fein hacken, Paprika & Apfel würfeln.</li>
-          <li>Mit Öl, Zitronensaft, Salz, Pfeffer mischen; Pinienkerne unterheben.</li>
-        </ol>
-      </section>
-    </div>
-    <p class="pager"><a class="btn" href="#toc">← Inhaltsverzeichnis</a></p>
-  </article>
-
-  <!-- Bierteig -->
-  <article class="page recipe main" id="bierteig">
-    <header>
-      <h1>Bierteig (Grundrezept)</h1>
-      <div class="metrics">
-        <div class="m"><strong>Prep</strong><br>10&nbsp;min</div>
-        <div class="m"><strong>Total</strong><br>10&nbsp;min</div>
-        <div class="m"><strong>Portionen</strong><br><span data-servings="4">4</span></div>
-      </div>
-      <form class="controls"><label for="p-bier">Portionen:</label>
-        <input type="number" id="p-bier" value="4" min="1" step="1" data-target="bierteig">
-      </form>
-    </header>
-    <div class="two-col">
-      <section class="box card">
-        <h3>Zutaten</h3>
-        <ul class="ingredients">
-          <li data-base="100" data-unit="g">100 g Mehl</li>
-          <li data-base="100" data-unit="g">100 g Speisestärke</li>
-          <li data-base="1" data-unit="TL">1 TL Backpulver</li>
-          <li data-base="2" data-unit="Stk">2 Eigelb</li>
-          <li data-base="240" data-unit="ml">240 ml eiskaltes Bier</li>
-          <li data-base="0.75" data-unit="TL">¾ TL Salz</li>
-          <li data-base="0.25" data-unit="TL">¼ TL Pfeffer</li>
-          <li data-base="500" data-unit="ml">Öl zum Frittieren (Richtwert)</li>
-        </ul>
-      </section>
-      <section class="box card">
-        <h3>Zubereitung</h3>
-        <ol class="steps">
-          <li>Trockene Zutaten mischen, Eigelb und Bier kurz unterrühren.</li>
-          <li>Öl auf ~170&nbsp;°C erhitzen. Lebensmittel in Teig tauchen und goldbraun ausbacken.</li>
-        </ol>
-      </section>
-    </div>
-    <p class="pager"><a class="btn" href="#toc">← Inhaltsverzeichnis</a></p>
-  </article>
-
-  <!-- Nachtisch Deckblatt -->
-  <section class="page section-cover dessert-cover">
-    <div class="symbol" aria-hidden="true">🍮</div>
-    <h1>Nachtisch</h1>
-    <p>Süße Momente</p>
-  </section>
-
-  <!-- Apfelringe -->
-  <article class="page recipe dessert" id="apfelringe">
-    <header>
-      <h1>Apfelringe</h1>
-      <div class="metrics">
-        <div class="m"><strong>Prep</strong><br>15&nbsp;min</div>
-        <div class="m"><strong>Total</strong><br>30&nbsp;min</div>
-        <div class="m"><strong>Portionen</strong><br><span data-servings="4">4</span></div>
-      </div>
-      <form class="controls"><label for="p-apfel">Portionen:</label>
-        <input type="number" id="p-apfel" value="4" min="1" step="1" data-target="apfelringe">
-      </form>
-    </header>
-    <div class="two-col">
-      <section class="box card">
-        <h3>Zutaten</h3>
-        <ul class="ingredients">
-          <li data-base="4" data-unit="Stk">4 Äpfel</li>
-          <li data-base="1" data-unit="Pkg">1 Pkg Blätterteig</li>
-          <li data-base="1" data-unit="Stk">1 Eigelb</li>
-          <li data-base="1" data-unit="EL">1 EL Milch</li>
-          <li data-base="2" data-unit="EL">2 EL Puderzucker</li>
-          <li data-base="1" data-unit="TL">1 TL Zimt</li>
-          <li data-base="1" data-unit="EL">1 EL Zucker</li>
-        </ul>
-      </section>
-      <section class="box card">
-        <h3>Zubereitung</h3>
-        <ol class="steps">
-          <li>Pro Apfel einen Blätterteig verwenden (Streifen schneiden).</li>
-          <li>Äpfel quer schneiden, Kerngehäuse ausstechen, ringförmig mit Teig umwickeln.</li>
-          <li>Eigelb, Milch, Puderzucker als Glasur verrühren, Ringe bestreichen und mit Zimt-Zucker bestreuen.</li>
-          <li>Bei 200&nbsp;°C O/U ca. 20&nbsp;min goldbraun backen.</li>
-        </ol>
-      </section>
-    </div>
-    <p class="pager"><a class="btn" href="#toc">← Inhaltsverzeichnis</a></p>
-  </article>
-
-  <!-- Backen Deckblatt -->
-  <section class="page section-cover bakery-cover">
-    <div class="symbol" aria-hidden="true">🥖</div>
-    <h1>Backen</h1>
-    <p>Herzhafte Teige & Teilchen</p>
-  </section>
-
-  <!-- Blätterteig-Blume -->
-  <article class="page recipe bakery" id="blaetterteig-blume">
-    <header>
-      <h1>Blätterteig-Blume mit Pesto</h1>
-      <div class="metrics">
-        <div class="m"><strong>Prep</strong><br>25&nbsp;min</div>
-        <div class="m"><strong>Total</strong><br>50&nbsp;min</div>
-        <div class="m"><strong>Portionen</strong><br><span data-servings="8">8</span></div>
-      </div>
-      <form class="controls"><label for="p-blume">Portionen:</label>
-        <input type="number" id="p-blume" value="8" min="2" step="1" data-target="blaetterteig-blume">
-      </form>
-    </header>
-    <div class="two-col">
-      <section class="box card">
-        <h3>Zutaten</h3>
-        <ul class="ingredients">
-          <li data-base="2" data-unit="Stk">2 runde Blätterteige (Ø ~30 cm)</li>
-          <li data-base="1" data-unit="EL">Mehl zum Bestäuben</li>
-          <li data-base="240" data-unit="g">240 g Ricotta</li>
-          <li data-base="240" data-unit="g">240 g Pesto</li>
-        </ul>
-      </section>
-      <section class="box card">
-        <h3>Zubereitung</h3>
-        <ol class="steps">
-          <li>Ofen auf 200&nbsp;°C vorheizen. Blech bemehlen.</li>
-          <li>Teig mit Ricotta, dann Pesto bestreichen. Glas mittig platzieren, in 16 Stücke schneiden.</li>
-          <li>Jedes Stück 2× eindrehen, Enden zusammendrücken. 25–30&nbsp;min goldbraun backen.</li>
-        </ol>
-      </section>
-    </div>
-    <p class="pager"><a class="btn" href="#toc">← Inhaltsverzeichnis</a></p>
-  </article>
-
-  <!-- Blätterteig-Sticks -->
-  <article class="page recipe bakery" id="blaetterteig-sticks">
-    <header>
-      <h1>Blätterteig-Sticks</h1>
-      <div class="metrics">
-        <div class="m"><strong>Prep</strong><br>10&nbsp;min</div>
-        <div class="m"><strong>Total</strong><br>25&nbsp;min</div>
-        <div class="m"><strong>Portionen</strong><br><span data-servings="4">4</span></div>
-      </div>
-      <form class="controls"><label for="p-sticks">Portionen:</label>
-        <input type="number" id="p-sticks" value="4" min="1" step="1" data-target="blaetterteig-sticks">
-      </form>
-    </header>
-    <div class="two-col">
-      <section class="box card">
-        <h3>Zutaten</h3>
-        <ul class="ingredients">
-          <li data-base="1" data-unit="Pkg">1 Pkg Blätterteig</li>
-          <li data-base="4" data-unit="EL">4 EL Tomatensauce <em>oder</em> Pesto</li>
-          <li data-base="60" data-unit="g">60 g Käse (gerieben)</li>
-          <li data-base="1" data-unit="EL">1 EL Öl</li>
-          <li data-base="0.5" data-unit="TL">½ TL Salz</li>
-          <li data-base="0.25" data-unit="TL">¼ TL Pfeffer</li>
-        </ul>
-      </section>
-      <section class="box card">
-        <h3>Zubereitung</h3>
-        <ol class="steps">
-          <li>Blätterteig ausrollen, bestreichen, belegen. Halbieren, längs in Streifen schneiden.</li>
-          <li>Streifen eindrehen. Bei 200&nbsp;°C ca. 15&nbsp;min backen.</li>
-        </ol>
-      </section>
-    </div>
-    <p class="pager"><a class="btn" href="#toc">← Inhaltsverzeichnis</a></p>
-  </article>
+    <!-- Frühstück Kapitel -->
+  <div class="chapter fruehstueck" id="fruehstueck">
+    🥐 Frühstück
+  </div>
 
   <!-- Baguette -->
-  <article class="page recipe bakery" id="baguette">
-    <header>
-      <h1>Baguette</h1>
-      <div class="metrics">
-        <div class="m"><strong>Prep</strong><br>20&nbsp;min</div>
-        <div class="m"><strong>Total</strong><br>1&nbsp;h&nbsp;50&nbsp;min</div>
-        <div class="m"><strong>Ergibt</strong><br><span data-servings="2">2 Baguettes</span></div>
-      </div>
-      <form class="controls"><label for="p-baguette">Baguettes:</label>
-        <input type="number" id="p-baguette" value="2" min="1" step="1" data-target="baguette">
-      </form>
-    </header>
-    <div class="two-col">
-      <section class="box card">
-        <h3>Zutaten</h3>
-        <ul class="ingredients">
-          <li data-base="250" data-unit="g">250 g Mehl Type&nbsp;550</li>
-          <li data-base="160" data-unit="ml">160 ml lauwarmes Wasser</li>
-          <li data-base="6" data-unit="g">6 g Salz</li>
-          <li data-base="10" data-unit="g" data-alt="trocken:3">10 g frische Hefe (oder 3 g Trockenhefe)</li>
-          <li data-base="1" data-unit="TL">1 TL Zucker (für Hefe)</li>
-        </ul>
-      </section>
-      <section class="box card">
-        <h3>Zubereitung</h3>
-        <ol class="steps">
-          <li>Hefe mit lauwarmem Wasser & Zucker 10&nbsp;min aktivieren.</li>
-          <li>Teig 20&nbsp;min gehen lassen, dann formen und 60&nbsp;min gehen lassen.</li>
-          <li>Bei 200&nbsp;°C (vorgeheizt) ca. 20&nbsp;min backen.</li>
-        </ol>
-      </section>
+  <section class="recipe" id="rezept-baguette">
+    <h2>Baguette</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>250 g Mehl Type 550</li>
+        <li>160 ml lauwarmes Wasser</li>
+        <li>6 g Salz</li>
+        <li>10 g frische Hefe oder 3 g Trockenhefe</li>
+        <li>1 TL Zucker</li>
+      </ul>
     </div>
-    <p class="pager"><a class="btn" href="#toc">← Inhaltsverzeichnis</a></p>
-  </article>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Hefe mit lauwarmem Wasser und Zucker aktivieren (ca. 10 Minuten).</li>
+        <li>20 Minuten im Topf gehen lassen.</li>
+        <li>1 Stunde in Form gehen lassen.</li>
+        <li>Bei 200 °C (Ober-/Unterhitze) ca. 20 Minuten im vorgeheizten Ofen backen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
 
-  <footer>© <span id="year"></span> – Lieblingsrezepte</footer>
-</div>
+  <!-- Brot -->
+  <section class="recipe" id="rezept-brot">
+    <h2>Brot (Rustikales Bauernbrot / Dinkelvarianten)</h2>
+    <div class="ingredients">
+      <h3>Zutaten (Beispiel Rustikales Bauernbrot)</h3>
+      <ul>
+        <li>100 g Roggenvollkornmehl</li>
+        <li>50 g Roggenmehl (Type 1150)</li>
+        <li>150 g Wasser (28°C)</li>
+        <li>15 g Anstellgut (Sauerteig)</li>
+        <li>200 g Roggenmehl (Type 1150)</li>
+        <li>100 g Weizenmehl (Type 1050)</li>
+        <li>50 g Weizenvollkornmehl</li>
+        <li>185 g Wasser</li>
+        <li>9 g Salz</li>
+        <li>7 g Hefe (optional)</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Am Vortag Sauerteig ansetzen (12–20 Std).</li>
+        <li>Alle Zutaten für den Brotteig verkneten (evtl. 20 ml Wasser zurückhalten).</li>
+        <li>90 Minuten bei 26°C gehen lassen (nach 45 Min abschlagen).</li>
+        <li>In Gärkorb geben, weitere 60 Min ruhen lassen.</li>
+        <li>Backofen auf 250°C vorheizen. Brot einschneiden, mit Dampf einschießen.</li>
+        <li>10 Min bei 250°C, dann 35–40 Min bei 200°C backen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
 
-<script>
-document.getElementById('year').textContent = new Date().getFullYear();
+  <!-- Granola -->
+  <section class="recipe" id="rezept-granola">
+    <h2>Granola (DIY)</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>250 g Haferflocken</li>
+        <li>100 g Mandelstifte</li>
+        <li>100 g Ahornsirup</li>
+        <li>80 g Kokosöl</li>
+        <li>Prise Zimt</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Kokosöl & Ahornsirup erwärmen, Zimt dazugeben.</li>
+        <li>Mandeln & Haferflocken untermischen.</li>
+        <li>Auf Backpapier verteilen, bei 160 °C Umluft 15–20 Min backen.</li>
+        <li>Nach 10 Min wenden, abkühlen lassen und luftdicht lagern.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
 
-// Taste ←/→: zur vorherigen / nächsten Seite springen
-(function keyboardPager(){
-  const pages = [...document.querySelectorAll('.page')];
-  const ids = pages.map(p => '#' + (p.id || '')).map((id,i)=> pages[i].id ? '#'+pages[i].id : null).filter(Boolean);
-  document.addEventListener('keydown', e=>{
-    if(!['ArrowLeft','ArrowRight'].includes(e.key)) return;
-    const visible = pages.reduce((best,p)=>{
-      const r = p.getBoundingClientRect();
-      const visiblePx = Math.max(0, Math.min(window.innerHeight, r.bottom) - Math.max(0, r.top));
-      return visiblePx > (best.px||-1) ? {el:p, px:visiblePx} : best;
-    },{}).el;
-    const idx = pages.indexOf(visible);
-    const next = e.key==='ArrowRight' ? pages[idx+1] : pages[idx-1];
-    if(next) next.scrollIntoView({behavior:'smooth',block:'start'});
-  });
-})();
+  <!-- Lievito Madre -->
+  <section class="recipe" id="rezept-lievito">
+    <h2>Lievito Madre (italienischer Sauerteig)</h2>
+    <div class="ingredients">
+      <h3>Zutaten (Starter)</h3>
+      <ul>
+        <li>200 g Weizenmehl</li>
+        <li>100 g lauwarmes Wasser</li>
+        <li>1 TL Honig</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li><b>Tag 1:</b> Zutaten verkneten, zu Kugel formen, einschneiden, 48 h bei 26–28 °C gehen lassen.</li>
+        <li><b>Tag 3:</b> Mit 100 g Mehl + 50 g Wasser auffrischen, 24 h gehen lassen.</li>
+        <li><b>Tag 4–7:</b> Täglich auffrischen (1 Teil LM, 1 Teil Mehl, 0,5 Teile Wasser).</li>
+        <li>Nach 1 Woche backbereit, später regelmäßig auffrischen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
 
-// Portionsskalierung
-(function scaling(){
-  const numberFmt = new Intl.NumberFormat('de-DE',{maximumFractionDigits:0});
-  function updateFor(sectionId, value){
-    const baseServings = parseInt(document.querySelector('#'+sectionId+' .metrics [data-servings]')?.dataset.servings || '1',10);
-    const factor = Math.max(1, parseInt(value,10)) / baseServings;
-    document.querySelectorAll('#'+sectionId+' .ingredients li').forEach(li=>{
-      const base = parseFloat(li.dataset.base);
-      const unit = li.dataset.unit ? li.dataset.unit+' ' : '';
-      const hasAlt = li.dataset.alt; // e.g. "trocken:3"
-      const raw = li.textContent.replace(/^\s*\d+[.,]?\d*\s*\S*\s*/,'');
-      let main = isNaN(base) ? null : Math.round(base*factor);
-      let text = main ? `${numberFmt.format(main)} ${unit}${raw}` : li.textContent;
-      if(hasAlt){
-        const [label,altBaseStr] = hasAlt.split(':'); // "trocken","3"
-        const alt = Math.round(parseFloat(altBaseStr)*factor);
-        text = text.replace(/\(oder.*\)/,'').trim();
-        text += ` (oder ${numberFmt.format(alt)} g Trockenhefe)`;
-      }
-      li.textContent = text;
-    });
-  }
-  document.querySelectorAll('input[type=number][data-target]').forEach(inp=>{
-    inp.addEventListener('input', e=> updateFor(e.target.dataset.target, e.target.value));
-    // Initial
-    updateFor(inp.dataset.target, inp.value);
-  });
-})();
-</script>
-</body>
-</html>
+  <!-- Overnight Oats -->
+  <section class="recipe" id="rezept-oats">
+    <h2>Overnight Oats</h2>
+    <div class="ingredients">
+      <h3>Zutaten (Variabel)</h3>
+      <ul>
+        <li>3 Teile Milch</li>
+        <li>1 Teil Haferflocken</li>
+        <li>Banane, Apfel, Himbeeren</li>
+        <li>Kokosraspeln, Nüsse</li>
+        <li>Zimt, Vanille, Kakao</li>
+        <li>Ahornsirup oder Honig</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Haferflocken mit Milch im Glas mischen.</li>
+        <li>Früchte, Nüsse und Gewürze nach Belieben dazu.</li>
+        <li>Über Nacht im Kühlschrank ziehen lassen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <!-- Walnussbutter -->
+  <section class="recipe" id="rezept-walnussbutter">
+    <h2>Walnussbutter</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>120 g weiche Butter</li>
+        <li>50 g Walnüsse (geröstet & püriert)</li>
+        <li>Salz, Pfeffer</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Butter schmelzen oder weich rühren.</li>
+        <li>Walnüsse pürieren und untermischen.</li>
+        <li>Mit Salz & Pfeffer würzen, kalt stellen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+    <!-- Hauptgang Kapitel -->
+  <div class="chapter hauptgang" id="hauptgang">
+    🥦 Hauptgang
+  </div>
+
+  <!-- Suppen & Eintöpfe -->
+  <section class="recipe" id="rezept-gemuesesuppe">
+    <h2>Gemüsesuppe</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>3 Karotten</li>
+        <li>2 Kartoffeln</li>
+        <li>1 Zucchini</li>
+        <li>1 Zwiebel</li>
+        <li>1,5 l Gemüsebrühe</li>
+        <li>Salz, Pfeffer, Petersilie</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Gemüse klein schneiden.</li>
+        <li>In etwas Öl anschwitzen.</li>
+        <li>Mit Brühe aufgießen, 20–25 Minuten köcheln lassen.</li>
+        <li>Mit Salz, Pfeffer und frischer Petersilie abschmecken.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-kartoffelsuppe">
+    <h2>Kartoffelsuppe</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>800 g Kartoffeln</li>
+        <li>2 Karotten</li>
+        <li>1 Lauchstange</li>
+        <li>1 Zwiebel</li>
+        <li>1,5 l Gemüsebrühe</li>
+        <li>100 ml Sahne</li>
+        <li>Salz, Pfeffer, Muskat</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Kartoffeln, Karotten und Lauch klein schneiden.</li>
+        <li>Alles mit Zwiebeln in Öl anschwitzen.</li>
+        <li>Mit Brühe aufgießen und 25 Minuten köcheln lassen.</li>
+        <li>Pürieren, Sahne unterrühren und mit Muskat abschmecken.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-petersilienwurzel">
+    <h2>Petersilienwurzelsuppe</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>400 g Petersilienwurzeln</li>
+        <li>200 g Kartoffeln</li>
+        <li>1 Zwiebel</li>
+        <li>1 EL Butter</li>
+        <li>1 l Gemüsebrühe</li>
+        <li>100 ml Sahne</li>
+        <li>Salz, Pfeffer, Muskat</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Petersilienwurzeln, Kartoffeln und Zwiebel schälen & würfeln.</li>
+        <li>In Butter anschwitzen.</li>
+        <li>Mit Brühe ablöschen und 20 Minuten köcheln.</li>
+        <li>Pürieren, Sahne einrühren, mit Salz, Pfeffer, Muskat abschmecken.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-spargelcreme">
+    <h2>Spargelcremesuppe</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>500 g weißer Spargel</li>
+        <li>1 l Gemüsebrühe</li>
+        <li>50 g Butter</li>
+        <li>2 EL Mehl</li>
+        <li>100 ml Sahne</li>
+        <li>Salz, Pfeffer, Muskat</li>
+        <li>Zitronensaft</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Spargel schälen, Schalen in Brühe 15 Min auskochen, abseihen.</li>
+        <li>Spargelstücke in der Brühe 10 Min garen.</li>
+        <li>Butter zerlassen, Mehl einrühren, mit Spargelbrühe aufgießen.</li>
+        <li>Spargelstücke & Sahne hinzufügen, abschmecken mit Salz, Pfeffer, Muskat, Zitronensaft.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+
+    <!-- Pasta & Nudeln -->
+  <section class="recipe" id="rezept-kaesenudeln">
+    <h2>Käsenudeln</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>400 g Nudeln (z. B. Spirelli)</li>
+        <li>200 g geriebener Käse (Emmentaler oder Gouda)</li>
+        <li>200 ml Sahne</li>
+        <li>1 Zwiebel</li>
+        <li>1 EL Butter</li>
+        <li>Salz, Pfeffer, Muskat</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Nudeln nach Packungsanweisung kochen.</li>
+        <li>Zwiebel würfeln, in Butter glasig dünsten.</li>
+        <li>Sahne zugeben, erhitzen und mit Salz, Pfeffer, Muskat würzen.</li>
+        <li>Käse einrühren, bis er geschmolzen ist.</li>
+        <li>Nudeln mit Käsesoße vermengen und servieren.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-pizzabroetchen">
+    <h2>Pizzabrötchen</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>500 g Weizenmehl</li>
+        <li>1 Würfel Hefe</li>
+        <li>300 ml lauwarmes Wasser</li>
+        <li>2 EL Olivenöl</li>
+        <li>1 TL Salz</li>
+        <li>Belag nach Wahl (Käse, Kräuterbutter, Tomatensauce)</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Hefe im Wasser auflösen, mit Mehl, Öl und Salz zu Teig verkneten.</li>
+        <li>1 Stunde abgedeckt gehen lassen.</li>
+        <li>Kleine Brötchen formen, nach Wunsch füllen oder bestreichen.</li>
+        <li>Im Backofen bei 200 °C ca. 15 Minuten backen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-pizzateig">
+    <h2>Pizzateig</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>500 g Weizenmehl (Type 550)</li>
+        <li>1 Würfel Hefe</li>
+        <li>300 ml Wasser</li>
+        <li>2 EL Olivenöl</li>
+        <li>1 TL Zucker</li>
+        <li>1 TL Salz</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Hefe im Wasser mit Zucker auflösen.</li>
+        <li>Mit Mehl, Öl und Salz zu Teig verkneten.</li>
+        <li>60 Minuten gehen lassen.</li>
+        <li>Dünn ausrollen, belegen und bei 220 °C ca. 12–15 Minuten backen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-ravioli">
+    <h2>Ravioli mit Ricotta & Spinat</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>300 g Mehl</li>
+        <li>3 Eier</li>
+        <li>250 g Ricotta</li>
+        <li>200 g Spinat (frisch oder TK)</li>
+        <li>50 g Parmesan</li>
+        <li>1 Knoblauchzehe</li>
+        <li>Salz, Pfeffer, Muskat</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Mehl und Eier zu Nudelteig verkneten, 30 Min ruhen lassen.</li>
+        <li>Spinat mit Knoblauch dünsten, klein hacken und mit Ricotta & Parmesan vermischen.</li>
+        <li>Mit Salz, Pfeffer, Muskat abschmecken.</li>
+        <li>Teig dünn ausrollen, Füllung auftragen, Ravioli formen.</li>
+        <li>In siedendem Salzwasser ca. 4 Minuten garen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+
+    <!-- Reis- & Getreidegerichte -->
+  <section class="recipe" id="rezept-quinoa">
+    <h2>Indisches Quinoa Curry</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>200 g Quinoa</li>
+        <li>1 Zwiebel</li>
+        <li>2 Karotten</li>
+        <li>1 Paprika</li>
+        <li>1 Dose Kokosmilch</li>
+        <li>2 EL Currypaste</li>
+        <li>2 EL Öl</li>
+        <li>Salz, Pfeffer, Koriander</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Quinoa nach Packungsanweisung kochen.</li>
+        <li>Gemüse klein schneiden und in Öl anbraten.</li>
+        <li>Currypaste zugeben, kurz mitrösten.</li>
+        <li>Mit Kokosmilch aufgießen, 10 Minuten köcheln lassen.</li>
+        <li>Quinoa unterheben, mit Salz, Pfeffer und Koriander abschmecken.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-pacific">
+    <h2>Pacific Poke Bowl</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>200 g Sushi-Reis</li>
+        <li>150 g Lachs (roh, Sushi-Qualität)</li>
+        <li>1 Avocado</li>
+        <li>½ Gurke</li>
+        <li>2 EL Sojasauce</li>
+        <li>1 TL Sesamöl</li>
+        <li>Sesam, Frühlingszwiebeln</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Reis kochen und abkühlen lassen.</li>
+        <li>Lachs würfeln, mit Sojasauce und Sesamöl marinieren.</li>
+        <li>Avocado und Gurke in Scheiben schneiden.</li>
+        <li>Alles in einer Schüssel anrichten, mit Sesam und Frühlingszwiebeln bestreuen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-poke">
+    <h2>Poké Bowl (vegan)</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>200 g Jasminreis</li>
+        <li>100 g Edamame</li>
+        <li>½ Mango</li>
+        <li>½ Avocado</li>
+        <li>1 Karotte</li>
+        <li>2 EL Sojasauce</li>
+        <li>1 TL Sesamöl</li>
+        <li>Sesam, Koriander</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Reis kochen, abkühlen lassen.</li>
+        <li>Gemüse und Mango klein schneiden.</li>
+        <li>Alles in Bowl anrichten.</li>
+        <li>Mit Sojasauce, Sesamöl, Sesam und Koriander verfeinern.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-risotto">
+    <h2>Risotto (Grundrezept)</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>300 g Risottoreis (z. B. Arborio)</li>
+        <li>1 Zwiebel</li>
+        <li>1 l Gemüsebrühe</li>
+        <li>100 ml Weißwein</li>
+        <li>50 g Parmesan</li>
+        <li>2 EL Butter</li>
+        <li>2 EL Olivenöl</li>
+        <li>Salz, Pfeffer</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Zwiebel klein schneiden und in Öl glasig dünsten.</li>
+        <li>Reis zugeben, kurz anrösten.</li>
+        <li>Mit Weißwein ablöschen, einkochen lassen.</li>
+        <li>Nach und nach Brühe zugeben, unter Rühren köcheln lassen.</li>
+        <li>Nach ca. 20 Min Butter und Parmesan einrühren, würzen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-reispfanne">
+    <h2>Vegetarische Reispfanne mit Karotten & Paprika</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>250 g Reis</li>
+        <li>2 Karotten</li>
+        <li>1 Paprika</li>
+        <li>1 Zwiebel</li>
+        <li>2 EL Sojasauce</li>
+        <li>2 EL Öl</li>
+        <li>Salz, Pfeffer</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Reis kochen und abkühlen lassen.</li>
+        <li>Gemüse klein schneiden und in Öl anbraten.</li>
+        <li>Reis hinzufügen, mit Sojasauce ablöschen.</li>
+        <li>Mit Salz und Pfeffer abschmecken.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+
+  <!-- Internationale Küche & Currys -->
+  <section class="recipe" id="rezept-lasagne">
+    <h2>Auberginen-Zucchini-Lasagne</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>500 g Zucchini</li>
+        <li>500 g Aubergine</li>
+        <li>3 Packungen passierte Tomaten</li>
+        <li>1 Bund Basilikum</li>
+        <li>2 Knoblauchzehen</li>
+        <li>1 Paprika</li>
+        <li>Olivenöl, Margarine</li>
+        <li>Lasagneblätter</li>
+        <li>Bechamelsauce oder Crème Fraîche</li>
+        <li>Parmesan</li>
+        <li>Salz, Pfeffer, Oregano, Thymian</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Knoblauch hacken, Tomaten und Paprika würfeln. In Öl & Margarine anbraten, Tomaten zugeben, würzen und 20 Min köcheln lassen. Basilikum am Ende einrühren.</li>
+        <li>Zucchini in Scheiben schneiden und anbraten. Auberginen in Scheiben schneiden, salzen, Flüssigkeit abtupfen, anbraten.</li>
+        <li>In Auflaufform: Lasagneblätter, Auberginen, Tomatenmischung, Bechamel, dann Zucchini, restliche Tomatenmischung, Lasagneblätter, Bechamel.</li>
+        <li>Mit Parmesan bestreuen und bei 190 °C 45–60 Min backen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-dhal">
+    <h2>Dhal (Indisches Linsencurry)</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>200 g Rote Linsen</li>
+        <li>1 Zwiebel</li>
+        <li>2 Tomaten</li>
+        <li>1 Dose Kokosmilch</li>
+        <li>2 EL Currypaste</li>
+        <li>1 TL Kreuzkümmel</li>
+        <li>2 EL Öl</li>
+        <li>Salz, Pfeffer, Koriander</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Zwiebel würfeln, in Öl anschwitzen.</li>
+        <li>Linsen und Tomaten zugeben, mit Currypaste und Gewürzen vermengen.</li>
+        <li>Mit Kokosmilch und 200 ml Wasser aufgießen, 20 Min köcheln lassen.</li>
+        <li>Mit Salz und frischem Koriander abschmecken.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-gruencurry">
+    <h2>Grünes Curry</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>400 ml Kokosmilch</li>
+        <li>200 g Hähnchen oder Tofu</li>
+        <li>1 Zucchini</li>
+        <li>1 Paprika</li>
+        <li>2 EL grüne Currypaste</li>
+        <li>1 EL Öl</li>
+        <li>Salz, Limettensaft, Koriander</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Curry-Paste in Öl anschwitzen.</li>
+        <li>Kokosmilch zugeben, aufkochen.</li>
+        <li>Gemüse und Hähnchen/Tofu zugeben, 15 Min köcheln lassen.</li>
+        <li>Mit Limettensaft, Salz und Koriander abschmecken.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-hackrolle">
+    <h2>Hackfleischrolle</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>500 g Hackfleisch</li>
+        <li>1 Zwiebel</li>
+        <li>2 Eier</li>
+        <li>4 EL Paniermehl</li>
+        <li>2 EL Senf</li>
+        <li>1 Packung Blätterteig</li>
+        <li>Salz, Pfeffer, Paprikapulver</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Hackfleisch mit Zwiebel, Eiern, Paniermehl und Senf mischen.</li>
+        <li>Würzen, auf Blätterteig verteilen und einrollen.</li>
+        <li>Mit Eigelb bestreichen und bei 200 °C 35 Minuten backen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-massaman">
+    <h2>Massaman Curry</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>400 ml Kokosmilch</li>
+        <li>300 g Rindfleisch oder Tofu</li>
+        <li>2 Kartoffeln</li>
+        <li>2 Karotten</li>
+        <li>2 EL Massaman-Currypaste</li>
+        <li>2 EL Erdnüsse</li>
+        <li>1 Zimtstange</li>
+        <li>1 EL Öl</li>
+        <li>Salz, Limettensaft</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Curry-Paste in Öl anrösten.</li>
+        <li>Kokosmilch zugeben, Fleisch oder Tofu darin garen.</li>
+        <li>Kartoffeln und Karotten zugeben, 20 Min köcheln lassen.</li>
+        <li>Erdnüsse und Zimt zugeben, mit Salz und Limettensaft abschmecken.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-enchilada">
+    <h2>Mexikanische Enchilada-Lasagne</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>6 Tortillafladen</li>
+        <li>1 Dose schwarze Bohnen</li>
+        <li>1 Dose Mais</li>
+        <li>400 g Tomatenpassata</li>
+        <li>150 g geriebener Käse</li>
+        <li>2 Paprika</li>
+        <li>1 Zwiebel</li>
+        <li>2 EL Öl</li>
+        <li>Chili, Kreuzkümmel, Paprikapulver, Salz</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Zwiebel und Paprika anbraten.</li>
+        <li>Bohnen, Mais und Tomatenpassata zugeben, würzen.</li>
+        <li>In Auflaufform abwechselnd Tortilla, Sauce und Käse schichten.</li>
+        <li>Bei 180 °C ca. 25 Minuten überbacken.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-padthai">
+    <h2>Pad Thai</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>200 g Reisnudeln</li>
+        <li>150 g Garnelen oder Tofu</li>
+        <li>2 Eier</li>
+        <li>2 EL Erdnüsse</li>
+        <li>2 Frühlingszwiebeln</li>
+        <li>2 EL Fischsauce oder Sojasauce</li>
+        <li>1 EL Tamarindenpaste</li>
+        <li>1 TL Zucker</li>
+        <li>1 EL Öl</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Reisnudeln nach Packungsanweisung kochen.</li>
+        <li>Garnelen/Tofu anbraten, Eier verquirlen und dazugeben.</li>
+        <li>Nudeln zugeben, mit Fischsauce, Tamarinde und Zucker würzen.</li>
+        <li>Mit Frühlingszwiebeln und Erdnüssen servieren.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-rotescurry">
+    <h2>Rotes Curry</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>400 ml Kokosmilch</li>
+        <li>200 g Hähnchen oder Gemüse</li>
+        <li>1 Zucchini</li>
+        <li>1 Paprika</li>
+        <li>2 EL rote Currypaste</li>
+        <li>1 EL Öl</li>
+        <li>Salz, Limettensaft</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Curry-Paste in Öl anschwitzen.</li>
+        <li>Kokosmilch zugeben und aufkochen lassen.</li>
+        <li>Gemüse und Fleisch/Tofu zugeben, 15 Min köcheln lassen.</li>
+        <li>Mit Salz und Limettensaft abschmecken.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-tacofino">
+    <h2>Tacofino</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>6 Tortillafladen</li>
+        <li>300 g Rinderhack</li>
+        <li>1 Zwiebel</li>
+        <li>2 Tomaten</li>
+        <li>1 Avocado</li>
+        <li>Salatblätter</li>
+        <li>150 g geriebener Käse</li>
+        <li>Salsa oder Guacamole</li>
+        <li>Salz, Pfeffer, Paprikapulver</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Hackfleisch mit Zwiebel anbraten und würzen.</li>
+        <li>Tortillafladen erwärmen.</li>
+        <li>Mit Hackfleisch, Tomaten, Avocado, Salat und Käse füllen.</li>
+        <li>Mit Salsa oder Guacamole servieren.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+    <!-- Snacks, Beilagen & Fingerfood -->
+  <section class="recipe" id="rezept-bohnenpatty">
+    <h2>Bohnenpatty</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>1 Dose Kidneybohnen</li>
+        <li>1 Dose Kichererbsen</li>
+        <li>1 Ei</li>
+        <li>3 EL Mehl</li>
+        <li>6 EL Paniermehl</li>
+        <li>1 Knoblauchzehe</li>
+        <li>1 TL Paprikapulver</li>
+        <li>Salz, Pfeffer</li>
+        <li>Öl zum Braten</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Bohnen & Kichererbsen abtropfen lassen und pürieren.</li>
+        <li>Mit Knoblauch, Ei, Mehl, Paniermehl und Gewürzen vermengen.</li>
+        <li>30 Min ruhen lassen, Patties formen.</li>
+        <li>In Öl bei mittlerer Hitze goldbraun braten.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-brokkolisalat">
+    <h2>Brokkolisalat</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>250 g Brokkoli</li>
+        <li>1 rote Paprika</li>
+        <li>1 Apfel</li>
+        <li>30 g Pinienkerne</li>
+        <li>25 g Olivenöl</li>
+        <li>15 g weißer Balsamico</li>
+        <li>1 TL Honig</li>
+        <li>1½ TL Senf</li>
+        <li>Salz, Pfeffer</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Brokkoli, Apfel und Paprika klein schneiden.</li>
+        <li>Pinienkerne in Pfanne anrösten.</li>
+        <li>Aus Öl, Balsamico, Honig, Senf, Salz und Pfeffer ein Dressing rühren.</li>
+        <li>Alles vermengen und servieren.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-fruehlingsrollen">
+    <h2>Thailändische Frühlingsrollen</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>30 g Kohl, dünn geschnitten</li>
+        <li>15 g Karotten</li>
+        <li>15 g Glasnudeln</li>
+        <li>1 Frühlingszwiebel</li>
+        <li>1 Knoblauchzehe</li>
+        <li>Sojasauce, Zucker, Pfeffer</li>
+        <li>Frühlingsrollenteigblätter</li>
+        <li>Öl zum Frittieren</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Gemüse und Glasnudeln in Öl mit Knoblauch anbraten, würzen.</li>
+        <li>Füllung in Teigblätter wickeln.</li>
+        <li>In heißem Öl goldbraun frittieren.</li>
+        <li>Mit Sweet Chili Sauce servieren.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-gemuesespiesse">
+    <h2>Gemüsespieße</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>1 Paprika</li>
+        <li>1 kleine Aubergine</li>
+        <li>1 kleine Zucchini</li>
+        <li>1 Rosmarinzweig</li>
+        <li>1 EL Kapern</li>
+        <li>Öl, Salz, Pfeffer</li>
+        <li>Holzspieße</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Gemüse in Stücke schneiden, mit Kapern, Öl und Rosmarin marinieren.</li>
+        <li>Auf Spieße stecken.</li>
+        <li>In Grillpfanne oder auf dem Grill goldbraun garen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-gemuesepfanne">
+    <h2>Gemüsepfanne</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>1 Paprika</li>
+        <li>1 Dose Mais</li>
+        <li>2 Knoblauchzehen</li>
+        <li>Frühlingszwiebeln, Schnittlauch, Petersilie</li>
+        <li>Gyros-/Dönerfleisch (oder vegetarisch)</li>
+        <li>2 EL Tomatenmark</li>
+        <li>Olivenöl</li>
+        <li>Salz, Pfeffer, Curry, Paprikapulver</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Knoblauch in Öl anbraten, Tomatenmark & Gewürze kurz mitrösten.</li>
+        <li>Mais, Paprika und Kräuter zugeben, 1 Min anbraten.</li>
+        <li>Fleisch oder vegetarische Alternative zugeben, kurz garen.</li>
+        <li>Mit Tomatensauce ablöschen, 2–3 Min köcheln.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-focaccia">
+    <h2>Focaccia</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>300 g Mehl</li>
+        <li>½ Würfel Hefe</li>
+        <li>1 TL Zucker</li>
+        <li>1 TL Salz</li>
+        <li>200 ml Wasser</li>
+        <li>Rosmarin, Olivenöl</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Mehl, Hefe, Zucker, Salz und Wasser zu Teig verkneten, 30 Min gehen lassen.</li>
+        <li>Ausrollen, mit Öl bestreichen, Rosmarin darüber.</li>
+        <li>Nochmals 15 Min gehen lassen.</li>
+        <li>Bei 220 °C 25 Min goldbraun backen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-markgloesschen">
+    <h2>Markglößchen</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>250 g Butter</li>
+        <li>5 Eier</li>
+        <li>Petersilie</li>
+        <li>Muskat</li>
+        <li>Salz</li>
+        <li>Semmelbrösel</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Butter, Eier, Petersilie und Gewürze vermengen.</li>
+        <li>Mit Semmelbröseln binden, bis formbare Masse entsteht.</li>
+        <li>Kleine Klöße formen und in Suppe garziehen lassen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-serviettenknoedel">
+    <h2>Serviettenknödel</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>250 g altbackene Brötchen</li>
+        <li>250 ml Milch</li>
+        <li>2 Eier</li>
+        <li>50 g Zwiebel</li>
+        <li>50 g Butter</li>
+        <li>Petersilie</li>
+        <li>Muskat, Salz, Pfeffer</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Brötchen würfeln, mit Petersilie mischen.</li>
+        <li>Zwiebel in Butter anschwitzen, mit Milch aufgießen.</li>
+        <li>Alles mit Eiern vermengen, würzen.</li>
+        <li>Teig in Folie zu Rolle formen, 30 Min im Wasser garen.</li>
+        <li>In Scheiben schneiden und servieren.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-coconutroti">
+    <h2>Sri Lanka Coconut Roti</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>100 g Kokosraspel</li>
+        <li>130 g Mehl</li>
+        <li>160 ml Wasser</li>
+        <li>1 TL Salz</li>
+        <li>1 TL Öl</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Kokosraspel 10 Min in Wasser quellen lassen.</li>
+        <li>Mit Mehl und Salz verkneten, ggf. mehr Mehl zufügen.</li>
+        <li>Kleine Fladen formen.</li>
+        <li>In Pfanne mit wenig Öl von beiden Seiten ausbacken.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-stockbrot">
+    <h2>Stockbrot</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>400 g Mehl</li>
+        <li>1 Pck Trockenhefe</li>
+        <li>1 EL Zucker</li>
+        <li>300 ml warme Milch</li>
+        <li>½ TL Salz</li>
+        <li>2 EL Öl</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Alle Zutaten zu glattem Teig verkneten, 15 Min gehen lassen.</li>
+        <li>In Portionen teilen, zu Strängen rollen.</li>
+        <li>Um einen Stock wickeln und über Glut 10 Min backen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-tortillawraps">
+    <h2>Tortilla-Wraps DIY</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>375 g Mehl</li>
+        <li>1 TL Backpulver</li>
+        <li>1 TL Salz</li>
+        <li>50 ml Olivenöl</li>
+        <li>240 ml warmes Wasser</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Mehl, Backpulver und Salz mischen.</li>
+        <li>Mit Öl und Wasser zu glattem Teig verkneten, 15 Min ruhen lassen.</li>
+        <li>In 8 Kugeln teilen, dünn ausrollen.</li>
+        <li>In Pfanne ohne Öl 1 Min pro Seite backen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  
+    <!-- Saucen, Pasten & Basics -->
+  <section class="recipe" id="rezept-bierteig">
+    <h2>Bierteig</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>100 g Mehl</li>
+        <li>100 g Speisestärke</li>
+        <li>1 TL Backpulver</li>
+        <li>2 Eigelb</li>
+        <li>240 ml eiskaltes Bier</li>
+        <li>Salz, Pfeffer</li>
+        <li>Öl zum Ausbacken</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Mehl, Stärke, Backpulver, Eigelb und Bier zu glattem Teig verrühren.</li>
+        <li>Mit Salz und Pfeffer würzen.</li>
+        <li>Gemüse oder Fleisch eintauchen und in heißem Öl goldbraun ausbacken.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-eiersauce">
+    <h2>Eiersauce mit Bratkartoffeln</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>3 Eier</li>
+        <li>150 ml Milch</li>
+        <li>1 TL Senf</li>
+        <li>1 EL Butter</li>
+        <li>Salz, Pfeffer</li>
+        <li>Petersilie</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Eier hart kochen, schälen und hacken.</li>
+        <li>Butter schmelzen, Milch und Senf einrühren.</li>
+        <li>Gehackte Eier und Petersilie zugeben, mit Salz und Pfeffer abschmecken.</li>
+        <li>Zu Bratkartoffeln servieren.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-guacamole">
+    <h2>Guacamole</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>2 reife Avocados</li>
+        <li>1 Limette</li>
+        <li>1 kleine Tomate</li>
+        <li>1 Knoblauchzehe</li>
+        <li>1 kleine Zwiebel</li>
+        <li>Salz, Pfeffer, Chili</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Avocados zerdrücken, Limettensaft zugeben.</li>
+        <li>Tomate, Knoblauch und Zwiebel fein hacken.</li>
+        <li>Alles vermengen, würzen und sofort servieren.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-knoblauchsauce">
+    <h2>Knoblauchsauce</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>200 g Joghurt</li>
+        <li>100 g Mayonnaise</li>
+        <li>2 Knoblauchzehen</li>
+        <li>1 TL Zitronensaft</li>
+        <li>Salz, Pfeffer</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Knoblauch pressen und mit Joghurt und Mayo verrühren.</li>
+        <li>Mit Zitronensaft, Salz und Pfeffer abschmecken.</li>
+        <li>Kalt stellen und servieren.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-pesto">
+    <h2>Pesto</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>50 g Basilikum</li>
+        <li>50 g Pinienkerne</li>
+        <li>50 g Parmesan</li>
+        <li>100 ml Olivenöl</li>
+        <li>1 Knoblauchzehe</li>
+        <li>Salz, Pfeffer</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Alle Zutaten in Mixer geben.</li>
+        <li>Zu cremiger Sauce pürieren.</li>
+        <li>Nach Bedarf Öl nachgießen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-salatsauce">
+    <h2>Salatsauce</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>3 EL Olivenöl</li>
+        <li>2 EL Balsamico</li>
+        <li>1 TL Senf</li>
+        <li>1 TL Honig</li>
+        <li>Salz, Pfeffer</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Alle Zutaten in Schüssel geben.</li>
+        <li>Mit Schneebesen cremig aufschlagen.</li>
+        <li>Über frischen Salat geben.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+
+    <!-- Curry-Pasten -->
+  <section class="recipe" id="rezept-gruene-paste">
+    <h2>Grüne Curry-Paste</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>2 grüne Chilischoten</li>
+        <li>2 Frühlingszwiebeln</li>
+        <li>2 Knoblauchzehen</li>
+        <li>1 Stück Ingwer (ca. 3 cm)</li>
+        <li>1 Bund Koriander</li>
+        <li>1 TL Kreuzkümmel</li>
+        <li>1 TL Koriandersamen</li>
+        <li>1 EL Limettensaft</li>
+        <li>2 EL Öl</li>
+        <li>Salz</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Alle Zutaten grob hacken.</li>
+        <li>Im Mixer mit Öl und Limettensaft pürieren.</li>
+        <li>Mit Salz abschmecken.</li>
+        <li>Luftdicht verschlossen im Kühlschrank lagern.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-massaman-paste">
+    <h2>Massaman Curry-Paste</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>2 Schalotten</li>
+        <li>2 Knoblauchzehen</li>
+        <li>1 Stück Ingwer (3 cm)</li>
+        <li>2 getrocknete rote Chilischoten</li>
+        <li>1 TL Kreuzkümmel</li>
+        <li>1 TL Koriandersamen</li>
+        <li>1 TL Zimt</li>
+        <li>2 EL Erdnüsse</li>
+        <li>2 EL Öl</li>
+        <li>Salz</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Schalotten, Knoblauch, Ingwer und Chili klein schneiden.</li>
+        <li>Mit Gewürzen und Erdnüssen im Mixer pürieren.</li>
+        <li>Mit Öl zu glatter Paste verarbeiten.</li>
+        <li>In Glas füllen und kalt lagern.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-rote-paste">
+    <h2>Rote Curry-Paste</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>4 rote Chilischoten</li>
+        <li>2 Schalotten</li>
+        <li>2 Knoblauchzehen</li>
+        <li>1 Stück Ingwer (3 cm)</li>
+        <li>1 TL Paprikapulver</li>
+        <li>1 TL Kreuzkümmel</li>
+        <li>1 TL Koriandersamen</li>
+        <li>2 EL Tomatenmark</li>
+        <li>2 EL Öl</li>
+        <li>Salz</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Chilischoten, Schalotten, Knoblauch und Ingwer grob hacken.</li>
+        <li>Mit Gewürzen und Tomatenmark pürieren.</li>
+        <li>Öl untermischen, bis cremige Paste entsteht.</li>
+        <li>In Schraubglas abfüllen, kühl lagern.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+    <!-- Snacks & Nachtisch -->
+  <section class="recipe" id="rezept-pecan">
+    <h2>Candied Pecan</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>200 g Pekannüsse</li>
+        <li>100 g Zucker</li>
+        <li>1 TL Zimt</li>
+        <li>1 Prise Salz</li>
+        <li>1 Eiweiß</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Eiweiß steif schlagen, Zucker, Salz und Zimt unterheben.</li>
+        <li>Pekannüsse darin wenden.</li>
+        <li>Auf Backblech verteilen und bei 150 °C 20 Min rösten.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-energiebällchen">
+    <h2>Energiebällchen</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>100 g Haferflocken</li>
+        <li>50 g gemahlene Mandeln</li>
+        <li>2 EL Honig</li>
+        <li>2 EL Kakaopulver</li>
+        <li>50 g Datteln</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Datteln klein hacken.</li>
+        <li>Mit Haferflocken, Mandeln, Kakao und Honig verkneten.</li>
+        <li>Kugeln formen und kaltstellen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-banane">
+    <h2>Frittierte Banane</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>2 Bananen</li>
+        <li>100 g Mehl</li>
+        <li>150 ml Sprudelwasser</li>
+        <li>1 TL Zucker</li>
+        <li>1 Prise Salz</li>
+        <li>Öl zum Frittieren</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Mehl, Wasser, Zucker und Salz zu glattem Teig rühren.</li>
+        <li>Bananen in Stücke schneiden, durch Teig ziehen.</li>
+        <li>In heißem Öl goldbraun frittieren.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-himbeerbaiser">
+    <h2>Himbeerbaiser</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>2 Eiweiß</li>
+        <li>100 g Zucker</li>
+        <li>100 g Himbeeren</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Eiweiß steif schlagen, Zucker langsam einrieseln lassen.</li>
+        <li>Himbeeren vorsichtig unterheben.</li>
+        <li>Mit Löffeln kleine Häufchen auf Backpapier setzen.</li>
+        <li>Bei 100 °C ca. 60 Min trocknen lassen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-marzipan">
+    <h2>Marzipanpralinen</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>200 g Marzipanrohmasse</li>
+        <li>100 g Zartbitterschokolade</li>
+        <li>50 g gehackte Mandeln</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Marzipan zu kleinen Kugeln formen, Mandeln hineindrücken.</li>
+        <li>Schokolade schmelzen, Kugeln eintauchen.</li>
+        <li>Auf Backpapier festwerden lassen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-mousse">
+    <h2>Mousse au Chocolat</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>200 g Zartbitterschokolade</li>
+        <li>3 Eier</li>
+        <li>250 ml Sahne</li>
+        <li>1 EL Zucker</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Schokolade schmelzen.</li>
+        <li>Eier trennen, Eiweiß steif schlagen, Eigelb mit Zucker cremig rühren.</li>
+        <li>Sahne steif schlagen.</li>
+        <li>Alles vorsichtig unterheben und kaltstellen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-roti">
+    <h2>Roti Thai Pancake</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>250 g Mehl</li>
+        <li>150 ml Wasser</li>
+        <li>1 EL Zucker</li>
+        <li>1 Prise Salz</li>
+        <li>Öl zum Ausbacken</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Alle Zutaten zu weichem Teig verkneten, 30 Min ruhen lassen.</li>
+        <li>Teig dünn ausrollen und in Öl ausbacken.</li>
+        <li>Nach Wunsch mit Banane und Schokolade füllen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-sticky">
+    <h2>Sticky Rice mit Mango</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>200 g Klebreis</li>
+        <li>200 ml Kokosmilch</li>
+        <li>3 EL Zucker</li>
+        <li>1 Mango</li>
+        <li>1 Prise Salz</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Klebreis einweichen und gar dämpfen.</li>
+        <li>Kokosmilch mit Zucker und Salz erhitzen, über Reis geben.</li>
+        <li>Mango in Scheiben schneiden und dazu servieren.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-tiramisu">
+    <h2>Tiramisu</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>250 g Mascarpone</li>
+        <li>200 g Löffelbiskuits</li>
+        <li>200 ml Kaffee</li>
+        <li>2 Eier</li>
+        <li>50 g Zucker</li>
+        <li>Kakaopulver</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Eier trennen, Eigelb mit Zucker cremig rühren.</li>
+        <li>Mascarpone unterrühren, Eiweiß steif schlagen und unterheben.</li>
+        <li>Löffelbiskuits in Kaffee tauchen und in Form schichten.</li>
+        <li>Mit Creme abwechseln, mit Kakao bestäuben.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-zucchinipuffer">
+    <h2>Zucchinipuffer</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>2 Zucchini</li>
+        <li>1 Ei</li>
+        <li>2 EL Mehl</li>
+        <li>50 g geriebener Käse</li>
+        <li>Salz, Pfeffer, Muskat</li>
+        <li>Öl zum Braten</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Zucchini raspeln und ausdrücken.</li>
+        <li>Mit Ei, Mehl, Käse und Gewürzen mischen.</li>
+        <li>Kleine Puffer formen und in Öl goldbraun braten.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <!-- Bakery -->
+  <section class="recipe" id="rezept-brownie">
+    <h2>Brownie</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>200 g Zartbitterschokolade</li>
+        <li>150 g Butter</li>
+        <li>3 Eier</li>
+        <li>150 g Zucker</li>
+        <li>100 g Mehl</li>
+        <li>1 TL Backpulver</li>
+        <li>1 Prise Salz</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Schokolade und Butter schmelzen.</li>
+        <li>Eier und Zucker cremig schlagen, Schokomischung unterrühren.</li>
+        <li>Mehl, Backpulver und Salz unterheben.</li>
+        <li>Bei 180 °C ca. 25 Minuten backen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-butterplaettchen">
+    <h2>Butterplättchen</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>250 g Mehl</li>
+        <li>125 g Butter</li>
+        <li>100 g Zucker</li>
+        <li>1 Ei</li>
+        <li>1 Pck. Vanillezucker</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Butter, Zucker, Ei und Vanillezucker schaumig rühren.</li>
+        <li>Mehl unterkneten, Teig 30 Min kühlen.</li>
+        <li>Ausrollen, Plätzchen ausstechen.</li>
+        <li>Bei 180 °C ca. 10–12 Min backen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-cookies">
+    <h2>Cookies</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>200 g Mehl</li>
+        <li>150 g Zucker</li>
+        <li>1 Ei</li>
+        <li>125 g Butter</li>
+        <li>1 TL Backpulver</li>
+        <li>100 g Schokostückchen</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Butter und Zucker cremig rühren, Ei unterrühren.</li>
+        <li>Mehl und Backpulver einarbeiten, Schokostückchen unterheben.</li>
+        <li>Kleckse auf Blech setzen.</li>
+        <li>Bei 180 °C ca. 12–15 Min backen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-dampfnudeln">
+    <h2>Dampfnudeln</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>500 g Mehl</li>
+        <li>1 Würfel Hefe</li>
+        <li>250 ml Milch</li>
+        <li>50 g Zucker</li>
+        <li>50 g Butter</li>
+        <li>1 Ei</li>
+        <li>1 Prise Salz</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Hefeteig aus allen Zutaten herstellen, 1 Std gehen lassen.</li>
+        <li>Kugeln formen und nochmals 20 Min gehen lassen.</li>
+        <li>In tiefer Pfanne mit Milch, Butter und Zucker garen, bis Flüssigkeit verkocht und Kruste unten goldbraun ist.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-flammendesherz">
+    <h2>Flammendes Herz</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>250 g Mehl</li>
+        <li>100 g Zucker</li>
+        <li>125 g Butter</li>
+        <li>2 Eigelb</li>
+        <li>2 EL Kakao</li>
+        <li>1 TL Backpulver</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Aus allen Zutaten Teig herstellen.</li>
+        <li>Herzchen ausstechen.</li>
+        <li>Bei 180 °C ca. 10–12 Min backen.</li>
+        <li>Optional mit Konfitüre füllen oder verzieren.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-frosting">
+    <h2>Frosting</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>200 g Frischkäse</li>
+        <li>100 g Butter</li>
+        <li>150 g Puderzucker</li>
+        <li>1 TL Vanilleextrakt</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Butter schaumig schlagen.</li>
+        <li>Frischkäse und Vanilleextrakt einrühren.</li>
+        <li>Puderzucker sieben und unterrühren.</li>
+        <li>Kaltstellen und zum Verzieren nutzen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-kreppel">
+    <h2>Kreppel (Berliner)</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>500 g Mehl</li>
+        <li>1 Würfel Hefe</li>
+        <li>250 ml Milch</li>
+        <li>75 g Zucker</li>
+        <li>75 g Butter</li>
+        <li>2 Eier</li>
+        <li>1 Prise Salz</li>
+        <li>Marmelade zum Füllen</li>
+        <li>Öl zum Frittieren</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Hefeteig ansetzen, 1 Std gehen lassen.</li>
+        <li>Kugeln formen, nochmals 20 Min ruhen lassen.</li>
+        <li>In Öl goldbraun frittieren, mit Marmelade füllen.</li>
+        <li>Mit Puderzucker bestreuen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-marmorkuchen">
+    <h2>Marmorkuchen</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>250 g Butter</li>
+        <li>200 g Zucker</li>
+        <li>4 Eier</li>
+        <li>300 g Mehl</li>
+        <li>1 Pck. Backpulver</li>
+        <li>2 EL Kakao</li>
+        <li>50 ml Milch</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Butter, Zucker und Eier cremig rühren.</li>
+        <li>Mehl und Backpulver zugeben, Teig halbieren.</li>
+        <li>Eine Hälfte mit Kakao und Milch verrühren.</li>
+        <li>Hellen und dunklen Teig abwechselnd in Form füllen, marmorieren.</li>
+        <li>Bei 180 °C ca. 50 Min backen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-nussecken">
+    <h2>Nussecken</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>300 g Mehl</li>
+        <li>200 g Butter</li>
+        <li>200 g Zucker</li>
+        <li>200 g gemahlene Nüsse</li>
+        <li>100 g gehackte Haselnüsse</li>
+        <li>200 g Aprikosenmarmelade</li>
+        <li>200 g Schokolade</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Aus Mehl, Butter und 100 g Zucker einen Teig herstellen.</li>
+        <li>Teig auf Blech ausrollen, mit Marmelade bestreichen.</li>
+        <li>Restliche Zutaten (außer Schokolade) mischen, auf Teig verteilen.</li>
+        <li>Bei 180 °C ca. 20–25 Min backen, in Dreiecke schneiden.</li>
+        <li>Ecken in Schokolade tauchen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-waffeln">
+    <h2>Waffeln</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>250 g Mehl</li>
+        <li>100 g Zucker</li>
+        <li>3 Eier</li>
+        <li>125 g Butter</li>
+        <li>200 ml Milch</li>
+        <li>1 TL Backpulver</li>
+        <li>1 Pck. Vanillezucker</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Alle Zutaten zu glattem Teig verrühren.</li>
+        <li>Im Waffeleisen portionsweise goldbraun backen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+
+  <section class="recipe" id="rezept-zimtschnecken">
+    <h2>Zimtschnecken</h2>
+    <div class="ingredients">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>500 g Mehl</li>
+        <li>250 ml Milch</li>
+        <li>75 g Zucker</li>
+        <li>75 g Butter</li>
+        <li>1 Würfel Hefe</li>
+        <li>1 Prise Salz</li>
+        <li>Zimt, Zucker für Füllung</li>
+        <li>Puderzucker und Milch für Guss</li>
+      </ul>
+    </div>
+    <div class="instructions">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Hefeteig herstellen, 1 Std gehen lassen.</li>
+        <li>Teig ausrollen, mit Butter bestreichen, Zimt und Zucker darauf.</li>
+        <li>Aufrollen, in Scheiben schneiden.</li>
+        <li>Bei 180 °C ca. 20–25 Min backen.</li>
+        <li>Mit Zuckerguss bestreichen.</li>
+      </ol>
+    </div>
+    <a href="#inhalt" class="back-btn">⬅ Zurück zum Inhalt</a>
+  </section>
+  
