@@ -1,238 +1,392 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meine Lieblingsrezepte</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Meine Lieblingsrezepte</title>
 
-<!-- Schriftarten -->
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
+  <!-- Schriftarten -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
-<style>
-body {
-  margin:0;
-  padding:0;
-  font-family: Arial, sans-serif;
-  background: #f5e6d3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+  <style>
+    :root{
+      --bg: #f5e6d3;
+      --card: #fffaf0;
+      --ink: #2b2b2b;
+      --muted: #7c7c7c;
+      --accent: #c4661f;
+      --shadow: 0 10px 30px rgba(0,0,0,.18);
+      --radius: 20px;
+      --maxw: 880px;
+    }
 
-.page {
-  width: 800px;
-  margin: 50px 0;
-  padding: 50px;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-}
+    /* Basis */
+    html { scroll-behavior: smooth; }
+    body{
+      margin:0; padding:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      display:flex; flex-direction:column; align-items:center;
+    }
+    a{ color: inherit; }
+    .page{
+      width: min(var(--maxw), 92%);
+      margin: 48px 0;
+      padding: clamp(28px, 4vw, 48px);
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
 
-/* Deckblatt */
-.cover {
-  background: #fffaf0;
-  text-align: center;
-}
-.cover h1 {
-  font-family: 'Great Vibes', cursive;
-  font-size: 4.5rem;
-  margin: 0;
-  color: #4b4b4b;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-}
-.cover p {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.6rem;
-  color: #7c7c7c;
-  margin-top: 20px;
-  letter-spacing: 2px;
-}
+    /* Deckblatt */
+    .cover{
+      background: var(--card);
+      text-align:center;
+    }
+    .cover h1{
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(3rem, 8vw, 4.8rem);
+      margin: 0;
+      color:#4b4b4b;
+      text-shadow: 2px 2px 4px rgba(0,0,0,.2);
+    }
+    .cover p{
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.1rem, 2.6vw, 1.6rem);
+      color: var(--muted);
+      margin-top: 14px;
+      letter-spacing: .06em;
+    }
 
-<!-- Inhaltsverzeichnis -->
-<div class="page toc" id="toc">
-  <h1>Inhaltsverzeichnis</h1>
+    /* Inhaltsverzeichnis */
+    .toc h1{ margin-top:0; font-family:'Playfair Display',serif; }
+    .toc h2, .toc h3{ font-family:'Playfair Display',serif; margin: 1.2rem 0 .3rem; }
+    .toc .groups{
+      display:grid; gap:22px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      margin-top: 10px;
+    }
+    .toc ul{ margin:.2rem 0 0 1.1rem; }
+    .toc ul.sub{ margin-left:1.3rem; }
+    .toc a{ text-decoration:none; }
+    .toc a:hover{ text-decoration:underline; }
 
-  <h2>Frühstück</h2>
-  <ul>
-    <li><a href="#baguette">Baguette</a></li>
-    <li><a href="#brot">Brot</a></li>
-    <li><a href="#granola">Granola</a></li>
-    <li><a href="#lievito_madre">Lievito madre</a></li>
-    <li><a href="#overnight_oats">Overnight Oats</a></li>
-    <li><a href="#walnussbutter">Walnussbutter</a></li>
-  </ul>
+    /* Abschnitt-Deckblätter */
+    .section-cover{
+      background: #fff7ea;
+      text-align:center;
+      position:relative;
+    }
+    .section-cover .symbol{
+      font-size: clamp(2rem, 6vw, 3rem);
+      margin-bottom: 8px;
+    }
+    .section-cover h1{
+      font-family:'Playfair Display',serif;
+      margin: .2rem 0 .4rem;
+    }
+    .section-cover p{ color: var(--muted); margin:0; }
 
-  <h2>Hauptgang</h2>
+    /* Rezeptkarte */
+    .recipe{
+      background:#fffdfa;
+    }
+    .badge{
+      display:inline-block;
+      padding:.28rem .6rem;
+      border-radius:999px;
+      background:#ffe6c7;
+      color:#6a3a0c;
+      font-weight:600;
+      font-size:.9rem;
+    }
+    .meta{
+      display:flex; gap:18px; flex-wrap:wrap; align-items:center;
+      justify-content:center; margin: 10px 0 24px;
+      color:#53453a;
+    }
+    .two-col{
+      display:grid; gap:22px;
+      grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 720px){
+      .two-col{ grid-template-columns:1fr; }
+    }
+    .box{
+      background:#fff3b0;
+      padding:22px; border-radius:14px; box-shadow: 0 5px 14px rgba(0,0,0,.08);
+    }
+    .box h3{ margin-top:0; }
+    .ingredients li{ margin:.35rem 0; }
+    .steps li{ margin:.5rem 0; }
+    .figure{
+      margin-top: 18px; text-align:center;
+    }
+    .figure img{
+      max-width:100%; border-radius:14px; box-shadow: 0 5px 14px rgba(0,0,0,.10);
+    }
+    .back{
+      margin-top:18px; display:inline-block; color:#0b66c3; text-decoration:none;
+    }
+    .back:hover{ text-decoration:underline; }
 
-  <h3>🍲 Suppen & Eintöpfe</h3>
-  <ul class="sub">
-    <li><a href="#gemuesesuppe">Gemüsesuppe</a></li>
-    <li><a href="#kartoffelsuppe">Kartoffelsuppe</a></li>
-    <li><a href="#petersilienwurzelsuppe">Petersilienwurzelsuppe</a></li>
-    <li><a href="#spargelcremesuppe">Spargelcremesuppe</a></li>
-  </ul>
+    /* Form */
+    .controls{
+      display:flex; gap:10px; align-items:center; justify-content:center; margin:8px 0 6px;
+    }
+    .controls input[type=number]{
+      width:76px; padding:.4rem .5rem; font:inherit;
+      border:1px solid #d0bfa6; border-radius:10px; text-align:center;
+      background:#fff; color:#3a2d22;
+    }
+    .controls output{
+      min-width:2ch; display:inline-block; text-align:right; font-variant-numeric: tabular-nums;
+    }
 
-  <h3>🍝 Pasta & Nudeln</h3>
-  <ul class="sub">
-    <li><a href="#kaesenudeln">Käsenudeln</a></li>
-    <li><a href="#pizzabroetchen">Pizzabrötchen</a></li>
-    <li><a href="#pizzateig">Pizzateig</a></li>
-    <li><a href="#ravioli_ricotta_spinat">Ravioli mit Ricotta und Spinat</a></li>
-  </ul>
+    /* Footer mini */
+    footer{ margin: 30px 0 50px; color:#6f5c49; font-size:.95rem; }
+  </style>
+</head>
+<body>
 
-  <h3>🍚 Reis- & Getreidegerichte</h3>
-  <ul class="sub">
-    <li><a href="#indisches_quinoa_curry">Indisches Quinoa Curry</a></li>
-    <li><a href="#pacific_poke_bowl">Pacific Poke Bowl</a></li>
-    <li><a href="#poke_bowl">Poké Bowl</a></li>
-    <li><a href="#risotto">Risotto</a></li>
-    <li><a href="#vegetarische_reispfanne">Vegetarische Reispfanne mit Karotten und Paprika</a></li>
-  </ul>
+  <!-- Deckblatt -->
+  <header class="page cover" aria-labelledby="title">
+    <h1 id="title">Meine Lieblingsrezepte</h1>
+    <p>Schön gestaltet, übersichtlich & druckfreundlich</p>
+  </header>
 
-  <h3>🌍 Internationale Küche & Currys</h3>
-  <ul class="sub">
-    <li><a href="#auberginen_zucchini_lasagne">Auberginen-Zucchini-Lasagne</a></li>
-    <li><a href="#dhal">Dhal</a></li>
-    <li><a href="#gruenes_curry">Grünes Curry</a></li>
-    <li><a href="#hackfleischrolle">Hackfleischrolle</a></li>
-    <li><a href="#massaman_curry">Massaman Curry</a></li>
-    <li><a href="#mexikanische_enchilada_lasagne">Mexikanische Enchilada-Lasagne</a></li>
-    <li><a href="#pad_thai">Pad Thai</a></li>
-    <li><a href="#rotes_curry">Rotes Curry</a></li>
-    <li><a href="#tacofino">Tacofino</a></li>
-  </ul>
+  <!-- Inhaltsverzeichnis -->
+  <nav class="page toc" id="toc" aria-label="Inhaltsverzeichnis">
+    <h1>Inhaltsverzeichnis</h1>
 
-  <h3>🥗 Snacks, Beilagen & Fingerfood</h3>
-  <ul class="sub">
-    <li><a href="#bohnenpatty">Bohnenpatty</a></li>
-    <li><a href="#brokkolisalat">Brokkolisalat</a></li>
-    <li><a href="#fruehlingsrollen">Frühlingsrollen</a></li>
-    <li><a href="#gemuesespiesse">Gemüsespieße</a></li>
-    <li><a href="#gemuesepfanne">Gemüsepfanne</a></li>
-    <li><a href="#focaccia">Focaccia</a></li>
-    <li><a href="#marktgloesschen">Marktglößchen</a></li>
-    <li><a href="#serviettenknoedel">Serviettenknödel</a></li>
-    <li><a href="#sri_lanka_coconut_roti">Sri Lanka Coconut Roti</a></li>
-    <li><a href="#stockbrot">Stockbrot</a></li>
-    <li><a href="#tortilla_wrap_diy">Tortilla Wrap DIY</a></li>
-  </ul>
+    <div class="groups">
+      <section>
+        <h2>Frühstück</h2>
+        <ul>
+          <li><a href="#baguette">Baguette</a></li>
+          <li><a href="#brot">Brot</a></li>
+          <li><a href="#granola">Granola</a></li>
+          <li><a href="#lievito_madre">Lievito madre</a></li>
+          <li><a href="#overnight_oats">Overnight Oats</a></li>
+          <li><a href="#walnussbutter">Walnussbutter</a></li>
+        </ul>
+      </section>
 
-  <h3>🥫 Saucen, Pasten & Basics</h3>
-  <ul class="sub">
-    <li><a href="#bierteig">Bierteig</a></li>
-    <li><a href="#eiersauce_bratkartoffeln">Eiersauce mit Bratkartoffeln</a></li>
-    <li><a href="#guacamole">Guacamole</a></li>
-    <li><a href="#knoblauchsauce">Knoblauchsauce</a></li>
-    <li><a href="#pesto">Pesto</a></li>
-    <li><a href="#salatsauce">Salatsauce</a></li>
-  </ul>
+      <section>
+        <h2>Hauptgang</h2>
+        <h3>🍲 Suppen & Eintöpfe</h3>
+        <ul class="sub">
+          <li><a href="#gemuesesuppe">Gemüsesuppe</a></li>
+          <li><a href="#kartoffelsuppe">Kartoffelsuppe</a></li>
+          <li><a href="#petersilienwurzelsuppe">Petersilienwurzelsuppe</a></li>
+          <li><a href="#spargelcremesuppe">Spargelcremesuppe</a></li>
+        </ul>
+        <h3>🍝 Pasta & Nudeln</h3>
+        <ul class="sub">
+          <li><a href="#kaesenudeln">Käsenudeln</a></li>
+          <li><a href="#pizzabrötchen">Pizzabrötchen</a></li>
+          <li><a href="#pizzateig">Pizzateig</a></li>
+          <li><a href="#ravioli_ricotta_spinat">Ravioli mit Ricotta und Spinat</a></li>
+        </ul>
+        <h3>🍚 Reis- & Getreidegerichte</h3>
+        <ul class="sub">
+          <li><a href="#indisches_quinoa_curry">Indisches Quinoa Curry</a></li>
+          <li><a href="#pacific_poke_bowl">Pacific Poke Bowl</a></li>
+          <li><a href="#poke_bowl">Poké Bowl</a></li>
+          <li><a href="#risotto">Risotto</a></li>
+          <li><a href="#vegetarische_reispfanne">Vegetarische Reispfanne</a></li>
+        </ul>
+      </section>
 
-  <h3>🌶️ Curry-Pasten</h3>
-  <ul class="sub">
-    <li><a href="#gruene_curry_paste">Grüne Curry-Paste</a></li>
-    <li><a href="#massaman_curry_paste">Massaman Curry-Paste</a></li>
-    <li><a href="#rote_curry_paste">Rote Curry-Paste</a></li>
-  </ul>
+      <section>
+        <h2>🌍 Internationale Küche & Currys</h2>
+        <ul class="sub">
+          <li><a href="#auberginen_zucchini_lasagne">Auberginen-Zucchini-Lasagne</a></li>
+          <li><a href="#dhal">Dhal</a></li>
+          <li><a href="#gruenes_curry">Grünes Curry</a></li>
+          <li><a href="#hackfleischrolle">Hackfleischrolle</a></li>
+          <li><a href="#massaman_curry">Massaman Curry</a></li>
+          <li><a href="#mexikanische_enchilada_lasagne">Mexikanische Enchilada-Lasagne</a></li>
+          <li><a href="#pad_thai">Pad Thai</a></li>
+          <li><a href="#rotes_curry">Rotes Curry</a></li>
+          <li><a href="#tacofino">Tacofino</a></li>
+        </ul>
+      </section>
 
-  <h2>Snacks / Nachtisch</h2>
-  <ul>
-    <li><a href="#candied_pecan">Candied Pecan</a></li>
-    <li><a href="#energieballchen">Energiebällchen</a></li>
-    <li><a href="#frittierte_banane">Frittierte Banane</a></li>
-    <li><a href="#himbeerbaiser">Himbeerbaiser</a></li>
-    <li><a href="#marzipanpralinen">Marzipanpralinen</a></li>
-    <li><a href="#mousse_au_chocolat">Mousse au chocolat</a></li>
-    <li><a href="#roti_thai_pancake">Roti Thai Pancake</a></li>
-    <li><a href="#sticky_rice_mango">Sticky Rice mit Mango</a></li>
-    <li><a href="#tiramisu">Tiramisu</a></li>
-    <li><a href="#zucchinipuffer">Zucchinipuffer</a></li>
-  </ul>
+      <section>
+        <h2>🥗 Snacks, Beilagen & Fingerfood</h2>
+        <ul class="sub">
+          <li><a href="#bohnenpatty">Bohnenpatty</a></li>
+          <li><a href="#brokkolisalat">Brokkolisalat</a></li>
+          <li><a href="#fruehlingsrollen">Frühlingsrollen</a></li>
+          <li><a href="#gemuesespiesse">Gemüsespieße</a></li>
+          <li><a href="#gemuesepfanne">Gemüsepfanne</a></li>
+          <li><a href="#focaccia">Focaccia</a></li>
+          <li><a href="#marktgloesschen">Marktglößchen</a></li>
+          <li><a href="#serviettenknoedel">Serviettenknödel</a></li>
+          <li><a href="#sri_lanka_coconut_roti">Sri Lanka Coconut Roti</a></li>
+          <li><a href="#stockbrot">Stockbrot</a></li>
+          <li><a href="#tortilla_wrap_diy">Tortilla Wrap DIY</a></li>
+        </ul>
+        <h2>🥫 Saucen, Pasten & Basics</h2>
+        <ul class="sub">
+          <li><a href="#bierteig">Bierteig</a></li>
+          <li><a href="#eiersauce_bratkartoffeln">Eiersauce mit Bratkartoffeln</a></li>
+          <li><a href="#guacamole">Guacamole</a></li>
+          <li><a href="#knoblauchsauce">Knoblauchsauce</a></li>
+          <li><a href="#pesto">Pesto</a></li>
+          <li><a href="#salatsauce">Salatsauce</a></li>
+        </ul>
+        <h3>🌶️ Curry-Pasten</h3>
+        <ul class="sub">
+          <li><a href="#gruene_curry_paste">Grüne Curry-Paste</a></li>
+          <li><a href="#massaman_curry_paste">Massaman Curry-Paste</a></li>
+          <li><a href="#rote_curry_paste">Rote Curry-Paste</a></li>
+        </ul>
+      </section>
 
-  <h2>Bakery</h2>
-  <ul>
-    <li><a href="#brownie">Brownie</a></li>
-    <li><a href="#butterplaettchen">Butterplättchen</a></li>
-    <li><a href="#cookies">Cookies</a></li>
-    <li><a href="#dampfnudeln">Dampfnudeln</a></li>
-    <li><a href="#flammendes_herz">Flammendes Herz</a></li>
-    <li><a href="#frosting">Frosting</a></li>
-    <li><a href="#kreppel">Kreppel</a></li>
-    <li><a href="#marmorkuchen">Marmorkuchen</a></li>
-    <li><a href="#nussecken">Nussecken</a></li>
-    <li><a href="#waffeln">Waffeln</a></li>
-    <li><a href="#zimtschnecken">Zimtschnecken</a></li>
-  </ul>
+      <section>
+        <h2>Snacks / Nachtisch</h2>
+        <ul>
+          <li><a href="#candied_pecan">Candied Pecan</a></li>
+          <li><a href="#energieballchen">Energiebällchen</a></li>
+          <li><a href="#frittierte_banane">Frittierte Banane</a></li>
+          <li><a href="#himbeerbaiser">Himbeerbaiser</a></li>
+          <li><a href="#marzipanpralinen">Marzipanpralinen</a></li>
+          <li><a href="#mousse_au_chocolat">Mousse au chocolat</a></li>
+          <li><a href="#roti_thai_pancake">Roti Thai Pancake</a></li>
+          <li><a href="#sticky_rice_mango">Sticky Rice mit Mango</a></li>
+          <li><a href="#tiramisu">Tiramisu</a></li>
+          <li><a href="#zucchinipuffer">Zucchinipuffer</a></li>
+        </ul>
 
-</div>
+        <h2>Bakery</h2>
+        <ul>
+          <li><a href="#brownie">Brownie</a></li>
+          <li><a href="#butterplaettchen">Butterplättchen</a></li>
+          <li><a href="#cookies">Cookies</a></li>
+          <li><a href="#dampfnudeln">Dampfnudeln</a></li>
+          <li><a href="#flammendes_herz">Flammendes Herz</a></li>
+          <li><a href="#frosting">Frosting</a></li>
+          <li><a href="#kreppel">Kreppel</a></li>
+          <li><a href="#marmorkuchen">Marmorkuchen</a></li>
+          <li><a href="#nussecken">Nussecken</a></li>
+          <li><a href="#waffeln">Waffeln</a></li>
+          <li><a href="#zimtschnecken">Zimtschnecken</a></li>
+        </ul>
+      </section>
+    </div>
+  </nav>
 
-
-<!-- Frühstück Deckblatt -->
-<div class="page breakfast-cover">
-  <div class="symbol">🥐</div>
-  <h1>Frühstück</h1>
-  <p>Ein süßer Start in den Tag – alle Lieblingsrezepte an einem Platz</p>
-</div>
-
-</body>
-</html>
-
-  
-
+  <!-- Frühstück Deckblatt -->
+  <section class="page section-cover" id="fruehstueck">
+    <div class="symbol" aria-hidden="true">🥐</div>
+    <h1>Frühstück</h1>
+    <p>Ein süßer Start in den Tag – alle Lieblingsrezepte an einem Platz</p>
+  </section>
 
   <!-- Rezept: Baguette -->
-<div class="page breakfast-cover">
-  <div class="symbol">🥐</div>
-  <h1>Baguette</h1>
+  <article class="page recipe" id="baguette" aria-labelledby="baguette-title">
+    <header style="text-align:center;">
+      <span class="badge">Rezept</span>
+      <h1 id="baguette-title" style="margin:.4rem 0 0;font-family:'Playfair Display',serif;">Baguette</h1>
+      <p class="meta">
+        <span>⏱ Zubereitungszeit: 1½ h</span>
+        <span>⏲️ Gesamtzeit: ~1 h 50 min</span>
+      </p>
 
-  <!-- Info-Box -->
-  <div style="text-align:center; margin-bottom:30px;">
-    <label>Portionen: 
-      <input type="number" id="portions" value="2" min="1" style="width:50px;"> Baguette
-    </label>
-    <p>Zubereitungszeit: 1½h | Gesamtzeit: 1h 50min</p>
-  </div>
+      <!-- Portionsrechner -->
+      <form class="controls" id="portion-form" onsubmit="return false" aria-label="Portionsrechner">
+        <label for="portions">Portionen:</label>
+        <input type="number" id="portions" name="portions" value="2" min="1" step="1" inputmode="numeric" />
+        <output for="portions" id="portion-label">Baguette</output>
+      </form>
+    </header>
 
-  <!-- Zutaten & Zubereitung Kasten -->
-  <div style="background:#fff3b0; padding:30px; border-radius:15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-    <h3>Zutaten:</h3>
-    <ul id="ingredients">
-      <li data-base="250">250 g Mehl Type 550</li>
-      <li data-base="160">160 ml lauwarmes Wasser</li>
-      <li data-base="6">6 g Salz</li>
-      <li data-base="10">10 g frische Hefe oder 3 g Trockenhefe</li>
-    </ul>
+    <div class="two-col">
+      <!-- Zutaten -->
+      <section class="box" aria-labelledby="zutaten-title">
+        <h3 id="zutaten-title">Zutaten</h3>
+        <ul class="ingredients" id="ingredients">
+          <!-- Daten sind die Basis-Mengen für 2 Baguettes -->
+          <li data-unit="g"  data-base="250">250 g Mehl Type 550</li>
+          <li data-unit="ml" data-base="160">160 ml lauwarmes Wasser</li>
+          <li data-unit="g"  data-base="6">6 g Salz</li>
+          <li data-unit="g"  data-base="10" data-alt="trocken:3">10 g frische Hefe <em>(oder 3 g Trockenhefe)</em></li>
+        </ul>
+      </section>
 
-    <h3>Zubereitung:</h3>
-    <ol>
-      <li>Hefe mit lauwarmem Wasser und 1 TL Zucker 10 min aktivieren</li>
-      <li>20 min im Topf gehen lassen</li>
-      <li>1h in Form gehen lassen</li>
-      <li>Bei 200°C 20 min im Backofen mit Vorhitze backen</li>
-    </ol>
-  </div>
+      <!-- Zubereitung -->
+      <section class="box" aria-labelledby="zubereitung-title">
+        <h3 id="zubereitung-title">Zubereitung</h3>
+        <ol class="steps">
+          <li>Hefe mit lauwarmem Wasser und 1 TL Zucker 10 Minuten aktivieren.</li>
+          <li>Teig 20 Minuten im Topf gehen lassen.</li>
+          <li>1 Stunde in Form gehen lassen.</li>
+          <li>Bei 200 °C (vorgeheizt) ca. 20 Minuten backen.</li>
+        </ol>
+      </section>
+    </div>
 
-  <!-- Bild -->
-  <div style="text-align:center; margin-top:30px;">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Baguette_03.jpg" alt="Baguette" style="max-width:100%; border-radius:15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-  </div>
+    <!-- Bild -->
+    <figure class="figure">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Baguette_03.jpg" alt="Frisch gebackenes Baguette" loading="lazy">
+      <figcaption style="color:#6a5f52;margin-top:6px;">Serviervorschlag</figcaption>
+    </figure>
 
-  <!-- Link zurück zum Inhaltsverzeichnis -->
-  <div style="position:relative; margin-top:20px;">
-    <a href="#toc" style="position:absolute; left:0; text-decoration:none; color:#0066cc;">&larr; Inhaltsverzeichnis</a>
-  </div>
-</div>
+    <p><a class="back" href="#toc" aria-label="Zurück zum Inhaltsverzeichnis">← Inhaltsverzeichnis</a></p>
+  </article>
 
-<script>
-  const portionsInput = document.getElementById('portions');
-  const ingredientsList = document.getElementById('ingredients');
+  <footer>© <span id="year"></span> – Lieblingsrezepte</footer>
 
-  portionsInput.addEventListener('input', () => {
-    const factor = portionsInput.value / 2; // Basis ist 2 Portionen
-    Array.from(ingredientsList.children).forEach(li => {
-      const base = li.getAttribute('data-base');
-      if(li.textContent.includes('Mehl')) li.textContent = `${Math.round(base * factor)} g Mehl Type 550`;
-      else if(li.textContent.includes('Wasser')) li.textContent = `${Math.round(base * factor)} ml lauwarmes Wasser`;
-      else if(li.textContent.includes('Salz')) li.textContent = `${Math.round(base * factor)} g Salz`;
-      else if(li.textContent.includes('Hefe')) li.textContent = `${Math.round(base * factor)} g frische Hefe oder ${Math.round(base/3 * factor)} g Trockenhefe`;
-    });
-  });
-</script>
+  <script>
+    // Jahr im Footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Robuster Portionsrechner:
+    // Skaliert alle Zutaten anhand data-base (Basis für 2 Portionen),
+    // respektiert Einheiten und zeigt bei Hefe optional Trockenhefe an.
+    (function(){
+      const portionsInput = document.getElementById('portions');
+      const ingredientsList = document.getElementById('ingredients');
+      const numberFmt = new Intl.NumberFormat('de-DE', { maximumFractionDigits: 0 });
+
+      function update(){
+        const basePortions = 2;
+        const val = Math.max(1, parseInt(portionsInput.value || basePortions, 10));
+        portionsInput.value = val;
+
+        const factor = val / basePortions;
+
+        [...ingredientsList.children].forEach(li => {
+          const base = parseFloat(li.getAttribute('data-base'));
+          const unit = li.getAttribute('data-unit') || '';
+          const alt  = li.getAttribute('data-alt'); // z.B. trocken:3
+
+          // Original-Text ohne führende Menge extrahieren:
+          const text = li.textContent.replace(/^\s*\d+[.,]?\d*\s*\w*\s*/,'').trim();
+
+          // Hauptmenge
+          const mainAmount = Math.round(base * factor);
+          let rebuilt = `${numberFmt.format(mainAmount)}\u202F${unit} ${text}`;
+
+          // Optionale Alternativmenge (z. B. Trockenhefe)
+          if (alt) {
+            const [altLabel, altBaseStr] = alt.split(':'); // "trocken", "3"
+            const altBase = parseFloat(altBaseStr);
+            const altAmount = Math.round(altBase * factor);
+            rebuilt = rebuilt.replace(/\(oder.*\)/,'').trim(); // vorhandene Klammer entfernen
+            rebuilt += ` (oder ${numberFmt.format(altAmount)}\u202Fg Trockenhefe)`;
+          }
+
+          li.textContent = rebuilt;
+        });
+      }
+
+      portionsInput.addEventListener('input', update);
+      update();
+    })();
+  </script>
+</body>
+</html>
