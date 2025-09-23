@@ -3,38 +3,61 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meine Lieblings Rezepte</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!--  🎨 Schöne geschwungene Schrift + dezente graue Akzentschrift -->
+<title>Meine Lieblingsrezepte</title>
+
+<!-- Schriftarten -->
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
 
 <style>
-  /* --- Grundlayout --- */
   html, body {
     margin: 0;
+    padding: 0;
     height: 100%;
-  }
-  body {
+    font-family: Arial, sans-serif;
     background: #f5e6d3; /* sanftes Beige */
+  }
+
+  body {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+    overflow: hidden;
   }
 
-  /* --- Haupttitel in geschwungener Schrift --- */
-  h1 {
+  /* Container für alle Seiten */
+  .book {
+    width: 800px;
+    height: 1120px; /* A4-Papiergröße im Verhältnis */
+    perspective: 2000px;
+    position: relative;
+  }
+
+  /* Einzelne Seiten */
+  .page {
+    width: 100%;
+    height: 100%;
+    background: #fffaf0;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 50px;
+    box-sizing: border-box;
+    transition: transform 0.6s ease, z-index 0.6s ease;
+    overflow-y: auto;
+  }
+
+  /* Deckblatt-Titel */
+  .cover h1 {
     font-family: 'Great Vibes', cursive;
     font-size: 4.5rem;
-    color: #4b4b4b; /* dunkles Grau für guten Kontrast */
-    margin: 0;
+    color: #4b4b4b;
     text-align: center;
+    margin: 0;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
   }
-
-  /* --- Untertitel / Deko in elegantem Grau --- */
-  p {
+  .cover p {
     font-family: 'Playfair Display', serif;
     font-size: 1.6rem;
     color: #7c7c7c;
@@ -43,184 +66,113 @@
     letter-spacing: 2px;
   }
 
-  /* --- Dezenter Rahmen-Effekt --- */
-  .frame {
-    border: 6px double #c0b9b1;
-    padding: 60px;
-    border-radius: 40px;
-    background: rgba(255,255,255,0.2);
-    box-shadow: 0 0 30px rgba(0,0,0,0.1);
+  /* Inhaltsverzeichnis */
+  .toc h1{
+    text-align:center;
+    margin-bottom:30px;
+    font-family: 'Great Vibes', cursive;
+    font-size:3.5rem;
   }
+  h2{margin-top:20px; color:#444;}
+  ul{list-style:none; padding-left:0;}
+  li{margin:6px 0;}
+  a{text-decoration:none; color:#0066cc;}
+  a:hover{text-decoration:underline;}
+  .page-number{
+    position:absolute; bottom:20px; right:30px; color:#999; font-size:0.9em;
+  }
+
+  /* Navigation Buttons */
+  .nav-btn{
+    position:absolute; top:50%; transform:translateY(-50%);
+    font-size:2rem; background:none; border:none; cursor:pointer;
+    z-index:1000;
+    color:#555;
+    opacity:0.7;
+  }
+  .nav-btn:hover{opacity:1;}
+  .prev{left:-60px;}
+  .next{right:-60px;}
 </style>
 </head>
 <body>
 
-<div class="frame">
-  <h1>Meine Lieblings&nbsp;Rezepte</h1>
-  <p>– gesammelt mit Liebe –</p>
+<div class="book">
+  <!-- Deckblatt -->
+  <div class="page cover" style="z-index:3;">
+    <h1>Meine Lieblingsrezepte</h1>
+    <p>– gesammelt mit Liebe –</p>
+    <div class="page-number">S. 0</div>
+  </div>
+
+  <!-- Inhaltsverzeichnis -->
+  <div class="page toc" style="z-index:2;">
+    <h1>Inhaltsverzeichnis</h1>
+
+    <h2>Frühstück</h2>
+    <ul>
+      <li><a href="#">Baguette</a> <span class="page-number">S.1</span></li>
+      <li><a href="#">Brot</a> <span class="page-number">S.2</span></li>
+      <li><a href="#">Granola</a> <span class="page-number">S.3</span></li>
+      <li><a href="#">Lievito madre</a> <span class="page-number">S.4</span></li>
+      <li><a href="#">Overnight Oats</a> <span class="page-number">S.5</span></li>
+      <li><a href="#">Walnussbutter</a> <span class="page-number">S.6</span></li>
+    </ul>
+
+    <h2>Hauptgang</h2>
+    <ul>
+      <li><a href="#">Gemüsesuppe</a> <span class="page-number">S.7</span></li>
+      <li><a href="#">Käsenudeln</a> <span class="page-number">S.11</span></li>
+      <li><a href="#">Indisches Quinoa Curry</a> <span class="page-number">S.15</span></li>
+      <!-- weitere Einträge analog -->
+    </ul>
+
+    <h2>Snacks / Nachtisch</h2>
+    <ul>
+      <li><a href="#">Candied Pecan</a> <span class="page-number">S.49</span></li>
+    </ul>
+
+    <h2>Bakery</h2>
+    <ul>
+      <li><a href="#">Brownie</a> <span class="page-number">S.59</span></li>
+    </ul>
+    <div class="page-number">S.1</div>
+  </div>
+
+  <!-- Beispiel-Rezeptseite -->
+  <div class="page" style="z-index:1;">
+    <h1>Baguette</h1>
+    <p>Hier kommen Zutaten & Zubereitung hin...</p>
+    <div class="page-number">S.2</div>
+  </div>
+
+  <!-- Navigation -->
+  <button class="nav-btn prev">&#10094;</button>
+  <button class="nav-btn next">&#10095;</button>
 </div>
 
-</body>
-</html>
+<script>
+const pages = document.querySelectorAll('.book .page');
+let current = 0;
 
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rezeptbuch – Inhaltsverzeichnis</title>
-<style>
- body{
-   font-family: Arial, sans-serif;
-   margin:40px;
-   background:#fffaf0;
- }
- h1{
-   text-align:center;
-   margin-bottom:40px;
- }
- h2{
-   margin-top:30px;
-   color:#444;
- }
- ul{
-   list-style:none;
-   padding-left:0;
- }
- li{
-   margin:6px 0;
- }
- a{
-   text-decoration:none;
-   color:#0066cc;
- }
- a:hover{
-   text-decoration:underline;
- }
- .page{
-   color:#999;
-   margin-left:8px;
-   font-size:0.9em;
- }
- .sub{
-   margin-left:20px;
- }
-</style>
-</head>
-<body>
+function showPage(index){
+  pages.forEach((p,i)=>{
+    p.style.zIndex = (i >= index)? pages.length - i : 0;
+    p.style.transform = `translateX(${(i - index)*105}%)`;
+  });
+}
+showPage(current);
 
-<h1>Inhaltsverzeichnis</h1>
+document.querySelector('.next').addEventListener('click', ()=>{
+  if(current < pages.length-1) current++;
+  showPage(current);
+});
 
-<h2>Frühstück</h2>
-<ul>
-  <li><a href="fruehstueck/baguette.html">Baguette</a> <span class="page">S. 1</span></li>
-  <li><a href="fruehstueck/brot.html">Brot</a> <span class="page">S. 2</span></li>
-  <li><a href="fruehstueck/granola.html">Granola</a> <span class="page">S. 3</span></li>
-  <li><a href="fruehstueck/lievito-madre.html">Lievito madre</a> <span class="page">S. 4</span></li>
-  <li><a href="fruehstueck/overnight-oats.html">Overnight Oats</a> <span class="page">S. 5</span></li>
-  <li><a href="fruehstueck/walnussbutter.html">Walnussbutter</a> <span class="page">S. 6</span></li>
-</ul>
-
-<h2>Hauptgang</h2>
-
-<h3>🍲 Suppen & Eintöpfe</h3>
-<ul>
-  <li><a href="hauptgang/suppen/gemuesesuppe.html">Gemüsesuppe</a> <span class="page">S. 7</span></li>
-  <li><a href="hauptgang/suppen/kartoffelsuppe.html">Kartoffelsuppe</a> <span class="page">S. 8</span></li>
-  <li><a href="hauptgang/suppen/petersilienwurzelsuppe.html">Petersilienwurzelsuppe</a> <span class="page">S. 9</span></li>
-  <li><a href="hauptgang/suppen/spargelcremesuppe.html">Spargelcremesuppe</a> <span class="page">S. 10</span></li>
-</ul>
-
-<h3>🍝 Pasta & Nudeln</h3>
-<ul>
-  <li><a href="hauptgang/pasta/kaesenudeln.html">Käsenudeln</a> <span class="page">S. 11</span></li>
-  <li><a href="hauptgang/pasta/pizzabroetchen.html">Pizzabrötchen</a> <span class="page">S. 12</span></li>
-  <li><a href="hauptgang/pasta/pizzateig.html">Pizzateig</a> <span class="page">S. 13</span></li>
-  <li><a href="hauptgang/pasta/ravioli-ricotta-spinat.html">Ravioli mit Ricotta und Spinat</a> <span class="page">S. 14</span></li>
-</ul>
-
-<h3>🍚 Reis- & Getreidegerichte</h3>
-<ul>
-  <li><a href="hauptgang/reis/indisches-quinoa-curry.html">Indisches Quinoa Curry</a> <span class="page">S. 15</span></li>
-  <li><a href="hauptgang/reis/pacific-poke-bowl.html">Pacific Poke Bowl</a> <span class="page">S. 16</span></li>
-  <li><a href="hauptgang/reis/poke-bowl.html">Poké Bowl</a> <span class="page">S. 17</span></li>
-  <li><a href="hauptgang/reis/risotto.html">Risotto</a> <span class="page">S. 18</span></li>
-  <li><a href="hauptgang/reis/vegetarische-reispfanne.html">Vegetarische Reispfanne</a> <span class="page">S. 19</span></li>
-</ul>
-
-<h3>🌍 Internationale Küche & Currys</h3>
-<ul>
-  <li><a href="hauptgang/international/auberginen-zucchini-lasagne.html">Auberginen-Zucchini-Lasagne</a> <span class="page">S. 20</span></li>
-  <li><a href="hauptgang/international/dhal.html">Dhal</a> <span class="page">S. 21</span></li>
-  <li><a href="hauptgang/international/gruenes-curry.html">Grünes Curry</a> <span class="page">S. 22</span></li>
-  <li><a href="hauptgang/international/hackfleischrolle.html">Hackfleischrolle</a> <span class="page">S. 23</span></li>
-  <li><a href="hauptgang/international/massaman-curry.html">Massaman Curry</a> <span class="page">S. 24</span></li>
-  <li><a href="hauptgang/international/mexikanische-enchilada-lasagne.html">Mexikanische Enchilada-Lasagne</a> <span class="page">S. 25</span></li>
-  <li><a href="hauptgang/international/pad-thai.html">Pad Thai</a> <span class="page">S. 26</span></li>
-  <li><a href="hauptgang/international/rotes-curry.html">Rotes Curry</a> <span class="page">S. 27</span></li>
-  <li><a href="hauptgang/international/tacofino.html">Tacofino</a> <span class="page">S. 28</span></li>
-</ul>
-
-<h3>🥗 Snacks, Beilagen & Fingerfood</h3>
-<ul>
-  <li><a href="hauptgang/snacks/bohnenpatty.html">Bohnenpatty</a> <span class="page">S. 29</span></li>
-  <li><a href="hauptgang/snacks/brokkolisalat.html">Brokkolisalat</a> <span class="page">S. 30</span></li>
-  <li><a href="hauptgang/snacks/fruehlingsrollen.html">Frühlingsrollen</a> <span class="page">S. 31</span></li>
-  <li><a href="hauptgang/snacks/gemuesespiesse.html">Gemüsespieße</a> <span class="page">S. 32</span></li>
-  <li><a href="hauptgang/snacks/gemuesepfanne.html">Gemüsepfanne</a> <span class="page">S. 33</span></li>
-  <li><a href="hauptgang/snacks/focaccia.html">Focaccia</a> <span class="page">S. 34</span></li>
-  <li><a href="hauptgang/snacks/marktgloesschen.html">Marktglößchen</a> <span class="page">S. 35</span></li>
-  <li><a href="hauptgang/snacks/serviettenknoedel.html">Serviettenknödel</a> <span class="page">S. 36</span></li>
-  <li><a href="hauptgang/snacks/sri-lanka-coconut-roti.html">Sri Lanka Coconut Roti</a> <span class="page">S. 37</span></li>
-  <li><a href="hauptgang/snacks/stockbrot.html">Stockbrot</a> <span class="page">S. 38</span></li>
-  <li><a href="hauptgang/snacks/tortilla-wrap-diy.html">Tortilla Wrap DIY</a> <span class="page">S. 39</span></li>
-</ul>
-
-<h3>🥫 Saucen, Pasten & Basics</h3>
-<ul>
-  <li><a href="hauptgang/saucen/bierteig.html">Bierteig</a> <span class="page">S. 40</span></li>
-  <li><a href="hauptgang/saucen/eiersauce.html">Eiersauce mit Bratkartoffeln</a> <span class="page">S. 41</span></li>
-  <li><a href="hauptgang/saucen/guacamole.html">Guacamole</a> <span class="page">S. 42</span></li>
-  <li><a href="hauptgang/saucen/knoblauchsauce.html">Knoblauchsauce</a> <span class="page">S. 43</span></li>
-  <li><a href="hauptgang/saucen/pesto.html">Pesto</a> <span class="page">S. 44</span></li>
-  <li><a href="hauptgang/saucen/salatsauce.html">Salatsauce</a> <span class="page">S. 45</span></li>
-</ul>
-
-<h3>🌶️ Curry-Pasten</h3>
-<ul>
-  <li><a href="hauptgang/currypasten/gruene-curry-paste.html">Grüne Curry-Paste</a> <span class="page">S. 46</span></li>
-  <li><a href="hauptgang/currypasten/massaman-curry-paste.html">Massaman Curry-Paste</a> <span class="page">S. 47</span></li>
-  <li><a href="hauptgang/currypasten/rote-curry-paste.html">Rote Curry-Paste</a> <span class="page">S. 48</span></li>
-</ul>
-
-<h2>Snacks / Nachtisch</h2>
-<ul>
-  <li><a href="nachtisch/candied-pecan.html">Candied Pecan</a> <span class="page">S. 49</span></li>
-  <li><a href="nachtisch/energiebaellchen.html">Energiebällchen</a> <span class="page">S. 50</span></li>
-  <li><a href="nachtisch/frittierte-banane.html">Frittierte Banane</a> <span class="page">S. 51</span></li>
-  <li><a href="nachtisch/himbeerbaiser.html">Himbeerbaiser</a> <span class="page">S. 52</span></li>
-  <li><a href="nachtisch/marzipanpralinen.html">Marzipanpralinen</a> <span class="page">S. 53</span></li>
-  <li><a href="nachtisch/mousse-au-chocolat.html">Mousse au chocolat</a> <span class="page">S. 54</span></li>
-  <li><a href="nachtisch/roti-thai-pancake.html">Roti Thai Pancake</a> <span class="page">S. 55</span></li>
-  <li><a href="nachtisch/sticky-rice-mango.html">Sticky Rice mit Mango</a> <span class="page">S. 56</span></li>
-  <li><a href="nachtisch/tiramisu.html">Tiramisu</a> <span class="page">S. 57</span></li>
-  <li><a href="nachtisch/zucchinipuffer.html">Zucchinipuffer</a> <span class="page">S. 58</span></li>
-</ul>
-
-<h2>Bakery</h2>
-<ul>
-  <li><a href="bakery/brownie.html">Brownie</a> <span class="page">S. 59</span></li>
-  <li><a href="bakery/butterplaettchen.html">Butterplättchen</a> <span class="page">S. 60</span></li>
-  <li><a href="bakery/cookies.html">Cookies</a> <span class="page">S. 61</span></li>
-  <li><a href="bakery/dampfnudeln.html">Dampfnudeln</a> <span class="page">S. 62</span></li>
-  <li><a href="bakery/flammendes-herz.html">Flammendes Herz</a> <span class="page">S. 63</span></li>
-  <li><a href="bakery/frosting.html">Frosting</a> <span class="page">S. 64</span></li>
-  <li><a href="bakery/kreppel.html">Kreppel</a> <span class="page">S. 65</span></li>
-  <li><a href="bakery/marmorkuchen.html">Marmorkuchen</a> <span class="page">S. 66</span></li>
-  <li><a href="bakery/nussecken.html">Nussecken</a> <span class="page">S. 67</span></li>
-  <li><a href="bakery/waffeln.html">Waffeln</a> <span class="page">S. 68</span></li>
-  <li><a href="bakery/zimtschnecken.html">Zimtschnecken</a> <span class="page">S. 69</span></li>
-</ul>
+document.querySelector('.prev').addEventListener('click', ()=>{
+  if(current > 0) current--;
+  showPage(current);
+});
+</script>
 
 </body>
 </html>
