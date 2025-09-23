@@ -9,97 +9,106 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
 
 <style>
-  body {
-    margin:0;
-    padding:0;
-    font-family: Arial, sans-serif;
-    background: #f5e6d3; /* leichter Beigeton für Body */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+body {
+  margin:0;
+  padding:0;
+  font-family: Arial, sans-serif;
+  background: #f5e6d3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .page {
-    width: 800px;
-    margin: 50px 0;
-    padding: 50px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  }
+.page {
+  width: 800px;
+  margin: 50px 0;
+  padding: 50px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
 
-  /* --- Deckblatt --- */
-  .cover {
-    background: #fffaf0; /* leichtes Beige */
-    text-align: center;
-  }
-  .cover h1 {
-    font-family: 'Great Vibes', cursive;
-    font-size: 4.5rem;
-    margin: 0;
-    color: #4b4b4b;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-  }
-  .cover p {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.6rem;
-    color: #7c7c7c;
-    margin-top: 20px;
-    letter-spacing: 2px;
-  }
+/* Deckblatt */
+.cover {
+  background: #fffaf0;
+  text-align: center;
+}
+.cover h1 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 4.5rem;
+  margin: 0;
+  color: #4b4b4b;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.cover p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  color: #7c7c7c;
+  margin-top: 20px;
+  letter-spacing: 2px;
+}
 
-  /* --- Inhaltsverzeichnis --- */
-  .toc {
-    background: #fffaf0; /* leichtes Beige */
-  }
-  .toc h1 {
-    text-align:center;
-    margin-bottom:30px;
-    font-family: 'Great Vibes', cursive;
-    font-size:3.5rem;
-  }
-  h2{margin-top:20px; color:#444;}
-  h3{margin-left:20px; color:#555;}
-  ul{list-style:none; padding-left:0;}
-  li{margin:6px 0;}
-  a{text-decoration:none; color:#0066cc;}
-  a:hover{text-decoration:underline;}
-  .sub{margin-left:20px;}
+/* Inhaltsverzeichnis */
+.toc {
+  background: #fffaf0;
+}
+.toc h1 {
+  text-align:center;
+  margin-bottom:30px;
+  font-family: 'Great Vibes', cursive;
+  font-size:3.5rem;
+}
+h2{margin-top:20px; color:#444;}
+h3{margin-left:20px; color:#555;}
+ul{list-style:none; padding-left:0;}
+li{margin:6px 0;}
+a{text-decoration:none; color:#0066cc;}
+a:hover{text-decoration:underline;}
+.sub{margin-left:20px;}
 
-  /* --- Frühstück Deckblatt --- */
-  .breakfast-cover {
-    background: linear-gradient(135deg, #fff9e6 0%, #ffe680 100%);
-    text-align:center;
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 80px;
-  }
-  .breakfast-cover .symbol {
-    width: 120px;
-    height: 120px;
-    background: #ffeb99;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 30px;
-    font-size: 3rem;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  }
-  .breakfast-cover h1 {
-    font-family: 'Great Vibes', cursive;
-    font-size: 4rem;
-    color: #b37400;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-  }
-  .breakfast-cover p {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.6rem;
-    color: #7c7c7c;
-    margin-top:0;
-    letter-spacing: 1.5px;
-  }
+/* Frühstück Deckblatt */
+.breakfast-cover {
+  background: linear-gradient(135deg, #fff9e6 0%, #ffe680 100%);
+  text-align:center;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80px;
+}
+.breakfast-cover .symbol {
+  width: 120px;
+  height: 120px;
+  background: #ffeb99;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+  font-size: 3rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.breakfast-cover h1 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 4rem;
+  color: #b37400;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.breakfast-cover p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  color: #7c7c7c;
+  margin-top:0;
+  letter-spacing: 1.5px;
+}
+
+/* Rezept Box */
+.recipe-box {
+  background:#fff3b0;
+  padding:30px;
+  border-radius:15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  margin-bottom:20px;
+}
 </style>
 </head>
 <body>
@@ -111,119 +120,18 @@
 </div>
 
 <!-- Inhaltsverzeichnis -->
-<div class="page toc">
+<div class="page toc" id="toc">
   <h1>Inhaltsverzeichnis</h1>
 
   <h2>Frühstück</h2>
   <ul>
-    <li><a href="baguette">Baguette</a></li>
-    <li><a href="brot">Brot</a></li>
-    <li><a href="granola">Granola</a></li>
-    <li><a href="lievtio_madre">Lievito madre</a></li>
-    <li><a href="overnight_oats">Overnight Oats</a></li>
-    <li><a href="wallnussbutter ">Walnussbutter</a></li>
+    <li><a href="#baguette">Baguette</a></li>
+    <li><a href="#brot">Brot</a></li>
+    <li><a href="#granola">Granola</a></li>
+    <li><a href="#lievito_madre">Lievito madre</a></li>
+    <li><a href="#overnight_oats">Overnight Oats</a></li>
+    <li><a href="#walnussbutter">Walnussbutter</a></li>
   </ul>
-
-  <h2>Hauptgang</h2>
-  <h3>🍲 Suppen & Eintöpfe</h3>
-  <ul class="sub">
-    <li><a href="#">Gemüsesuppe</a></li>
-    <li><a href="#">Kartoffelsuppe</a></li>
-    <li><a href="#">Petersilienwurzelsuppe</a></li>
-    <li><a href="#">Spargelcremesuppe</a></li>
-  </ul>
-
-  <h3>🍝 Pasta & Nudeln</h3>
-  <ul class="sub">
-    <li><a href="#">Käsenudeln</a></li>
-    <li><a href="#">Pizzabrötchen</a></li>
-    <li><a href="#">Pizzateig</a></li>
-    <li><a href="#">Ravioli mit Ricotta und Spinat</a></li>
-  </ul>
-
-  <h3>🍚 Reis- & Getreidegerichte</h3>
-  <ul class="sub">
-    <li><a href="#">Indisches Quinoa Curry</a></li>
-    <li><a href="#">Pacific Poke Bowl</a></li>
-    <li><a href="#">Poké Bowl</a></li>
-    <li><a href="#">Risotto</a></li>
-    <li><a href="#">Vegetarische Reispfanne mit Karotten und Paprika</a></li>
-  </ul>
-
-  <h3>🌍 Internationale Küche & Currys</h3>
-  <ul class="sub">
-    <li><a href="#">Auberginen-Zucchini-Lasagne</a></li>
-    <li><a href="#">Dhal</a></li>
-    <li><a href="#">Grünes Curry</a></li>
-    <li><a href="#">Hackfleischrolle</a></li>
-    <li><a href="#">Massaman Curry</a></li>
-    <li><a href="#">Mexikanische Enchilada-Lasagne</a></li>
-    <li><a href="#">Pad Thai</a></li>
-    <li><a href="#">Rotes Curry</a></li>
-    <li><a href="#">Tacofino</a></li>
-  </ul>
-
-  <h3>🥗 Snacks, Beilagen & Fingerfood</h3>
-  <ul class="sub">
-    <li><a href="#">Bohnenpatty</a></li>
-    <li><a href="#">Brokkolisalat</a></li>
-    <li><a href="#">Frühlingsrollen</a></li>
-    <li><a href="#">Gemüsespieße</a></li>
-    <li><a href="#">Gemüsepfanne</a></li>
-    <li><a href="#">Focaccia</a></li>
-    <li><a href="#">Marktglößchen</a></li>
-    <li><a href="#">Serviettenknödel</a></li>
-    <li><a href="#">Sri Lanka Coconut Roti</a></li>
-    <li><a href="#">Stockbrot</a></li>
-    <li><a href="#">Tortilla Wrap DIY</a></li>
-  </ul>
-
-  <h3>🥫 Saucen, Pasten & Basics</h3>
-  <ul class="sub">
-    <li><a href="#">Bierteig</a></li>
-    <li><a href="#">Eiersauce mit Bratkartoffeln</a></li>
-    <li><a href="#">Guacamole</a></li>
-    <li><a href="#">Knoblauchsauce</a></li>
-    <li><a href="#">Pesto</a></li>
-    <li><a href="#">Salatsauce</a></li>
-  </ul>
-
-  <h3>🌶️ Curry-Pasten</h3>
-  <ul class="sub">
-    <li><a href="#">Grüne Curry-Paste</a></li>
-    <li><a href="#">Massaman Curry-Paste</a></li>
-    <li><a href="#">Rote Curry-Paste</a></li>
-  </ul>
-
-  <h2>Snacks / Nachtisch</h2>
-  <ul>
-    <li><a href="#">Candied Pecan</a></li>
-    <li><a href="#">Energiebällchen</a></li>
-    <li><a href="#">Frittierte Banane</a></li>
-    <li><a href="#">Himbeerbaiser</a></li>
-    <li><a href="#">Marzipanpralinen</a></li>
-    <li><a href="#">Mousse au chocolat</a></li>
-    <li><a href="#">Roti Thai Pancake</a></li>
-    <li><a href="#">Sticky Rice mit Mango</a></li>
-    <li><a href="#">Tiramisu</a></li>
-    <li><a href="#">Zucchinipuffer</a></li>
-  </ul>
-
-  <h2>Bakery</h2>
-  <ul>
-    <li><a href="#">Brownie</a></li>
-    <li><a href="#">Butterplättchen</a></li>
-    <li><a href="#">Cookies</a></li>
-    <li><a href="#">Dampfnudeln</a></li>
-    <li><a href="#">Flammendes Herz</a></li>
-    <li><a href="#">Frosting</a></li>
-    <li><a href="#">Kreppel</a></li>
-    <li><a href="#">Marmorkuchen</a></li>
-    <li><a href="#">Nussecken</a></li>
-    <li><a href="#">Waffeln</a></li>
-    <li><a href="#">Zimtschnecken</a></li>
-  </ul>
-
 </div>
 
 <!-- Frühstück Deckblatt -->
@@ -232,9 +140,6 @@
   <h1>Frühstück</h1>
   <p>Ein süßer Start in den Tag – alle Lieblingsrezepte an einem Platz</p>
 </div>
-
-</body>
-</html>
 
 <!-- Rezept: Baguette -->
 <div class="page breakfast-cover" id="baguette">
@@ -250,7 +155,7 @@
   </div>
 
   <!-- Zutaten & Zubereitung Kasten -->
-  <div style="background:#fff3b0; padding:30px; border-radius:15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+  <div class="recipe-box">
     <h3>Zutaten:</h3>
     <ul id="ingredients-baguette">
       <li data-base="250">250 g Mehl Type 550</li>
@@ -294,3 +199,6 @@
     });
   });
 </script>
+
+</body>
+</html>
