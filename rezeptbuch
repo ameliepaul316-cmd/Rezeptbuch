@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meine Lieblings Rezepte</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!--  🎨 Schöne geschwungene Schrift + dezente graue Akzentschrift -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
+
+<style>
+  /* --- Grundlayout --- */
+  html, body {
+    margin: 0;
+    height: 100%;
+  }
+  body {
+    background: #f5e6d3; /* sanftes Beige */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  /* --- Haupttitel in geschwungener Schrift --- */
+  h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 4.5rem;
+    color: #4b4b4b; /* dunkles Grau für guten Kontrast */
+    margin: 0;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+  }
+
+  /* --- Untertitel / Deko in elegantem Grau --- */
+  p {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: #7c7c7c;
+    margin-top: 20px;
+    text-align: center;
+    letter-spacing: 2px;
+  }
+
+  /* --- Dezenter Rahmen-Effekt --- */
+  .frame {
+    border: 6px double #c0b9b1;
+    padding: 60px;
+    border-radius: 40px;
+    background: rgba(255,255,255,0.2);
+    box-shadow: 0 0 30px rgba(0,0,0,0.1);
+  }
+</style>
+</head>
+<body>
+
+<div class="frame">
+  <h1>Meine Lieblings&nbsp;Rezepte</h1>
+  <p>– gesammelt mit Liebe –</p>
+</div>
+
+</body>
+</html>
