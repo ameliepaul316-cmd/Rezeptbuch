@@ -9,60 +9,38 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
 
 <style>
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
+  body {
+    margin:0;
+    padding:0;
     font-family: Arial, sans-serif;
     background: #f5e6d3; /* sanftes Beige */
   }
 
-  body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-  }
-
-  /* Container für alle Seiten */
-  .book {
-    width: 800px;
-    height: 1120px; /* A4-Papiergröße im Verhältnis */
-    perspective: 2000px;
-    position: relative;
-  }
-
-  /* Einzelne Seiten */
+  /* Container für die Seiten */
   .page {
-    width: 100%;
-    height: 100%;
-    background: #fffaf0;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    position: absolute;
-    top: 0;
-    left: 0;
+    width: 800px;
+    margin: 50px auto;
     padding: 50px;
-    box-sizing: border-box;
-    transition: transform 0.6s ease, z-index 0.6s ease;
-    overflow-y: auto;
+    background: #fffaf0;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   }
 
-  /* Deckblatt-Titel */
+  /* Deckblatt */
   .cover h1 {
     font-family: 'Great Vibes', cursive;
     font-size: 4.5rem;
-    color: #4b4b4b;
     text-align: center;
     margin: 0;
+    color: #4b4b4b;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
   }
   .cover p {
     font-family: 'Playfair Display', serif;
     font-size: 1.6rem;
     color: #7c7c7c;
-    margin-top: 20px;
     text-align: center;
+    margin-top: 20px;
     letter-spacing: 2px;
   }
 
@@ -74,105 +52,138 @@
     font-size:3.5rem;
   }
   h2{margin-top:20px; color:#444;}
+  h3{margin-left:20px; color:#555;}
   ul{list-style:none; padding-left:0;}
   li{margin:6px 0;}
   a{text-decoration:none; color:#0066cc;}
   a:hover{text-decoration:underline;}
-  .page-number{
-    position:absolute; bottom:20px; right:30px; color:#999; font-size:0.9em;
-  }
-
-  /* Navigation Buttons */
-  .nav-btn{
-    position:absolute; top:50%; transform:translateY(-50%);
-    font-size:2rem; background:none; border:none; cursor:pointer;
-    z-index:1000;
-    color:#555;
-    opacity:0.7;
-  }
-  .nav-btn:hover{opacity:1;}
-  .prev{left:-60px;}
-  .next{right:-60px;}
+  .sub{margin-left:20px;}
 </style>
 </head>
 <body>
 
-<div class="book">
-  <!-- Deckblatt -->
-  <div class="page cover" style="z-index:3;">
-    <h1>Meine Lieblingsrezepte</h1>
-    <p>– gesammelt mit Liebe –</p>
-    <div class="page-number">S. 0</div>
-  </div>
-
-  <!-- Inhaltsverzeichnis -->
-  <div class="page toc" style="z-index:2;">
-    <h1>Inhaltsverzeichnis</h1>
-
-    <h2>Frühstück</h2>
-    <ul>
-      <li><a href="#">Baguette</a> <span class="page-number">S.1</span></li>
-      <li><a href="#">Brot</a> <span class="page-number">S.2</span></li>
-      <li><a href="#">Granola</a> <span class="page-number">S.3</span></li>
-      <li><a href="#">Lievito madre</a> <span class="page-number">S.4</span></li>
-      <li><a href="#">Overnight Oats</a> <span class="page-number">S.5</span></li>
-      <li><a href="#">Walnussbutter</a> <span class="page-number">S.6</span></li>
-    </ul>
-
-    <h2>Hauptgang</h2>
-    <ul>
-      <li><a href="#">Gemüsesuppe</a> <span class="page-number">S.7</span></li>
-      <li><a href="#">Käsenudeln</a> <span class="page-number">S.11</span></li>
-      <li><a href="#">Indisches Quinoa Curry</a> <span class="page-number">S.15</span></li>
-      <!-- weitere Einträge analog -->
-    </ul>
-
-    <h2>Snacks / Nachtisch</h2>
-    <ul>
-      <li><a href="#">Candied Pecan</a> <span class="page-number">S.49</span></li>
-    </ul>
-
-    <h2>Bakery</h2>
-    <ul>
-      <li><a href="#">Brownie</a> <span class="page-number">S.59</span></li>
-    </ul>
-    <div class="page-number">S.1</div>
-  </div>
-
-  <!-- Beispiel-Rezeptseite -->
-  <div class="page" style="z-index:1;">
-    <h1>Baguette</h1>
-    <p>Hier kommen Zutaten & Zubereitung hin...</p>
-    <div class="page-number">S.2</div>
-  </div>
-
-  <!-- Navigation -->
-  <button class="nav-btn prev">&#10094;</button>
-  <button class="nav-btn next">&#10095;</button>
+<!-- Deckblatt -->
+<div class="page cover">
+  <h1>Meine Lieblingsrezepte</h1>
+  <p>– gesammelt mit Liebe –</p>
 </div>
 
-<script>
-const pages = document.querySelectorAll('.book .page');
-let current = 0;
+<!-- Inhaltsverzeichnis -->
+<div class="page toc">
+  <h1>Inhaltsverzeichnis</h1>
 
-function showPage(index){
-  pages.forEach((p,i)=>{
-    p.style.zIndex = (i >= index)? pages.length - i : 0;
-    p.style.transform = `translateX(${(i - index)*105}%)`;
-  });
-}
-showPage(current);
+  <h2>Frühstück</h2>
+  <ul>
+    <li><a href="#">Baguette</a></li>
+    <li><a href="#">Brot</a></li>
+    <li><a href="#">Granola</a></li>
+    <li><a href="#">Lievito madre</a></li>
+    <li><a href="#">Overnight Oats</a></li>
+    <li><a href="#">Walnussbutter</a></li>
+  </ul>
 
-document.querySelector('.next').addEventListener('click', ()=>{
-  if(current < pages.length-1) current++;
-  showPage(current);
-});
+  <h2>Hauptgang</h2>
 
-document.querySelector('.prev').addEventListener('click', ()=>{
-  if(current > 0) current--;
-  showPage(current);
-});
-</script>
+  <h3>🍲 Suppen & Eintöpfe</h3>
+  <ul class="sub">
+    <li><a href="#">Gemüsesuppe</a></li>
+    <li><a href="#">Kartoffelsuppe</a></li>
+    <li><a href="#">Petersilienwurzelsuppe</a></li>
+    <li><a href="#">Spargelcremesuppe</a></li>
+  </ul>
+
+  <h3>🍝 Pasta & Nudeln</h3>
+  <ul class="sub">
+    <li><a href="#">Käsenudeln</a></li>
+    <li><a href="#">Pizzabrötchen</a></li>
+    <li><a href="#">Pizzateig</a></li>
+    <li><a href="#">Ravioli mit Ricotta und Spinat</a></li>
+  </ul>
+
+  <h3>🍚 Reis- & Getreidegerichte</h3>
+  <ul class="sub">
+    <li><a href="#">Indisches Quinoa Curry</a></li>
+    <li><a href="#">Pacific Poke Bowl</a></li>
+    <li><a href="#">Poké Bowl</a></li>
+    <li><a href="#">Risotto</a></li>
+    <li><a href="#">Vegetarische Reispfanne mit Karotten und Paprika</a></li>
+  </ul>
+
+  <h3>🌍 Internationale Küche & Currys</h3>
+  <ul class="sub">
+    <li><a href="#">Auberginen-Zucchini-Lasagne</a></li>
+    <li><a href="#">Dhal</a></li>
+    <li><a href="#">Grünes Curry</a></li>
+    <li><a href="#">Hackfleischrolle</a></li>
+    <li><a href="#">Massaman Curry</a></li>
+    <li><a href="#">Mexikanische Enchilada-Lasagne</a></li>
+    <li><a href="#">Pad Thai</a></li>
+    <li><a href="#">Rotes Curry</a></li>
+    <li><a href="#">Tacofino</a></li>
+  </ul>
+
+  <h3>🥗 Snacks, Beilagen & Fingerfood</h3>
+  <ul class="sub">
+    <li><a href="#">Bohnenpatty</a></li>
+    <li><a href="#">Brokkolisalat</a></li>
+    <li><a href="#">Frühlingsrollen</a></li>
+    <li><a href="#">Gemüsespieße</a></li>
+    <li><a href="#">Gemüsepfanne</a></li>
+    <li><a href="#">Focaccia</a></li>
+    <li><a href="#">Marktglößchen</a></li>
+    <li><a href="#">Serviettenknödel</a></li>
+    <li><a href="#">Sri Lanka Coconut Roti</a></li>
+    <li><a href="#">Stockbrot</a></li>
+    <li><a href="#">Tortilla Wrap DIY</a></li>
+  </ul>
+
+  <h3>🥫 Saucen, Pasten & Basics</h3>
+  <ul class="sub">
+    <li><a href="#">Bierteig</a></li>
+    <li><a href="#">Eiersauce mit Bratkartoffeln</a></li>
+    <li><a href="#">Guacamole</a></li>
+    <li><a href="#">Knoblauchsauce</a></li>
+    <li><a href="#">Pesto</a></li>
+    <li><a href="#">Salatsauce</a></li>
+  </ul>
+
+  <h3>🌶️ Curry-Pasten</h3>
+  <ul class="sub">
+    <li><a href="#">Grüne Curry-Paste</a></li>
+    <li><a href="#">Massaman Curry-Paste</a></li>
+    <li><a href="#">Rote Curry-Paste</a></li>
+  </ul>
+
+  <h2>Snacks / Nachtisch</h2>
+  <ul>
+    <li><a href="#">Candied Pecan</a></li>
+    <li><a href="#">Energiebällchen</a></li>
+    <li><a href="#">Frittierte Banane</a></li>
+    <li><a href="#">Himbeerbaiser</a></li>
+    <li><a href="#">Marzipanpralinen</a></li>
+    <li><a href="#">Mousse au chocolat</a></li>
+    <li><a href="#">Roti Thai Pancake</a></li>
+    <li><a href="#">Sticky Rice mit Mango</a></li>
+    <li><a href="#">Tiramisu</a></li>
+    <li><a href="#">Zucchinipuffer</a></li>
+  </ul>
+
+  <h2>Bakery</h2>
+  <ul>
+    <li><a href="#">Brownie</a></li>
+    <li><a href="#">Butterplättchen</a></li>
+    <li><a href="#">Cookies</a></li>
+    <li><a href="#">Dampfnudeln</a></li>
+    <li><a href="#">Flammendes Herz</a></li>
+    <li><a href="#">Frosting</a></li>
+    <li><a href="#">Kreppel</a></li>
+    <li><a href="#">Marmorkuchen</a></li>
+    <li><a href="#">Nussecken</a></li>
+    <li><a href="#">Waffeln</a></li>
+    <li><a href="#">Zimtschnecken</a></li>
+  </ul>
+
+</div>
 
 </body>
 </html>
