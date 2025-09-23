@@ -1,392 +1,522 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Meine Lieblingsrezepte</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Meine Lieblingsrezepte – Geschenk für dich 💛</title>
 
-  <!-- Schriftarten -->
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
-      --bg: #f5e6d3;
-      --card: #fffaf0;
-      --ink: #2b2b2b;
-      --muted: #7c7c7c;
-      --accent: #c4661f;
-      --shadow: 0 10px 30px rgba(0,0,0,.18);
-      --radius: 20px;
-      --maxw: 880px;
-    }
+<style>
+  :root{
+    --bg: #f5e6d3;        /* globaler Seitenhintergrund (beige) */
+    --ink:#2b2b2b;
+    --shadow: 0 10px 30px rgba(0,0,0,.16);
+    --radius: 20px;
+    --maxw: 900px;
 
-    /* Basis */
-    html { scroll-behavior: smooth; }
-    body{
-      margin:0; padding:0;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      color: var(--ink);
-      background: var(--bg);
-      display:flex; flex-direction:column; align-items:center;
-    }
-    a{ color: inherit; }
-    .page{
-      width: min(var(--maxw), 92%);
-      margin: 48px 0;
-      padding: clamp(28px, 4vw, 48px);
-      background: white;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
+    /* Paletten (Pastell) */
+    --beige-card: #fff9ef;
 
-    /* Deckblatt */
-    .cover{
-      background: var(--card);
-      text-align:center;
-    }
-    .cover h1{
-      font-family: 'Great Vibes', cursive;
-      font-size: clamp(3rem, 8vw, 4.8rem);
-      margin: 0;
-      color:#4b4b4b;
-      text-shadow: 2px 2px 4px rgba(0,0,0,.2);
-    }
-    .cover p{
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.1rem, 2.6vw, 1.6rem);
-      color: var(--muted);
-      margin-top: 14px;
-      letter-spacing: .06em;
-    }
+    --y-100:#fff6cf; --y-200:#ffe9a6; --y-ink:#6a4a00;       /* Frühstück */
+    --g-100:#e9f7e9; --g-200:#d3efdc; --g-ink:#214d2d;       /* Hauptgerichte */
+    --l-100:#f2e8ff; --l-200:#e5d8ff; --l-ink:#4b2b7e;       /* Nachtisch */
+    --p-100:#ffe6ef; --p-200:#ffd0df; --p-ink:#7e2b52;       /* Backen */
+  }
 
-    /* Inhaltsverzeichnis */
-    .toc h1{ margin-top:0; font-family:'Playfair Display',serif; }
-    .toc h2, .toc h3{ font-family:'Playfair Display',serif; margin: 1.2rem 0 .3rem; }
-    .toc .groups{
-      display:grid; gap:22px;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      margin-top: 10px;
-    }
-    .toc ul{ margin:.2rem 0 0 1.1rem; }
-    .toc ul.sub{ margin-left:1.3rem; }
-    .toc a{ text-decoration:none; }
-    .toc a:hover{ text-decoration:underline; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  }
 
-    /* Abschnitt-Deckblätter */
-    .section-cover{
-      background: #fff7ea;
-      text-align:center;
-      position:relative;
-    }
-    .section-cover .symbol{
-      font-size: clamp(2rem, 6vw, 3rem);
-      margin-bottom: 8px;
-    }
-    .section-cover h1{
-      font-family:'Playfair Display',serif;
-      margin: .2rem 0 .4rem;
-    }
-    .section-cover p{ color: var(--muted); margin:0; }
+  /* Scroll-Snap für "blättern" */
+  .book{
+    height: 100svh;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+  }
+  .page{
+    width: min(var(--maxw), 94%);
+    margin: 24px auto 42px;
+    padding: clamp(26px, 4vw, 48px);
+    border-radius: var(--radius);
+    background: white;
+    box-shadow: var(--shadow);
+    scroll-snap-align: start;
+  }
 
-    /* Rezeptkarte */
-    .recipe{
-      background:#fffdfa;
-    }
-    .badge{
-      display:inline-block;
-      padding:.28rem .6rem;
-      border-radius:999px;
-      background:#ffe6c7;
-      color:#6a3a0c;
-      font-weight:600;
-      font-size:.9rem;
-    }
-    .meta{
-      display:flex; gap:18px; flex-wrap:wrap; align-items:center;
-      justify-content:center; margin: 10px 0 24px;
-      color:#53453a;
-    }
-    .two-col{
-      display:grid; gap:22px;
-      grid-template-columns: 1fr 1fr;
-    }
-    @media (max-width: 720px){
-      .two-col{ grid-template-columns:1fr; }
-    }
-    .box{
-      background:#fff3b0;
-      padding:22px; border-radius:14px; box-shadow: 0 5px 14px rgba(0,0,0,.08);
-    }
-    .box h3{ margin-top:0; }
-    .ingredients li{ margin:.35rem 0; }
-    .steps li{ margin:.5rem 0; }
-    .figure{
-      margin-top: 18px; text-align:center;
-    }
-    .figure img{
-      max-width:100%; border-radius:14px; box-shadow: 0 5px 14px rgba(0,0,0,.10);
-    }
-    .back{
-      margin-top:18px; display:inline-block; color:#0b66c3; text-decoration:none;
-    }
-    .back:hover{ text-decoration:underline; }
+  /* Deckblatt + TOC beige */
+  .page.cover, .page.toc { background: var(--beige-card); }
 
-    /* Form */
-    .controls{
-      display:flex; gap:10px; align-items:center; justify-content:center; margin:8px 0 6px;
-    }
-    .controls input[type=number]{
-      width:76px; padding:.4rem .5rem; font:inherit;
-      border:1px solid #d0bfa6; border-radius:10px; text-align:center;
-      background:#fff; color:#3a2d22;
-    }
-    .controls output{
-      min-width:2ch; display:inline-block; text-align:right; font-variant-numeric: tabular-nums;
-    }
+  /* Cover */
+  .cover{
+    text-align:center;
+  }
+  .cover h1{
+    font-family:'Great Vibes',cursive;
+    font-size: clamp(3.2rem, 9vw, 5rem);
+    margin:0;
+    color:#4b4b4b;
+    text-shadow:2px 2px 4px rgba(0,0,0,.2);
+  }
+  .cover p{
+    font-family:'Playfair Display',serif;
+    font-size: clamp(1.1rem, 2.6vw, 1.6rem);
+    color:#7c7c7c; letter-spacing:.05em; margin:.6rem 0 0;
+  }
+  .gift-note{
+    margin-top: 1rem;
+    background: #fff;
+    border-radius: 14px;
+    padding: 14px 16px;
+    box-shadow: 0 6px 16px rgba(0,0,0,.06);
+    font-family:'Playfair Display',serif;
+  }
 
-    /* Footer mini */
-    footer{ margin: 30px 0 50px; color:#6f5c49; font-size:.95rem; }
-  </style>
+  /* Inhaltsverzeichnis */
+  .toc h1{ margin:0 0 .6rem; font-family:'Playfair Display',serif; }
+  .toc .grid{
+    display:grid; gap:20px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    margin-top: 10px;
+  }
+  .toc section{ background:#fff; border-radius:14px; padding:16px; box-shadow:0 6px 16px rgba(0,0,0,.06); }
+  .toc h2, .toc h3{ font-family:'Playfair Display',serif; margin:.2rem 0 .4rem; }
+  .toc ul{ margin:.2rem 0 0 1.1rem; }
+  .toc a{ text-decoration:none; }
+  .toc a:hover{ text-decoration:underline; }
+
+  /* Kategorie-Deckblätter (mit Icon im Kreis) */
+  .section-cover{
+    text-align:center; position:relative;
+  }
+  .symbol{
+    width:86px; height:86px; border-radius:999px;
+    display:grid; place-items:center;
+    font-size: 2rem; margin: 0 auto 10px;
+    background: #fff;
+    box-shadow: 0 6px 16px rgba(0,0,0,.08) inset, 0 6px 16px rgba(0,0,0,.06);
+  }
+  .section-cover h1{ font-family:'Playfair Display',serif; margin:.2rem 0 .4rem; }
+  .section-cover p{ margin:0; opacity:.8; }
+
+  /* Themenfarben je Kategorie */
+  .theme-breakfast .page            { background:#fffdfa; }
+  .theme-breakfast .section-cover   { background: var(--y-100); color: var(--y-ink); }
+  .theme-breakfast .card            { background: var(--y-200); color: var(--y-ink); }
+
+  .theme-mains .page                { background:#fbfffb; }
+  .theme-mains .section-cover       { background: var(--g-100); color: var(--g-ink); }
+  .theme-mains .card                { background: var(--g-200); color: var(--g-ink); }
+
+  .theme-dessert .page              { background:#fffdff; }
+  .theme-dessert .section-cover     { background: var(--l-100); color: var(--l-ink); }
+  .theme-dessert .card              { background: var(--l-200); color: var(--l-ink); }
+
+  .theme-bakery .page               { background:#fffdfd; }
+  .theme-bakery .section-cover      { background: var(--p-100); color: var(--p-ink); }
+  .theme-bakery .card               { background: var(--p-200); color: var(--p-ink); }
+
+  /* Rezeptkarten */
+  .recipe header{ text-align:center; }
+  .badge{
+    display:inline-block; padding:.28rem .6rem; border-radius:999px; font-weight:600; font-size:.9rem;
+    background:#fff; box-shadow:0 3px 8px rgba(0,0,0,.05);
+  }
+  .recipe h1{ font-family:'Playfair Display',serif; margin:.35rem 0 0; }
+  .meta{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; opacity:.8; }
+
+  .two-col{
+    display:grid; gap:18px; grid-template-columns: 1fr 1fr; margin-top: 12px;
+  }
+  @media (max-width: 760px){ .two-col{ grid-template-columns: 1fr; } }
+
+  .card{
+    border-radius: 14px; padding:18px; box-shadow: 0 6px 16px rgba(0,0,0,.06);
+  }
+  .card h3{ margin:.2rem 0 .6rem; }
+
+  .ingredients li, .steps li{ margin:.4rem 0; }
+
+  figure{ margin:14px 0 0; text-align:center; }
+  figure img{ max-width:100%; border-radius:14px; box-shadow:0 6px 16px rgba(0,0,0,.08); }
+  figcaption{ opacity:.75; margin-top:6px; }
+
+  /* Portionsregler */
+  .controls{
+    display:flex; gap:10px; align-items:center; justify-content:center; margin:.5rem 0 .2rem;
+  }
+  .controls input[type=number]{
+    width:88px; padding:.45rem .6rem; font:inherit; text-align:center;
+    border:1px solid #d0c2a8; border-radius:10px; background:#fff;
+  }
+
+  /* Pager (floating) */
+  .pager{
+    position: fixed; inset:auto 14px 14px auto; z-index: 1000;
+    display:flex; gap:8px; align-items:center;
+  }
+  .pager button{
+    border:0; border-radius:999px; width:44px; height:44px; cursor:pointer;
+    box-shadow:0 10px 24px rgba(0,0,0,.18); background:#fff;
+    font-size:1.1rem;
+  }
+  .pager .count{ background:#fff; padding:.4rem .7rem; border-radius:999px; font-weight:600; box-shadow:0 10px 24px rgba(0,0,0,.12); }
+  .jump-top{
+    position: fixed; right:14px; bottom:76px; z-index:1000;
+  }
+  .jump-top a{
+    display:inline-block; background:#fff; padding:.5rem .8rem; border-radius:999px; box-shadow:0 10px 24px rgba(0,0,0,.12); text-decoration:none;
+  }
+
+  footer{ text-align:center; color:#6f5c49; margin: 24px 0 40px; }
+</style>
 </head>
 <body>
 
-  <!-- Deckblatt -->
-  <header class="page cover" aria-labelledby="title">
-    <h1 id="title">Meine Lieblingsrezepte</h1>
-    <p>Schön gestaltet, übersichtlich & druckfreundlich</p>
-  </header>
+<!-- Pager / Blättern -->
+<div class="pager" aria-label="Blättern">
+  <button id="prevPage" title="Vorherige Seite">←</button>
+  <span class="count" id="pageCount">1 / 1</span>
+  <button id="nextPage" title="Nächste Seite">→</button>
+</div>
+<div class="jump-top"><a href="#cover" title="Zum Deckblatt">↑</a></div>
 
-  <!-- Inhaltsverzeichnis -->
+<main class="book" id="book">
+
+  <!-- Deckblatt (beige) -->
+  <section class="page cover" id="cover" aria-labelledby="title">
+    <h1 id="title">Meine Lieblingsrezepte</h1>
+    <p>Ein kleines Rezeptbuch – mit Liebe gemacht 💛</p>
+    <div class="gift-note">
+      Für meinen Lieblingsmenschen zum Geburtstag.  
+      Möge jede Seite nach dir duften und jede Zutat dich anlachen. 🥰
+    </div>
+  </section>
+
+  <!-- Inhaltsverzeichnis (beige, klickbar) -->
   <nav class="page toc" id="toc" aria-label="Inhaltsverzeichnis">
     <h1>Inhaltsverzeichnis</h1>
-
-    <div class="groups">
+    <div class="grid">
       <section>
         <h2>Frühstück</h2>
         <ul>
           <li><a href="#baguette">Baguette</a></li>
-          <li><a href="#brot">Brot</a></li>
-          <li><a href="#granola">Granola</a></li>
-          <li><a href="#lievito_madre">Lievito madre</a></li>
-          <li><a href="#overnight_oats">Overnight Oats</a></li>
-          <li><a href="#walnussbutter">Walnussbutter</a></li>
+          <!-- hier weitere Frühstück-Rezepte einfügen -->
         </ul>
       </section>
 
       <section>
-        <h2>Hauptgang</h2>
-        <h3>🍲 Suppen & Eintöpfe</h3>
-        <ul class="sub">
-          <li><a href="#gemuesesuppe">Gemüsesuppe</a></li>
-          <li><a href="#kartoffelsuppe">Kartoffelsuppe</a></li>
-          <li><a href="#petersilienwurzelsuppe">Petersilienwurzelsuppe</a></li>
-          <li><a href="#spargelcremesuppe">Spargelcremesuppe</a></li>
-        </ul>
-        <h3>🍝 Pasta & Nudeln</h3>
-        <ul class="sub">
-          <li><a href="#kaesenudeln">Käsenudeln</a></li>
-          <li><a href="#pizzabrötchen">Pizzabrötchen</a></li>
-          <li><a href="#pizzateig">Pizzateig</a></li>
-          <li><a href="#ravioli_ricotta_spinat">Ravioli mit Ricotta und Spinat</a></li>
-        </ul>
-        <h3>🍚 Reis- & Getreidegerichte</h3>
-        <ul class="sub">
-          <li><a href="#indisches_quinoa_curry">Indisches Quinoa Curry</a></li>
-          <li><a href="#pacific_poke_bowl">Pacific Poke Bowl</a></li>
-          <li><a href="#poke_bowl">Poké Bowl</a></li>
-          <li><a href="#risotto">Risotto</a></li>
-          <li><a href="#vegetarische_reispfanne">Vegetarische Reispfanne</a></li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>🌍 Internationale Küche & Currys</h2>
-        <ul class="sub">
-          <li><a href="#auberginen_zucchini_lasagne">Auberginen-Zucchini-Lasagne</a></li>
-          <li><a href="#dhal">Dhal</a></li>
-          <li><a href="#gruenes_curry">Grünes Curry</a></li>
-          <li><a href="#hackfleischrolle">Hackfleischrolle</a></li>
-          <li><a href="#massaman_curry">Massaman Curry</a></li>
-          <li><a href="#mexikanische_enchilada_lasagne">Mexikanische Enchilada-Lasagne</a></li>
-          <li><a href="#pad_thai">Pad Thai</a></li>
-          <li><a href="#rotes_curry">Rotes Curry</a></li>
-          <li><a href="#tacofino">Tacofino</a></li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>🥗 Snacks, Beilagen & Fingerfood</h2>
-        <ul class="sub">
-          <li><a href="#bohnenpatty">Bohnenpatty</a></li>
-          <li><a href="#brokkolisalat">Brokkolisalat</a></li>
-          <li><a href="#fruehlingsrollen">Frühlingsrollen</a></li>
-          <li><a href="#gemuesespiesse">Gemüsespieße</a></li>
-          <li><a href="#gemuesepfanne">Gemüsepfanne</a></li>
-          <li><a href="#focaccia">Focaccia</a></li>
-          <li><a href="#marktgloesschen">Marktglößchen</a></li>
-          <li><a href="#serviettenknoedel">Serviettenknödel</a></li>
-          <li><a href="#sri_lanka_coconut_roti">Sri Lanka Coconut Roti</a></li>
-          <li><a href="#stockbrot">Stockbrot</a></li>
-          <li><a href="#tortilla_wrap_diy">Tortilla Wrap DIY</a></li>
-        </ul>
-        <h2>🥫 Saucen, Pasten & Basics</h2>
-        <ul class="sub">
-          <li><a href="#bierteig">Bierteig</a></li>
-          <li><a href="#eiersauce_bratkartoffeln">Eiersauce mit Bratkartoffeln</a></li>
-          <li><a href="#guacamole">Guacamole</a></li>
-          <li><a href="#knoblauchsauce">Knoblauchsauce</a></li>
-          <li><a href="#pesto">Pesto</a></li>
-          <li><a href="#salatsauce">Salatsauce</a></li>
-        </ul>
-        <h3>🌶️ Curry-Pasten</h3>
-        <ul class="sub">
-          <li><a href="#gruene_curry_paste">Grüne Curry-Paste</a></li>
-          <li><a href="#massaman_curry_paste">Massaman Curry-Paste</a></li>
-          <li><a href="#rote_curry_paste">Rote Curry-Paste</a></li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Snacks / Nachtisch</h2>
+        <h2>Hauptgerichte</h2>
         <ul>
-          <li><a href="#candied_pecan">Candied Pecan</a></li>
-          <li><a href="#energieballchen">Energiebällchen</a></li>
-          <li><a href="#frittierte_banane">Frittierte Banane</a></li>
-          <li><a href="#himbeerbaiser">Himbeerbaiser</a></li>
-          <li><a href="#marzipanpralinen">Marzipanpralinen</a></li>
-          <li><a href="#mousse_au_chocolat">Mousse au chocolat</a></li>
-          <li><a href="#roti_thai_pancake">Roti Thai Pancake</a></li>
-          <li><a href="#sticky_rice_mango">Sticky Rice mit Mango</a></li>
+          <li><a href="#green-curry">Grünes Curry</a></li>
+          <!-- weitere Hauptgerichte -->
+        </ul>
+      </section>
+
+      <section>
+        <h2>Nachtisch</h2>
+        <ul>
           <li><a href="#tiramisu">Tiramisu</a></li>
-          <li><a href="#zucchinipuffer">Zucchinipuffer</a></li>
+          <!-- weitere Nachtische -->
         </ul>
+      </section>
 
-        <h2>Bakery</h2>
+      <section>
+        <h2>Backen</h2>
         <ul>
-          <li><a href="#brownie">Brownie</a></li>
-          <li><a href="#butterplaettchen">Butterplättchen</a></li>
-          <li><a href="#cookies">Cookies</a></li>
-          <li><a href="#dampfnudeln">Dampfnudeln</a></li>
-          <li><a href="#flammendes_herz">Flammendes Herz</a></li>
-          <li><a href="#frosting">Frosting</a></li>
-          <li><a href="#kreppel">Kreppel</a></li>
-          <li><a href="#marmorkuchen">Marmorkuchen</a></li>
-          <li><a href="#nussecken">Nussecken</a></li>
-          <li><a href="#waffeln">Waffeln</a></li>
           <li><a href="#zimtschnecken">Zimtschnecken</a></li>
+          <!-- weitere Backrezepte -->
         </ul>
       </section>
     </div>
   </nav>
 
-  <!-- Frühstück Deckblatt -->
-  <section class="page section-cover" id="fruehstueck">
-    <div class="symbol" aria-hidden="true">🥐</div>
-    <h1>Frühstück</h1>
-    <p>Ein süßer Start in den Tag – alle Lieblingsrezepte an einem Platz</p>
-  </section>
+  <!-- Frühstück: Deckblatt + Rezepte -->
+  <div class="theme-breakfast">
+    <section class="page section-cover" id="fruehstueck">
+      <div class="symbol" aria-hidden="true">🥐</div>
+      <h1>Frühstück</h1>
+      <p>Sonnige Starts in den Tag – knusprig, warm & gemütlich</p>
+    </section>
 
-  <!-- Rezept: Baguette -->
-  <article class="page recipe" id="baguette" aria-labelledby="baguette-title">
-    <header style="text-align:center;">
-      <span class="badge">Rezept</span>
-      <h1 id="baguette-title" style="margin:.4rem 0 0;font-family:'Playfair Display',serif;">Baguette</h1>
-      <p class="meta">
-        <span>⏱ Zubereitungszeit: 1½ h</span>
-        <span>⏲️ Gesamtzeit: ~1 h 50 min</span>
-      </p>
+    <!-- Rezept: Baguette -->
+    <article class="page recipe" id="baguette" aria-labelledby="baguette-title">
+      <header>
+        <span class="badge">Rezept</span>
+        <h1 id="baguette-title">Baguette</h1>
+        <p class="meta">
+          <span>⏱ Zubereitungszeit: 1½ h</span>
+          <span>⏲️ Gesamtzeit: ~1 h 50 min</span>
+        </p>
+        <form class="controls" data-portion-base="2" onsubmit="return false">
+          <label for="portions-baguette">Portionen:</label>
+          <input type="number" id="portions-baguette" value="2" min="1" step="1" />
+        </form>
+      </header>
 
-      <!-- Portionsrechner -->
-      <form class="controls" id="portion-form" onsubmit="return false" aria-label="Portionsrechner">
-        <label for="portions">Portionen:</label>
-        <input type="number" id="portions" name="portions" value="2" min="1" step="1" inputmode="numeric" />
-        <output for="portions" id="portion-label">Baguette</output>
-      </form>
-    </header>
+      <div class="two-col">
+        <section class="card">
+          <h3>Zutaten</h3>
+          <ul class="ingredients">
+            <li data-unit="g"  data-base="250">250 g Mehl Type 550</li>
+            <li data-unit="ml" data-base="160">160 ml lauwarmes Wasser</li>
+            <li data-unit="g"  data-base="6">6 g Salz</li>
+            <li data-unit="g"  data-base="10" data-alt="trocken:3">10 g frische Hefe (oder 3 g Trockenhefe)</li>
+          </ul>
+        </section>
+        <section class="card">
+          <h3>Zubereitung</h3>
+          <ol class="steps">
+            <li>Hefe mit lauwarmem Wasser und 1 TL Zucker 10 Minuten aktivieren.</li>
+            <li>Teig 20 Minuten abgedeckt ruhen lassen.</li>
+            <li>Zu Baguettes formen und 60 Minuten gehen lassen.</li>
+            <li>Bei 200 °C (vorgeheizt) ca. 20 Minuten backen.</li>
+          </ol>
+        </section>
+      </div>
 
-    <div class="two-col">
-      <!-- Zutaten -->
-      <section class="box" aria-labelledby="zutaten-title">
-        <h3 id="zutaten-title">Zutaten</h3>
-        <ul class="ingredients" id="ingredients">
-          <!-- Daten sind die Basis-Mengen für 2 Baguettes -->
-          <li data-unit="g"  data-base="250">250 g Mehl Type 550</li>
-          <li data-unit="ml" data-base="160">160 ml lauwarmes Wasser</li>
-          <li data-unit="g"  data-base="6">6 g Salz</li>
-          <li data-unit="g"  data-base="10" data-alt="trocken:3">10 g frische Hefe <em>(oder 3 g Trockenhefe)</em></li>
-        </ul>
-      </section>
+      <figure>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Baguette_03.jpg" alt="Frisch gebackenes Baguette" loading="lazy">
+        <figcaption>Knusprig & luftig</figcaption>
+      </figure>
 
-      <!-- Zubereitung -->
-      <section class="box" aria-labelledby="zubereitung-title">
-        <h3 id="zubereitung-title">Zubereitung</h3>
-        <ol class="steps">
-          <li>Hefe mit lauwarmem Wasser und 1 TL Zucker 10 Minuten aktivieren.</li>
-          <li>Teig 20 Minuten im Topf gehen lassen.</li>
-          <li>1 Stunde in Form gehen lassen.</li>
-          <li>Bei 200 °C (vorgeheizt) ca. 20 Minuten backen.</li>
-        </ol>
-      </section>
-    </div>
+      <p><a href="#toc">← Zurück zum Inhaltsverzeichnis</a></p>
+    </article>
+  </div>
 
-    <!-- Bild -->
-    <figure class="figure">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Baguette_03.jpg" alt="Frisch gebackenes Baguette" loading="lazy">
-      <figcaption style="color:#6a5f52;margin-top:6px;">Serviervorschlag</figcaption>
-    </figure>
+  <!-- Hauptgerichte -->
+  <div class="theme-mains">
+    <section class="page section-cover" id="hauptgerichte">
+      <div class="symbol" aria-hidden="true">🥗</div>
+      <h1>Hauptgerichte</h1>
+      <p>Herzhaft, bunt & satt – die Stars auf dem Tisch</p>
+    </section>
 
-    <p><a class="back" href="#toc" aria-label="Zurück zum Inhaltsverzeichnis">← Inhaltsverzeichnis</a></p>
-  </article>
+    <!-- Rezept: Grünes Curry -->
+    <article class="page recipe" id="green-curry" aria-labelledby="green-curry-title">
+      <header>
+        <span class="badge">Rezept</span>
+        <h1 id="green-curry-title">Grünes Curry</h1>
+        <p class="meta"><span>⏱ 30 min</span><span>🔥 mild–mittel</span></p>
+        <form class="controls" data-portion-base="2" onsubmit="return false">
+          <label for="portions-green-curry">Portionen:</label>
+          <input type="number" id="portions-green-curry" value="2" min="1" step="1" />
+        </form>
+      </header>
 
-  <footer>© <span id="year"></span> – Lieblingsrezepte</footer>
+      <div class="two-col">
+        <section class="card">
+          <h3>Zutaten</h3>
+          <ul class="ingredients">
+            <li data-unit="g"  data-base="250">250 g Gemüse-Mix (Brokkoli, Paprika, Zucchini)</li>
+            <li data-unit="ml" data-base="300">300 ml Kokosmilch</li>
+            <li data-unit="g"  data-base="150">150 g Tofu oder Hähnchen</li>
+            <li data-unit="EL" data-base="2">2 EL grüne Currypaste</li>
+            <li data-unit="g"  data-base="150">150 g Jasminreis (Beilage)</li>
+          </ul>
+        </section>
+        <section class="card">
+          <h3>Zubereitung</h3>
+          <ol class="steps">
+            <li>Currypaste kurz in Öl anrösten.</li>
+            <li>Kokosmilch zugeben, aufkochen.</li>
+            <li>Gemüse & Tofu/Hähnchen 8–10 Minuten garen.</li>
+            <li>Mit Reis servieren, mit Limette & Kräutern toppen.</li>
+          </ol>
+        </section>
+      </div>
 
-  <script>
-    // Jahr im Footer
-    document.getElementById('year').textContent = new Date().getFullYear();
+      <figure>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Green_curry_with_chicken%2C_Thai_restaurant%2C_San_Francisco.jpg" alt="Grünes Curry in Schale" loading="lazy">
+        <figcaption>Frisch & grün</figcaption>
+      </figure>
 
-    // Robuster Portionsrechner:
-    // Skaliert alle Zutaten anhand data-base (Basis für 2 Portionen),
-    // respektiert Einheiten und zeigt bei Hefe optional Trockenhefe an.
-    (function(){
-      const portionsInput = document.getElementById('portions');
-      const ingredientsList = document.getElementById('ingredients');
-      const numberFmt = new Intl.NumberFormat('de-DE', { maximumFractionDigits: 0 });
+      <p><a href="#toc">← Zurück zum Inhaltsverzeichnis</a></p>
+    </article>
+  </div>
 
-      function update(){
-        const basePortions = 2;
-        const val = Math.max(1, parseInt(portionsInput.value || basePortions, 10));
-        portionsInput.value = val;
+  <!-- Nachtisch -->
+  <div class="theme-dessert">
+    <section class="page section-cover" id="nachtisch">
+      <div class="symbol" aria-hidden="true">🍮</div>
+      <h1>Nachtisch</h1>
+      <p>Süße Umarmungen – Löffel für Löffel Glück</p>
+    </section>
 
-        const factor = val / basePortions;
+    <article class="page recipe" id="tiramisu" aria-labelledby="tiramisu-title">
+      <header>
+        <span class="badge">Rezept</span>
+        <h1 id="tiramisu-title">Tiramisu</h1>
+        <p class="meta"><span>⏱ 25 min + Kühlzeit</span></p>
+        <form class="controls" data-portion-base="6" onsubmit="return false">
+          <label for="portions-tiramisu">Portionen:</label>
+          <input type="number" id="portions-tiramisu" value="6" min="1" step="1" />
+        </form>
+      </header>
 
-        [...ingredientsList.children].forEach(li => {
-          const base = parseFloat(li.getAttribute('data-base'));
-          const unit = li.getAttribute('data-unit') || '';
-          const alt  = li.getAttribute('data-alt'); // z.B. trocken:3
+      <div class="two-col">
+        <section class="card">
+          <h3>Zutaten</h3>
+          <ul class="ingredients">
+            <li data-unit="g"  data-base="500">500 g Mascarpone</li>
+            <li data-unit="ml" data-base="200">200 ml starker Kaffee</li>
+            <li data-unit="g"  data-base="200">200 g Löffelbiskuit</li>
+            <li data-unit="EL" data-base="3">3 EL Zucker</li>
+            <li data-unit="g"  data-base="20">20 g Kakaopulver</li>
+          </ul>
+        </section>
+        <section class="card">
+          <h3>Zubereitung</h3>
+          <ol class="steps">
+            <li>Mascarpone mit Zucker cremig rühren.</li>
+            <li>Biskuits kurz in Kaffee tauchen, schichten.</li>
+            <li>Creme darüber, wiederholen. Kühlen.</li>
+            <li>Mit Kakao bestäuben & servieren.</li>
+          </ol>
+        </section>
+      </div>
 
-          // Original-Text ohne führende Menge extrahieren:
-          const text = li.textContent.replace(/^\s*\d+[.,]?\d*\s*\w*\s*/,'').trim();
+      <figure>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Tiramisu_-_Raffaele_Diomede.jpg" alt="Tiramisu in Glasschale" loading="lazy">
+        <figcaption>Cremig & himmlisch</figcaption>
+      </figure>
 
-          // Hauptmenge
-          const mainAmount = Math.round(base * factor);
-          let rebuilt = `${numberFmt.format(mainAmount)}\u202F${unit} ${text}`;
+      <p><a href="#toc">← Zurück zum Inhaltsverzeichnis</a></p>
+    </article>
+  </div>
 
-          // Optionale Alternativmenge (z. B. Trockenhefe)
-          if (alt) {
-            const [altLabel, altBaseStr] = alt.split(':'); // "trocken", "3"
-            const altBase = parseFloat(altBaseStr);
-            const altAmount = Math.round(altBase * factor);
-            rebuilt = rebuilt.replace(/\(oder.*\)/,'').trim(); // vorhandene Klammer entfernen
-            rebuilt += ` (oder ${numberFmt.format(altAmount)}\u202Fg Trockenhefe)`;
-          }
+  <!-- Backen -->
+  <div class="theme-bakery">
+    <section class="page section-cover" id="backen">
+      <div class="symbol" aria-hidden="true">🧁</div>
+      <h1>Backen</h1>
+      <p>Duft aus dem Ofen – Zimt, Vanille & ganz viel Liebe</p>
+    </section>
 
-          li.textContent = rebuilt;
-        });
+    <article class="page recipe" id="zimtschnecken" aria-labelledby="zimt-title">
+      <header>
+        <span class="badge">Rezept</span>
+        <h1 id="zimt-title">Zimtschnecken</h1>
+        <p class="meta"><span>⏱ 20 min + Gehzeit</span></p>
+        <form class="controls" data-portion-base="12" onsubmit="return false">
+          <label for="portions-zimt">Stückzahl:</label>
+          <input type="number" id="portions-zimt" value="12" min="1" step="1" />
+        </form>
+      </header>
+
+      <div class="two-col">
+        <section class="card">
+          <h3>Zutaten</h3>
+          <ul class="ingredients">
+            <li data-unit="g"  data-base="500">500 g Mehl</li>
+            <li data-unit="ml" data-base="250">250 ml Milch</li>
+            <li data-unit="g"  data-base="80">80 g Zucker</li>
+            <li data-unit="g"  data-base="75">75 g Butter</li>
+            <li data-unit="g"  data-base="20" data-alt="trocken:7">20 g frische Hefe (oder 7 g Trockenhefe)</li>
+            <li data-unit="TL" data-base="2">2 TL Zimt</li>
+          </ul>
+        </section>
+        <section class="card">
+          <h3>Zubereitung</h3>
+          <ol class="steps">
+            <li>Teig kneten, 60–90 Minuten gehen lassen.</li>
+            <li>Ausrollen, mit Butter-Zucker-Zimt bestreichen, aufrollen.</li>
+            <li>Schnecken schneiden, 30 Minuten gehen lassen.</li>
+            <li>Bei 180 °C ca. 20 Minuten backen. Optional glasieren.</li>
+          </ol>
+        </section>
+      </div>
+
+      <figure>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Kanelbullar.jpg" alt="Zimtschnecken auf Blech" loading="lazy">
+        <figcaption>Wolkenweich & zimtig</figcaption>
+      </figure>
+
+      <p><a href="#toc">← Zurück zum Inhaltsverzeichnis</a></p>
+    </article>
+  </div>
+
+  <footer class="page" aria-hidden="true">
+    © <span id="year"></span> – Lieblingsrezepte
+  </footer>
+
+</main>
+
+<script>
+  // Jahr
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Portions-Skalierung (generisch)
+  const nf = new Intl.NumberFormat('de-DE', { maximumFractionDigits: 0 });
+  function scaleRecipe(formEl){
+    const base = parseFloat(formEl.dataset.portionBase || '1');
+    const current = Math.max(1, parseInt(formEl.querySelector('input[type=number]').value || base, 10));
+    formEl.querySelector('input').value = current;
+
+    const page = formEl.closest('.recipe');
+    page.querySelectorAll('.ingredients li').forEach(li=>{
+      const b = parseFloat(li.getAttribute('data-base'));
+      if (isNaN(b)) return;
+      const unit = li.getAttribute('data-unit') || '';
+      const alt  = li.getAttribute('data-alt'); // z.B. "trocken:3"
+
+      const text = li.textContent.replace(/^\s*\d+[.,]?\d*\s*\w*\s*/,'').replace(/\(oder.*\)$/,'').trim();
+      const main = Math.round(b * current / base);
+      let out = `${nf.format(main)}\u202F${unit} ${text}`;
+
+      if (alt) {
+        const [label, altBaseStr] = alt.split(':'); // label ungenutzt
+        const altBase = parseFloat(altBaseStr);
+        const altAmt = Math.round(altBase * current / base);
+        out += ` (oder ${nf.format(altAmt)}\u202Fg Trockenhefe)`;
       }
+      li.textContent = out;
+    });
+  }
 
-      portionsInput.addEventListener('input', update);
-      update();
-    })();
-  </script>
+  // Init für alle Portion-Formulare
+  document.querySelectorAll('form.controls').forEach(form=>{
+    scaleRecipe(form);
+    form.querySelector('input').addEventListener('input', ()=>scaleRecipe(form));
+  });
+
+  // Blätter-Funktion (Scroll-Snap + Buttons + Pfeiltasten)
+  const book = document.getElementById('book');
+  const pages = [...book.querySelectorAll('.page, .section-cover')]; // alle sichtbaren "Seiten"
+  const nextBtn = document.getElementById('nextPage');
+  const prevBtn = document.getElementById('prevPage');
+  const pageCountEl = document.getElementById('pageCount');
+
+  function currentPageIndex(){
+    let idx = 0;
+    let minDist = Infinity;
+    const top = book.scrollTop;
+    pages.forEach((p,i)=>{
+      const d = Math.abs(p.offsetTop - top);
+      if (d < minDist){ minDist = d; idx = i; }
+    });
+    return idx;
+  }
+  function gotoPage(i){
+    i = Math.max(0, Math.min(i, pages.length-1));
+    book.scrollTo({ top: pages[i].offsetTop, behavior: 'smooth' });
+    updateCounter(i);
+  }
+  function updateCounter(i = currentPageIndex()){
+    pageCountEl.textContent = (i+1) + ' / ' + pages.length;
+  }
+  nextBtn.addEventListener('click', ()=>gotoPage(currentPageIndex()+1));
+  prevBtn.addEventListener('click', ()=>gotoPage(currentPageIndex()-1));
+  book.addEventListener('scroll', ()=>{ requestAnimationFrame(()=>updateCounter()); });
+  document.addEventListener('keydown', (e)=>{
+    if (e.key === 'ArrowRight') gotoPage(currentPageIndex()+1);
+    if (e.key === 'ArrowLeft')  gotoPage(currentPageIndex()-1);
+  });
+  updateCounter();
+
+  // TOC: smooth scroll per href (default) – nichts weiter nötig
+</script>
 </body>
 </html>
