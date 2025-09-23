@@ -235,3 +235,62 @@
 
 </body>
 </html>
+
+<!-- Rezept: Baguette -->
+<div class="page breakfast-cover">
+  <div class="symbol">🥐</div>
+  <h1>Baguette</h1>
+
+  <!-- Info-Box -->
+  <div style="text-align:center; margin-bottom:30px;">
+    <label>Portionen: 
+      <input type="number" id="portions" value="2" min="1" style="width:50px;"> Baguette
+    </label>
+    <p>Zubereitungszeit: 1½h | Gesamtzeit: 1h 50min</p>
+  </div>
+
+  <!-- Zutaten & Zubereitung Kasten -->
+  <div style="background:#fff3b0; padding:30px; border-radius:15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+    <h3>Zutaten:</h3>
+    <ul id="ingredients">
+      <li data-base="250">250 g Mehl Type 550</li>
+      <li data-base="160">160 ml lauwarmes Wasser</li>
+      <li data-base="6">6 g Salz</li>
+      <li data-base="10">10 g frische Hefe oder 3 g Trockenhefe</li>
+    </ul>
+
+    <h3>Zubereitung:</h3>
+    <ol>
+      <li>Hefe mit lauwarmem Wasser und 1 TL Zucker 10 min aktivieren</li>
+      <li>20 min im Topf gehen lassen</li>
+      <li>1h in Form gehen lassen</li>
+      <li>Bei 200°C 20 min im Backofen mit Vorhitze backen</li>
+    </ol>
+  </div>
+
+  <!-- Bild -->
+  <div style="text-align:center; margin-top:30px;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Baguette_03.jpg" alt="Baguette" style="max-width:100%; border-radius:15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+  </div>
+
+  <!-- Link zurück zum Inhaltsverzeichnis -->
+  <div style="position:relative; margin-top:20px;">
+    <a href="#toc" style="position:absolute; left:0; text-decoration:none; color:#0066cc;">&larr; Inhaltsverzeichnis</a>
+  </div>
+</div>
+
+<script>
+  const portionsInput = document.getElementById('portions');
+  const ingredientsList = document.getElementById('ingredients');
+
+  portionsInput.addEventListener('input', () => {
+    const factor = portionsInput.value / 2; // Basis ist 2 Portionen
+    Array.from(ingredientsList.children).forEach(li => {
+      const base = li.getAttribute('data-base');
+      if(li.textContent.includes('Mehl')) li.textContent = `${Math.round(base * factor)} g Mehl Type 550`;
+      else if(li.textContent.includes('Wasser')) li.textContent = `${Math.round(base * factor)} ml lauwarmes Wasser`;
+      else if(li.textContent.includes('Salz')) li.textContent = `${Math.round(base * factor)} g Salz`;
+      else if(li.textContent.includes('Hefe')) li.textContent = `${Math.round(base * factor)} g frische Hefe oder ${Math.round(base/3 * factor)} g Trockenhefe`;
+    });
+  });
+</script>
