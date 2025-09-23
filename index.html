@@ -2,521 +2,603 @@
 <html lang="de">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Meine Lieblingsrezepte – Geschenk für dich 💛</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Meine Lieblingsrezepte – Geburtstagsbuch</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
-  :root{
-    --bg: #f5e6d3;        /* globaler Seitenhintergrund (beige) */
-    --ink:#2b2b2b;
-    --shadow: 0 10px 30px rgba(0,0,0,.16);
-    --radius: 20px;
-    --maxw: 900px;
+:root{
+  --beige-bg:#f5e6d3; --beige-card:#fff7ea; --ink:#2b2b2b; --muted:#7a6f69;
+  --radius:20px; --shadow:0 10px 30px rgba(0,0,0,.18); --maxw:980px;
+  --breakfast-1:#fff3b0; --breakfast-2:#ffe8a1;      /* gelb */
+  --main-1:#d8f3dc; --main-2:#ccebd4;                /* grün */
+  --dessert-1:#e9ddff; --dessert-2:#e1d2ff;          /* lila */
+  --bakery-1:#ffd9e8; --bakery-2:#ffcfe0;            /* rosa */
+  --link:#0b66c3; --btn-bg:#fff; --btn-ink:#1f4d7a;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--beige-bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+.snap{height:100dvh;overflow-y:auto;scroll-snap-type:y mandatory}
+.page{
+  width:min(var(--maxw),94vw); margin:44px auto; padding:clamp(26px,4vw,52px);
+  background:#fff; border-radius:var(--radius); box-shadow:var(--shadow);
+  scroll-snap-align:start; scroll-margin-top:18px;
+}
 
-    /* Paletten (Pastell) */
-    --beige-card: #fff9ef;
+/* Cover & TOC */
+.cover{background:var(--beige-card);text-align:center}
+.cover h1{font-family:'Great Vibes',cursive;font-size:clamp(3rem,8vw,5rem);margin:0;color:#4b4b4b;text-shadow:2px 2px 4px rgba(0,0,0,.2)}
+.cover p{font-family:'Playfair Display',serif;color:var(--muted);margin:12px 0 0}
+.dedication{margin-top:18px;display:inline-block;background:#fff;padding:10px 16px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.08);font-weight:600}
+.toc{background:var(--beige-card)}
+.toc h1{margin:0 0 10px;font-family:'Playfair Display',serif}
+.toc .grid{display:grid;gap:22px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.toc section h2{font-family:'Playfair Display',serif;margin:.3rem 0}
+.toc ul{margin:.2rem 0 0 1.1rem}
+.toc a{color:inherit;text-decoration:none}
+.toc a:hover{color:var(--link);text-decoration:underline}
 
-    --y-100:#fff6cf; --y-200:#ffe9a6; --y-ink:#6a4a00;       /* Frühstück */
-    --g-100:#e9f7e9; --g-200:#d3efdc; --g-ink:#214d2d;       /* Hauptgerichte */
-    --l-100:#f2e8ff; --l-200:#e5d8ff; --l-ink:#4b2b7e;       /* Nachtisch */
-    --p-100:#ffe6ef; --p-200:#ffd0df; --p-ink:#7e2b52;       /* Backen */
-  }
+/* Kapitel-Deckblätter */
+.section-cover{text-align:center}
+.section-cover .symbol{width:86px;height:86px;border-radius:50%;display:grid;place-items:center;font-size:36px;margin:0 auto 6px;box-shadow:inset 0 0 0 8px rgba(255,255,255,.35)}
+.section-cover h1{font-family:'Playfair Display',serif;margin:.2rem 0 .3rem}
+.section-cover p{color:var(--muted);margin:0}
+.breakfast-cover{background:linear-gradient(180deg,var(--breakfast-1),var(--breakfast-2))}
+.breakfast-cover .symbol{background:#fff7cc}
+.main-cover{background:linear-gradient(180deg,var(--main-1),var(--main-2))}
+.main-cover .symbol{background:#f2fff5}
+.dessert-cover{background:linear-gradient(180deg,var(--dessert-1),var(--dessert-2))}
+.dessert-cover .symbol{background:#f9f3ff}
+.bakery-cover{background:linear-gradient(180deg,var(--bakery-1),var(--bakery-2))}
+.bakery-cover .symbol{background:#fff1f7}
 
-  html{ scroll-behavior:smooth; }
-  body{
-    margin:0; background:var(--bg); color:var(--ink);
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  }
+/* Rezeptkarten */
+.recipe header{text-align:center;margin-bottom:8px}
+.recipe h1{font-family:'Playfair Display',serif;margin:.2rem 0 0}
+.meta{display:flex;gap:18px;flex-wrap:wrap;align-items:center;justify-content:center;color:#5a4e46;margin:8px 0 16px}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.metrics .m{border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:8px 10px;text-align:center;background:#fff}
+.two-col{display:grid;gap:22px;grid-template-columns:1.1fr .9fr}
+@media (max-width:860px){.two-col{grid-template-columns:1fr}}
+.card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 6px 16px rgba(0,0,0,.08)}
+.box{border-radius:14px;padding:18px}
+.box h3{margin:0 0 8px}
+.ingredients li,.steps li{margin:.35rem 0}
 
-  /* Scroll-Snap für "blättern" */
-  .book{
-    height: 100svh;
-    overflow-y: auto;
-    scroll-snap-type: y mandatory;
-  }
-  .page{
-    width: min(var(--maxw), 94%);
-    margin: 24px auto 42px;
-    padding: clamp(26px, 4vw, 48px);
-    border-radius: var(--radius);
-    background: white;
-    box-shadow: var(--shadow);
-    scroll-snap-align: start;
-  }
+/* Box-Farben pro Kategorie */
+.recipe.breakfast .box{background:var(--breakfast-1)}
+.recipe.main .box{background:var(--main-1)}
+.recipe.dessert .box{background:var(--dessert-1)}
+.recipe.bakery .box{background:var(--bakery-1)}
 
-  /* Deckblatt + TOC beige */
-  .page.cover, .page.toc { background: var(--beige-card); }
+/* Portionen */
+.controls{display:flex;gap:10px;align-items:center;justify-content:center;margin:8px 0 6px}
+.controls input[type=number]{width:92px;padding:.48rem .6rem;border:1px solid #d0bfa6;border-radius:10px;text-align:center;background:#fff;font:inherit}
+.controls output{min-width:2ch;text-align:right}
 
-  /* Cover */
-  .cover{
-    text-align:center;
-  }
-  .cover h1{
-    font-family:'Great Vibes',cursive;
-    font-size: clamp(3.2rem, 9vw, 5rem);
-    margin:0;
-    color:#4b4b4b;
-    text-shadow:2px 2px 4px rgba(0,0,0,.2);
-  }
-  .cover p{
-    font-family:'Playfair Display',serif;
-    font-size: clamp(1.1rem, 2.6vw, 1.6rem);
-    color:#7c7c7c; letter-spacing:.05em; margin:.6rem 0 0;
-  }
-  .gift-note{
-    margin-top: 1rem;
-    background: #fff;
-    border-radius: 14px;
-    padding: 14px 16px;
-    box-shadow: 0 6px 16px rgba(0,0,0,.06);
-    font-family:'Playfair Display',serif;
-  }
-
-  /* Inhaltsverzeichnis */
-  .toc h1{ margin:0 0 .6rem; font-family:'Playfair Display',serif; }
-  .toc .grid{
-    display:grid; gap:20px;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    margin-top: 10px;
-  }
-  .toc section{ background:#fff; border-radius:14px; padding:16px; box-shadow:0 6px 16px rgba(0,0,0,.06); }
-  .toc h2, .toc h3{ font-family:'Playfair Display',serif; margin:.2rem 0 .4rem; }
-  .toc ul{ margin:.2rem 0 0 1.1rem; }
-  .toc a{ text-decoration:none; }
-  .toc a:hover{ text-decoration:underline; }
-
-  /* Kategorie-Deckblätter (mit Icon im Kreis) */
-  .section-cover{
-    text-align:center; position:relative;
-  }
-  .symbol{
-    width:86px; height:86px; border-radius:999px;
-    display:grid; place-items:center;
-    font-size: 2rem; margin: 0 auto 10px;
-    background: #fff;
-    box-shadow: 0 6px 16px rgba(0,0,0,.08) inset, 0 6px 16px rgba(0,0,0,.06);
-  }
-  .section-cover h1{ font-family:'Playfair Display',serif; margin:.2rem 0 .4rem; }
-  .section-cover p{ margin:0; opacity:.8; }
-
-  /* Themenfarben je Kategorie */
-  .theme-breakfast .page            { background:#fffdfa; }
-  .theme-breakfast .section-cover   { background: var(--y-100); color: var(--y-ink); }
-  .theme-breakfast .card            { background: var(--y-200); color: var(--y-ink); }
-
-  .theme-mains .page                { background:#fbfffb; }
-  .theme-mains .section-cover       { background: var(--g-100); color: var(--g-ink); }
-  .theme-mains .card                { background: var(--g-200); color: var(--g-ink); }
-
-  .theme-dessert .page              { background:#fffdff; }
-  .theme-dessert .section-cover     { background: var(--l-100); color: var(--l-ink); }
-  .theme-dessert .card              { background: var(--l-200); color: var(--l-ink); }
-
-  .theme-bakery .page               { background:#fffdfd; }
-  .theme-bakery .section-cover      { background: var(--p-100); color: var(--p-ink); }
-  .theme-bakery .card               { background: var(--p-200); color: var(--p-ink); }
-
-  /* Rezeptkarten */
-  .recipe header{ text-align:center; }
-  .badge{
-    display:inline-block; padding:.28rem .6rem; border-radius:999px; font-weight:600; font-size:.9rem;
-    background:#fff; box-shadow:0 3px 8px rgba(0,0,0,.05);
-  }
-  .recipe h1{ font-family:'Playfair Display',serif; margin:.35rem 0 0; }
-  .meta{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; opacity:.8; }
-
-  .two-col{
-    display:grid; gap:18px; grid-template-columns: 1fr 1fr; margin-top: 12px;
-  }
-  @media (max-width: 760px){ .two-col{ grid-template-columns: 1fr; } }
-
-  .card{
-    border-radius: 14px; padding:18px; box-shadow: 0 6px 16px rgba(0,0,0,.06);
-  }
-  .card h3{ margin:.2rem 0 .6rem; }
-
-  .ingredients li, .steps li{ margin:.4rem 0; }
-
-  figure{ margin:14px 0 0; text-align:center; }
-  figure img{ max-width:100%; border-radius:14px; box-shadow:0 6px 16px rgba(0,0,0,.08); }
-  figcaption{ opacity:.75; margin-top:6px; }
-
-  /* Portionsregler */
-  .controls{
-    display:flex; gap:10px; align-items:center; justify-content:center; margin:.5rem 0 .2rem;
-  }
-  .controls input[type=number]{
-    width:88px; padding:.45rem .6rem; font:inherit; text-align:center;
-    border:1px solid #d0c2a8; border-radius:10px; background:#fff;
-  }
-
-  /* Pager (floating) */
-  .pager{
-    position: fixed; inset:auto 14px 14px auto; z-index: 1000;
-    display:flex; gap:8px; align-items:center;
-  }
-  .pager button{
-    border:0; border-radius:999px; width:44px; height:44px; cursor:pointer;
-    box-shadow:0 10px 24px rgba(0,0,0,.18); background:#fff;
-    font-size:1.1rem;
-  }
-  .pager .count{ background:#fff; padding:.4rem .7rem; border-radius:999px; font-weight:600; box-shadow:0 10px 24px rgba(0,0,0,.12); }
-  .jump-top{
-    position: fixed; right:14px; bottom:76px; z-index:1000;
-  }
-  .jump-top a{
-    display:inline-block; background:#fff; padding:.5rem .8rem; border-radius:999px; box-shadow:0 10px 24px rgba(0,0,0,.12); text-decoration:none;
-  }
-
-  footer{ text-align:center; color:#6f5c49; margin: 24px 0 40px; }
+/* Pager */
+.pager{position:sticky;bottom:12px;display:flex;gap:10px;justify-content:center;margin-top:14px}
+.btn, .pager button{border:1px solid rgba(0,0,0,.12);background:var(--btn-bg);color:var(--btn-ink);padding:.6rem .9rem;border-radius:999px;cursor:pointer;font-weight:600;box-shadow:0 6px 12px rgba(0,0,0,.06)}
+.btn:hover,.pager button:hover{filter:brightness(.98)}
+footer{text-align:center;color:#6f5c49;margin:26px 0 38px}
+.backlink{color:var(--link);text-decoration:none}
+.backlink:hover{text-decoration:underline}
 </style>
 </head>
 <body>
-
-<!-- Pager / Blättern -->
-<div class="pager" aria-label="Blättern">
-  <button id="prevPage" title="Vorherige Seite">←</button>
-  <span class="count" id="pageCount">1 / 1</span>
-  <button id="nextPage" title="Nächste Seite">→</button>
-</div>
-<div class="jump-top"><a href="#cover" title="Zum Deckblatt">↑</a></div>
-
-<main class="book" id="book">
-
-  <!-- Deckblatt (beige) -->
-  <section class="page cover" id="cover" aria-labelledby="title">
-    <h1 id="title">Meine Lieblingsrezepte</h1>
-    <p>Ein kleines Rezeptbuch – mit Liebe gemacht 💛</p>
-    <div class="gift-note">
-      Für meinen Lieblingsmenschen zum Geburtstag.  
-      Möge jede Seite nach dir duften und jede Zutat dich anlachen. 🥰
-    </div>
+<div class="snap">
+  <!-- Cover -->
+  <section class="page cover" id="cover">
+    <h1>Meine Lieblingsrezepte</h1>
+    <p>Ein Rezeptbuch für dich – zum Geburtstag, mit ganz viel Liebe 💛</p>
+    <p class="dedication">Für meinen Freund – viel Spaß beim Nachkochen!</p>
+    <div class="pager"><a class="btn" href="#toc">Zum Inhaltsverzeichnis</a></div>
   </section>
 
-  <!-- Inhaltsverzeichnis (beige, klickbar) -->
+  <!-- TOC -->
   <nav class="page toc" id="toc" aria-label="Inhaltsverzeichnis">
     <h1>Inhaltsverzeichnis</h1>
     <div class="grid">
       <section>
         <h2>Frühstück</h2>
         <ul>
-          <li><a href="#baguette">Baguette</a></li>
-          <!-- hier weitere Frühstück-Rezepte einfügen -->
+          <li><a href="#acai-bowl">Açaí Bowl</a></li>
+          <li><a href="#avocado-brot">Avocado-Brot</a></li>
         </ul>
       </section>
-
       <section>
         <h2>Hauptgerichte</h2>
         <ul>
-          <li><a href="#green-curry">Grünes Curry</a></li>
-          <!-- weitere Hauptgerichte -->
+          <li><a href="#auberginen-zucchini-lasagne">Auberginen-Zucchini-Lasagne</a></li>
+          <li><a href="#bohnenburger">Bohnenburger</a></li>
+          <li><a href="#brokkoli-salat">Brokkoli-Salat</a></li>
+          <li><a href="#bierteig">Bierteig (Grundrezept)</a></li>
         </ul>
       </section>
-
       <section>
         <h2>Nachtisch</h2>
         <ul>
-          <li><a href="#tiramisu">Tiramisu</a></li>
-          <!-- weitere Nachtische -->
+          <li><a href="#apfelringe">Apfelringe</a></li>
         </ul>
       </section>
-
       <section>
         <h2>Backen</h2>
         <ul>
-          <li><a href="#zimtschnecken">Zimtschnecken</a></li>
-          <!-- weitere Backrezepte -->
+          <li><a href="#blaetterteig-blume">Blätterteig-Blume mit Pesto</a></li>
+          <li><a href="#blaetterteig-sticks">Blätterteig-Sticks</a></li>
+          <li><a href="#baguette">Baguette</a></li>
         </ul>
       </section>
     </div>
   </nav>
 
-  <!-- Frühstück: Deckblatt + Rezepte -->
-  <div class="theme-breakfast">
-    <section class="page section-cover" id="fruehstueck">
-      <div class="symbol" aria-hidden="true">🥐</div>
-      <h1>Frühstück</h1>
-      <p>Sonnige Starts in den Tag – knusprig, warm & gemütlich</p>
-    </section>
+  <!-- Frühstück Deckblatt -->
+  <section class="page section-cover breakfast-cover">
+    <div class="symbol" aria-hidden="true">🥐</div>
+    <h1>Frühstück</h1>
+    <p>Start in den Tag – leicht & lecker</p>
+  </section>
 
-    <!-- Rezept: Baguette -->
-    <article class="page recipe" id="baguette" aria-labelledby="baguette-title">
-      <header>
-        <span class="badge">Rezept</span>
-        <h1 id="baguette-title">Baguette</h1>
-        <p class="meta">
-          <span>⏱ Zubereitungszeit: 1½ h</span>
-          <span>⏲️ Gesamtzeit: ~1 h 50 min</span>
-        </p>
-        <form class="controls" data-portion-base="2" onsubmit="return false">
-          <label for="portions-baguette">Portionen:</label>
-          <input type="number" id="portions-baguette" value="2" min="1" step="1" />
-        </form>
-      </header>
-
-      <div class="two-col">
-        <section class="card">
-          <h3>Zutaten</h3>
-          <ul class="ingredients">
-            <li data-unit="g"  data-base="250">250 g Mehl Type 550</li>
-            <li data-unit="ml" data-base="160">160 ml lauwarmes Wasser</li>
-            <li data-unit="g"  data-base="6">6 g Salz</li>
-            <li data-unit="g"  data-base="10" data-alt="trocken:3">10 g frische Hefe (oder 3 g Trockenhefe)</li>
-          </ul>
-        </section>
-        <section class="card">
-          <h3>Zubereitung</h3>
-          <ol class="steps">
-            <li>Hefe mit lauwarmem Wasser und 1 TL Zucker 10 Minuten aktivieren.</li>
-            <li>Teig 20 Minuten abgedeckt ruhen lassen.</li>
-            <li>Zu Baguettes formen und 60 Minuten gehen lassen.</li>
-            <li>Bei 200 °C (vorgeheizt) ca. 20 Minuten backen.</li>
-          </ol>
-        </section>
+  <!-- Açaí Bowl -->
+  <article class="page recipe breakfast" id="acai-bowl">
+    <header>
+      <h1>Açaí Bowl</h1>
+      <p class="meta">Fruchtig & cremig</p>
+      <div class="metrics">
+        <div class="m"><strong>Prep</strong><br>10&nbsp;min</div>
+        <div class="m"><strong>Total</strong><br>10&nbsp;min</div>
+        <div class="m"><strong>Portionen</strong><br><span data-servings="1">1</span></div>
       </div>
+      <form class="controls" onsubmit="return false">
+        <label for="p-acai">Portionen:</label>
+        <input type="number" id="p-acai" value="1" min="1" step="1" data-target="acai-bowl">
+      </form>
+    </header>
+    <div class="two-col">
+      <section class="box card">
+        <h3>Zutaten</h3>
+        <ul class="ingredients">
+          <li data-base="2" data-unit="EL">2 EL Açaí-Pulver</li>
+          <li data-base="1" data-unit="Stk">1 Banane</li>
+          <li data-base="100" data-unit="g">100 g gefrorene Himbeeren</li>
+          <li data-base="1" data-unit="EL">1 EL Agavensirup</li>
+          <li data-base="1" data-unit="TL">1 TL Kakao</li>
+          <li data-base="120" data-unit="ml">120 ml Milch</li>
+        </ul>
+      </section>
+      <section class="box card">
+        <h3>Zubereitung</h3>
+        <ol class="steps">
+          <li>Alle Zutaten fein pürieren.</li>
+          <li>Bei Bedarf Milchmenge anpassen, in Schüssel füllen und servieren.</li>
+        </ol>
+      </section>
+    </div>
+    <p class="pager"><a class="btn" href="#toc">← Inhaltsverzeichnis</a></p>
+  </article>
 
-      <figure>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Baguette_03.jpg" alt="Frisch gebackenes Baguette" loading="lazy">
-        <figcaption>Knusprig & luftig</figcaption>
-      </figure>
-
-      <p><a href="#toc">← Zurück zum Inhaltsverzeichnis</a></p>
-    </article>
-  </div>
-
-  <!-- Hauptgerichte -->
-  <div class="theme-mains">
-    <section class="page section-cover" id="hauptgerichte">
-      <div class="symbol" aria-hidden="true">🥗</div>
-      <h1>Hauptgerichte</h1>
-      <p>Herzhaft, bunt & satt – die Stars auf dem Tisch</p>
-    </section>
-
-    <!-- Rezept: Grünes Curry -->
-    <article class="page recipe" id="green-curry" aria-labelledby="green-curry-title">
-      <header>
-        <span class="badge">Rezept</span>
-        <h1 id="green-curry-title">Grünes Curry</h1>
-        <p class="meta"><span>⏱ 30 min</span><span>🔥 mild–mittel</span></p>
-        <form class="controls" data-portion-base="2" onsubmit="return false">
-          <label for="portions-green-curry">Portionen:</label>
-          <input type="number" id="portions-green-curry" value="2" min="1" step="1" />
-        </form>
-      </header>
-
-      <div class="two-col">
-        <section class="card">
-          <h3>Zutaten</h3>
-          <ul class="ingredients">
-            <li data-unit="g"  data-base="250">250 g Gemüse-Mix (Brokkoli, Paprika, Zucchini)</li>
-            <li data-unit="ml" data-base="300">300 ml Kokosmilch</li>
-            <li data-unit="g"  data-base="150">150 g Tofu oder Hähnchen</li>
-            <li data-unit="EL" data-base="2">2 EL grüne Currypaste</li>
-            <li data-unit="g"  data-base="150">150 g Jasminreis (Beilage)</li>
-          </ul>
-        </section>
-        <section class="card">
-          <h3>Zubereitung</h3>
-          <ol class="steps">
-            <li>Currypaste kurz in Öl anrösten.</li>
-            <li>Kokosmilch zugeben, aufkochen.</li>
-            <li>Gemüse & Tofu/Hähnchen 8–10 Minuten garen.</li>
-            <li>Mit Reis servieren, mit Limette & Kräutern toppen.</li>
-          </ol>
-        </section>
+  <!-- Avocado-Brot -->
+  <article class="page recipe breakfast" id="avocado-brot">
+    <header>
+      <h1>Avocado-Brot</h1>
+      <div class="metrics">
+        <div class="m"><strong>Prep</strong><br>10&nbsp;min</div>
+        <div class="m"><strong>Total</strong><br>10&nbsp;min</div>
+        <div class="m"><strong>Portionen</strong><br><span data-servings="2">2</span></div>
       </div>
+      <form class="controls" onsubmit="return false">
+        <label for="p-avobrot">Portionen:</label>
+        <input type="number" id="p-avobrot" value="2" min="1" step="1" data-target="avocado-brot">
+      </form>
+    </header>
+    <div class="two-col">
+      <section class="box card">
+        <h3>Zutaten</h3>
+        <ul class="ingredients">
+          <li data-base="1" data-unit="Stk">1 Avocado</li>
+          <li data-base="2" data-unit="Scheiben">2 Scheiben Brot</li>
+          <li data-base="1" data-unit="EL">1 EL Olivenöl</li>
+          <li data-base="1" data-unit="TL">1 TL Limettensaft</li>
+          <li data-base="4" data-unit="Stk">4 Cherrytomaten</li>
+          <li data-base="2" data-unit="EL">2 EL Granatapfelkerne</li>
+          <li data-base="1" data-unit="Handvoll">1 Handvoll Rucola</li>
+          <li data-base="2" data-unit="Stk">2 Radieschen</li>
+          <li data-base="1" data-unit="TL">1 TL Avocado-Gewürz</li>
+          <li data-base="0.5" data-unit="TL">½ TL Salz</li>
+          <li data-base="0.25" data-unit="TL">¼ TL Pfeffer</li>
+          <li data-base="0.5" data-unit="Zehe">½ Knoblauchzehe</li>
+        </ul>
+      </section>
+      <section class="box card">
+        <h3>Zubereitung</h3>
+        <ol class="steps">
+          <li>Avocado zerdrücken, mit Öl, Limettensaft und Gewürzen abschmecken.</li>
+          <li>Brot toasten, Avocadocreme darauf, mit Tomaten, Rucola, Radieschen und Granatapfel bestreuen.</li>
+        </ol>
+      </section>
+    </div>
+    <p class="pager"><a class="btn" href="#toc">← Inhaltsverzeichnis</a></p>
+  </article>
 
-      <figure>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Green_curry_with_chicken%2C_Thai_restaurant%2C_San_Francisco.jpg" alt="Grünes Curry in Schale" loading="lazy">
-        <figcaption>Frisch & grün</figcaption>
-      </figure>
+  <!-- Hauptgerichte Deckblatt -->
+  <section class="page section-cover main-cover">
+    <div class="symbol" aria-hidden="true">🍲</div>
+    <h1>Hauptgerichte</h1>
+    <p>Herzhaft & sättigend</p>
+  </section>
 
-      <p><a href="#toc">← Zurück zum Inhaltsverzeichnis</a></p>
-    </article>
-  </div>
-
-  <!-- Nachtisch -->
-  <div class="theme-dessert">
-    <section class="page section-cover" id="nachtisch">
-      <div class="symbol" aria-hidden="true">🍮</div>
-      <h1>Nachtisch</h1>
-      <p>Süße Umarmungen – Löffel für Löffel Glück</p>
-    </section>
-
-    <article class="page recipe" id="tiramisu" aria-labelledby="tiramisu-title">
-      <header>
-        <span class="badge">Rezept</span>
-        <h1 id="tiramisu-title">Tiramisu</h1>
-        <p class="meta"><span>⏱ 25 min + Kühlzeit</span></p>
-        <form class="controls" data-portion-base="6" onsubmit="return false">
-          <label for="portions-tiramisu">Portionen:</label>
-          <input type="number" id="portions-tiramisu" value="6" min="1" step="1" />
-        </form>
-      </header>
-
-      <div class="two-col">
-        <section class="card">
-          <h3>Zutaten</h3>
-          <ul class="ingredients">
-            <li data-unit="g"  data-base="500">500 g Mascarpone</li>
-            <li data-unit="ml" data-base="200">200 ml starker Kaffee</li>
-            <li data-unit="g"  data-base="200">200 g Löffelbiskuit</li>
-            <li data-unit="EL" data-base="3">3 EL Zucker</li>
-            <li data-unit="g"  data-base="20">20 g Kakaopulver</li>
-          </ul>
-        </section>
-        <section class="card">
-          <h3>Zubereitung</h3>
-          <ol class="steps">
-            <li>Mascarpone mit Zucker cremig rühren.</li>
-            <li>Biskuits kurz in Kaffee tauchen, schichten.</li>
-            <li>Creme darüber, wiederholen. Kühlen.</li>
-            <li>Mit Kakao bestäuben & servieren.</li>
-          </ol>
-        </section>
+  <!-- Auberginen-Zucchini-Lasagne -->
+  <article class="page recipe main" id="auberginen-zucchini-lasagne">
+    <header>
+      <h1>Auberginen-Zucchini-Lasagne</h1>
+      <div class="metrics">
+        <div class="m"><strong>Prep</strong><br>30&nbsp;min</div>
+        <div class="m"><strong>Total</strong><br>1&nbsp;h&nbsp;15&nbsp;min</div>
+        <div class="m"><strong>Portionen</strong><br><span data-servings="4">4</span></div>
       </div>
+      <form class="controls"><label for="p-lasagne">Portionen:</label>
+        <input type="number" id="p-lasagne" value="4" min="2" step="1" data-target="auberginen-zucchini-lasagne">
+      </form>
+    </header>
+    <div class="two-col">
+      <section class="box card">
+        <h3>Zutaten</h3>
+        <ul class="ingredients">
+          <li data-base="500" data-unit="g">500 g Zucchini</li>
+          <li data-base="500" data-unit="g">500 g Aubergine</li>
+          <li data-base="3" data-unit="Dose">3 Dosen passierte Tomaten</li>
+          <li data-base="1" data-unit="Bund">1 Bund Basilikum</li>
+          <li data-base="2" data-unit="Zehen">2 Knoblauchzehen</li>
+          <li data-base="200" data-unit="g">200 g Bechamelsauce/Crème fraîche</li>
+          <li data-base="200" data-unit="g">200 g Lasagneblätter</li>
+          <li data-base="60" data-unit="g">60 g Parmesan, frisch gerieben</li>
+          <li data-base="1" data-unit="EL">1 EL Olivenöl</li>
+          <li data-base="1" data-unit="TL">1 TL Oregano</li>
+          <li data-base="0.5" data-unit="TL">½ TL Salz</li>
+          <li data-base="0.25" data-unit="TL">¼ TL Pfeffer</li>
+        </ul>
+      </section>
+      <section class="box card">
+        <h3>Zubereitung</h3>
+        <ol class="steps">
+          <li>Knoblauch in Öl anschwitzen. Paprika-Tomaten-Mischung (optional) kurz rühren, mit passierten Tomaten aufgießen, 20&nbsp;min köcheln. Basilikum, Oregano, Salz & Pfeffer zugeben.</li>
+          <li>Zucchini in Scheiben, Auberginen salzen, abtupfen, in Öl jeweils ~5&nbsp;min anbraten.</li>
+          <li>Form schichten: Lasagneblätter → Aubergine → Tomatensauce → Bechamel → Blätter → Zucchini → Sauce → Blätter → Bechamel → Parmesan.</li>
+          <li>Bei 190&nbsp;°C O/U 45–60&nbsp;min goldbraun backen.</li>
+        </ol>
+      </section>
+    </div>
+    <p class="pager"><a class="btn" href="#toc">← Inhaltsverzeichnis</a></p>
+  </article>
 
-      <figure>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Tiramisu_-_Raffaele_Diomede.jpg" alt="Tiramisu in Glasschale" loading="lazy">
-        <figcaption>Cremig & himmlisch</figcaption>
-      </figure>
-
-      <p><a href="#toc">← Zurück zum Inhaltsverzeichnis</a></p>
-    </article>
-  </div>
-
-  <!-- Backen -->
-  <div class="theme-bakery">
-    <section class="page section-cover" id="backen">
-      <div class="symbol" aria-hidden="true">🧁</div>
-      <h1>Backen</h1>
-      <p>Duft aus dem Ofen – Zimt, Vanille & ganz viel Liebe</p>
-    </section>
-
-    <article class="page recipe" id="zimtschnecken" aria-labelledby="zimt-title">
-      <header>
-        <span class="badge">Rezept</span>
-        <h1 id="zimt-title">Zimtschnecken</h1>
-        <p class="meta"><span>⏱ 20 min + Gehzeit</span></p>
-        <form class="controls" data-portion-base="12" onsubmit="return false">
-          <label for="portions-zimt">Stückzahl:</label>
-          <input type="number" id="portions-zimt" value="12" min="1" step="1" />
-        </form>
-      </header>
-
-      <div class="two-col">
-        <section class="card">
-          <h3>Zutaten</h3>
-          <ul class="ingredients">
-            <li data-unit="g"  data-base="500">500 g Mehl</li>
-            <li data-unit="ml" data-base="250">250 ml Milch</li>
-            <li data-unit="g"  data-base="80">80 g Zucker</li>
-            <li data-unit="g"  data-base="75">75 g Butter</li>
-            <li data-unit="g"  data-base="20" data-alt="trocken:7">20 g frische Hefe (oder 7 g Trockenhefe)</li>
-            <li data-unit="TL" data-base="2">2 TL Zimt</li>
-          </ul>
-        </section>
-        <section class="card">
-          <h3>Zubereitung</h3>
-          <ol class="steps">
-            <li>Teig kneten, 60–90 Minuten gehen lassen.</li>
-            <li>Ausrollen, mit Butter-Zucker-Zimt bestreichen, aufrollen.</li>
-            <li>Schnecken schneiden, 30 Minuten gehen lassen.</li>
-            <li>Bei 180 °C ca. 20 Minuten backen. Optional glasieren.</li>
-          </ol>
-        </section>
+  <!-- Bohnenburger -->
+  <article class="page recipe main" id="bohnenburger">
+    <header>
+      <h1>Bohnenburger</h1>
+      <div class="metrics">
+        <div class="m"><strong>Prep</strong><br>15&nbsp;min</div>
+        <div class="m"><strong>Total</strong><br>35&nbsp;min</div>
+        <div class="m"><strong>Ergibt</strong><br><span data-servings="6">6 Patties</span></div>
       </div>
+      <form class="controls"><label for="p-bohnen">Patties:</label>
+        <input type="number" id="p-bohnen" value="6" min="2" step="1" data-target="bohnenburger">
+      </form>
+    </header>
+    <div class="two-col">
+      <section class="box card">
+        <h3>Zutaten</h3>
+        <ul class="ingredients">
+          <li data-base="400" data-unit="g">400 g rote Bohnen (Dose, abgetropft)</li>
+          <li data-base="400" data-unit="g">400 g Kichererbsen (Dose, abgetropft)</li>
+          <li data-base="1" data-unit="Zehe">1 Knoblauchzehe</li>
+          <li data-base="1" data-unit="TL">1 TL Paprikapulver</li>
+          <li data-base="1" data-unit="TL">1 TL Salz</li>
+          <li data-base="1" data-unit="Stk">1 Ei</li>
+          <li data-base="3" data-unit="EL">3 EL Mehl</li>
+          <li data-base="6" data-unit="EL">6 EL Paniermehl</li>
+          <li data-base="2" data-unit="EL">2 EL Öl zum Braten</li>
+        </ul>
+      </section>
+      <section class="box card">
+        <h3>Zubereitung</h3>
+        <ol class="steps">
+          <li>Bohnen & Kichererbsen abtropfen und pürieren. Mit Salz, Knoblauch, Paprika würzen.</li>
+          <li>Ei, Mehl und Paniermehl einarbeiten. 30&nbsp;min kalt ruhen lassen.</li>
+          <li>Patties formen und in Öl bei mittlerer Hitze goldbraun braten.</li>
+        </ol>
+      </section>
+    </div>
+    <p class="pager"><a class="btn" href="#toc">← Inhaltsverzeichnis</a></p>
+  </article>
 
-      <figure>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Kanelbullar.jpg" alt="Zimtschnecken auf Blech" loading="lazy">
-        <figcaption>Wolkenweich & zimtig</figcaption>
-      </figure>
+  <!-- Brokkoli-Salat -->
+  <article class="page recipe main" id="brokkoli-salat">
+    <header>
+      <h1>Brokkoli-Salat</h1>
+      <div class="metrics">
+        <div class="m"><strong>Prep</strong><br>5&nbsp;min</div>
+        <div class="m"><strong>Total</strong><br>5&nbsp;min</div>
+        <div class="m"><strong>Portionen</strong><br><span data-servings="6">6</span></div>
+      </div>
+      <form class="controls"><label for="p-brokkoli">Portionen:</label>
+        <input type="number" id="p-brokkoli" value="6" min="1" step="1" data-target="brokkoli-salat">
+      </form>
+    </header>
+    <div class="two-col">
+      <section class="box card">
+        <h3>Zutaten</h3>
+        <ul class="ingredients">
+          <li data-base="250" data-unit="g">250 g Brokkoli (roh, in Röschen fein gehackt)</li>
+          <li data-base="1" data-unit="Stk">1 rote Paprika</li>
+          <li data-base="1" data-unit="Stk">1 Apfel</li>
+          <li data-base="25" data-unit="g">25 g Olivenöl</li>
+          <li data-base="30" data-unit="g">30 g Pinienkerne (geröstet)</li>
+          <li data-base="1" data-unit="EL">1 EL Zitronensaft</li>
+          <li data-base="0.5" data-unit="TL">½ TL Salz</li>
+          <li data-base="0.25" data-unit="TL">¼ TL Pfeffer</li>
+        </ul>
+      </section>
+      <section class="box card">
+        <h3>Zubereitung</h3>
+        <ol class="steps">
+          <li>Brokkoli sehr fein hacken, Paprika & Apfel würfeln.</li>
+          <li>Mit Öl, Zitronensaft, Salz, Pfeffer mischen; Pinienkerne unterheben.</li>
+        </ol>
+      </section>
+    </div>
+    <p class="pager"><a class="btn" href="#toc">← Inhaltsverzeichnis</a></p>
+  </article>
 
-      <p><a href="#toc">← Zurück zum Inhaltsverzeichnis</a></p>
-    </article>
-  </div>
+  <!-- Bierteig -->
+  <article class="page recipe main" id="bierteig">
+    <header>
+      <h1>Bierteig (Grundrezept)</h1>
+      <div class="metrics">
+        <div class="m"><strong>Prep</strong><br>10&nbsp;min</div>
+        <div class="m"><strong>Total</strong><br>10&nbsp;min</div>
+        <div class="m"><strong>Portionen</strong><br><span data-servings="4">4</span></div>
+      </div>
+      <form class="controls"><label for="p-bier">Portionen:</label>
+        <input type="number" id="p-bier" value="4" min="1" step="1" data-target="bierteig">
+      </form>
+    </header>
+    <div class="two-col">
+      <section class="box card">
+        <h3>Zutaten</h3>
+        <ul class="ingredients">
+          <li data-base="100" data-unit="g">100 g Mehl</li>
+          <li data-base="100" data-unit="g">100 g Speisestärke</li>
+          <li data-base="1" data-unit="TL">1 TL Backpulver</li>
+          <li data-base="2" data-unit="Stk">2 Eigelb</li>
+          <li data-base="240" data-unit="ml">240 ml eiskaltes Bier</li>
+          <li data-base="0.75" data-unit="TL">¾ TL Salz</li>
+          <li data-base="0.25" data-unit="TL">¼ TL Pfeffer</li>
+          <li data-base="500" data-unit="ml">Öl zum Frittieren (Richtwert)</li>
+        </ul>
+      </section>
+      <section class="box card">
+        <h3>Zubereitung</h3>
+        <ol class="steps">
+          <li>Trockene Zutaten mischen, Eigelb und Bier kurz unterrühren.</li>
+          <li>Öl auf ~170&nbsp;°C erhitzen. Lebensmittel in Teig tauchen und goldbraun ausbacken.</li>
+        </ol>
+      </section>
+    </div>
+    <p class="pager"><a class="btn" href="#toc">← Inhaltsverzeichnis</a></p>
+  </article>
 
-  <footer class="page" aria-hidden="true">
-    © <span id="year"></span> – Lieblingsrezepte
-  </footer>
+  <!-- Nachtisch Deckblatt -->
+  <section class="page section-cover dessert-cover">
+    <div class="symbol" aria-hidden="true">🍮</div>
+    <h1>Nachtisch</h1>
+    <p>Süße Momente</p>
+  </section>
 
-</main>
+  <!-- Apfelringe -->
+  <article class="page recipe dessert" id="apfelringe">
+    <header>
+      <h1>Apfelringe</h1>
+      <div class="metrics">
+        <div class="m"><strong>Prep</strong><br>15&nbsp;min</div>
+        <div class="m"><strong>Total</strong><br>30&nbsp;min</div>
+        <div class="m"><strong>Portionen</strong><br><span data-servings="4">4</span></div>
+      </div>
+      <form class="controls"><label for="p-apfel">Portionen:</label>
+        <input type="number" id="p-apfel" value="4" min="1" step="1" data-target="apfelringe">
+      </form>
+    </header>
+    <div class="two-col">
+      <section class="box card">
+        <h3>Zutaten</h3>
+        <ul class="ingredients">
+          <li data-base="4" data-unit="Stk">4 Äpfel</li>
+          <li data-base="1" data-unit="Pkg">1 Pkg Blätterteig</li>
+          <li data-base="1" data-unit="Stk">1 Eigelb</li>
+          <li data-base="1" data-unit="EL">1 EL Milch</li>
+          <li data-base="2" data-unit="EL">2 EL Puderzucker</li>
+          <li data-base="1" data-unit="TL">1 TL Zimt</li>
+          <li data-base="1" data-unit="EL">1 EL Zucker</li>
+        </ul>
+      </section>
+      <section class="box card">
+        <h3>Zubereitung</h3>
+        <ol class="steps">
+          <li>Pro Apfel einen Blätterteig verwenden (Streifen schneiden).</li>
+          <li>Äpfel quer schneiden, Kerngehäuse ausstechen, ringförmig mit Teig umwickeln.</li>
+          <li>Eigelb, Milch, Puderzucker als Glasur verrühren, Ringe bestreichen und mit Zimt-Zucker bestreuen.</li>
+          <li>Bei 200&nbsp;°C O/U ca. 20&nbsp;min goldbraun backen.</li>
+        </ol>
+      </section>
+    </div>
+    <p class="pager"><a class="btn" href="#toc">← Inhaltsverzeichnis</a></p>
+  </article>
+
+  <!-- Backen Deckblatt -->
+  <section class="page section-cover bakery-cover">
+    <div class="symbol" aria-hidden="true">🥖</div>
+    <h1>Backen</h1>
+    <p>Herzhafte Teige & Teilchen</p>
+  </section>
+
+  <!-- Blätterteig-Blume -->
+  <article class="page recipe bakery" id="blaetterteig-blume">
+    <header>
+      <h1>Blätterteig-Blume mit Pesto</h1>
+      <div class="metrics">
+        <div class="m"><strong>Prep</strong><br>25&nbsp;min</div>
+        <div class="m"><strong>Total</strong><br>50&nbsp;min</div>
+        <div class="m"><strong>Portionen</strong><br><span data-servings="8">8</span></div>
+      </div>
+      <form class="controls"><label for="p-blume">Portionen:</label>
+        <input type="number" id="p-blume" value="8" min="2" step="1" data-target="blaetterteig-blume">
+      </form>
+    </header>
+    <div class="two-col">
+      <section class="box card">
+        <h3>Zutaten</h3>
+        <ul class="ingredients">
+          <li data-base="2" data-unit="Stk">2 runde Blätterteige (Ø ~30 cm)</li>
+          <li data-base="1" data-unit="EL">Mehl zum Bestäuben</li>
+          <li data-base="240" data-unit="g">240 g Ricotta</li>
+          <li data-base="240" data-unit="g">240 g Pesto</li>
+        </ul>
+      </section>
+      <section class="box card">
+        <h3>Zubereitung</h3>
+        <ol class="steps">
+          <li>Ofen auf 200&nbsp;°C vorheizen. Blech bemehlen.</li>
+          <li>Teig mit Ricotta, dann Pesto bestreichen. Glas mittig platzieren, in 16 Stücke schneiden.</li>
+          <li>Jedes Stück 2× eindrehen, Enden zusammendrücken. 25–30&nbsp;min goldbraun backen.</li>
+        </ol>
+      </section>
+    </div>
+    <p class="pager"><a class="btn" href="#toc">← Inhaltsverzeichnis</a></p>
+  </article>
+
+  <!-- Blätterteig-Sticks -->
+  <article class="page recipe bakery" id="blaetterteig-sticks">
+    <header>
+      <h1>Blätterteig-Sticks</h1>
+      <div class="metrics">
+        <div class="m"><strong>Prep</strong><br>10&nbsp;min</div>
+        <div class="m"><strong>Total</strong><br>25&nbsp;min</div>
+        <div class="m"><strong>Portionen</strong><br><span data-servings="4">4</span></div>
+      </div>
+      <form class="controls"><label for="p-sticks">Portionen:</label>
+        <input type="number" id="p-sticks" value="4" min="1" step="1" data-target="blaetterteig-sticks">
+      </form>
+    </header>
+    <div class="two-col">
+      <section class="box card">
+        <h3>Zutaten</h3>
+        <ul class="ingredients">
+          <li data-base="1" data-unit="Pkg">1 Pkg Blätterteig</li>
+          <li data-base="4" data-unit="EL">4 EL Tomatensauce <em>oder</em> Pesto</li>
+          <li data-base="60" data-unit="g">60 g Käse (gerieben)</li>
+          <li data-base="1" data-unit="EL">1 EL Öl</li>
+          <li data-base="0.5" data-unit="TL">½ TL Salz</li>
+          <li data-base="0.25" data-unit="TL">¼ TL Pfeffer</li>
+        </ul>
+      </section>
+      <section class="box card">
+        <h3>Zubereitung</h3>
+        <ol class="steps">
+          <li>Blätterteig ausrollen, bestreichen, belegen. Halbieren, längs in Streifen schneiden.</li>
+          <li>Streifen eindrehen. Bei 200&nbsp;°C ca. 15&nbsp;min backen.</li>
+        </ol>
+      </section>
+    </div>
+    <p class="pager"><a class="btn" href="#toc">← Inhaltsverzeichnis</a></p>
+  </article>
+
+  <!-- Baguette -->
+  <article class="page recipe bakery" id="baguette">
+    <header>
+      <h1>Baguette</h1>
+      <div class="metrics">
+        <div class="m"><strong>Prep</strong><br>20&nbsp;min</div>
+        <div class="m"><strong>Total</strong><br>1&nbsp;h&nbsp;50&nbsp;min</div>
+        <div class="m"><strong>Ergibt</strong><br><span data-servings="2">2 Baguettes</span></div>
+      </div>
+      <form class="controls"><label for="p-baguette">Baguettes:</label>
+        <input type="number" id="p-baguette" value="2" min="1" step="1" data-target="baguette">
+      </form>
+    </header>
+    <div class="two-col">
+      <section class="box card">
+        <h3>Zutaten</h3>
+        <ul class="ingredients">
+          <li data-base="250" data-unit="g">250 g Mehl Type&nbsp;550</li>
+          <li data-base="160" data-unit="ml">160 ml lauwarmes Wasser</li>
+          <li data-base="6" data-unit="g">6 g Salz</li>
+          <li data-base="10" data-unit="g" data-alt="trocken:3">10 g frische Hefe (oder 3 g Trockenhefe)</li>
+          <li data-base="1" data-unit="TL">1 TL Zucker (für Hefe)</li>
+        </ul>
+      </section>
+      <section class="box card">
+        <h3>Zubereitung</h3>
+        <ol class="steps">
+          <li>Hefe mit lauwarmem Wasser & Zucker 10&nbsp;min aktivieren.</li>
+          <li>Teig 20&nbsp;min gehen lassen, dann formen und 60&nbsp;min gehen lassen.</li>
+          <li>Bei 200&nbsp;°C (vorgeheizt) ca. 20&nbsp;min backen.</li>
+        </ol>
+      </section>
+    </div>
+    <p class="pager"><a class="btn" href="#toc">← Inhaltsverzeichnis</a></p>
+  </article>
+
+  <footer>© <span id="year"></span> – Lieblingsrezepte</footer>
+</div>
 
 <script>
-  // Jahr
-  document.getElementById('year').textContent = new Date().getFullYear();
+document.getElementById('year').textContent = new Date().getFullYear();
 
-  // Portions-Skalierung (generisch)
-  const nf = new Intl.NumberFormat('de-DE', { maximumFractionDigits: 0 });
-  function scaleRecipe(formEl){
-    const base = parseFloat(formEl.dataset.portionBase || '1');
-    const current = Math.max(1, parseInt(formEl.querySelector('input[type=number]').value || base, 10));
-    formEl.querySelector('input').value = current;
+// Taste ←/→: zur vorherigen / nächsten Seite springen
+(function keyboardPager(){
+  const pages = [...document.querySelectorAll('.page')];
+  const ids = pages.map(p => '#' + (p.id || '')).map((id,i)=> pages[i].id ? '#'+pages[i].id : null).filter(Boolean);
+  document.addEventListener('keydown', e=>{
+    if(!['ArrowLeft','ArrowRight'].includes(e.key)) return;
+    const visible = pages.reduce((best,p)=>{
+      const r = p.getBoundingClientRect();
+      const visiblePx = Math.max(0, Math.min(window.innerHeight, r.bottom) - Math.max(0, r.top));
+      return visiblePx > (best.px||-1) ? {el:p, px:visiblePx} : best;
+    },{}).el;
+    const idx = pages.indexOf(visible);
+    const next = e.key==='ArrowRight' ? pages[idx+1] : pages[idx-1];
+    if(next) next.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+})();
 
-    const page = formEl.closest('.recipe');
-    page.querySelectorAll('.ingredients li').forEach(li=>{
-      const b = parseFloat(li.getAttribute('data-base'));
-      if (isNaN(b)) return;
-      const unit = li.getAttribute('data-unit') || '';
-      const alt  = li.getAttribute('data-alt'); // z.B. "trocken:3"
-
-      const text = li.textContent.replace(/^\s*\d+[.,]?\d*\s*\w*\s*/,'').replace(/\(oder.*\)$/,'').trim();
-      const main = Math.round(b * current / base);
-      let out = `${nf.format(main)}\u202F${unit} ${text}`;
-
-      if (alt) {
-        const [label, altBaseStr] = alt.split(':'); // label ungenutzt
-        const altBase = parseFloat(altBaseStr);
-        const altAmt = Math.round(altBase * current / base);
-        out += ` (oder ${nf.format(altAmt)}\u202Fg Trockenhefe)`;
+// Portionsskalierung
+(function scaling(){
+  const numberFmt = new Intl.NumberFormat('de-DE',{maximumFractionDigits:0});
+  function updateFor(sectionId, value){
+    const baseServings = parseInt(document.querySelector('#'+sectionId+' .metrics [data-servings]')?.dataset.servings || '1',10);
+    const factor = Math.max(1, parseInt(value,10)) / baseServings;
+    document.querySelectorAll('#'+sectionId+' .ingredients li').forEach(li=>{
+      const base = parseFloat(li.dataset.base);
+      const unit = li.dataset.unit ? li.dataset.unit+' ' : '';
+      const hasAlt = li.dataset.alt; // e.g. "trocken:3"
+      const raw = li.textContent.replace(/^\s*\d+[.,]?\d*\s*\S*\s*/,'');
+      let main = isNaN(base) ? null : Math.round(base*factor);
+      let text = main ? `${numberFmt.format(main)} ${unit}${raw}` : li.textContent;
+      if(hasAlt){
+        const [label,altBaseStr] = hasAlt.split(':'); // "trocken","3"
+        const alt = Math.round(parseFloat(altBaseStr)*factor);
+        text = text.replace(/\(oder.*\)/,'').trim();
+        text += ` (oder ${numberFmt.format(alt)} g Trockenhefe)`;
       }
-      li.textContent = out;
+      li.textContent = text;
     });
   }
-
-  // Init für alle Portion-Formulare
-  document.querySelectorAll('form.controls').forEach(form=>{
-    scaleRecipe(form);
-    form.querySelector('input').addEventListener('input', ()=>scaleRecipe(form));
+  document.querySelectorAll('input[type=number][data-target]').forEach(inp=>{
+    inp.addEventListener('input', e=> updateFor(e.target.dataset.target, e.target.value));
+    // Initial
+    updateFor(inp.dataset.target, inp.value);
   });
-
-  // Blätter-Funktion (Scroll-Snap + Buttons + Pfeiltasten)
-  const book = document.getElementById('book');
-  const pages = [...book.querySelectorAll('.page, .section-cover')]; // alle sichtbaren "Seiten"
-  const nextBtn = document.getElementById('nextPage');
-  const prevBtn = document.getElementById('prevPage');
-  const pageCountEl = document.getElementById('pageCount');
-
-  function currentPageIndex(){
-    let idx = 0;
-    let minDist = Infinity;
-    const top = book.scrollTop;
-    pages.forEach((p,i)=>{
-      const d = Math.abs(p.offsetTop - top);
-      if (d < minDist){ minDist = d; idx = i; }
-    });
-    return idx;
-  }
-  function gotoPage(i){
-    i = Math.max(0, Math.min(i, pages.length-1));
-    book.scrollTo({ top: pages[i].offsetTop, behavior: 'smooth' });
-    updateCounter(i);
-  }
-  function updateCounter(i = currentPageIndex()){
-    pageCountEl.textContent = (i+1) + ' / ' + pages.length;
-  }
-  nextBtn.addEventListener('click', ()=>gotoPage(currentPageIndex()+1));
-  prevBtn.addEventListener('click', ()=>gotoPage(currentPageIndex()-1));
-  book.addEventListener('scroll', ()=>{ requestAnimationFrame(()=>updateCounter()); });
-  document.addEventListener('keydown', (e)=>{
-    if (e.key === 'ArrowRight') gotoPage(currentPageIndex()+1);
-    if (e.key === 'ArrowLeft')  gotoPage(currentPageIndex()-1);
-  });
-  updateCounter();
-
-  // TOC: smooth scroll per href (default) – nichts weiter nötig
+})();
 </script>
 </body>
 </html>
