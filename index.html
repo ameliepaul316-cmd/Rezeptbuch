@@ -1,234 +1,88 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Rezeptbuch – Demo mit Bild-Platzhaltern</title>
-<style>
-  :root{
-    --bg:#faf9f7;
-    --ink:#222;
-    --muted:#666;
-    --brand:#0aa;         /* Türkis-Akzent */
-    --paper:#fff;
-    --line:#e8e5e1;
-  }
-  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif}
-  .wrap{max-width:920px;margin:auto;padding:24px}
-  header{padding:24px 0 8px}
-  h1{margin:0 0 8px;font-size:clamp(28px,4.5vw,40px);letter-spacing:.2px}
-  .sub{color:var(--muted);margin:0 0 24px}
-  .toc, .card{
-    background:var(--paper);
-    border:1px solid var(--line);
-    border-radius:14px;
-    box-shadow: 0 1px 0 rgba(0,0,0,.03);
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meine Lieblingsrezepte</title>
 
-  /* Inhaltsverzeichnis */
-  .toc{padding:20px}
-  .toc h2{margin:0 0 12px;font-size:22px}
-  .toc ul{list-style:none;margin:0;padding:0;columns:2;gap:24px}
-  .toc a{display:block;padding:8px 10px;margin:2px 0;border-radius:10px;text-decoration:none;color:var(--ink);border:1px dashed transparent}
-  .toc a:hover{border-color:var(--brand);background:#f3fffd}
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
 
-  /* Rezeptseiten */
-  .recipe{margin:28px 0;padding:22px}
-  .recipe h2{margin:6px 0 10px;font-size:26px}
-  .meta{color:var(--muted);font-size:14px;margin-bottom:12px}
-  .grid{display:grid;grid-template-columns: 1fr 2fr;gap:18px}
-  @media (max-width:800px){.grid{grid-template-columns:1fr}}
-  h3{margin:14px 0 8px;font-size:18px}
-  ul,ol{margin:8px 0 0 18px}
-  .pill{display:inline-block;font-size:12px;padding:5px 9px;border:1px solid var(--line);border-radius:999px;color:var(--muted);margin:2px 6px 0 0}
-  .back{
-    position: fixed;      /* unten links, immer sichtbar */
-    left: 16px; bottom: 16px;
-    background:var(--brand); color:#fff; border:0;
-    padding:10px 14px; border-radius:999px; cursor:pointer;
-    font-weight:600; box-shadow:0 6px 16px rgba(0,0,0,.12);
-  }
-  .back:hover{filter:brightness(.95)}
-  .toplink{display:inline-block;margin-top:8px;color:var(--brand);text-decoration:none}
-  /* Bild-Platzhalter */
-  .image-upload{margin:14px 0 8px;padding:12px;border:1px dashed var(--line);border-radius:12px;background:#fcfffe}
-  .image-upload label{
-    display:inline-block; padding:8px 12px; font-weight:600;
-    border:1px solid var(--brand); color:var(--brand); border-radius:10px;
-    cursor:pointer; user-select:none; margin-right:8px;
-  }
-  .image-upload input{display:none}
-  .image-upload img{display:block; max-width:100%; height:auto; border-radius:10px; border:1px solid var(--line); margin-top:10px}
-  /* Anker-Offset: Überschriften nicht unter Header kleben */
-  :target::before{content:""; display:block; height:12px; margin-top:-12px}
-  footer{margin:40px 0 16px; color:var(--muted); font-size:13px; text-align:center}
-</style>
+  <style>
+    /* --- Grund-Layout --- */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: #fdfcf7;
+      color: #333;
+      scroll-behavior: smooth;
+    }
+
+    .page {
+      width: 800px;
+      margin: 50px auto;
+      padding: 50px;
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    /* --- Deckblatt --- */
+    .cover {
+      text-align: center;
+      background: linear-gradient(135deg, #f7e9d7, #fdfdfd);
+    }
+
+    .cover h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 5rem;
+      margin: 0;
+      color: #4b3f2f;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .cover p {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      margin-top: 20px;
+      color: #666;
+      letter-spacing: 1px;
+    }
+
+    .icons {
+      font-size: 2rem;
+      margin-top: 40px;
+      color: #c49a6c;
+    }
+
+    /* --- Navigations-Button --- */
+    .back-btn {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 10px 20px;
+      background: #f2d7b6;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      color: #333;
+      transition: 0.3s;
+    }
+
+    .back-btn:hover {
+      background: #e1c39e;
+    }
+
+  </style>
 </head>
 <body>
 
-<a id="top"></a>
-<div class="wrap">
-  <header>
-    <h1>Mein Rezeptbuch (Demo)</h1>
-    <p class="sub">Mit Bild-Platzhaltern pro Rezept &amp; schneller Navigation</p>
-  </header>
+  <!-- Deckblatt -->
+  <div class="page cover" id="cover">
+    <h1>Meine Lieblingsrezepte</h1>
+    <p>Ein Geschenk mit Liebe – für die schönsten Genussmomente</p>
+    <div class="icons">🥐 🍝 🥗 🍰 🍹</div>
+  </div>
 
-  <!-- INHALTSVERZEICHNIS -->
-  <section id="toc" class="toc">
-    <h2>Inhaltsverzeichnis</h2>
-    <ul>
-      <li><a href="#recipe-baguette">Baguette</a></li>
-      <li><a href="#recipe-dhal">Dhal – Linsencurry (Sri Lanka)</a></li>
-      <li><a href="#recipe-brownie">Brownie</a></li>
-    </ul>
-  </section>
-
-  <!-- REZEPT 1: Baguette -->
-  <section id="recipe-baguette" class="recipe card" aria-labelledby="h-baguette">
-    <h2 id="h-baguette">Baguette</h2>
-    <!-- Bild-Platzhalter -->
-    <div class="image-upload">
-      <label for="fileInput-baguette">📷 Bild einfügen</label>
-      <input type="file" id="fileInput-baguette" accept="image/*" onchange="loadFile(event,'output-baguette')" />
-      <img id="output-baguette" alt="Baguette – Bildplatzhalter (dein Foto erscheint hier)">
-    </div>
-
-    <div class="meta">
-      <span class="pill">Frühstück</span>
-      <span class="pill">Teig</span>
-    </div>
-
-    <div class="grid">
-      <div>
-        <h3>Zutaten</h3>
-        <ul>
-          <li>250 g Mehl Type 550</li>
-          <li>160 ml lauwarmes Wasser</li>
-          <li>6 g Salz</li>
-          <li>10 g frische Hefe (oder 3 g Trockenhefe)</li>
-          <li>1 TL Zucker (zum Aktivieren)</li>
-        </ul>
-      </div>
-      <div>
-        <h3>Zubereitung</h3>
-        <ol>
-          <li>Hefe in lauwarmem Wasser mit 1 TL Zucker aktivieren (ca. 10 Min).</li>
-          <li>Mit Mehl &amp; Salz zu einem Teig mischen, 20 Min in der Schüssel gehen lassen.</li>
-          <li>Zu Baguette(s) formen, auf dem Blech weitere ~60 Min gehen lassen.</li>
-          <li>Backofen auf 200 °C Ober/Unterhitze vorheizen.</li>
-          <li>20 Min goldbraun backen (optional mit Dampf für extra Kruste).</li>
-        </ol>
-      </div>
-    </div>
-    <a class="toplink" href="#toc">⬅︎ Zurück zum Inhaltsverzeichnis</a>
-  </section>
-
-  <!-- REZEPT 2: Dhal -->
-  <section id="recipe-dhal" class="recipe card" aria-labelledby="h-dhal">
-    <h2 id="h-dhal">Dhal – Linsencurry (Sri Lanka)</h2>
-    <!-- Bild-Platzhalter -->
-    <div class="image-upload">
-      <label for="fileInput-dhal">📷 Bild einfügen</label>
-      <input type="file" id="fileInput-dhal" accept="image/*" onchange="loadFile(event,'output-dhal')" />
-      <img id="output-dhal" alt="Dhal – Bildplatzhalter (dein Foto erscheint hier)">
-    </div>
-
-    <div class="meta">
-      <span class="pill">Hauptgang</span>
-      <span class="pill">Vegan</span>
-      <span class="pill">One-Pot</span>
-      <span class="pill">~20 Min</span>
-    </div>
-
-    <div class="grid">
-      <div>
-        <h3>Zutaten (4 Portionen)</h3>
-        <ul>
-          <li>200 g rote Linsen, gewaschen</li>
-          <li>500 ml Wasser</li>
-          <li>100 ml Kokosmilch</li>
-          <li>1 kleine Zimtstange</li>
-          <li>je 1 TL Kurkuma &amp; Chilipulver, 1 TL Salz</li>
-          <li>3 Knoblauchzehen, ½ rote Zwiebel, fein gehackt</li>
-          <li>1 TL braune Senfsaat, 1 grüne &amp; 1 getrocknete rote Chili</li>
-          <li>10 Curryblätter</li>
-          <li>3 EL Kokosöl (oder Pflanzenöl)</li>
-        </ul>
-      </div>
-      <div>
-        <h3>Zubereitung</h3>
-        <ol>
-          <li>Linsen mit Wasser, Kokosmilch, Zimt, Kurkuma, Chili &amp; Salz aufkochen; 15 Min sanft köcheln.</li>
-          <li>In kleiner Pfanne Öl erhitzen; Senfsaat, Zwiebel, Knoblauch, Chilis, Curryblätter kurz anrösten.</li>
-          <li>Gewürzöl zum Dhal geben, 1 Min köcheln, umrühren und servieren (mit Reis/Brot).</li>
-        </ol>
-      </div>
-    </div>
-    <a class="toplink" href="#toc">⬅︎ Zurück zum Inhaltsverzeichnis</a>
-  </section>
-
-  <!-- REZEPT 3: Brownie -->
-  <section id="recipe-brownie" class="recipe card" aria-labelledby="h-brownie">
-    <h2 id="h-brownie">Brownie</h2>
-    <!-- Bild-Platzhalter -->
-    <div class="image-upload">
-      <label for="fileInput-brownie">📷 Bild einfügen</label>
-      <input type="file" id="fileInput-brownie" accept="image/*" onchange="loadFile(event,'output-brownie')" />
-      <img id="output-brownie" alt="Brownie – Bildplatzhalter (dein Foto erscheint hier)">
-    </div>
-
-    <div class="meta">
-      <span class="pill">Bakery</span>
-      <span class="pill">Dessert</span>
-      <span class="pill">35 Min gesamt</span>
-    </div>
-
-    <div class="grid">
-      <div>
-        <h3>Zutaten (ca. 12 Stück)</h3>
-        <ul>
-          <li>200 g Zartbitterschokolade</li>
-          <li>125 g Butter</li>
-          <li>1 Pck. Vanillezucker</li>
-          <li>3 Eier</li>
-          <li>200 g brauner Zucker</li>
-          <li>150 g Weizenmehl</li>
-          <li>1 TL Backpulver</li>
-          <li>1 Prise Salz</li>
-          <li>1 EL Kakaopulver</li>
-          <li>(Optional) Schokodrops</li>
-        </ul>
-      </div>
-      <div>
-        <h3>Zubereitung</h3>
-        <ol>
-          <li>Backofen auf 175 °C O/U vorheizen. Form buttern/auskleiden.</li>
-          <li>Schokolade &amp; Butter im Topf schmelzen, kurz abkühlen.</li>
-          <li>Eier, Vanillezucker &amp; braunen Zucker schaumig schlagen.</li>
-          <li>Schokomasse einrühren. Mehl, Backpulver, Salz, Kakao mischen &amp; unterheben.</li>
-          <li>Schokodrops unterheben, in die Form füllen, ca. 20 Min backen (innen noch saftig).</li>
-        </ol>
-      </div>
-    </div>
-    <a class="toplink" href="#toc">⬅︎ Zurück zum Inhaltsverzeichnis</a>
-  </section>
-
-  <footer>Demo-Aufbau ✔︎ Wenn dir Stil/Struktur zusagen, setze ich das so für alle Rezepte um.</footer>
-</div>
-
-<!-- Fester Zurück-Button unten links (auf jeder "Seite" sichtbar) -->
-<button class="back" onclick="location.hash='#toc'">⟵ Inhaltsverzeichnis</button>
-
-<script>
-  // Einmalige Bild-Ladefunktion – jedes Rezept hat eigene Output-ID
-  function loadFile(event, outputId){
-    const file = event.target.files && event.target.files[0];
-    if(!file) return;
-    const img = document.getElementById(outputId);
-    img.src = URL.createObjectURL(file);
-    img.onload = () => URL.revokeObjectURL(img.src); // Speicher freigeben
-  }
-</script>
 </body>
 </html>
-  
