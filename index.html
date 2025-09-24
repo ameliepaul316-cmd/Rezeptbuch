@@ -551,3 +551,92 @@ function updateBaguette() {
   padding-left: 20px;
 }
 </style>
+
+
+
+<!-- Frühstück-Cover -->
+<section id="fruehstueck-cover" class="cover fruehstueck-cover">
+  <h1>🥐 Frühstück</h1>
+</section>
+
+<!-- Baguette Rezept -->
+<section id="baguette" class="recipe fruehstueck">
+  <h2>🥖 Baguette</h2>
+  <p class="meta">⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 1 h 20 Min | 👥 Portionen: 
+    <input type="number" id="baguette-portionen" value="1" min="1" style="width:50px;" 
+      onchange="updateBaguette()">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="baguette-zutaten">
+      <li><span data-base="250">250</span> g Mehl Type 550</li>
+      <li><span data-base="160">160</span> ml lauwarmes Wasser</li>
+      <li><span data-base="6">6</span> g Salz</li>
+      <li><span data-base="10">10</span> g frische Hefe oder <span data-base="3">3</span> g Trockenhefe</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <p>
+      Hefe mit lauwarmem Wasser und 1 TL Zucker aktivieren (ca. 10 Min).<br>
+      20 Min im Topf gehen lassen, dann 1 h in Form gehen lassen.<br>
+      Bei 200 °C ca. 20 Min backen (Ofen vorheizen).
+    </p>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück zum Inhaltsverzeichnis</a>
+</section>
+
+<script>
+function updateBaguette() {
+  let portionen = document.getElementById("baguette-portionen").value;
+  let zutaten = document.querySelectorAll("#baguette-zutaten span");
+  zutaten.forEach(span => {
+    let base = span.getAttribute("data-base");
+    span.innerText = Math.round(base * portionen);
+  });
+}
+</script>
+
+<style>
+/* Frühstück-Cover Styling */
+.fruehstueck-cover {
+  background: #fffacd; /* Pastellgelb */
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.2rem;
+  font-family: 'Brush Script MT', cursive;
+  border: 5px dashed #d4af37;
+}
+
+/* Rezeptbox Styling */
+.recipe {
+  background: #fffef5;
+  border: 2px solid #f1d26a;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.recipe h2 {
+  font-family: 'Segoe UI', sans-serif;
+  color: #444;
+  margin-bottom: 10px;
+}
+.meta {
+  background: #fef4c5;
+  padding: 8px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+}
+.zutaten, .zubereitung {
+  margin-top: 15px;
+}
+.zutaten ul {
+  padding-left: 20px;
+}
+</style>
