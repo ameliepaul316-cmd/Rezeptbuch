@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Mein Fancy Kochbuch</title>
+<title>Meine Lieblingsrezepte</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -11,7 +11,6 @@
   --beige:#F4EDE5;
   --ink:#2d2a26;
   --muted:#7c746a;
-  --accent:#d2b48c;
 
   --yellow:#FFF4C2;      /* Frühstück */
   --mint:#DDF4ED;        /* Hauptspeisen */
@@ -27,7 +26,6 @@
 *{box-sizing:border-box}
 html,body{margin:0;color:var(--ink);background:#fff;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;line-height:1.45}
 a{color:inherit;text-decoration:none}
-img{max-width:100%;display:block}
 
 .container{max-width:980px;margin:0 auto;padding:16px}
 
@@ -37,49 +35,34 @@ img{max-width:100%;display:block}
   background:rgba(255,255,255,0.8);
   border-bottom:1px solid rgba(0,0,0,0.06);
 }
-.header-inner{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:10px 16px}
-.brand{display:flex;gap:10px;align-items:center}
-.brand .logo{
-  width:36px;height:36px;border-radius:10px;
-  background:linear-gradient(135deg,#ffce77, #ffd3e0 60%, #d9fff3);
-  box-shadow:var(--shadow);
-  display:grid;place-items:center;font-weight:700;
-}
-.brand h1{font-family:"Playfair Display",serif;font-size:18px;margin:0;letter-spacing:.2px}
-.nav{display:flex;gap:10px;flex-wrap:wrap}
-.nav a{padding:8px 12px;border-radius:10px;background:#f6f6f6;border:1px solid #eee;font-size:14px}
-.nav a:hover{background:#fff;border-color:#ddd}
+.header-inner{display:flex;align-items:center;justify-content:center;padding:12px 16px}
+.brand h1{font-family:"Playfair Display",serif;font-size:20px;margin:0;letter-spacing:.3px}
 
 .hero{
   background:var(--beige);
   min-height:88vh;
   display:grid;place-items:center;
   padding:28px 16px;
-  border-image: repeating-linear-gradient(45deg, #cdb79e 0 12px, transparent 12px 24px) 8;
-  border: 12px solid transparent;
 }
-.hero-card{
-  background:var(--card); box-shadow:var(--shadow); border-radius:28px; padding:28px 22px;
-  display:grid; gap:18px; text-align:center; max-width:640px; margin:auto;
-}
-.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:#fff4;border:1px solid #0001}
-.title{font-family:"Playfair Display",serif; font-size:36px; line-height:1.1; margin:0}
-.subtitle{color:var(--muted)}
-.hero-icons{display:flex; gap:10px; justify-content:center; flex-wrap:wrap}
-.icon-chip{display:flex;gap:8px;align-items:center;background:#fff;border:1px solid #eee;box-shadow:var(--shadow);padding:8px 12px;border-radius:999px;font-size:14px}
-.cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.btn{
-  padding:12px 16px; border-radius:12px; border:1px solid #00000010; background:#111; color:#fff; font-weight:600;
+.hero-frame{
+  border:6px solid #cdb79e;
+  border-radius:32px;
+  padding:60px 40px;
+  background:#fff9;
+  text-align:center;
+  max-width:500px;
   box-shadow:var(--shadow);
 }
-.btn.alt{background:#fff;color:#111}
-.btn:hover{transform:translateY(-1px)}
-
-.section{
-  padding:28px 0;
+.hero-frame h2{
+  font-family:"Playfair Display",serif;
+  font-size:42px;
+  margin:0;
+  line-height:1.2;
 }
+
+.section{padding:28px 0}
 .section .section-card{
-  background:#fff; box-shadow:var(--shadow); border-radius:24px; padding:22px; 
+  background:#fff; box-shadow:var(--shadow); border-radius:24px; padding:22px;
 }
 .section h2{font-family:"Playfair Display",serif; font-size:28px; margin:0 0 12px}
 .kicker{font-size:13px; letter-spacing:.12em; text-transform:uppercase; color:#666; margin-bottom:8px}
@@ -96,20 +79,11 @@ img{max-width:100%;display:block}
 
 .note{font-size:13px;color:#6b655d;margin-top:10px}
 
-/* Farbhintergründe der Trennseiten */
-.breakfast-bg{background:var(--yellow)}
-.mains-bg{background:var(--mint)}
-.bakery-bg{background:var(--pink)}
-.snacks-bg{background:var(--orange)}
-.drinks-bg{background:var(--blue)}
-.beige-bg{background:var(--beige)}
-
 /* Quick jump */
 .quickjump{position:fixed;right:12px;bottom:12px;display:flex;flex-direction:column;gap:8px;z-index:60}
 .quickjump a{background:#111;color:#fff;border-radius:12px;padding:10px 12px;font-size:13px;border:1px solid #00000018}
 .quickjump a:hover{opacity:.9}
 
-/* Smooth anchor scroll */
 html{scroll-behavior:smooth}
 </style>
 </head>
@@ -118,235 +92,38 @@ html{scroll-behavior:smooth}
 <header class="header">
   <div class="header-inner container">
     <div class="brand">
-      <div class="logo">🍽️</div>
-      <h1>Mein Fancy Kochbuch</h1>
+      <h1>Meine Lieblingsrezepte</h1>
     </div>
-    <nav class="nav">
-      <a href="#cover">Cover</a>
-      <a href="#toc">Inhaltsverzeichnis</a>
-      <a href="#breakfast">Frühstück</a>
-      <a href="#mains">Hauptspeisen</a>
-      <a href="#bakery">Bakery</a>
-      <a href="#snacks">Snacks & Desserts</a>
-      <a href="#drinks">Drinks</a>
-    </nav>
   </div>
 </header>
 
-<!-- Deckblatt -->
-<section id="cover" class="hero beige-bg">
-  <div class="hero-card">
-    <span class="badge">✨ Handverlesen & liebevoll gestaltet</span>
-    <h2 class="title">Lieblingsrezepte – <br/>Mit Liebe gekocht, für jeden Tag und besondere Momente</h2>
-    <p class="subtitle">Ein interaktives Kochbuch mit Farbkategorien, Sprungmarken & Portionsrechnern</p>
-    <div class="hero-icons">
-      <div class="icon-chip">🥖 Brot & Frühstück</div>
-      <div class="icon-chip">🍝 Pasta & Bowls</div>
-      <div class="icon-chip">🍰 Bakery & Plätzchen</div>
-      <div class="icon-chip">🍮 Desserts</div>
-      <div class="icon-chip">🍹 Drinks</div>
-    </div>
-    <div class="cta">
-      <a class="btn" href="#toc">Zum Inhaltsverzeichnis</a>
-      <a class="btn alt" href="#breakfast">Direkt zu Frühstück</a>
-    </div>
+<!-- Neues Cover -->
+<section id="cover" class="hero">
+  <div class="hero-frame">
+    <h2>Meine Lieblingsrezepte</h2>
   </div>
 </section>
 
 <!-- Inhaltsverzeichnis -->
-<section id="toc" class="section beige-bg">
+<section id="toc" class="section" style="background:var(--beige)">
   <div class="container section-card">
     <div class="kicker">Inhaltsverzeichnis</div>
     <h2>Springe direkt zur Kategorie</h2>
     <div class="toc-grid">
-      
-      <!-- Frühstück -->
-      <div class="toc-block">
-        <h3>🍳 Frühstück</h3>
-        <div class="toc-list">
-          <a href="#r-baguette">Baguette</a>
-          <a href="#r-dinkel-walnuss-brot">Dinkel-Walnuss-Brot</a>
-          <a href="#r-diy-granola">Diy Granola</a>
-          <a href="#r-lievito-madre">Lievito madre</a>
-          <a href="#r-overnight-oats">Overnight Oats</a>
-          <a href="#r-snickers-quark">Proteinreicher „Snickers“-Quark</a>
-          <a href="#r-walnussbutter">Walnussbutter</a>
-        </div>
-      </div>
-
-      <!-- Hauptspeisen -->
-      <div class="toc-block">
-        <h3>🍽️ Hauptspeisen</h3>
-        <div class="toc-list">
-          <strong>Suppen & Eintöpfe</strong>
-          <a href="#r-gemuesesuppe">Gemüsesuppe</a>
-          <a href="#r-kartoffelsuppe">Kartoffelsuppe</a>
-          <a href="#r-markgloesschen">Markglößchen</a>
-          <a href="#r-petersilienwurzel-suppe">Petersilienwurzel-Suppe</a>
-          <a href="#r-spargelcremesuppe">Spargelcremesuppe</a>
-
-          <strong style="margin-top:8px;">Pasta</strong>
-          <a href="#r-kaesenudeln">Käsenudeln „quattro formaggi“</a>
-          <a href="#r-kuerbis-pasta-sauce">Kürbis-Sauce zu Pasta</a>
-          <a href="#r-ravioli-ricotta-spinat">Ravioli mit Ricotta & Spinat</a>
-
-          <strong style="margin-top:8px;">Pizza</strong>
-          <a href="#r-pizzabroetchen">Pizzabrötchen</a>
-          <a href="#r-pizzateig">Pizzateig</a>
-
-          <strong style="margin-top:8px;">Reis & Getreide</strong>
-          <a href="#r-quinoa-curry">Indisches Quinoa-Curry</a>
-          <a href="#r-pacific-poke-bowl">Pacific Poke Bowl</a>
-          <a href="#r-poke-bowl">Poké Bowl (DIY)</a>
-          <a href="#r-risotto">Risotto</a>
-          <a href="#r-veggie-chili-quinoa">Veggie Chili con Quinoa</a>
-          <a href="#r-veg-reispfanne">Vegetarische Reispfanne m. Karotten & Paprika</a>
-
-          <strong style="margin-top:8px;">International & Currys</strong>
-          <a href="#r-auberginen-zucchini-lasagne">Auberginen-Zucchini-Lasagne</a>
-          <a href="#r-dhal">Dhal – Linsencurry</a>
-          <a href="#r-green-curry">Grünes Thai-Curry</a>
-          <a href="#r-hackfleischrolle">Hackfleischrolle (Veggie-Hack)</a>
-          <a href="#r-massaman-curry">Massaman-Curry</a>
-          <a href="#r-enchilada-lasagne">Mexikanische Enchilada-Lasagne</a>
-          <a href="#r-pad-thai">Pad Thai</a>
-          <a href="#r-red-curry">Rotes Thai-Curry</a>
-          <a href="#r-coconut-roti">Sri Lanka Coconut Roti</a>
-          <a href="#r-tacofino">Tacofino</a>
-          <a href="#r-thai-fruehlingsrollen">Thai Frühlingsrollen</a>
-
-          <strong style="margin-top:8px;">Beilagen & Basics</strong>
-          <a href="#r-bierteig">Bierteig</a>
-          <a href="#r-eiersauce">Eiersauce</a>
-          <a href="#r-gemuesepfanne">Gemüsepfanne</a>
-          <a href="#r-pesto-paul">Pesto (Paul)</a>
-          <a href="#r-serviettenknoedel">Serviettenknödel</a>
-          <a href="#r-tortilla-wraps">Tortilla-Wraps DIY</a>
-          <a href="#r-zucchini-puffer">Zucchini-Puffer</a>
-
-          <strong style="margin-top:8px;">Saucen & Dips</strong>
-          <a href="#r-guacamole">Guacamole</a>
-          <a href="#r-knoblauchcreme">Knoblauchcreme</a>
-          <a href="#r-salatsauce">Salatsauce</a>
-
-          <strong style="margin-top:8px;">Curry-Pasten</strong>
-          <a href="#r-paste-green">Grüne Curry-Paste</a>
-          <a href="#r-paste-massaman">Massaman Curry-Paste</a>
-          <a href="#r-paste-red">Rote Curry-Paste</a>
-        </div>
-      </div>
-
-      <!-- Bakery -->
-      <div class="toc-block">
-        <h3>🧁 Bakery</h3>
-        <div class="toc-list">
-          <strong>Plätzchen</strong>
-          <a href="#r-butterplaetzchen">Butterplätzchen</a>
-          <a href="#r-kokosmakronen">Kokosmakronen</a>
-          <a href="#r-spitzbuben">Spitzbuben</a>
-          <a href="#r-vanillekipferl">Vanillekipferl</a>
-
-          <strong style="margin-top:8px;">Kuchen & Gebäck</strong>
-          <a href="#r-apfelkuchen">Apfelkuchen</a>
-          <a href="#r-brownie">Brownie</a>
-          <a href="#r-cookies">Cookies (NY-Style)</a>
-          <a href="#r-dampfnudeln">Dampfnudeln</a>
-          <a href="#r-erdbeerkuchen">Erdbeerkuchen</a>
-          <a href="#r-flammendes-herz">Flammendes Herz</a>
-          <a href="#r-frosting">Frosting (Schoko)</a>
-          <a href="#r-kreppel">Kreppel</a>
-          <a href="#r-marmorkuchen">Marmorkuchen</a>
-          <a href="#r-nougat-kuchen">Nougat-Kuchen/Torte</a>
-          <a href="#r-nussecken">Nussecken</a>
-          <a href="#r-streuselkuchen">Streuselkuchen</a>
-          <a href="#r-waffeln">Waffeln</a>
-          <a href="#r-zimtschnecken">Zimtschnecken</a>
-        </div>
-      </div>
-
-      <!-- Snacks & Desserts -->
-      <div class="toc-block">
-        <h3>🍮 Snacks & Desserts</h3>
-        <div class="toc-list">
-          <a href="#r-candied-pecans">Candied Pecans</a>
-          <a href="#r-energiebaellchen">Energiebällchen</a>
-          <a href="#r-frittierte-banane">Frittierte Banane (Thai)</a>
-          <a href="#r-himbeerbaiser">Himbeerbaiser</a>
-          <a href="#r-marzipan-pralinen">Marzipan-Pralinen</a>
-          <a href="#r-mousse-au-chocolat">Mousse au Chocolat</a>
-          <a href="#r-sticky-rice-mango">Sticky Rice mit Mango</a>
-          <a href="#r-thai-pancake-roti">Thai Pancake Roti</a>
-          <a href="#r-tiramisu">Tiramisu</a>
-        </div>
-      </div>
-
-      <!-- Drinks -->
-      <div class="toc-block">
-        <h3>🍹 Drinks</h3>
-        <div class="toc-list">
-          <strong>Mit Alkohol</strong>
-          <a href="#r-espresso-martini">Espresso Martini</a>
-          <a href="#r-mai-tai">Mai Tai</a>
-          <a href="#r-mojito">Mojito</a>
-          <a href="#r-pina-colada">Piña Colada</a>
-          <a href="#r-tequila-sunrise">Tequila Sunrise</a>
-          <a href="#r-whiskey-sour">Whiskey Sour</a>
-
-          <strong style="margin-top:8px;">Ohne Alkohol</strong>
-          <a href="#r-iced-hibiscus">Iced Hibiscus Tea</a>
-          <a href="#r-virgin-passion-mojito">Virgin Passionfruit Mojito</a>
-        </div>
-      </div>
-
+      <div class="toc-block"><h3>🍳 Frühstück</h3></div>
+      <div class="toc-block"><h3>🍽️ Hauptspeisen</h3></div>
+      <div class="toc-block"><h3>🧁 Bakery</h3></div>
+      <div class="toc-block"><h3>🍮 Snacks & Desserts</h3></div>
+      <div class="toc-block"><h3>🍹 Drinks</h3></div>
     </div>
-    <p class="note">Tipp: Oben im Sticky-Menü kannst du jederzeit zwischen Kategorien springen.</p>
-  </div>
-</section>
-
-<!-- Trennseiten (farbige Zwischenblätter) -->
-<section id="breakfast" class="section breakfast-bg">
-  <div class="container section-card">
-    <div class="kicker">Kategorie</div>
-    <h2>🍳 Frühstück</h2>
-    <p>Alle Frühstücksrezepte findest du oben im Inhaltsverzeichnis. (Rezeptseiten fügen wir in dieser Datei unterhalb ein – jedes mit Baby-Gelb Akzent, Portionsrechner & „zurück zum Inhalt“-Button.)</p>
-  </div>
-</section>
-
-<section id="mains" class="section mains-bg">
-  <div class="container section-card">
-    <div class="kicker">Kategorie</div>
-    <h2>🍽️ Hauptspeisen</h2>
-    <p>Suppen, Pasta, Pizza, Reis/Getreide, International & Currys, Beilagen & Basics, Saucen/Dips und Curry-Pasten – alles alphabetisch sortiert.</p>
-  </div>
-</section>
-
-<section id="bakery" class="section bakery-bg">
-  <div class="container section-card">
-    <div class="kicker">Kategorie</div>
-    <h2>🧁 Bakery</h2>
-    <p>Plätzchen sowie Kuchen & Gebäck – fein säuberlich nach Alphabet.</p>
-  </div>
-</section>
-
-<section id="snacks" class="section snacks-bg">
-  <div class="container section-card">
-    <div class="kicker">Kategorie</div>
-    <h2>🍮 Snacks & Desserts</h2>
-    <p>Süßes & kleine Snacks von A bis Z.</p>
-  </div>
-</section>
-
-<section id="drinks" class="section drinks-bg">
-  <div class="container section-card">
-    <div class="kicker">Kategorie</div>
-    <h2>🍹 Drinks</h2>
-    <p>Cocktails & Mocktails – je Unterkategorie alphabetisch.</p>
+    <p class="note">Alle Rezepte alphabetisch sortiert in ihren Kategorien.</p>
   </div>
 </section>
 
 <!-- Quick Jump -->
 <nav class="quickjump" aria-label="Schnellsprung">
   <a href="#toc">⬆️ Inhalt</a>
+  <a href="#cover">🏠</a>
   <a href="#breakfast">🍳</a>
   <a href="#mains">🍽️</a>
   <a href="#bakery">🧁</a>
