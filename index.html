@@ -2563,198 +2563,171 @@ if (typeof window.updateRecipe !== 'function') {
 
 
 
-<!-- ===================== BAKERY COVER ===================== -->
-<section id="bakery-cover" class="cover bakery-cover">
-  <h1>🍰 Bakery</h1>
-  <p>Kuchen & Torten</p>
-</section>
-
-<!-- ===================== APFELKUCHEN ===================== -->
-<section id="apfelkuchen" class="recipe-section bakery-bg">
-  <h2>Apfelkuchen</h2>
-  <div class="recipe-card">
-    <div class="ingredients">
-      <h3>Zutaten</h3>
-      <ul>
-        <li data-base="250">250 g Mehl</li>
-        <li data-base="125">125 g Zucker</li>
-        <li data-base="125">125 g Butter</li>
-        <li data-base="2">2 Eier</li>
-        <li data-base="1">1 Päckchen Backpulver</li>
-        <li data-base="500">500 g Äpfel</li>
-      </ul>
-    </div>
-    <div class="instructions">
-      <h3>Zubereitung</h3>
-      <p>
-        Äpfel schälen, entkernen und in Scheiben schneiden. Aus den übrigen
-        Zutaten einen Rührteig herstellen. Teig in eine gefettete Springform
-        füllen und mit den Apfelscheiben belegen. Bei 180 °C (Ober-/Unterhitze)
-        ca. 45–50 Minuten backen.
-      </p>
-    </div>
-  </div>
-  <div class="portion-control">
-    Portionen: <input type="number" value="8" min="1" onchange="updateRecipe(this)">
+<!-- ========================== -->
+<!-- 🍰 BAKERY COVER -->
+<!-- ========================== -->
+<section id="bakery-cover" class="category-cover" style="background-color:#f8d7e6; color:#333; min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:20px;">
+  <div style="border:3px dashed #e091b6; padding:40px; border-radius:20px; text-align:center; max-width:90%;">
+    <h1 style="font-size:2.2em; margin-bottom:10px;">🍰 Bakery</h1>
+    <p style="font-size:1.1em;">Süße Kuchen, Torten & Plätzchen – alles, was das Herz begehrt.</p>
   </div>
 </section>
 
-<!-- ===================== BROWNIE ===================== -->
-<section id="brownie" class="recipe-section bakery-bg">
-  <h2>Brownie</h2>
-  <div class="recipe-card">
-    <div class="ingredients">
-      <h3>Zutaten</h3>
-      <ul>
-        <li data-base="200">200 g Zartbitterschokolade</li>
-        <li data-base="125">125 g Butter</li>
-        <li data-base="3">3 Eier</li>
-        <li data-base="200">200 g brauner Zucker</li>
-        <li data-base="150">150 g Weizenmehl</li>
-        <li data-base="1">1 TL Backpulver</li>
-        <li data-base="1">1 Päckchen Vanillezucker</li>
-        <li data-base="1">1 EL Kakaopulver</li>
-        <li>Prise Salz</li>
-      </ul>
-    </div>
-    <div class="instructions">
-      <h3>Zubereitung</h3>
-      <p>
-        Schokolade und Butter im Wasserbad schmelzen. Eier mit Zucker und
-        Vanillezucker cremig schlagen, die Schoko-Butter-Masse unterrühren. Mehl
-        mit Backpulver, Kakao und Salz mischen und ebenfalls einarbeiten. In
-        eine gefettete Form füllen und bei 175 °C ca. 20–25 Minuten backen.
-      </p>
-    </div>
+<!-- ========================== -->
+<!-- 🍰 APFELKUCHEN -->
+<!-- ========================== -->
+<section id="apfelkuchen" class="recipe" style="background-color:#fff0f6; padding:20px; min-height:100vh;">
+  <h2>🍏 Apfelkuchen</h2>
+  <div class="meta">
+    <p><strong>Zubereitungszeit:</strong> 30 Min | <strong>Gesamtzeit:</strong> 1 h | <strong>Portionen:</strong> <input type="number" value="8" min="1" onchange="updateRecipe(this)" data-recipe="apfelkuchen"> </p>
   </div>
-  <div class="portion-control">
-    Portionen: <input type="number" value="12" min="1" onchange="updateRecipe(this)">
+  <div class="ingredients-box">
+    <h3>Zutaten</h3>
+    <ul id="apfelkuchen-ingredients">
+      <li data-base="125">125 g Butter</li>
+      <li data-base="125">125 g Zucker</li>
+      <li data-base="2">2 Eier</li>
+      <li data-base="200">200 g Mehl</li>
+      <li data-base="1">1 TL Backpulver</li>
+      <li data-base="3">3 Äpfel</li>
+      <li data-base="1">1 TL Zimt</li>
+    </ul>
+  </div>
+  <div class="instructions-box">
+    <h3>Zubereitung</h3>
+    <p>Butter, Zucker und Eier schaumig rühren. Mehl und Backpulver untermischen. Teig in eine gefettete Springform geben. Äpfel schälen, entkernen und in Spalten schneiden, dekorativ auf dem Teig verteilen. Mit Zimt bestreuen und im Ofen bei 180 °C (Ober-/Unterhitze) ca. 40 Minuten backen.</p>
   </div>
 </section>
 
-<!-- ===================== ERDBEERKUCHEN ===================== -->
-<section id="erdbeerkuchen" class="recipe-section bakery-bg">
-  <h2>Erdbeerkuchen</h2>
-  <div class="recipe-card">
-    <div class="ingredients">
-      <h3>Zutaten</h3>
-      <ul>
-        <li data-base="200">200 g Mehl</li>
-        <li data-base="100">100 g Zucker</li>
-        <li data-base="100">100 g Butter</li>
-        <li data-base="2">2 Eier</li>
-        <li data-base="500">500 g Erdbeeren</li>
-        <li data-base="1">1 Päckchen Vanillepuddingpulver</li>
-        <li data-base="250">250 ml Milch</li>
-        <li data-base="1">1 Päckchen Tortenguss</li>
-      </ul>
-    </div>
-    <div class="instructions">
-      <h3>Zubereitung</h3>
-      <p>
-        Aus Mehl, Zucker, Butter und Eiern einen Rührteig bereiten und in eine
-        Springform füllen. Bei 180 °C ca. 25–30 Minuten backen. Pudding aus
-        Milch und Puddingpulver kochen und auf den ausgekühlten Boden streichen.
-        Erdbeeren darauf verteilen und mit Tortenguss überziehen. Kalt stellen.
-      </p>
-    </div>
+<!-- ========================== -->
+<!-- 🍫 BROWNIE -->
+<!-- ========================== -->
+<section id="brownie" class="recipe" style="background-color:#fff0f6; padding:20px; min-height:100vh;">
+  <h2>🍫 Brownie</h2>
+  <div class="meta">
+    <p><strong>Zubereitungszeit:</strong> 15 Min | <strong>Gesamtzeit:</strong> 35 Min | <strong>Portionen:</strong> <input type="number" value="12" min="1" onchange="updateRecipe(this)" data-recipe="brownie"></p>
   </div>
-  <div class="portion-control">
-    Portionen: <input type="number" value="8" min="1" onchange="updateRecipe(this)">
+  <div class="ingredients-box">
+    <h3>Zutaten</h3>
+    <ul id="brownie-ingredients">
+      <li data-base="200">200 g Zartbitterschokolade</li>
+      <li data-base="125">125 g Butter</li>
+      <li data-base="1">1 Pck. Vanillezucker</li>
+      <li data-base="3">3 Eier</li>
+      <li data-base="200">200 g brauner Zucker</li>
+      <li data-base="150">150 g Weizenmehl</li>
+      <li data-base="1">1 TL Backpulver</li>
+      <li data-base="1">1 Prise Salz</li>
+      <li data-base="1">1 EL Kakaopulver</li>
+    </ul>
+  </div>
+  <div class="instructions-box">
+    <h3>Zubereitung</h3>
+    <p>Schokolade und Butter schmelzen. Eier, Zucker und Vanillezucker schaumig schlagen. Schokomasse unterrühren. Mehl, Backpulver, Salz und Kakaopulver mischen und dazugeben. Teig in eine gefettete Form geben und bei 175 °C (Ober-/Unterhitze) ca. 20 Minuten backen.</p>
   </div>
 </section>
 
-<!-- ===================== MARMORKUCHEN ===================== -->
-<section id="marmorkuchen" class="recipe-section bakery-bg">
-  <h2>Marmorkuchen (Standardkuchen)</h2>
-  <div class="recipe-card">
-    <div class="ingredients">
-      <h3>Zutaten</h3>
-      <ul>
-        <li data-base="250">250 g Butter</li>
-        <li data-base="220">220 g Zucker</li>
-        <li data-base="3">3 Eier</li>
-        <li data-base="1">1 Päckchen Vanillezucker</li>
-        <li data-base="500">500 g Mehl</li>
-        <li data-base="1">1 Päckchen Backpulver</li>
-        <li data-base="50">50 ml Milch</li>
-        <li data-base="20">20 g Kakaopulver</li>
-        <li>Etwas Rumaroma</li>
-      </ul>
-    </div>
-    <div class="instructions">
-      <h3>Zubereitung</h3>
-      <p>
-        Butter, Zucker, Eier und Vanillezucker cremig rühren. Mehl, Backpulver
-        und Milch unterrühren. 2/3 des Teigs in eine gefettete Kastenform
-        füllen. Den Rest mit Kakao und Rumaroma verrühren und darauf geben.
-        Gabel spiralförmig durchziehen. Bei 160 °C ca. 35–40 Minuten backen.
-      </p>
-    </div>
+<!-- ========================== -->
+<!-- 🍓 ERDBEERKUCHEN -->
+<!-- ========================== -->
+<section id="erdbeerkuchen" class="recipe" style="background-color:#fff0f6; padding:20px; min-height:100vh;">
+  <h2>🍓 Erdbeerkuchen</h2>
+  <div class="meta">
+    <p><strong>Zubereitungszeit:</strong> 25 Min | <strong>Gesamtzeit:</strong> 1 h | <strong>Portionen:</strong> <input type="number" value="12" min="1" onchange="updateRecipe(this)" data-recipe="erdbeerkuchen"></p>
   </div>
-  <div class="portion-control">
-    Portionen: <input type="number" value="12" min="1" onchange="updateRecipe(this)">
+  <div class="ingredients-box">
+    <h3>Zutaten</h3>
+    <ul id="erdbeerkuchen-ingredients">
+      <li data-base="200">200 g Mehl</li>
+      <li data-base="100">100 g Zucker</li>
+      <li data-base="100">100 g Butter</li>
+      <li data-base="2">2 Eier</li>
+      <li data-base="1">1 Pck. Backpulver</li>
+      <li data-base="500">500 g Erdbeeren</li>
+      <li data-base="1">1 Pck. Tortenguss</li>
+    </ul>
+  </div>
+  <div class="instructions-box">
+    <h3>Zubereitung</h3>
+    <p>Aus Mehl, Zucker, Butter, Eiern und Backpulver einen Rührteig herstellen. Teig in eine gefettete Springform geben und ca. 25 Minuten bei 180 °C backen. Abkühlen lassen. Erdbeeren halbieren und auf dem Boden verteilen. Tortenguss nach Packungsanleitung zubereiten und über die Erdbeeren geben.</p>
   </div>
 </section>
 
-<!-- ===================== NOUGATKUCHEN ===================== -->
-<section id="nougatkuchen" class="recipe-section bakery-bg">
-  <h2>Nougatkuchen</h2>
-  <div class="recipe-card">
-    <div class="ingredients">
-      <h3>Zutaten</h3>
-      <ul>
-        <li data-base="250">250 g Butter</li>
-        <li data-base="200">200 g Zucker</li>
-        <li data-base="4">4 Eier</li>
-        <li data-base="250">250 g Mehl</li>
-        <li data-base="1">1 TL Backpulver</li>
-        <li data-base="150">150 g Nuss-Nougat</li>
-        <li data-base="50">50 g Haselnüsse, gemahlen</li>
-      </ul>
-    </div>
-    <div class="instructions">
-      <h3>Zubereitung</h3>
-      <p>
-        Butter, Zucker und Eier schaumig rühren. Mehl, Backpulver, Nougat und
-        Nüsse unterrühren. Teig in eine Springform füllen und bei 175 °C ca.
-        45–50 Minuten backen. Abkühlen lassen und nach Belieben mit Puderzucker
-        bestäuben.
-      </p>
-    </div>
+<!-- ========================== -->
+<!-- 🍰 MARMORKUCHEN -->
+<!-- ========================== -->
+<section id="marmorkuchen" class="recipe" style="background-color:#fff0f6; padding:20px; min-height:100vh;">
+  <h2>🍰 Marmorkuchen (Standardkuchen)</h2>
+  <div class="meta">
+    <p><strong>Zubereitungszeit:</strong> 20 Min | <strong>Gesamtzeit:</strong> 55 Min | <strong>Portionen:</strong> <input type="number" value="12" min="1" onchange="updateRecipe(this)" data-recipe="marmorkuchen"></p>
   </div>
-  <div class="portion-control">
-    Portionen: <input type="number" value="10" min="1" onchange="updateRecipe(this)">
+  <div class="ingredients-box">
+    <h3>Zutaten</h3>
+    <ul id="marmorkuchen-ingredients">
+      <li data-base="250">250 g Butter</li>
+      <li data-base="220">220 g Zucker</li>
+      <li data-base="3">3 Eier</li>
+      <li data-base="1">1 Pck. Vanillezucker</li>
+      <li data-base="450">450 g Mehl</li>
+      <li data-base="1">1 Pck. Backpulver</li>
+      <li data-base="200">200 ml Milch</li>
+      <li data-base="2">2 EL Kakao</li>
+      <li data-base="1">1 TL Rumaroma</li>
+    </ul>
+  </div>
+  <div class="instructions-box">
+    <h3>Zubereitung</h3>
+    <p>Butter, Zucker, Vanillezucker und Eier cremig rühren. Mehl und Backpulver abwechselnd mit Milch unterrühren. Teig halbieren: eine Hälfte mit Kakao und Rumaroma mischen. Beide Teige abwechselnd in eine Form füllen, mit Gabel marmorieren. Bei 160 °C ca. 35 Minuten backen.</p>
   </div>
 </section>
 
-<!-- ===================== STREUSEL ===================== -->
-<section id="streuselkuchen" class="recipe-section bakery-bg">
-  <h2>Streuselkuchen</h2>
-  <div class="recipe-card">
-    <div class="ingredients">
-      <h3>Zutaten</h3>
-      <ul>
-        <li data-base="300">300 g Mehl</li>
-        <li data-base="150">150 g Zucker</li>
-        <li data-base="200">200 g Butter</li>
-        <li data-base="2">2 Eier</li>
-        <li data-base="1">1 Päckchen Backpulver</li>
-        <li data-base="500">500 g Obst nach Wahl</li>
-      </ul>
-    </div>
-    <div class="instructions">
-      <h3>Zubereitung</h3>
-      <p>
-        Hälfte des Mehls mit Zucker, Butter und Eiern zu einem Teig kneten und
-        in eine Form drücken. Obst darauf verteilen. Restliche Zutaten als
-        Streusel verkneten und auf dem Obst verteilen. Bei 180 °C ca. 40 Minuten
-        backen.
-      </p>
-    </div>
+<!-- ========================== -->
+<!-- 🍫 NOUGATKUCHEN -->
+<!-- ========================== -->
+<section id="nougatkuchen" class="recipe" style="background-color:#fff0f6; padding:20px; min-height:100vh;">
+  <h2>🍫 Nougatkuchen</h2>
+  <div class="meta">
+    <p><strong>Zubereitungszeit:</strong> 20 Min | <strong>Gesamtzeit:</strong> 1 h | <strong>Portionen:</strong> <input type="number" value="12" min="1" onchange="updateRecipe(this)" data-recipe="nougatkuchen"></p>
   </div>
-  <div class="portion-control">
-    Portionen: <input type="number" value="8" min="1" onchange="updateRecipe(this)">
+  <div class="ingredients-box">
+    <h3>Zutaten</h3>
+    <ul id="nougatkuchen-ingredients">
+      <li data-base="200">200 g Nougat</li>
+      <li data-base="200">200 g Butter</li>
+      <li data-base="200">200 g Zucker</li>
+      <li data-base="4">4 Eier</li>
+      <li data-base="300">300 g Mehl</li>
+      <li data-base="1">1 Pck. Backpulver</li>
+      <li data-base="50">50 ml Milch</li>
+    </ul>
+  </div>
+  <div class="instructions-box">
+    <h3>Zubereitung</h3>
+    <p>Nougat im Wasserbad schmelzen. Butter, Zucker und Eier cremig rühren. Mehl und Backpulver unterheben, Milch dazugeben. Nougat einrühren. In eine Springform füllen und bei 180 °C ca. 40 Minuten backen.</p>
+  </div>
+</section>
+
+<!-- ========================== -->
+<!-- 🍰 STREUSELKUCHEN -->
+<!-- ========================== -->
+<section id="streuselkuchen" class="recipe" style="background-color:#fff0f6; padding:20px; min-height:100vh;">
+  <h2>🍰 Streuselkuchen</h2>
+  <div class="meta">
+    <p><strong>Zubereitungszeit:</strong> 30 Min | <strong>Gesamtzeit:</strong> 1 h 10 Min | <strong>Portionen:</strong> <input type="number" value="12" min="1" onchange="updateRecipe(this)" data-recipe="streuselkuchen"></p>
+  </div>
+  <div class="ingredients-box">
+    <h3>Zutaten</h3>
+    <ul id="streuselkuchen-ingredients">
+      <li data-base="300">300 g Mehl</li>
+      <li data-base="150">150 g Zucker</li>
+      <li data-base="150">150 g Butter</li>
+      <li data-base="1">1 Pck. Vanillezucker</li>
+      <li data-base="500">500 g Obst (z. B. Kirschen, Zwetschgen, Äpfel)</li>
+    </ul>
+  </div>
+  <div class="instructions-box">
+    <h3>Zubereitung</h3>
+    <p>Mehl, Zucker, Butter und Vanillezucker zu Streuseln verarbeiten. Obst nach Wahl auf ein gefettetes Blech geben, Streusel darüber verteilen. Im Backofen bei 180 °C ca. 40 Minuten goldbraun backen.</p>
   </div>
 </section>
   
@@ -2849,3 +2822,77 @@ if (typeof window.updateRecipe !== 'function') {
   window.initRecipeScaling = initAll;
 })();
 </script>
+  /* ===========================
+   Responsive Design
+   =========================== */
+@media (max-width: 768px) {
+  body {
+    font-size: 16px; /* etwas größer lesbar */
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1, h2, h3 {
+    word-wrap: break-word;
+  }
+
+  /* Cover-Bereiche anpassen */
+  .cover {
+    height: auto; /* nicht 100vh auf Handy */
+    padding: 40px 15px;
+    font-size: 1.6rem;
+  }
+
+  .cover h1 {
+    font-size: 1.8rem;
+  }
+
+  /* Rezeptbox */
+  .recipe {
+    margin: 12px 8px;
+    padding: 15px;
+  }
+
+  .recipe h2 {
+    font-size: 1.3rem;
+  }
+
+  .meta {
+    font-size: 0.9rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .meta input[type="number"] {
+    width: 50px;
+    font-size: 1rem;
+    padding: 2px;
+  }
+
+  /* Zutaten & Zubereitung enger */
+  .zutaten ul {
+    padding-left: 18px;
+    font-size: 0.95rem;
+  }
+  .zubereitung p, 
+  .zubereitung ol {
+    font-size: 0.95rem;
+  }
+
+  /* Quick-Back-Button */
+  .back-button {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 1rem;
+    margin-top: 16px;
+    padding: 10px;
+    position: sticky; /* bleibt sichtbar */
+    bottom: 0;
+    background: #ffe89a;
+    border: 2px solid #e5c56a;
+    z-index: 999;
+  }
+}
