@@ -1543,384 +1543,725 @@ if (typeof window.updateRecipe !== 'function') {
   <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
 </section>
 
-<!-- 🌍 INTERNATIONALE KÜCHE & CURRYS DECKBLATT -->
-<section id="international-cover" class="category-cover international">
-    <div class="cover-content">
-        <div class="cover-icon">🌍</div>
-        <h1>Internationale Küche & Currys</h1>
-        <p>Eine kulinarische Weltreise – von Asien bis Mexiko!</p>
-    </div>
+
+
+  <!-- =========================================================
+     INTERNATIONALE KÜCHE & CURRYS – COVER
+========================================================= -->
+<section id="international-cover" class="cover hauptspeisen">
+  <h1>🌍 Internationale Küche & Currys</h1>
+  <p>Rezepte aus aller Welt – bunt, würzig & abwechslungsreich!</p>
 </section>
 
-<!-- 🌍 Auberginen-Zucchini-Lasagne -->
-<section id="auberginen-zucchini-lasagne" class="recipe international">
-    <h2>🌍 Auberginen-Zucchini-Lasagne</h2>
-    <div class="image-placeholder">[Bild hier einfügen]</div>
+<!-- =========================================================
+     AUBERGINEN-ZUCCHINI-LASAGNE
+========================================================= -->
+<section id="auberginen-lasagne" class="recipe hauptspeisen">
+  <h2>🍆 Auberginen-Zucchini-Lasagne</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 60 Min | 👥 Portionen:
+    <input type="number" id="azl-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#azl-zutaten', '#azl-portionen')">
+  </p>
 
-    <div class="recipe-meta">
-        <span>⏱ Zubereitungszeit: 30 Min</span>
-        <span>🕒 Gesamtzeit: 60 Min</span>
-        <span>🍽 Portionen: 
-            <input type="number" value="4" min="1" id="lasagne-portions" onchange="updatePortions('lasagne')"> 
-        </span>
-    </div>
+  <div class="zutaten">
+    <h3>🥗 Zutaten</h3>
+    <ul id="azl-zutaten">
+      <li><span data-base="2">2</span> Auberginen</li>
+      <li><span data-base="2">2</span> Zucchini</li>
+      <li><span data-base="400">400</span> g passierte Tomaten</li>
+      <li><span data-base="2">2</span> Knoblauchzehen</li>
+      <li><span data-base="200">200</span> g Mozzarella</li>
+      <li><span data-base="100">100</span> g Parmesan</li>
+      <li>Olivenöl, Salz, Pfeffer, Basilikum</li>
+    </ul>
+  </div>
 
-    <div class="ingredients" id="lasagne-ingredients">
-        <h3>Zutaten</h3>
-        <ul>
-            <li data-base="2">2 Auberginen</li>
-            <li data-base="2">2 Zucchini</li>
-            <li data-base="1">1 Dose stückige Tomaten</li>
-            <li data-base="250">250 g Ricotta</li>
-            <li data-base="100">100 g Parmesan, gerieben</li>
-            <li data-base="2">2 Knoblauchzehen</li>
-            <li data-base="1">1 Zwiebel</li>
-            <li>Olivenöl, Basilikum, Oregano, Salz, Pfeffer</li>
-        </ul>
-    </div>
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Gemüse in Scheiben schneiden und kurz anbraten.</li>
+      <li>Knoblauch in Öl anschwitzen, Tomaten & Gewürze dazugeben.</li>
+      <li>In Auflaufform abwechselnd Gemüse, Sauce & Käse schichten.</li>
+      <li>Bei 180°C ca. 30–40 Min backen.</li>
+    </ol>
+  </div>
 
-    <div class="instructions">
-        <h3>Zubereitung</h3>
-        <p>Auberginen und Zucchini in Scheiben schneiden und mit etwas Öl anbraten. Knoblauch und Zwiebel hacken, in Olivenöl glasig dünsten, dann die Tomaten zugeben und mit Gewürzen abschmecken. Ricotta mit Basilikum verrühren. In einer Auflaufform abwechselnd Gemüsescheiben, Tomatensauce und Ricotta schichten. Mit Parmesan bestreuen und bei 180°C ca. 30 Min überbacken.</p>
-    </div>
-
-    <a href="#inhaltsverzeichnis" class="back-link">⬅ Zurück zum Inhaltsverzeichnis</a>
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
 </section>
 
-<!-- 🌍 Dhal (Sri Lanka) -->
-<section id="dhal" class="recipe international">
-    <h2>🌍 Dhal – Linsencurry aus Sri Lanka</h2>
-    <div class="image-placeholder">[Bild hier einfügen]</div>
+<!-- =========================================================
+     DHAL (SRI LANKA)
+========================================================= -->
+<section id="dhal" class="recipe hauptspeisen">
+  <h2>🍲 Dhal (Sri Lanka)</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 10 Min | 🕒 Gesamtzeit: 25 Min | 👥 Portionen:
+    <input type="number" id="dhal-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#dhal-zutaten', '#dhal-portionen')">
+  </p>
 
-    <div class="recipe-meta">
-        <span>⏱ Zubereitungszeit: 20 Min</span>
-        <span>🕒 Gesamtzeit: 35 Min</span>
-        <span>🍽 Portionen: 
-            <input type="number" value="4" min="1" id="dhal-portions" onchange="updatePortions('dhal')"> 
-        </span>
-    </div>
+  <div class="zutaten">
+    <h3>🥗 Zutaten</h3>
+    <ul id="dhal-zutaten">
+      <li><span data-base="200">200</span> g rote Linsen</li>
+      <li><span data-base="500">500</span> ml Wasser</li>
+      <li><span data-base="100">100</span> ml Kokosmilch</li>
+      <li>Zimtstange, Kurkuma, Chili, Salz</li>
+      <li>Knoblauch, Zwiebel, Curryblätter</li>
+      <li>Kokosöl</li>
+    </ul>
+  </div>
 
-    <div class="ingredients" id="dhal-ingredients">
-        <h3>Zutaten</h3>
-        <ul>
-            <li data-base="200">200 g rote Linsen</li>
-            <li data-base="500">500 ml Wasser</li>
-            <li data-base="100">100 ml Kokosmilch</li>
-            <li>1 kleine Stange Zimt</li>
-            <li>1 TL Kurkuma</li>
-            <li>1 TL Chili</li>
-            <li>1 TL Salz</li>
-            <li data-base="3">3 Knoblauchzehen</li>
-            <li>½ rote Zwiebel</li>
-            <li>1 TL Senfsaat</li>
-            <li>1 grüne Chilischote</li>
-            <li>1 getrocknete rote Chilischote</li>
-            <li>10 Curryblätter</li>
-            <li>3 EL Kokosöl</li>
-        </ul>
-    </div>
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Linsen mit Wasser, Kokosmilch & Gewürzen ca. 15 Min köcheln.</li>
+      <li>Zwiebel, Knoblauch & Chili in Kokosöl anbraten.</li>
+      <li>Zum Dhal geben, vermengen, kurz weiterköcheln lassen.</li>
+    </ol>
+  </div>
 
-    <div class="instructions">
-        <h3>Zubereitung</h3>
-        <p>Linsen mit Wasser, Kokosmilch, Zimt, Kurkuma, Chili und Salz aufkochen, ca. 15 Min köcheln. Knoblauch, Zwiebel und Chili fein hacken und mit Senfsaat, Curryblättern und Öl anbraten. Zum Dhal geben und verrühren. Mit Reis oder Brot servieren.</p>
-    </div>
-
-    <a href="#inhaltsverzeichnis" class="back-link">⬅ Zurück zum Inhaltsverzeichnis</a>
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
 </section>
 
-<!-- 🌍 Grünes Curry -->
-<section id="gruenes-curry" class="recipe international">
-    <h2>🌍 Grünes Curry</h2>
-    <div class="image-placeholder">[Bild hier einfügen]</div>
+<!-- =========================================================
+     GRÜNES CURRY
+========================================================= -->
+<section id="gruenes-curry" class="recipe hauptspeisen">
+  <h2>🥬 Grünes Curry</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 40 Min | 👥 Portionen:
+    <input type="number" id="gc-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#gc-zutaten', '#gc-portionen')">
+  </p>
 
-    <div class="recipe-meta">
-        <span>⏱ Zubereitungszeit: 25 Min</span>
-        <span>🕒 Gesamtzeit: 40 Min</span>
-        <span>🍽 Portionen: 
-            <input type="number" value="4" min="1" id="gruenes-curry-portions" onchange="updatePortions('gruenes-curry')"> 
-        </span>
-    </div>
+  <div class="zutaten">
+    <h3>🥗 Zutaten</h3>
+    <ul id="gc-zutaten">
+      <li><span data-base="2">2</span> EL grüne Currypaste</li>
+      <li><span data-base="400">400</span> ml Kokosmilch</li>
+      <li><span data-base="1">1</span> Zucchini</li>
+      <li><span data-base="1">1</span> Paprika</li>
+      <li><span data-base="200">200</span> g Tofu oder Hähnchen-Ersatz</li>
+      <li>Sojasauce, Limette, Koriander</li>
+    </ul>
+  </div>
 
-    <div class="ingredients" id="gruenes-curry-ingredients">
-        <h3>Zutaten</h3>
-        <ul>
-            <li data-base="1">1 EL grüne Currypaste</li>
-            <li data-base="400">400 ml Kokosmilch</li>
-            <li data-base="300">300 g Gemüse (z. B. Paprika, Brokkoli, Zucchini)</li>
-            <li data-base="200">200 g Tofu oder Hähnchen</li>
-            <li>2 EL Öl</li>
-            <li>1 EL Sojasauce</li>
-            <li>Frischer Koriander</li>
-        </ul>
-    </div>
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Currypaste in Öl anschwitzen, Kokosmilch zugeben.</li>
+      <li>Gemüse und Tofu hinzufügen, 15 Min köcheln.</li>
+      <li>Mit Limettensaft & Koriander servieren.</li>
+    </ol>
+  </div>
 
-    <div class="instructions">
-        <h3>Zubereitung</h3>
-        <p>Currypaste in Öl anbraten, Kokosmilch zugeben und aufkochen lassen. Gemüse klein schneiden, zusammen mit Tofu oder Hähnchen in die Sauce geben und ca. 15 Min köcheln lassen. Mit Sojasauce abschmecken, mit frischem Koriander garnieren und mit Reis servieren.</p>
-    </div>
-
-    <a href="#inhaltsverzeichnis" class="back-link">⬅ Zurück zum Inhaltsverzeichnis</a>
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
 </section>
 
-<!-- 🌍 Massaman Curry -->
-<section id="massaman-curry" class="recipe international">
-    <h2>🌍 Massaman Curry</h2>
-    <div class="image-placeholder">[Bild hier einfügen]</div>
+<!-- =========================================================
+     HACKFLEISCHROLLE
+========================================================= -->
+<section id="hackrolle" class="recipe hauptspeisen">
+  <h2>🥖 Hackfleischrolle</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 40 Min | 👥 Portionen:
+    <input type="number" id="hr-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#hr-zutaten', '#hr-portionen')">
+  </p>
 
-    <div class="recipe-meta">
-        <span>⏱ Zubereitungszeit: 30 Min</span>
-        <span>🕒 Gesamtzeit: 50 Min</span>
-        <span>🍽 Portionen: 
-            <input type="number" value="4" min="1" id="massaman-curry-portions" onchange="updatePortions('massaman-curry')"> 
-        </span>
-    </div>
+  <div class="zutaten">
+    <h3>🥗 Zutaten</h3>
+    <ul id="hr-zutaten">
+      <li>2 Rollen Blätterteig</li>
+      <li>200 g Veggie-Hack</li>
+      <li>Paprika, Mais, Frühlingszwiebeln</li>
+      <li>Tomatensauce, Tomatenmark, Knoblauch</li>
+      <li>1 Eigelb</li>
+      <li>Gewürze: Salz, Pfeffer, Curry, Paprika</li>
+    </ul>
+  </div>
 
-    <div class="ingredients" id="massaman-curry-ingredients">
-        <h3>Zutaten</h3>
-        <ul>
-            <li data-base="2">2 EL Massaman-Currypaste</li>
-            <li data-base="400">400 ml Kokosmilch</li>
-            <li data-base="300">300 g Kartoffeln</li>
-            <li data-base="200">200 g Karotten</li>
-            <li data-base="1">1 Zwiebel</li>
-            <li data-base="200">200 g Tofu oder Fleisch nach Wahl</li>
-            <li>2 EL Öl</li>
-            <li>2 EL Erdnüsse</li>
-            <li>2 EL Fischsauce oder Sojasauce</li>
-            <li>Saft einer Limette</li>
-        </ul>
-    </div>
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Gemüse & Knoblauch anbraten, Hack zugeben, würzen.</li>
+      <li>Mit Sauce mischen, auf Blätterteig verteilen, einrollen.</li>
+      <li>Mit Eigelb bestreichen, bei 200°C 15 Min backen.</li>
+    </ol>
+  </div>
 
-    <div class="instructions">
-        <h3>Zubereitung</h3>
-        <p>Currypaste in Öl anbraten, Kokosmilch zugeben und aufkochen lassen. Kartoffeln und Karotten würfeln, mit Zwiebeln in die Sauce geben und 20–25 Min köcheln. Tofu oder Fleisch separat anbraten und hinzufügen. Mit Limettensaft, Fischsauce/Sojasauce abschmecken. Mit Erdnüssen garnieren und servieren.</p>
-    </div>
-
-    <a href="#inhaltsverzeichnis" class="back-link">⬅ Zurück zum Inhaltsverzeichnis</a>
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
 </section>
 
+<!-- =========================================================
+     MASSAMAN CURRY
+========================================================= -->
+<section id="massaman" class="recipe hauptspeisen">
+  <h2>🥔 Massaman Curry</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 30 Min | 🕒 Gesamtzeit: 45 Min | 👥 Portionen:
+    <input type="number" id="ms-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#ms-zutaten', '#ms-portionen')">
+  </p>
 
+  <div class="zutaten">
+    <h3>🥗 Zutaten</h3>
+    <ul id="ms-zutaten">
+      <li><span data-base="2">2</span> EL Massaman-Currypaste</li>
+      <li><span data-base="400">400</span> ml Kokosmilch</li>
+      <li><span data-base="3">3</span> Kartoffeln</li>
+      <li><span data-base="2">2</span> Karotten</li>
+      <li><span data-base="100">100</span> g Erdnüsse</li>
+      <li>Sojasauce, Limette</li>
+    </ul>
+  </div>
 
-  <!-- 🌮 Mexikanische Enchilada-Lasagne -->
-<section id="mexikanische-enchilada-lasagne" class="recipe international">
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Paste in Öl anschwitzen, Kokosmilch dazugeben.</li>
+      <li>Gemüse & Kartoffeln 20 Min garen.</li>
+      <li>Erdnüsse & Limette einrühren, abschmecken.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+<!-- =========================================================
+     MEXIKANISCHE ENCHILADA-LASAGNE
+========================================================= -->
+<section id="enchilada-lasagne" class="recipe hauptspeisen">
   <h2>🇲🇽 Mexikanische Enchilada-Lasagne</h2>
-  <div class="image-placeholder">[Bild hier einfügen]</div>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 25 Min | 🕒 Gesamtzeit: 45 Min | 👥 Portionen:
+    <input type="number" id="el-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#el-zutaten', '#el-portionen')">
+  </p>
 
-  <div class="recipe-meta">
-    <span>⏱ Zubereitungszeit: 25 Min</span>
-    <span>🕒 Gesamtzeit: 45 Min</span>
-    <span>🍽 Portionen:
-      <input type="number" value="4" min="1" id="enchilada-portions" onchange="updatePortions('enchilada')">
-    </span>
-  </div>
-
-  <div class="ingredients" id="enchilada-ingredients">
-    <h3>Zutaten</h3>
-    <ul>
-      <li data-base="8">8 Tortillas/Weizenfladen (à 20 cm)</li>
-      <li data-base="400">400 g Hackfleisch (veg.)</li>
-      <li data-base="150">150 g Gouda, frisch & fein gerieben</li>
-      <li data-base="1">1 rote Paprika, fein gewürfelt</li>
-      <li>1 Peperoni/Chili, entkernt & fein gewürfelt</li>
-      <li data-base="1">1 rote Zwiebel, fein gewürfelt</li>
-      <li data-base="2">2 Dosen Salsa-Sauce</li>
-      <li data-base="1">1 Dose Mais, abgetropft (≈285 g)</li>
-      <li data-base="1">1 Dose Kidneybohnen, abgetropft (≈400 g)</li>
-      <li data-base="200">200 g Schmand oder Crème fraîche</li>
-      <li data-base="150">150 g Frischkäse (Paprika-Chili o.ä.)</li>
-      <li data-base="2">2 Knoblauchzehen, fein gewürfelt</li>
-      <li data-base="1">1 EL Tomatenmark</li>
-      <li>1 Prise Zucker</li>
-      <li data-base="1">1 TL Paprikapulver edelsüß</li>
-      <li data-base="0.5">½ TL Paprikapulver scharf</li>
-      <li data-base="2">2 EL Olivenöl</li>
-      <li>Salz, Pfeffer</li>
+  <div class="zutaten">
+    <h3>🥗 Zutaten</h3>
+    <ul id="el-zutaten">
+      <li>8 Tortillas</li>
+      <li>Veggie-Hack</li>
+      <li>Paprika, Mais, Kidneybohnen</li>
+      <li>Zwiebel, Knoblauch, Chili</li>
+      <li>Frischkäse, Schmand</li>
+      <li>Salsa Sauce, Tomatenmark</li>
+      <li>Gouda</li>
     </ul>
   </div>
 
-  <div class="instructions">
-    <h3>Zubereitung</h3>
-    <p>Backofen auf 180 °C Ober/Unterhitze vorheizen. Mais & Bohnen abtropfen lassen. Paprika, Chili, Zwiebel & Knoblauch fein würfeln. Öl erhitzen, Zwiebel/Knoblauch/Chili kurz andünsten. Veggie-Hack zugeben, krümelig anbraten, salzen. Tomatenmark einrühren, Paprika, Mais & Bohnen zugeben. Salsa-Sauce, Frischkäse & Schmand unterrühren, mit Paprikapulvern, Prise Zucker, Salz & Pfeffer 10 Min köcheln.</p>
-    <p>In Auflaufform einschichten: etwas Sauce → 2 Tortillas → Sauce → 2 Tortillas … insgesamt 4 Tortilla-Schichten. Mit Sauce abschließen, Gouda darüber. 20 Min mittlere Schiene backen, bis der Käse goldbraun ist.</p>
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Gemüse & Hack anbraten, Bohnen & Mais zufügen.</li>
+      <li>Mit Tomaten & Frischkäse verrühren, würzen.</li>
+      <li>Abwechselnd mit Tortillas in Auflaufform schichten.</li>
+      <li>Mit Käse bestreuen, 20 Min bei 180°C backen.</li>
+    </ol>
   </div>
 
-  <a href="#inhaltsverzeichnis" class="back-link">⬅ Zurück zum Inhaltsverzeichnis</a>
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
 </section>
 
-<!-- 🇹🇭 Pad Thai -->
-<section id="pad-thai" class="recipe international">
-  <h2>🇹🇭 Pad Thai</h2>
-  <div class="image-placeholder">[Bild hier einfügen]</div>
+<!-- =========================================================
+     PAD THAI
+========================================================= -->
+<section id="pad-thai" class="recipe hauptspeisen">
+  <h2>🍜 Pad Thai</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 30 Min | 👥 Portionen:
+    <input type="number" id="pt-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#pt-zutaten', '#pt-portionen')">
+  </p>
 
-  <div class="recipe-meta">
-    <span>⏱ Zubereitungszeit: 10 Min</span>
-    <span>🕒 Gesamtzeit: 15 Min</span>
-    <span>🍽 Portionen:
-      <input type="number" value="1" min="1" id="padthai-portions" onchange="updatePortions('padthai')">
-    </span>
-  </div>
-
-  <div class="ingredients" id="padthai-ingredients">
-    <h3>Zutaten</h3>
-    <ul>
-      <li data-base="100">100 g Reisnudeln (30 Min in kaltem Wasser einweichen)</li>
-      <li>1 Handvoll Sojasprossen</li>
-      <li data-base="1">1 Frühlingszwiebel/Schnittlauch (in 3 cm Stücken)</li>
-      <li data-base="1">1 EL Tofu, gewürfelt</li>
-      <li data-base="2">2 Knoblauchzehen, gehackt</li>
-      <li data-base="1">1 Ei</li>
-      <li data-base="2">2 TL Öl</li>
-    </ul>
-    <h4>Sauce</h4>
-    <ul>
-      <li data-base="1">1 EL Sweet-Chili-Sauce</li>
-      <li data-base="0.5">½ EL Tamarindensauce</li>
-      <li data-base="1">1 TL Zucker</li>
-      <li data-base="0.5">½ TL dunkle Sojasauce</li>
-    </ul>
-    <h4>Topping</h4>
-    <ul>
-      <li>Chiliflocken, Limette</li>
-      <li>Erdnuss-Crumble (leicht angeröstet, ungesalzen)</li>
-      <li>Extra Sprossen</li>
+  <div class="zutaten">
+    <h3>🥗 Zutaten</h3>
+    <ul id="pt-zutaten">
+      <li>Reisnudeln</li>
+      <li>Tofu</li>
+      <li>Sprossen</li>
+      <li>Erdnüsse</li>
+      <li>Frühlingszwiebeln</li>
+      <li>Sojasauce, Limette</li>
     </ul>
   </div>
 
-  <div class="instructions">
-    <h3>Zubereitung</h3>
-    <p>Öl erhitzen, Tofu kurz braten, Knoblauch zugeben. Abgetropfte Reisnudeln zufügen, 1–2 Min schwenken. Sauce zugeben und rühren, bis sie aufgesogen ist. Ei in die Pfanne schlagen, stocken lassen und unterheben. Sprossen & Frühlingszwiebel kurz unterrühren. Mit Erdnüssen, Chili & Limette servieren.</p>
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Nudeln nach Packung garen.</li>
+      <li>Tofu knusprig anbraten, Gemüse & Sauce zugeben.</li>
+      <li>Nudeln untermischen, mit Limette & Erdnüssen servieren.</li>
+    </ol>
   </div>
 
-  <a href="#inhaltsverzeichnis" class="back-link">⬅ Zurück zum Inhaltsverzeichnis</a>
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
 </section>
 
-<!-- 🔴 Rotes Curry (ohne Ingwer) -->
-<section id="rotes-curry" class="recipe international">
-  <h2>🔴 Rotes Curry (ohne Ingwer)</h2>
-  <div class="image-placeholder">[Bild hier einfügen]</div>
+<!-- =========================================================
+     ROTES CURRY
+========================================================= -->
+<section id="rotes-curry" class="recipe hauptspeisen">
+  <h2>🌶️ Rotes Curry</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 40 Min | 👥 Portionen:
+    <input type="number" id="rc-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#rc-zutaten', '#rc-portionen')">
+  </p>
 
-  <div class="recipe-meta">
-    <span>⏱ Zubereitungszeit: 20 Min</span>
-    <span>🕒 Gesamtzeit: 30 Min</span>
-    <span>🍽 Portionen:
-      <input type="number" value="4" min="1" id="rotescurry-portions" onchange="updatePortions('rotescurry')">
-    </span>
-  </div>
-
-  <div class="ingredients" id="rotescurry-ingredients">
-    <h3>Zutaten</h3>
-    <ul>
-      <li data-base="2">2 EL rote Curry-Paste</li>
-      <li data-base="400">400 ml Kokosmilch</li>
-      <li data-base="300">300 g gemischtes Gemüse (Paprika, Zucchini, Aubergine, Bambus)</li>
-      <li data-base="200">200 g Tofu (oder veg. Hähnchen)</li>
-      <li data-base="2">2 EL Öl</li>
-      <li data-base="1">1 EL Sojasauce oder Fischsauce</li>
-      <li data-base="1">1 TL Zucker</li>
-      <li>2 Kaffirlimettenblätter (optional)</li>
-      <li>Thai-Basilikum zum Servieren</li>
-      <li>Jasminreis als Beilage</li>
+  <div class="zutaten">
+    <h3>🥗 Zutaten</h3>
+    <ul id="rc-zutaten">
+      <li><span data-base="2">2</span> EL rote Currypaste</li>
+      <li><span data-base="400">400</span> ml Kokosmilch</li>
+      <li>Gemüse nach Wahl (Paprika, Zucchini, Brokkoli)</li>
+      <li>Tofu oder Fleischersatz</li>
+      <li>Sojasauce, Limette</li>
     </ul>
   </div>
 
-  <div class="instructions">
-    <h3>Zubereitung</h3>
-    <p>Öl erhitzen, rote Curry-Paste 30–60 Sek. anrösten. Mit Kokosmilch aufgießen, aufkochen. Gemüse in mundgerechte Stücke schneiden, mit Kaffirblättern 10–12 Min köcheln. Tofu anbraten, zugeben. Mit Sojasauce/Fischsauce und Zucker abschmecken. Mit Thai-Basilikum anrichten, zu Reis servieren.</p>
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Currypaste kurz anbraten, Kokosmilch einrühren.</li>
+      <li>Gemüse & Tofu hinzufügen, ca. 15 Min köcheln lassen.</li>
+      <li>Mit Limette & Koriander servieren.</li>
+    </ol>
   </div>
 
-  <a href="#inhaltsverzeichnis" class="back-link">⬅ Zurück zum Inhaltsverzeichnis</a>
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
 </section>
 
-<!-- 🇱🇰 Sri Lanka Coconut Roti -->
-<section id="sri-lanka-coconut-roti" class="recipe international">
-  <h2>🇱🇰 Sri Lanka Coconut Roti</h2>
-  <div class="image-placeholder">[Bild hier einfügen]</div>
+<!-- =========================================================
+     SRI LANKA COCONUT ROTI
+========================================================= -->
+<section id="coconut-roti" class="recipe hauptspeisen">
+  <h2>🥥 Sri Lanka Coconut Roti</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 15 Min | 🕒 Gesamtzeit: 30 Min | 👥 Portionen:
+    <input type="number" id="cr-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#cr-zutaten', '#cr-portionen')">
+  </p>
 
-  <div class="recipe-meta">
-    <span>⏱ Zubereitungszeit: 10 Min</span>
-    <span>🕒 Gesamtzeit: 20 Min</span>
-    <span>🍽 Portionen:
-      <input type="number" value="2" min="1" id="coconutroti-portions" onchange="updatePortions('coconutroti')">
-    </span>
-  </div>
-
-  <div class="ingredients" id="coconutroti-ingredients">
-    <h3>Zutaten</h3>
-    <ul>
-      <li data-base="100">100 g Kokosraspeln</li>
-      <li data-base="160">160 ml Wasser</li>
-      <li data-base="130">130 g Mehl</li>
-      <li data-base="1">1 TL Salz</li>
-      <li>Wenig Öl zum Ausbacken</li>
+  <div class="zutaten">
+    <h3>🥗 Zutaten</h3>
+    <ul id="cr-zutaten">
+      <li><span data-base="200">200</span> g Mehl</li>
+      <li><span data-base="100">100</span> g Kokosraspel</li>
+      <li><span data-base="1">1</span> TL Salz</li>
+      <li><span data-base="100">100</span> ml Wasser</li>
     </ul>
   </div>
 
-  <div class="instructions">
-    <h3>Zubereitung</h3>
-    <p>Wasser zu den Kokosraspeln geben, 10 Min quellen lassen. Mit Mehl & Salz zu einem glatten Teig verkneten (ggf. etwas Mehl zugeben). Zu kleinen Fladen formen und in sehr wenig Öl beidseitig anbraten, bis stellenweise dunkel. Heiß servieren – passt perfekt zu Currys.</p>
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Mehl, Kokosraspel, Salz & Wasser zu einem Teig kneten.</li>
+      <li>Fladen formen und in der Pfanne goldbraun ausbacken.</li>
+    </ol>
   </div>
 
-  <a href="#inhaltsverzeichnis" class="back-link">⬅ Zurück zum Inhaltsverzeichnis</a>
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
 </section>
 
-<!-- 🌮 Tacofino -->
-<section id="tacofino" class="recipe international">
+<!-- =========================================================
+     TACOFINO
+========================================================= -->
+<section id="tacofino" class="recipe hauptspeisen">
   <h2>🌮 Tacofino</h2>
-  <div class="image-placeholder">[Bild hier einfügen]</div>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 35 Min | 👥 Portionen:
+    <input type="number" id="tf-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#tf-zutaten', '#tf-portionen')">
+  </p>
 
-  <div class="recipe-meta">
-    <span>⏱ Zubereitungszeit: —</span>
-    <span>🕒 Gesamtzeit: —</span>
-    <span>🍽 Portionen:
-      <input type="number" value="4" min="1" id="tacofino-portions" onchange="updatePortions('tacofino')">
-    </span>
-  </div>
-
-  <div class="ingredients" id="tacofino-ingredients">
-    <h3>Zutaten</h3>
-    <h4>Wrap</h4>
-    <ul>
-      <li data-base="200">200 g Mehl</li>
-      <li data-base="100">100 ml Wasser</li>
-      <li data-base="4">4 EL Öl</li>
-      <li data-base="1">1 TL Salz</li>
-    </ul>
-    <h4>Füllung</h4>
-    <ul>
-      <li>Hackfleisch (veg. möglich)</li>
-      <li data-base="750">750 g Rot-/Weißkohl</li>
-      <li data-base="4">4 TL Zucker</li>
-      <li data-base="65">65 ml Essig</li>
-      <li data-base="4">4 EL Olivenöl</li>
-      <li>Salz, Pfeffer</li>
-      <li>Reis</li>
-      <li>Bohnen</li>
-      <li>Tomatenmark</li>
-      <li>Zwiebel, Knoblauch</li>
-      <li>Tomate, Mais</li>
-    </ul>
-    <h4>Guacamole</h4>
-    <ul>
-      <li>Avocado</li>
-      <li>Schmand/Crème fraîche</li>
-      <li>Knoblauch</li>
-      <li>Salz, Pfeffer, Paprika</li>
+  <div class="zutaten">
+    <h3>🥗 Zutaten</h3>
+    <ul id="tf-zutaten">
+      <li>Weizentortillas</li>
+      <li>Veggie-Hack oder Bohnenfüllung</li>
+      <li>Mais, Paprika, Zwiebel</li>
+      <li>Salsa, Avocado</li>
+      <li>Koriander, Limette</li>
     </ul>
   </div>
 
-  <div class="instructions">
-    <h3>Zubereitung</h3>
-    <p><strong>Wraps:</strong> Zutaten verkneten (bei Bedarf Wasser anpassen). 30 Min ruhen lassen. In 8 Portionen teilen, dünn ausrollen und in trockener Pfanne beidseitig backen.</p>
-    <p><strong>Krautsalat:</strong> Kohl raspeln, mit Salz, Zucker & Essig mischen, kräftig durchkneten, 2 h ziehen lassen. Danach mit Olivenöl, Salz & Pfeffer abschmecken.</p>
-    <p><strong>Reis & Bohnen:</strong> Reis garen. Zwiebel & Knoblauch anschwitzen, Bohnen mit Tomatenmark kurz braten, würzen (Pfeffer, Salz, Paprika, Chili), leicht zerdrücken und mit Reis mischen. Tomaten & Mais vorbereiten. Hackfleisch separat anbraten.</p>
-    <p><strong>Guacamole:</strong> Avocado zerdrücken, Knoblauch & etwas Schmand unterrühren, mit Salz, Pfeffer & Paprika abschmecken.</p>
-    <p><strong>Füllen:</strong> Wraps mit Reis-Bohnen-Mischung, Hack, Krautsalat, Tomaten, Mais & Guacamole füllen und servieren.</p>
+  <div class="zubereitung">Zubereitung</h3>
+    <ol>
+      <li>Gemüse klein schneiden und kurz in etwas Öl anbraten.</li>
+      <li>Veggie-Hack oder Bohnenfüllung hinzufügen und würzen.</li>
+      <li>Mit Salsa und Avocado mischen.</li>
+      <li>Tortillas kurz erwärmen, mit der Füllung belegen und zusammenrollen.</li>
+      <li>Mit Koriander und Limettensaft servieren.</li>
+    </ol>
   </div>
 
-  <a href="#inhaltsverzeichnis" class="back-link">⬅ Zurück zum Inhaltsverzeichnis</a>
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
 </section>
 
-  
 
-  
+<!-- =========================================================
+     INTERNATIONALE KÜCHE & CURRYS – COVER
+========================================================= -->
+<section id="international-cover" class="cover hauptspeisen">
+  <h1>🌍 Internationale Küche & Currys</h1>
+  <p>Rezepte aus aller Welt – bunt, würzig & abwechslungsreich!</p>
+</section>
+
+<!-- =========================================================
+     AUBERGINEN-ZUCCHINI-LASAGNE
+========================================================= -->
+<section id="auberginen-lasagne" class="recipe hauptspeisen">
+  <h2>🍆 Auberginen-Zucchini-Lasagne</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 60 Min | 👥 Portionen:
+    <input type="number" id="azl-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#azl-zutaten', '#azl-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥗 Zutaten</h3>
+    <ul id="azl-zutaten">
+      <li><span data-base="2">2</span> Auberginen</li>
+      <li><span data-base="2">2</span> Zucchini</li>
+      <li><span data-base="400">400</span> g passierte Tomaten</li>
+      <li><span data-base="2">2</span> Knoblauchzehen</li>
+      <li><span data-base="200">200</span> g Mozzarella</li>
+      <li><span data-base="100">100</span> g Parmesan</li>
+      <li>Olivenöl, Salz, Pfeffer, Basilikum</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Gemüse in Scheiben schneiden und kurz anbraten.</li>
+      <li>Knoblauch in Öl anschwitzen, Tomaten & Gewürze dazugeben.</li>
+      <li>In Auflaufform abwechselnd Gemüse, Sauce & Käse schichten.</li>
+      <li>Bei 180°C ca. 30–40 Min backen.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+<!-- =========================================================
+     DHAL (SRI LANKA)
+========================================================= -->
+<section id="dhal" class="recipe hauptspeisen">
+  <h2>🍲 Dhal (Sri Lanka)</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 10 Min | 🕒 Gesamtzeit: 25 Min | 👥 Portionen:
+    <input type="number" id="dhal-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#dhal-zutaten', '#dhal-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥗 Zutaten</h3>
+    <ul id="dhal-zutaten">
+      <li><span data-base="200">200</span> g rote Linsen</li>
+      <li><span data-base="500">500</span> ml Wasser</li>
+      <li><span data-base="100">100</span> ml Kokosmilch</li>
+      <li>Zimtstange, Kurkuma, Chili, Salz</li>
+      <li>Knoblauch, Zwiebel, Curryblätter</li>
+      <li>Kokosöl</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Linsen mit Wasser, Kokosmilch & Gewürzen ca. 15 Min köcheln.</li>
+      <li>Zwiebel, Knoblauch & Chili in Kokosöl anbraten.</li>
+      <li>Zum Dhal geben, vermengen, kurz weiterköcheln lassen.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+<!-- =========================================================
+     GRÜNES CURRY
+========================================================= -->
+<section id="gruenes-curry" class="recipe hauptspeisen">
+  <h2>🥬 Grünes Curry</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 40 Min | 👥 Portionen:
+    <input type="number" id="gc-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#gc-zutaten', '#gc-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥗 Zutaten</h3>
+    <ul id="gc-zutaten">
+      <li><span data-base="2">2</span> EL grüne Currypaste</li>
+      <li><span data-base="400">400</span> ml Kokosmilch</li>
+      <li><span data-base="1">1</span> Zucchini</li>
+      <li><span data-base="1">1</span> Paprika</li>
+      <li><span data-base="200">200</span> g Tofu oder Hähnchen-Ersatz</li>
+      <li>Sojasauce, Limette, Koriander</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Currypaste in Öl anschwitzen, Kokosmilch zugeben.</li>
+      <li>Gemüse und Tofu hinzufügen, 15 Min köcheln.</li>
+      <li>Mit Limettensaft & Koriander servieren.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+<!-- =========================================================
+     HACKFLEISCHROLLE
+========================================================= -->
+<section id="hackrolle" class="recipe hauptspeisen">
+  <h2>🥖 Hackfleischrolle</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 40 Min | 👥 Portionen:
+    <input type="number" id="hr-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#hr-zutaten', '#hr-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥗 Zutaten</h3>
+    <ul id="hr-zutaten">
+      <li>2 Rollen Blätterteig</li>
+      <li>200 g Veggie-Hack</li>
+      <li>Paprika, Mais, Frühlingszwiebeln</li>
+      <li>Tomatensauce, Tomatenmark, Knoblauch</li>
+      <li>1 Eigelb</li>
+      <li>Gewürze: Salz, Pfeffer, Curry, Paprika</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Gemüse & Knoblauch anbraten, Hack zugeben, würzen.</li>
+      <li>Mit Sauce mischen, auf Blätterteig verteilen, einrollen.</li>
+      <li>Mit Eigelb bestreichen, bei 200°C 15 Min backen.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+<!-- =========================================================
+     MASSAMAN CURRY
+========================================================= -->
+<section id="massaman" class="recipe hauptspeisen">
+  <h2>🥔 Massaman Curry</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 30 Min | 🕒 Gesamtzeit: 45 Min | 👥 Portionen:
+    <input type="number" id="ms-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#ms-zutaten', '#ms-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥗 Zutaten</h3>
+    <ul id="ms-zutaten">
+      <li><span data-base="2">2</span> EL Massaman-Currypaste</li>
+      <li><span data-base="400">400</span> ml Kokosmilch</li>
+      <li><span data-base="3">3</span> Kartoffeln</li>
+      <li><span data-base="2">2</span> Karotten</li>
+      <li><span data-base="100">100</span> g Erdnüsse</li>
+      <li>Sojasauce, Limette</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Paste in Öl anschwitzen, Kokosmilch dazugeben.</li>
+      <li>Gemüse & Kartoffeln 20 Min garen.</li>
+      <li>Erdnüsse & Limette einrühren, abschmecken.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+<!-- =========================================================
+     MEXIKANISCHE ENCHILADA-LASAGNE
+========================================================= -->
+<section id="enchilada-lasagne" class="recipe hauptspeisen">
+  <h2>🇲🇽 Mexikanische Enchilada-Lasagne</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 25 Min | 🕒 Gesamtzeit: 45 Min | 👥 Portionen:
+    <input type="number" id="el-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#el-zutaten', '#el-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥗 Zutaten</h3>
+    <ul id="el-zutaten">
+      <li>8 Tortillas</li>
+      <li>Veggie-Hack</li>
+      <li>Paprika, Mais, Kidneybohnen</li>
+      <li>Zwiebel, Knoblauch, Chili</li>
+      <li>Frischkäse, Schmand</li>
+      <li>Salsa Sauce, Tomatenmark</li>
+      <li>Gouda</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Gemüse & Hack anbraten, Bohnen & Mais zufügen.</li>
+      <li>Mit Tomaten & Frischkäse verrühren, würzen.</li>
+      <li>Abwechselnd mit Tortillas in Auflaufform schichten.</li>
+      <li>Mit Käse bestreuen, 20 Min bei 180°C backen.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+<!-- =========================================================
+     PAD THAI
+========================================================= -->
+<section id="pad-thai" class="recipe hauptspeisen">
+  <h2>🍜 Pad Thai</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 30 Min | 👥 Portionen:
+    <input type="number" id="pt-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#pt-zutaten', '#pt-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥗 Zutaten</h3>
+    <ul id="pt-zutaten">
+      <li>Reisnudeln</li>
+      <li>Tofu</li>
+      <li>Sprossen</li>
+      <li>Erdnüsse</li>
+      <li>Frühlingszwiebeln</li>
+      <li>Sojasauce, Limette</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Nudeln nach Packung garen.</li>
+      <li>Tofu knusprig anbraten, Gemüse & Sauce zugeben.</li>
+      <li>Nudeln untermischen, mit Limette & Erdnüssen servieren.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+<!-- =========================================================
+     ROTES CURRY
+========================================================= -->
+<section id="rotes-curry" class="recipe hauptspeisen">
+  <h2>🌶️ Rotes Curry</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 40 Min | 👥 Portionen:
+    <input type="number" id="rc-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#rc-zutaten', '#rc-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥗 Zutaten</h3>
+    <ul id="rc-zutaten">
+      <li><span data-base="2">2</span> EL rote Currypaste</li>
+      <li><span data-base="400">400</span> ml Kokosmilch</li>
+      <li>Gemüse nach Wahl (Paprika, Zucchini, Brokkoli)</li>
+      <li>Tofu oder Fleischersatz</li>
+      <li>Sojasauce, Limette</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Currypaste kurz anbraten, Kokosmilch einrühren.</li>
+      <li>Gemüse & Tofu hinzufügen, ca. 15 Min köcheln lassen.</li>
+      <li>Mit Limette & Koriander servieren.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+<!-- =========================================================
+     SRI LANKA COCONUT ROTI
+========================================================= -->
+<section id="coconut-roti" class="recipe hauptspeisen">
+  <h2>🥥 Sri Lanka Coconut Roti</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 15 Min | 🕒 Gesamtzeit: 30 Min | 👥 Portionen:
+    <input type="number" id="cr-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#cr-zutaten', '#cr-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥗 Zutaten</h3>
+    <ul id="cr-zutaten">
+      <li><span data-base="200">200</span> g Mehl</li>
+      <li><span data-base="100">100</span> g Kokosraspel</li>
+      <li><span data-base="1">1</span> TL Salz</li>
+      <li><span data-base="100">100</span> ml Wasser</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Mehl, Kokosraspel, Salz & Wasser zu einem Teig kneten.</li>
+      <li>Fladen formen und in der Pfanne goldbraun ausbacken.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+<!-- =========================================================
+     TACOFINO
+========================================================= -->
+<section id="tacofino" class="recipe hauptspeisen">
+  <h2>🌮 Tacofino</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 35 Min | 👥 Portionen:
+    <input type="number" id="tf-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#tf-zutaten', '#tf-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥗 Zutaten</h3>
+    <ul id="tf-zutaten">
+      <li>Weizentortillas</li>
+      <li>Veggie-Hack oder Bohnenfüllung</li>
+      <li>Mais, Paprika, Zwiebel</li>
+      <li>Salsa, Avocado</li>
+      <li>Koriander, Limette</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Zucchini raspeln, mit etwas Salz bestreuen und 10 Min ziehen lassen.</li>
+      <li>Flüssigkeit gut ausdrücken, damit die Puffer nicht matschig werden.</li>
+      <li>Mit Ei, Mehl, Parmesan, Salz und Pfeffer vermengen, bis eine formbare Masse entsteht.</li>
+      <li>Öl in einer Pfanne erhitzen.</li>
+      <li>Kleine Puffer formen und bei mittlerer Hitze von beiden Seiten goldbraun braten.</li>
+      <li>Auf Küchenpapier abtropfen lassen und warm servieren.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
   
