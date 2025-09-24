@@ -554,22 +554,281 @@ function updateBaguette() {
 
 
 
-<!-- Frühstück-Cover -->
-<section id="fruehstueck-cover" class="cover fruehstueck-cover">
-  <h1>🥐 Frühstück</h1>
+<!-- =========================================================
+     Gemeinsame JS-Helfer (wird nur definiert, falls noch nicht vorhanden)
+========================================================= -->
+<script>
+if (typeof window.updateRecipe !== 'function') {
+  window.updateRecipe = function(listSelector, inputSelector) {
+    const factor = Math.max(1, parseFloat(document.querySelector(inputSelector).value || 1));
+    document.querySelectorAll(listSelector + " [data-base]").forEach(el => {
+      const base = parseFloat(el.getAttribute("data-base"));
+      if (!isNaN(base)) {
+        // Wenn es sich um ganze Gramm/ML handelt, runden; sonst 1 Nachkommastelle
+        const scaled = (base % 1 === 0) ? Math.round(base * factor) : Math.round(base * factor * 10)/10;
+        el.textContent = scaled;
+      }
+    });
+  };
+}
+</script>
+
+<!-- =========================================================
+     1) DINKEL–WALNUSS–BROT (Frühstück)
+========================================================= -->
+<section id="dinkel-walnuss-brot" class="recipe fruehstueck">
+  <h2>🍞 Dinkel-Walnuss-Brot</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 30–40 Min aktiv | 🕒 Gesamtzeit: über Nacht | 👥 Portionen:
+    <input type="number" id="dwb-portionen" value="1" min="1" style="width:60px"
+           onchange="updateRecipe('#dwb-zutaten', '#dwb-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥕 Zutaten (für 1 Brot, ca. 1–1,1 kg)</h3>
+    <ul id="dwb-zutaten">
+      <li><strong>Mehl & Trieb</strong></li>
+      <li><span data-base="500">500</span> g Dinkelmehl Type 630</li>
+      <li><span data-base="150">150</span> g Dinkelvollkornmehl</li>
+      <li><span data-base="100">100</span> g Lievito Madre (aktiv)</li>
+      <li><span data-base="3">3</span> g Trockenhefe (≈ 1 gestrichener TL)</li>
+      <li><span data-base="5">5</span> g Backmalz (Pulver) (≈ 1 TL)</li>
+      <li><strong>Flüssigkeit & Würze</strong></li>
+      <li><span data-base="400">400</span> g Wasser, lauwarm (24–26 °C) – ggf. +20 g bei Bedarf</li>
+      <li><span data-base="12">12</span> g Salz</li>
+      <li><span data-base="20">20</span> g Honig (oder Zucker)</li>
+      <li><span data-base="15">15</span> g Olivenöl (optional)</li>
+      <li><strong>Aroma & Einlage</strong></li>
+      <li><span data-base="80">80</span> g Walnüsse, grob gehackt & leicht angeröstet</li>
+      <li><span data-base="1">1</span> TL Oregano (trocken)</li>
+      <li><span data-base="1">1</span> TL Thymian (trocken)</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung (18:30 → 22:30 Schlaf → Backen 7–8 Uhr)</h3>
+    <p><strong>18:30 – Autolyse</strong><br>
+      Mehle + <em>350 g</em> Wasser nur grob mischen, 30 Min abgedeckt ruhen lassen.</p>
+    <p><strong>19:00 – Hauptteig</strong><br>
+      LM, restliches Wasser (≈ 50 g), Trockenhefe, Honig und Olivenöl einrühren. Salz, Backmalz, Oregano &amp; Thymian zugeben. 8–10 Min kneten (von Hand 10–12 Min), bis der Teig glatt und elastisch ist.</p>
+    <p><strong>19:15 – Walnüsse</strong><br>
+      Walnüsse nur kurz unterkneten, damit sie nicht zerdrückt werden.</p>
+    <p><strong>19:20–21:20 – Stockgare (≈ 2 Std)</strong><br>
+      Teig in geölte Schüssel legen. In der 1. Stunde 2–3× dehnen &amp; falten (alle 20–30 Min). Danach weitere 30–60 Min ruhen.</p>
+    <p><strong>21:20 – Formen</strong><br>
+      Teig vorsichtig rund vorformen, 15 Min entspannen. Straff rundwirken, Naht nach oben ins gut bemehlte Gärkörbchen.</p>
+    <p><strong>21:45 – Kühlschrank</strong><br>
+      8–9 Std bei 4 °C kalt gehen lassen (Stückgare).</p>
+    <p><strong>Am Morgen</strong><br>
+      Ofen/Stahl/Dutch Oven auf 250 °C vorheizen (mind. 30 Min). Teig stürzen, einschneiden. 15 Min bei 250 °C mit Dampf/Deckel; dann Dampf ablassen/Deckel ab und auf 210 °C reduzieren. 30–35 Min ausbacken, letzte 5 Min Tür spaltbreit für extra Kruste.</p>
+    <p><strong>Abkühlen</strong><br>
+      Mind. 1 h auf Gitter auskühlen lassen.</p>
+    <p><strong>Hinweise</strong><br>
+      Backmalz = bessere Bräunung/Kruste. Oregano/Thymian = mediterrane Note. Kleine Hefemenge + LM = sicherer Trieb + tolles Aroma. Wasser nach Gefühl anpassen (Dinkel schwankt).</p>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück zum Inhaltsverzeichnis</a>
 </section>
 
-<!-- Baguette Rezept -->
-<section id="baguette" class="recipe fruehstueck">
-  <h2>🥖 Baguette</h2>
-  <p class="meta">⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 1 h 20 Min | 👥 Portionen: 
-    <input type="number" id="baguette-portionen" value="1" min="1" style="width:50px;" 
-      onchange="updateBaguette()">
+<!-- =========================================================
+     2) DIY GRANOLA
+========================================================= -->
+<section id="granola" class="recipe fruehstueck">
+  <h2>🥣 DIY Granola</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 10 Min | 🍳 Backzeit: 15–20 Min | 👥 Portionen:
+    <input type="number" id="granola-portionen" value="10" min="1" style="width:60px"
+           onchange="updateRecipe('#granola-zutaten', '#granola-portionen')">
   </p>
 
   <div class="zutaten">
     <h3>🥕 Zutaten</h3>
-    <ul id="baguette-zutaten">
+    <ul id="granola-zutaten">
+      <li><span data-base="250">250</span> g Haferflocken</li>
+      <li><span data-base="100">100</span> g Mandelstifte</li>
+      <li><span data-base="100">100</span> g Ahornsirup</li>
+      <li><span data-base="80">80</span> g Kokosöl</li>
+      <li>Prise Zimt</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Kokosöl und Ahornsirup im Topf erwärmen, bis das Öl geschmolzen ist. Vom Herd nehmen; nach Geschmack mit Zimt, Vanille oder Salz verfeinern.</li>
+      <li>Mandelstifte einrühren, dann Haferflocken zugeben und alles gleichmäßig vermengen. Auf Backpapier verteilen und leicht andrücken.</li>
+      <li>Bei 160 °C Umluft 15–20 Min backen; nach 10 Min einmal wenden (nicht wieder flach drücken).</li>
+      <li>Herausnehmen, vorsichtig wenden und komplett auskühlen lassen. In ein großes, verschließbares Glas füllen.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück zum Inhaltsverzeichnis</a>
+</section>
+
+<!-- =========================================================
+     3) LIEVITO MADRE (Starter)
+========================================================= -->
+<section id="lievito-madre" class="recipe fruehstueck">
+  <h2>🍞 Lievito Madre (Weizensauerteig)</h2>
+  <p class="meta">
+    ⏱️ Aktivarbeit: kurz täglich | 🕒 Gesamt: ~1 Woche | 👥 Portionen:
+    <input type="number" id="lm-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#lm-zutaten', '#lm-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥕 Zutaten (Ansatz)</h3>
+    <ul id="lm-zutaten">
+      <li><span data-base="200">200</span> g Weizenmehl</li>
+      <li><span data-base="100">100</span> g Wasser (lauwarm)</li>
+      <li><span data-base="1">1</span> TL Honig</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung & Pflege</h3>
+    <p><strong>Tag 1:</strong><br>
+      Zutaten vermengen, fester Teig (wie Kaugummi) & zu Kugel rollen. Mit scharfem Messer kreuzweise einschneiden. In ein Glas legen, mit feuchtem Tuch abdecken und bei 26–28 °C 48 h gehen lassen.</p>
+    <p><strong>Tag 3:</strong><br>
+      Kugel aufschneiden – sie sollte leicht aufgegangen sein, evtl. mit kleinen Bläschen. Auffrischen: 100 g Mehl + 50 g Wasser unterkneten. Wieder zur Kugel formen, einschneiden, warm gehen lassen (ca. 24 h).</p>
+    <p><strong>Tag 4–7 (täglich auffrischen):</strong><br>
+      100 g vorhandene LM nehmen, mit 100 g Mehl + 50 g Wasser verkneten, Rest verwerfen. 4–6 h warm reifen, danach kühl stellen bis zur nächsten Auffrischung.</p>
+    <p><strong>Nach 1 Woche:</strong><br>
+      LM sollte sich in 4–5 h verdoppeln, mild-säuerlich & fruchtig riechen → backbereit.</p>
+    <p><strong>Pflege:</strong><br>
+      Bei Raumtemperatur alle 1–2 Tage, im Kühlschrank etwa wöchentlich auffrischen. Vor dem Backen immer auffrischen und Verdopplung abwarten.</p>
+    <p><strong>Trocknen:</strong><br>
+      Dünn ausstreichen, 1–2 Tage trocknen lassen und zu Pulver mahlen (oder im Ofen &lt; 40 °C). Kühl & dunkel im Schraubglas lagern.</p>
+    <p><strong>Wiederbelebung:</strong><br>
+      <em>1) Rehydrieren:</em> 10 g getrocknete LM + 10 g Wasser + 10 g Mehl mischen, 12–24 h bei 26–28 °C stehen lassen.<br>
+      <em>2) Erste Fütterung:</em> 20 g rehydrierte Masse + 20 g Mehl + 10 g Wasser, Kugel formen, einschneiden, 4–6 h warm gehen lassen.<br>
+      <em>3) Weitere Auffrischungen:</em> 1–2× täglich 1 : 1 : 0,5 (LM : Mehl : Wasser) füttern, warm reifen lassen, bis Verdopplung in 4–5 h.<br>
+      <em>4) Einsatzbereit:</em> nach 2–4 Tagen wieder triebstark.</p>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück zum Inhaltsverzeichnis</a>
+</section>
+
+<!-- =========================================================
+     4) OVERNIGHT OATS
+========================================================= -->
+<section id="overnight-oats" class="recipe fruehstueck">
+  <h2>🥣 Overnight Oats</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 5 Min | 🕒 Ruhe: über Nacht | 👥 Portionen:
+    <input type="number" id="oats-portionen" value="1" min="1" style="width:60px"
+           onchange="updateRecipe('#oats-zutaten', '#oats-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥕 Zutaten (Toppings nach Wahl)</h3>
+    <ul id="oats-zutaten">
+      <li>Kokosraspeln</li>
+      <li>Banane</li>
+      <li>Himbeeren</li>
+      <li>Nüsse</li>
+      <li>Apfel</li>
+      <li>Zimt</li>
+      <li>Vanille?</li>
+      <li>Kakao</li>
+      <li>Ahornsirup</li>
+      <li>Milch</li>
+      <li>Haferflocken</li>
+      <li>Schokotrops</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <p>Basis-Verhältnis: <strong>3 : 1 Milch : Haferflocken</strong>. Alles in ein Glas geben, mischen, optional süßen (Ahornsirup), über Nacht kalt stellen. Morgens mit Toppings servieren.</p>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück zum Inhaltsverzeichnis</a>
+</section>
+
+<!-- =========================================================
+     5) PROTEINREICHER SNICKERS-QUARK
+========================================================= -->
+<section id="snickers-quark" class="recipe fruehstueck">
+  <h2>🍫 Proteinreicher „Snickers“-Quark</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 10 Min | 🕒 Gesamtzeit: 10 Min | 👥 Portionen:
+    <input type="number" id="snq-portionen" value="1" min="1" style="width:60px"
+           onchange="updateRecipe('#snq-zutaten', '#snq-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="snq-zutaten">
+      <li><span data-base="300">300</span> g Magerquark</li>
+      <li><span data-base="10">10</span> g Erdnüsse</li>
+      <li><span data-base="20">20</span> g Erdnussbutter (oder Erdnussmus)</li>
+      <li><span data-base="5">5</span> g Kokosöl</li>
+      <li><span data-base="3">3</span> g Backkakao</li>
+      <li><span data-base="5">5</span> g Cornflakes (oder Hafer-Crunchies)</li>
+      <li><span data-base="5">5</span> g Haferflocken</li>
+      <li>n. B. Karamellsirup</li>
+      <li>n. B. Schokotropfen</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Kokosöl erwärmen und mit Erdnüssen, Kakaopulver und Haferflocken verrühren.</li>
+      <li>Quark mit Erdnussbutter glatt rühren.</li>
+      <li>Kakaomasse unter den Quark heben.</li>
+      <li>Mit Crunchies/Cornflakes, Erdnüssen und nach Belieben Schokodrops &amp; Karamellsirup toppen.</li>
+    </ol>
+    <p><em>Eiweißreich, kohlenhydratarm, mit „guten“ Fetten.</em></p>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück zum Inhaltsverzeichnis</a>
+</section>
+
+<!-- =========================================================
+     6) WALNUSSBUTTER
+========================================================= -->
+<section id="walnussbutter" class="recipe fruehstueck">
+  <h2>🧈 Walnussbutter</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 10 Min | 🕒 Gesamtzeit: 10 Min | 👥 Portionen:
+    <input type="number" id="wabu-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#wabu-zutaten', '#wabu-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="wabu-zutaten">
+      <li><span data-base="120">120</span> g Butter, weich</li>
+      <li><span data-base="50">50</span> g Walnüsse</li>
+      <li>Salz</li>
+      <li>bissl Pfeffer</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <p>Butter schmelzen, Walnüsse pürieren, zusammen mischen und würzen.</p>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück zum Inhaltsverzeichnis</a>
+</section>
+
+<!-- =========================================================
+     7) BAGUETTE (falls noch nicht eingefügt – identisch skaliert)
+     Wenn du es schon oben hast, diesen Block bitte überspringen.
+========================================================= -->
+<section id="baguette" class="recipe fruehstueck">
+  <h2>🥖 Baguette</h2>
+  <p class="meta">⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 1 h 20 Min | 👥 Portionen:
+    <input type="number" id="baguette-portionen-2" value="1" min="1" style="width:60px;"
+      onchange="updateRecipe('#baguette-zutaten-2', '#baguette-portionen-2')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="baguette-zutaten-2">
       <li><span data-base="250">250</span> g Mehl Type 550</li>
       <li><span data-base="160">160</span> ml lauwarmes Wasser</li>
       <li><span data-base="6">6</span> g Salz</li>
@@ -579,64 +838,45 @@ function updateBaguette() {
 
   <div class="zubereitung">
     <h3>👩‍🍳 Zubereitung</h3>
-    <p>
-      Hefe mit lauwarmem Wasser und 1 TL Zucker aktivieren (ca. 10 Min).<br>
-      20 Min im Topf gehen lassen, dann 1 h in Form gehen lassen.<br>
-      Bei 200 °C ca. 20 Min backen (Ofen vorheizen).
-    </p>
+    <p>Hefe mit lauwarmem Wasser und 1 TL Zucker aktivieren (ca. 10 Min). 20 Min im Topf gehen lassen, dann 1 h in Form gehen lassen. Bei 200 °C ca. 20 Min backen (Ofen vorheizen).</p>
   </div>
 
   <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück zum Inhaltsverzeichnis</a>
 </section>
 
-<script>
-function updateBaguette() {
-  let portionen = document.getElementById("baguette-portionen").value;
-  let zutaten = document.querySelectorAll("#baguette-zutaten span");
-  zutaten.forEach(span => {
-    let base = span.getAttribute("data-base");
-    span.innerText = Math.round(base * portionen);
-  });
-}
-</script>
-
+<!-- =========================================================
+     Minimales Styling (nutzt deine bestehenden Klassen)
+     – nur falls noch nicht vorhanden –
+========================================================= -->
 <style>
-/* Frühstück-Cover Styling */
-.fruehstueck-cover {
+.recipe.fruehstueck {
   background: #fffacd; /* Pastellgelb */
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2.2rem;
-  font-family: 'Brush Script MT', cursive;
-  border: 5px dashed #d4af37;
-}
-
-/* Rezeptbox Styling */
-.recipe {
-  background: #fffef5;
   border: 2px solid #f1d26a;
-  border-radius: 15px;
-  padding: 20px;
-  margin: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  border-radius: 16px;
+  padding: 18px;
+  margin: 18px 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
-.recipe h2 {
-  font-family: 'Segoe UI', sans-serif;
-  color: #444;
-  margin-bottom: 10px;
+.recipe.fruehstueck h2 {
+  margin-top: 0;
 }
 .meta {
   background: #fef4c5;
-  padding: 8px;
+  padding: 8px 10px;
   border-radius: 10px;
   font-size: 0.95rem;
 }
-.zutaten, .zubereitung {
-  margin-top: 15px;
+.zutaten h3, .zubereitung h3 { margin-bottom: 6px; }
+.zutaten ul { padding-left: 22px; }
+.back-button {
+  display: inline-block;
+  margin-top: 14px;
+  text-decoration: none;
+  background: #f8dfa6;
+  border: 1px solid #e5c56a;
+  padding: 8px 12px;
+  border-radius: 10px;
+  color: #3a2e00;
 }
-.zutaten ul {
-  padding-left: 20px;
-}
+.back-button:hover { filter: brightness(0.97); }
 </style>
