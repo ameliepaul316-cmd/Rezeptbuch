@@ -3,92 +3,81 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meine Lieblingsrezepte</title>
+  <title>Kochbuch</title>
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
 
   <style>
-    /* --- Grund-Layout --- */
+    /* --- Grund-Design --- */
     body {
       margin: 0;
       padding: 0;
       font-family: 'Montserrat', sans-serif;
-      background: #fdfcf7;
-      color: #333;
-      scroll-behavior: smooth;
+      background: #fdf8f3;
+      color: #3d2f23;
     }
 
     .page {
-      width: 210mm;   /* A4-Breite */
-      min-height: 297mm; /* A4-Höhe */
+      max-width: 420px; /* iPhone Größe */
       margin: 20px auto;
-      padding: 50px;
-      border: 2px solid #c4b89b;
-      border-radius: 15px;
+      padding: 20px;
       background: #fff;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-      box-sizing: border-box;
+      border-radius: 15px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+      border: 2px solid #e6dccf; /* Beige-Rahmen */
     }
 
     /* --- Deckblatt --- */
     .cover {
       text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
+      padding: 60px 20px;
     }
 
     .cover h1 {
       font-family: 'Great Vibes', cursive;
-      font-size: 5rem;
+      font-size: 3rem;
       margin: 0;
       color: #4b3f2f;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
     }
 
     .cover p {
       font-family: 'Playfair Display', serif;
-      font-size: 1.6rem;
-      margin-top: 20px;
-      color: #666;
-      letter-spacing: 1px;
+      font-size: 1.2rem;
+      margin-top: 15px;
+      color: #7a6c5c;
     }
 
     .icons {
-      font-size: 2.5rem;
-      margin-top: 40px;
+      font-size: 2rem;
+      margin-top: 30px;
       color: #c49a6c;
     }
 
-    /* --- Platzhalter für Bilder auf Rezeptseiten --- */
-    .image-upload {
-      margin: 20px 0;
-      text-align: center;
+    /* --- Rezeptseite --- */
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: #4b3f2f;
+      margin-bottom: 10px;
     }
 
-    .image-upload input {
-      display: none;
+    .image-upload {
+      text-align: center;
+      margin-bottom: 20px;
     }
 
     .image-placeholder {
       display: inline-block;
-      width: 80%;
-      height: 250px;
-      border: 2px dashed #ccc;
+      width: 100%;
+      height: 200px;
+      border: 2px dashed #e6dccf;
       border-radius: 12px;
-      color: #aaa;
-      font-size: 1.2rem;
-      line-height: 250px;
+      color: #a89d8a;
+      font-size: 1rem;
+      line-height: 200px;
       cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .image-placeholder:hover {
-      border-color: #888;
-      color: #666;
+      background: #faf7f2;
     }
 
     .image-preview {
@@ -97,66 +86,72 @@
       border-radius: 12px;
       margin-top: 10px;
     }
+
+    /* --- Kästen für Zutaten & Zubereitung --- */
+    .box {
+      background: #f9f5ef;
+      border: 1px solid #e6dccf;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+    }
+
+    .box h3 {
+      font-family: 'Playfair Display', serif;
+      margin-top: 0;
+      color: #5c4c3a;
+      border-bottom: 1px solid #e6dccf;
+      padding-bottom: 5px;
+    }
+
+    ul, ol {
+      padding-left: 20px;
+      margin: 10px 0;
+    }
   </style>
 </head>
 <body>
 
   <!-- Deckblatt -->
-  <div class="page cover" id="cover">
+  <div class="page cover">
     <h1>Meine Lieblingsrezepte</h1>
-    <p>Ein Geschenk mit Liebe – für die schönsten Genussmomente</p>
+    <p>Ein Genussbuch mit Herz ♥</p>
     <div class="icons">🥐 🍝 🥗 🍰 🍹</div>
   </div>
 
-  <!-- Beispiel-Rezeptseite mit Bild-Platzhalter -->
-  <div class="page" id="rezept1">
+  <!-- Rezeptseite Beispiel -->
+  <div class="page">
     <h2>Baguette</h2>
 
-    <!-- Bild-Platzhalter -->
+    <!-- Bild Platzhalter -->
     <div class="image-upload">
-      <label for="file-input">
-        <div class="image-placeholder">📷 Hier Bild einfügen</div>
-      </label>
-      <input id="file-input" type="file" accept="image/*">
-      <img id="preview" class="image-preview" alt="Rezeptbild">
+      <div class="image-placeholder">📷 Hier Bild einfügen</div>
+      <img class="image-preview" id="preview" alt="Rezeptbild">
     </div>
 
-    <h3>Zutaten</h3>
-    <ul>
-      <li>250 g Mehl Type 550</li>
-      <li>160 ml lauwarmes Wasser</li>
-      <li>6 g Salz</li>
-      <li>10 g frische Hefe oder 3 g Trockenhefe</li>
-    </ul>
+    <!-- Zutaten -->
+    <div class="box">
+      <h3>Zutaten</h3>
+      <ul>
+        <li>250 g Mehl Type 550</li>
+        <li>160 ml lauwarmes Wasser</li>
+        <li>6 g Salz</li>
+        <li>10 g frische Hefe oder 3 g Trockenhefe</li>
+      </ul>
+    </div>
 
-    <h3>Zubereitung</h3>
-    <ol>
-      <li>Hefe mit lauwarmem Wasser und 1 TL Zucker 10 min aktivieren</li>
-      <li>20 min im Topf gehen lassen</li>
-      <li>1 h in Form gehen lassen</li>
-      <li>Bei 200°C 20 min im Backofen mit Vorhitze backen</li>
-    </ol>
+    <!-- Zubereitung -->
+    <div class="box">
+      <h3>Zubereitung</h3>
+      <ol>
+        <li>Hefe mit lauwarmem Wasser und 1 TL Zucker 10 min aktivieren</li>
+        <li>20 min im Topf gehen lassen</li>
+        <li>1 h in Form gehen lassen</li>
+        <li>Bei 200°C 20 min im Backofen mit Vorhitze backen</li>
+      </ol>
+    </div>
   </div>
-
-  <script>
-    // --- Bild-Upload Funktion ---
-    const fileInput = document.getElementById('file-input');
-    const preview = document.getElementById('preview');
-    const placeholder = document.querySelector('.image-placeholder');
-
-    fileInput.addEventListener('change', function(event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          preview.src = e.target.result;
-          preview.style.display = 'block';
-          placeholder.style.display = 'none'; // Platzhalter verschwindet
-        }
-        reader.readAsDataURL(file);
-      }
-    });
-  </script>
 
 </body>
 </html>
