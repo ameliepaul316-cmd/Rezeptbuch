@@ -855,7 +855,7 @@ if (typeof window.updateRecipe !== 'function') {
 
 
 
--- =========================================================
+<-- =========================================================
      HAUPTSPEISEN – COVER (Mintgrün)
 ========================================================= -->
 <section id="hauptspeisen-cover" class="cover hauptspeisen">
@@ -1228,3 +1228,240 @@ if (typeof window.updateRecipe !== 'function') {
 
   <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
 </section>
+
+
+  
+
+  <!-- =========================================================
+     PIZZA – COVER
+========================================================= -->
+<section id="pizza-cover" class="cover hauptspeisen">
+  <h1>🍕 Pizza</h1>
+  <p>Knusprig, herzhaft & einfach unwiderstehlich.</p>
+</section>
+
+<!-- =========================================================
+     PIZZATEIG
+========================================================= -->
+<section id="pizzateig" class="recipe hauptspeisen">
+  <h2>🍞 Pizzateig</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 20 Min + Gehzeit | 🕒 Gesamtzeit: ca. 2 Std | 👥 Portionen:
+    <input type="number" id="pt-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#pt-zutaten', '#pt-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥗 Zutaten</h3>
+    <ul id="pt-zutaten">
+      <li><span data-base="500">500</span> g Weizenmehl (Type 550)</li>
+      <li><span data-base="10">10</span> g Salz</li>
+      <li><span data-base="10">10</span> g Olivenöl</li>
+      <li><span data-base="320">320</span> ml lauwarmes Wasser</li>
+      <li><span data-base="20">20</span> g frische Hefe (oder 7 g Trockenhefe)</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Hefe in lauwarmem Wasser auflösen, 5 Min ruhen lassen.</li>
+      <li>Mehl, Salz, Olivenöl und Hefewasser zu einem geschmeidigen Teig kneten.</li>
+      <li>Abgedeckt an einem warmen Ort ca. 1 Stunde gehen lassen.</li>
+      <li>Teig ausrollen, nach Wunsch belegen und bei 220 °C (Ober-/Unterhitze) 12–15 Min backen.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+<!-- =========================================================
+     PIZZABRÖTCHEN
+========================================================= -->
+<section id="pizzabroetchen" class="recipe hauptspeisen">
+  <h2>🥯 Pizzabrötchen</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 15 Min + Gehzeit | 🕒 Gesamtzeit: ca. 1 Std | 👥 Portionen:
+    <input type="number" id="pb-portionen" value="12" min="1" style="width:60px"
+           onchange="updateRecipe('#pb-zutaten', '#pb-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥗 Zutaten</h3>
+    <ul id="pb-zutaten">
+      <li><span data-base="500">500</span> g Mehl</li>
+      <li><span data-base="1">1</span> Würfel frische Hefe (42 g)</li>
+      <li><span data-base="300">300</span> ml lauwarmes Wasser</li>
+      <li><span data-base="2">2</span> EL Olivenöl</li>
+      <li><span data-base="1">1</span> TL Salz</li>
+      <li>Optional: Käsewürfel, Kräuter, Knoblauchbutter zum Füllen</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+  <!-- 📘 Reis- & Getreidegerichte Cover -->
+<section id="reis" class="category-cover" style="background:#C9F2D3; min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px; font-family:'Poppins', sans-serif;">
+  <div style="border: 3px solid #000; border-radius:20px; padding:40px; background:#fff;">
+    <h1 style="font-size:2.2em; margin-bottom:15px;">🍚 Reis- & Getreidegerichte</h1>
+    <p style="font-size:1.2em;">Von Curry bis Risotto – leichte & gesunde Rezepte rund um Reis und Quinoa</p>
+  </div>
+  <div style="margin-top:30px;">
+    <a href="#indisches-quinoa-curry" style="text-decoration:none; background:#000; color:#fff; padding:12px 22px; border-radius:10px;">➡️ Zum ersten Rezept</a>
+  </div>
+</section>
+
+<!-- 📘 Rezept: Indisches Quinoa Curry -->
+<section id="indisches-quinoa-curry" style="background:#C9F2D3; min-height:100vh; padding:20px; font-family:'Poppins', sans-serif;">
+  <div style="background:#fff; border-radius:15px; padding:25px; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+    <h2 style="font-size:1.8em; margin-bottom:10px;">Indisches Quinoa Curry</h2>
+    <p><strong>Zubereitungszeit:</strong> 10 Min | <strong>Gesamtzeit:</strong> 22 Min | <strong>Portionen:</strong> <span id="portionen-quinoa">2</span></p>
+    
+    <!-- Portionen-Steuerung -->
+    <div style="margin:10px 0 20px;">
+      <button onclick="updatePortionen('quinoa', -1)" style="padding:5px 10px; margin-right:10px;">➖</button>
+      <button onclick="updatePortionen('quinoa', 1)" style="padding:5px 10px;">➕</button>
+    </div>
+
+    <!-- Zutaten -->
+    <h3>Zutaten</h3>
+    <ul id="zutaten-quinoa">
+      <li data-amount="50">50 g Cashewkerne</li>
+      <li data-amount="50">50 g rote Zwiebeln</li>
+      <li data-amount="80">80 g Mango (Fruchtfleisch, in Stücken)</li>
+      <li data-amount="10">10 g frischer Ingwer (geschält, in Stücken)</li>
+      <li data-amount="15">15 g Ghee</li>
+      <li data-amount="1">1 TL scharfes Currypulver</li>
+      <li data-amount="40">40 g TK-Erbsen</li>
+      <li data-amount="80">80 g weißer Quinoa</li>
+      <li data-amount="300">300 g heiße Gemüsebrühe</li>
+      <li data-amount="0.5">½ TL Amchur (Mangopulver) oder 1 EL Limettensaft</li>
+    </ul>
+
+    <!-- Zubereitung -->
+    <h3>Zubereitung</h3>
+    <ol>
+      <li>Cashewkerne ohne Fett in einer Pfanne anrösten.</li>
+      <li>Zwiebel, Mango und Ingwer 5 Sek. mixen (oder fein hacken).</li>
+      <li>Ghee, Currypulver, Erbsen und Quinoa hinzufügen und 3 Min dünsten.</li>
+      <li>Mit Gemüsebrühe aufgießen und 22 Min köcheln lassen.</li>
+      <li>5 Min vor Ende Cashewkerne und Mangopulver/Limettensaft zugeben.</li>
+      <li>Nochmal gut umrühren und servieren.</li>
+    </ol>
+
+    <!-- Back Button -->
+    <div style="margin-top:20px;">
+      <a href="#reis" style="text-decoration:none; background:#000; color:#fff; padding:10px 18px; border-radius:8px;">⬅️ Zurück zum Cover</a>
+    </div>
+  </div>
+</section>
+
+<script>
+function updatePortionen(rezept, change) {
+  let portionenEl = document.getElementById("portionen-" + rezept);
+  let zutatenEl = document.getElementById("zutaten-" + rezept).children;
+  let portionen = parseInt(portionenEl.innerText);
+  let newPortionen = portionen + change;
+  if(newPortionen < 1) return;
+  portionenEl.innerText = newPortionen;
+
+  for(let i=0; i<zutatenEl.length; i++) {
+    let amount = zutatenEl[i].getAttribute("data-amount");
+    if(amount) {
+      let baseAmount = parseFloat(amount);
+      let scaledAmount = (baseAmount / portionen) * newPortionen;
+      zutatenEl[i].innerText = scaledAmount.toFixed(1).replace(".0","") + " " + zutatenEl[i].innerText.split(" ").slice(1).join(" ");
+    }
+  }
+}
+</script>    <li>Hefe im lauwarmen Wasser auflösen, kurz ruhen lassen.</li>
+      <li>Mit Mehl, Salz und Olivenöl zu einem Teig kneten.</li>
+      <li>Teig abgedeckt 30–45 Min gehen lassen.</li>
+      <li>Kleine Brötchen formen, optional füllen, auf Backblech setzen.</li>
+      <li>Bei 200 °C (Ober-/Unterhitze) 15–20 Min goldbraun backen.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+  
+
+<!-- 🌍 Internationale Küche & Currys Cover -->
+<section id="international" class="category-cover" style="background:#C9F2D3; min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px; font-family:'Poppins', sans-serif;">
+  <div style="border: 3px solid #000; border-radius:20px; padding:40px; background:#fff;">
+    <h1 style="font-size:2.2em; margin-bottom:15px;">🌍 Internationale Küche & Currys</h1>
+    <p style="font-size:1.2em;">Exotische Spezialitäten & würzige Currys aus aller Welt</p>
+  </div>
+  <div style="margin-top:30px;">
+    <a href="#auberginen-lasagne" style="text-decoration:none; background:#000; color:#fff; padding:12px 22px; border-radius:10px;">➡️ Zum ersten Rezept</a>
+  </div>
+</section>
+
+<!-- 🌍 Rezept: Auberginen-Zucchini-Lasagne -->
+<section id="auberginen-lasagne" style="background:#C9F2D3; min-height:100vh; padding:20px; font-family:'Poppins', sans-serif;">
+  <div style="background:#fff; border-radius:15px; padding:25px; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+    <h2 style="font-size:1.8em; margin-bottom:10px;">Auberginen-Zucchini-Lasagne</h2>
+    <p><strong>Zubereitungszeit:</strong> 30 Min | <strong>Gesamtzeit:</strong> 60 Min | <strong>Portionen:</strong> <span id="portionen-lasagne">4</span></p>
+    
+    <!-- Portionen-Steuerung -->
+    <div style="margin:10px 0 20px;">
+      <button onclick="updatePortionen('lasagne', -1)" style="padding:5px 10px; margin-right:10px;">➖</button>
+      <button onclick="updatePortionen('lasagne', 1)" style="padding:5px 10px;">➕</button>
+    </div>
+
+    <!-- Zutaten -->
+    <h3>Zutaten</h3>
+    <ul id="zutaten-lasagne">
+      <li data-amount="2">2 Auberginen</li>
+      <li data-amount="2">2 Zucchini</li>
+      <li data-amount="400">400 g Tomaten (gehackt, Dose)</li>
+      <li data-amount="1">1 Zwiebel</li>
+      <li data-amount="2">2 Knoblauchzehen</li>
+      <li data-amount="200">200 g Ricotta</li>
+      <li data-amount="100">100 g Mozzarella</li>
+      <li data-amount="50">50 g Parmesan</li>
+      <li data-amount="2">2 EL Olivenöl</li>
+      <li>Salz, Pfeffer, Basilikum nach Geschmack</li>
+    </ul>
+
+    <!-- Zubereitung -->
+    <h3>Zubereitung</h3>
+    <ol>
+      <li>Auberginen und Zucchini in Scheiben schneiden und kurz in Olivenöl anbraten.</li>
+      <li>Zwiebel und Knoblauch fein hacken, in Olivenöl anbraten, Tomaten zugeben und 10 Min köcheln lassen.</li>
+      <li>Ricotta mit Salz, Pfeffer und Basilikum abschmecken.</li>
+      <li>Eine Auflaufform mit Sauce beginnen, dann abwechselnd Gemüse, Ricotta und Sauce schichten.</li>
+      <li>Mit Mozzarella und Parmesan bestreuen.</li>
+      <li>Bei 180°C (Ober-/Unterhitze) ca. 30 Min backen, bis die Oberfläche goldbraun ist.</li>
+    </ol>
+
+    <!-- Back Button -->
+    <div style="margin-top:20px;">
+      <a href="#international" style="text-decoration:none; background:#000; color:#fff; padding:10px 18px; border-radius:8px;">⬅️ Zurück zum Cover</a>
+    </div>
+  </div>
+</section>
+
+<script>
+function updatePortionen(rezept, change) {
+  let portionenEl = document.getElementById("portionen-" + rezept);
+  let zutatenEl = document.getElementById("zutaten-" + rezept).children;
+  let portionen = parseInt(portionenEl.innerText);
+  let newPortionen = portionen + change;
+  if(newPortionen < 1) return;
+  portionenEl.innerText = newPortionen;
+
+  for(let i=0; i<zutatenEl.length; i++) {
+    let amount = zutatenEl[i].getAttribute("data-amount");
+    if(amount) {
+      let baseAmount = parseFloat(amount);
+      let scaledAmount = (baseAmount / portionen) * newPortionen;
+      zutatenEl[i].innerText = scaledAmount.toFixed(1).replace(".0","") + " " + zutatenEl[i].innerText.split(" ").slice(1).join(" ");
+    }
+  }
+}
+</script>
+
+
