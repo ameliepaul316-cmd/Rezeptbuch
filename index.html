@@ -2234,18 +2234,18 @@ if (typeof window.updateRecipe !== 'function') {
   <!-- =========================================================
      BASICS & SAUCEN – KAPITEL-COVER (mintgrün)
 ========================================================= -->
-<section id="basics-cover" class="cover basics">
+<section id="basics-cover" class="cover hauptspeisen">
   <h1>🥫 Basics & Saucen</h1>
-  <p>Teige, Cremes & Saucen – die Basis für (fast) alles.</p>
+  <p>Teige, Dips & Dressings – die Allrounder für deine Küche.</p>
 </section>
 
 <!-- =========================================================
      BIERTEIG
 ========================================================= -->
-<section id="bierteig" class="recipe basics">
+<section id="bierteig" class="recipe hauptspeisen">
   <h2>🍺 Bierteig</h2>
   <p class="meta">
-    ⏱️ Zubereitungszeit: 10 Min | 🕒 Gesamtzeit: 20 Min | 👥 Portionen:
+    ⏱️ Zubereitungszeit: 10 Min | 🕒 Gesamtzeit: 15 Min | 👥 Portionen:
     <input type="number" id="bt-portionen" value="4" min="1" style="width:60px"
            onchange="updateRecipe('#bt-zutaten', '#bt-portionen')">
   </p>
@@ -2257,15 +2257,15 @@ if (typeof window.updateRecipe !== 'function') {
       <li><span data-base="1">1</span> TL Backpulver</li>
       <li><span data-base="2">2</span> Eigelb</li>
       <li><span data-base="240">240</span> ml eiskaltes Bier</li>
-      <li>Salz (Pfeffer)</li>
-      <li>Öl (z. B. Pflanzenöl) zum Frittieren</li>
+      <li>Salz, Pfeffer</li>
+      <li>Öl zum Frittieren</li>
     </ul>
   </div>
   <div class="zubereitung">
     <h3>👩‍🍳 Zubereitung</h3>
     <ol>
-      <li>Alles zusammen mischen.</li>
-      <li>Öl (z. B. Pflanzenöl) erhitzen.</li>
+      <li>Alle Zutaten zu einem glatten Teig verrühren.</li>
+      <li>Öl auf ca. 170–180 °C erhitzen, Zutaten durch den Teig ziehen und goldbraun frittieren.</li>
     </ol>
   </div>
   <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
@@ -2274,30 +2274,35 @@ if (typeof window.updateRecipe !== 'function') {
 <!-- =========================================================
      EIERSAUCE MIT BRATKARTOFFELN
 ========================================================= -->
-<section id="eiersauce" class="recipe basics">
+<section id="eiersauce" class="recipe hauptspeisen">
   <h2>🥚 Eiersauce mit Bratkartoffeln</h2>
   <p class="meta">
-    ⏱️ Zubereitungszeit: 10 Min | 🕒 Gesamtzeit: 10 Min | 👥 Portionen:
+    ⏱️ Zubereitungszeit: 10 Min | 🕒 Gesamtzeit: 10–15 Min | 👥 Portionen:
     <input type="number" id="es-portionen" value="4" min="1" style="width:60px"
            onchange="updateRecipe('#es-zutaten', '#es-portionen')">
   </p>
   <div class="zutaten">
-    <h3>🥗 Zutaten</h3>
+    <h3>🥗 Zutaten (Sauce)</h3>
     <ul id="es-zutaten">
-      <li><span data-base="2">2</span> Stk hart gekochte Eier (oder mehr)</li>
+      <li><span data-base="2">2</span> hart gekochte Eier (oder mehr)</li>
       <li><span data-base="125">125</span> ml Mayonnaise</li>
       <li><span data-base="125">125</span> g Crème Fraîche</li>
       <li><span data-base="1">1</span> TL Honig</li>
       <li><span data-base="1">1</span> TL Essig</li>
       <li><span data-base="1">1</span> Prise Curry</li>
       <li><span data-base="0.25">0.25</span> Bund Petersilie</li>
-      <li><span data-base="1">1</span> Prise Pfeffer</li>
-      <li><span data-base="1">1</span> Prise Salz</li>
+      <li>Salz & Pfeffer</li>
     </ul>
+    <p style="margin-top:.5rem">➕ Dazu: Bratkartoffeln nach Wunsch.</p>
   </div>
   <div class="zubereitung">
     <h3>👩‍🍳 Zubereitung</h3>
-    <p>(nach deinem Eintrag – Sauce rühren & zu Bratkartoffeln servieren)</p>
+    <ol>
+      <li>Eier grob hacken.</li>
+      <li>Mayonnaise, Crème Fraîche, Honig, Essig & Curry verrühren.</li>
+      <li>Eier & gehackte Petersilie unterheben, mit Salz & Pfeffer abschmecken.</li>
+      <li>Zu Bratkartoffeln servieren.</li>
+    </ol>
   </div>
   <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
 </section>
@@ -2305,42 +2310,41 @@ if (typeof window.updateRecipe !== 'function') {
 <!-- =========================================================
      GUACAMOLE
 ========================================================= -->
-<section id="guacamole" class="recipe basics">
+<section id="guacamole" class="recipe hauptspeisen">
   <h2>🥑 Guacamole</h2>
   <p class="meta">
-    ⏱️ Vorbereitung: 10 Min | ⏱️ Zubereitung: 5 Min | 🕒 Insgesamt: 15 Min | 👥 Portionen:
+    ⏱️ Vorbereitung: 10 Min | ⏱️ Zubereitung: 5 Min | 🕒 Gesamtzeit: 15 Min | 👥 Portionen:
     <input type="number" id="gua-portionen" value="4" min="1" style="width:60px"
            onchange="updateRecipe('#gua-zutaten', '#gua-portionen')">
   </p>
   <div class="zutaten">
     <h3>🥗 Zutaten</h3>
     <ul id="gua-zutaten">
-      <li><span data-base="2">2</span> Avocado, reif</li>
+      <li><span data-base="2">2</span> reife Avocados</li>
       <li><span data-base="1">1</span> Tomate, entkernt & gewürfelt</li>
-      <li><span data-base="1">1</span> kleine rote Zwiebel (fein gewürfelt)</li>
-      <li><span data-base="1">1</span> EL Koriander, frisch fein gehackt</li>
-      <li><span data-base="1">1</span> Zehe Knoblauch, gepresst</li>
-      <li><span data-base="1">1</span> Limette, gepresst</li>
-      <li><span data-base="0.5">0.5</span> Jalapeño, fein gewürfelt</li>
-      <li>Meersalz/Pfeffer</li>
+      <li><span data-base="1">1</span> kleine rote Zwiebel, fein gewürfelt</li>
+      <li><span data-base="1">1</span> EL frischer Koriander, fein gehackt</li>
+      <li><span data-base="1">1</span> Knoblauchzehe, gepresst</li>
+      <li><span data-base="1">1</span> Limette, Saft</li>
+      <li><span data-base="0.5">0.5</span> Jalapeño, sehr fein gewürfelt</li>
+      <li>Meersalz & Pfeffer</li>
     </ul>
   </div>
   <div class="zubereitung">
     <h3>👩‍🍳 Zubereitung</h3>
     <ol>
-      <li>Avocado halbieren, Fruchtfleisch mit Löffel herauslösen.</li>
-      <li>Limettensaft darüber, zu Mus zerdrücken.</li>
-      <li>Restliche Zutaten einrühren, würzen.</li>
-      <li>Kalt stellen.</li>
+      <li>Avocadofleisch auslösen, mit Limettensaft grob zerdrücken.</li>
+      <li>Tomate, Zwiebel, Koriander, Knoblauch & Jalapeño unterheben.</li>
+      <li>Mit Salz & Pfeffer abschmecken, kalt stellen.</li>
     </ol>
   </div>
   <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
 </section>
 
 <!-- =========================================================
-     KNOBLAUCHSAUCE / -CREME
+     KNOBLAUCHSAUCE
 ========================================================= -->
-<section id="knoblauchsauce" class="recipe basics">
+<section id="knoblauchsauce" class="recipe hauptspeisen">
   <h2>🧄 Knoblauchsauce</h2>
   <p class="meta">
     ⏱️ Zubereitungszeit: 10 Min | 🕒 Gesamtzeit: 10 Min | 👥 Portionen:
@@ -2351,7 +2355,7 @@ if (typeof window.updateRecipe !== 'function') {
     <h3>🥗 Zutaten</h3>
     <ul id="ks-zutaten">
       <li><span data-base="250">250</span> g Quark</li>
-      <li><span data-base="250">250</span> g Crème fraîche</li>
+      <li><span data-base="250">250</span> g Crème Fraîche</li>
       <li><span data-base="250">250</span> g Mayonnaise</li>
       <li><span data-base="6">6</span> Knoblauchzehen</li>
       <li><span data-base="0.5">0.5</span> TL Salz</li>
@@ -2361,7 +2365,10 @@ if (typeof window.updateRecipe !== 'function') {
   </div>
   <div class="zubereitung">
     <h3>👩‍🍳 Zubereitung</h3>
-    <p>Alles mischen und im Kühlschrank ziehen lassen, dabei ab und zu umrühren.</p>
+    <ol>
+      <li>Alle Zutaten glatt rühren, nach Geschmack nachwürzen.</li>
+      <li>Im Kühlschrank etwas durchziehen lassen, gelegentlich umrühren.</li>
+    </ol>
   </div>
   <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
 </section>
@@ -2369,47 +2376,42 @@ if (typeof window.updateRecipe !== 'function') {
 <!-- =========================================================
      PESTO (PESTO PAUL)
 ========================================================= -->
-<section id="pesto-paul" class="recipe basics">
+<section id="pesto-paul" class="recipe hauptspeisen">
   <h2>🌿 Pesto (Pesto Paul)</h2>
   <p class="meta">
     ⏱️ Zubereitungszeit: 15 Min | 🕒 Gesamtzeit: 15 Min | 👥 Portionen:
-    <input type="number" id="pp-portionen" value="4" min="1" style="width:60px"
+    <input type="number" id="pp-portionen" value="6" min="1" style="width:60px"
            onchange="updateRecipe('#pp-zutaten', '#pp-portionen')">
   </p>
   <div class="zutaten">
     <h3>🥗 Zutaten</h3>
     <ul id="pp-zutaten">
-      <li><span data-base="2">2</span> Basilikum-Pflanzen</li>
-      <li><span data-base="3">3</span> Zehen Knoblauch</li>
+      <li><span data-base="2">2</span> Basilikum-Pflanzen (Blätter)</li>
+      <li><span data-base="3">3</span> Knoblauchzehen</li>
       <li><span data-base="1">1</span> kleine Packung Pinienkerne</li>
       <li><span data-base="1">1</span> Zitrone</li>
-      <li><span data-base="1">1</span> Parmesan</li>
+      <li><span data-base="1">1</span> Stück Parmesan</li>
       <li>Scharfes Tomatenmark</li>
-      <li>Gewürze: Pfeffer, Salz, Paprika, Curry, Chili</li>
       <li>Olivenöl</li>
+      <li>Gewürze: Pfeffer, Salz, Paprika, Curry, Chili</li>
     </ul>
   </div>
   <div class="zubereitung">
     <h3>👩‍🍳 Zubereitung</h3>
     <ol>
-      <li>2 Pestopflanzen pflücken.</li>
-      <li>Knoblauch und Tomatenmark in Öl anbraten (berühren sich nicht, Knoblauch gold).</li>
-      <li>¾ Parmesan reiben.</li>
-      <li>Basilikum mit Parmesan mit Olivenöl im Messbecher pürieren.</li>
-      <li>Knoblauch-Tomatenmark dazugeben.</li>
-      <li>In gleicher Pfanne Pinienkerne gold anbraten, dann ebenfalls pürieren.</li>
-      <li>Zitrone reinpressen und mit Löffel mischen.</li>
-      <li>Letzten ¼ Parmesan reingeben.</li>
-      <li>Abschmecken mit Gewürzen & Öl.</li>
+      <li>Knoblauch in Öl mit Tomatenmark kurz anrösten (Knoblauch gold, nicht dunkel).</li>
+      <li>Parmesan (¾) reiben. Basilikum + Parmesan mit Olivenöl fein pürieren.</li>
+      <li>Knoblauch-Tomatenmark zugeben, Pinienkerne in der Pfanne rösten und mit pürieren.</li>
+      <li>Zitrone auspressen, restlichen Parmesan unterheben. Mit Gewürzen & Öl abschmecken.</li>
     </ol>
   </div>
   <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
 </section>
 
 <!-- =========================================================
-     SALATSAUCE
+     SALATSAUCE (Nährhefedressing)
 ========================================================= -->
-<section id="salatsauce" class="recipe basics">
+<section id="salatsauce" class="recipe hauptspeisen">
   <h2>🥗 Salatsauce</h2>
   <p class="meta">
     ⏱️ Zubereitungszeit: 5 Min | 🕒 Gesamtzeit: 5 Min | 👥 Portionen:
@@ -2419,17 +2421,20 @@ if (typeof window.updateRecipe !== 'function') {
   <div class="zutaten">
     <h3>🥗 Zutaten</h3>
     <ul id="ss-zutaten">
-      <li><span data-base="1">1</span> cup Nährhefe</li>
-      <li><span data-base="0.33">0.33</span> cup + <span data-base="1">1</span> EL Apfelessig</li>
-      <li><span data-base="0.25">0.25</span> cup Sojasauce</li>
+      <li><span data-base="240">240</span> ml Nährhefe (≈ 1 cup, locker gehäuft)</li>
+      <li><span data-base="80">80</span> ml Apfelessig (≈ ⅓ cup + 1 EL)</li>
+      <li><span data-base="60">60</span> ml Sojasauce (≈ ¼ cup)</li>
       <li><span data-base="3">3</span> Knoblauchzehen</li>
-      <li>Prise Salz und Pfeffer</li>
-      <li><span data-base="0.33">0.33</span> cup Olivenöl</li>
+      <li>Prise Salz & Pfeffer</li>
+      <li><span data-base="80">80</span> ml Olivenöl (zum Schluss einmixen)</li>
     </ul>
   </div>
   <div class="zubereitung">
     <h3>👩‍🍳 Zubereitung</h3>
-    <p>Alles zusammenmixen außer Olivenöl, dann Olivenöl zum Schluss nach und nach hinzugeben.</p>
+    <ol>
+      <li>Alles außer Olivenöl glatt mixen.</li>
+      <li>Olivenöl langsam einlaufen lassen, bis cremig emulgiert.</li>
+    </ol>
   </div>
   <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
 </section>
@@ -2437,45 +2442,45 @@ if (typeof window.updateRecipe !== 'function') {
 <!-- =========================================================
      CURRY-PASTEN – KAPITEL-COVER (mintgrün)
 ========================================================= -->
-<section id="curry-pasten-cover" class="cover basics">
+<section id="currypasten-cover" class="cover hauptspeisen">
   <h1>🌶️ Curry-Pasten</h1>
-  <p>Frisch gestampft – die Basis für echte Currys.</p>
+  <p>Aromabomben für Currys & Suppen. Im Kühlschrank ca. 2 Wochen haltbar.</p>
 </section>
 
 <!-- =========================================================
      GRÜNE CURRY-PASTE
 ========================================================= -->
-<section id="gruenecurrypaste" class="recipe basics">
-  <h2>🟩 Grüne Curry-Paste</h2>
+<section id="gruene-curry-paste" class="recipe hauptspeisen">
+  <h2>🟢 Grüne Curry-Paste</h2>
   <p class="meta">
     ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 20 Min | 👥 Portionen:
-    <input type="number" id="gcp-portionen" value="1" min="1" style="width:60px"
+    <input type="number" id="gcp-portionen" value="10" min="1" style="width:60px"
            onchange="updateRecipe('#gcp-zutaten', '#gcp-portionen')">
   </p>
   <div class="zutaten">
     <h3>🥗 Zutaten</h3>
     <ul id="gcp-zutaten">
-      <li><span data-base="60">60</span> g grüne kleine Chilis</li>
-      <li><span data-base="40">40</span> g grüne große Chilis</li>
-      <li><span data-base="2">2</span> TL fein gehackter Galgant</li>
-      <li><span data-base="2">2</span> TL fein gehacktes Zitronengras</li>
-      <li><span data-base="1">1</span> TL fein gehackte Kaffirlimettenschale</li>
-      <li><span data-base="2">2</span> TL fein gehackte Korianderwurzel</li>
+      <li><span data-base="60">60</span> g kleine grüne Chilis</li>
+      <li><span data-base="40">40</span> g große grüne Chilis</li>
+      <li><span data-base="2">2</span> TL Galgant, fein gehackt</li>
+      <li><span data-base="2">2</span> TL Zitronengras, fein gehackt</li>
+      <li><span data-base="1">1</span> TL Kaffirlimettenschale, fein gehackt</li>
+      <li><span data-base="2">2</span> TL Korianderwurzel, fein gehackt</li>
       <li><span data-base="80">80</span> g Schalotten, in Scheiben</li>
       <li><span data-base="40">40</span> g Knoblauch, in Scheiben</li>
       <li><span data-base="0.5">0.5</span> TL Pfeffer</li>
-      <li><span data-base="1">1</span> EL gerösteter Koriandersamen</li>
-      <li><span data-base="1">1</span> TL gerösteter Kreuzkümmel</li>
+      <li><span data-base="1">1</span> EL Koriandersamen, geröstet</li>
+      <li><span data-base="1">1</span> TL Kreuzkümmel (Cumin), geröstet</li>
       <li><span data-base="1">1</span> TL Salz</li>
     </ul>
   </div>
   <div class="zubereitung">
     <h3>👩‍🍳 Zubereitung</h3>
     <ol>
-      <li>Chilis mit Salz gründlich zerstampfen.</li>
-      <li>Galgant, Zitronengras, Kaffirlimettenschale, Korianderwurzel & Pfeffer zugeben, weitermörsern.</li>
-      <li>Schalotten, Knoblauch, Koriander- & Kreuzkümmelsamen einarbeiten, alles sehr fein stampfen.</li>
-      <li>In ein verschließbares Gefäß füllen und im Kühlschrank ca. 2 Wochen aufbewahren.</li>
+      <li>Chilis mit Salz im Mörser fein stampfen.</li>
+      <li>Galgant, Zitronengras, Kaffirlimette, Korianderwurzel & Pfeffer zugeben und fein arbeiten.</li>
+      <li>Schalotten, Knoblauch, Koriander- & Kreuzkümmelsamen einarbeiten, bis eine feine Paste entsteht.</li>
+      <li>Luftdicht abfüllen, bis 2 Wochen gekühlt haltbar (portionsweise einfrierbar).</li>
     </ol>
   </div>
   <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
@@ -2484,39 +2489,39 @@ if (typeof window.updateRecipe !== 'function') {
 <!-- =========================================================
      MASSAMAN CURRY-PASTE
 ========================================================= -->
-<section id="massamancurrypaste" class="recipe basics">
-  <h2>🟫 Massaman Curry-Paste</h2>
+<section id="massaman-curry-paste" class="recipe hauptspeisen">
+  <h2>🟤 Massaman Curry-Paste</h2>
   <p class="meta">
     ⏱️ Zubereitungszeit: 25 Min | 🕒 Gesamtzeit: 25 Min | 👥 Portionen:
-    <input type="number" id="mcp-portionen" value="1" min="1" style="width:60px"
+    <input type="number" id="mcp-portionen" value="12" min="1" style="width:60px"
            onchange="updateRecipe('#mcp-zutaten', '#mcp-portionen')">
   </p>
   <div class="zutaten">
     <h3>🥗 Zutaten</h3>
     <ul id="mcp-zutaten">
-      <li><span data-base="5">5</span> getrocknete große Chilis, entkernt, in Stücken</li>
-      <li><span data-base="10">10</span> getrocknete kleine Chilis, entkernt, in Stücken</li>
+      <li><span data-base="5">5</span> große getrocknete Chilis, entkernt</li>
+      <li><span data-base="10">10</span> kleine getrocknete Chilis, entkernt</li>
       <li><span data-base="5">5</span> Knoblauchzehen</li>
       <li><span data-base="5">5</span> Schalotten</li>
-      <li><span data-base="1">1</span> EL fein gehackter Galgant</li>
-      <li><span data-base="2">2</span> EL fein gehacktes Zitronengras</li>
+      <li><span data-base="1">1</span> EL Galgant, fein gehackt</li>
+      <li><span data-base="2">2</span> EL Zitronengras, fein gehackt</li>
       <li><span data-base="1">1</span> TL Kaffirlimettenschale</li>
       <li><span data-base="1">1</span> EL Koriandersamen</li>
       <li><span data-base="1">1</span> TL Kreuzkümmel</li>
-      <li><span data-base="2">2</span> Stück Zimt</li>
-      <li><span data-base="2">2</span> Stück Nelken</li>
-      <li><span data-base="5">5</span> Stück Kardamom</li>
+      <li><span data-base="2">2</span> Stangen Zimt</li>
+      <li><span data-base="2">2</span> Nelken</li>
+      <li><span data-base="5">5</span> grüne Kardamomkapseln</li>
       <li><span data-base="1">1</span> TL Salz</li>
-      <li>Etwas Öl zum Anrösten der Paste</li>
+      <li>Öl zum kurzen Anrösten der Paste (optional)</li>
     </ul>
   </div>
   <div class="zubereitung">
     <h3>👩‍🍳 Zubereitung</h3>
     <ol>
-      <li>Pfanne erhitzen, Chilis, Zitronengras, Schalotten, Galgant, Knoblauch, Koriander-& Kreuzkümmel, Zimt, Nelken, Kardamom trocken rösten bis duftend.</li>
-      <li>Alles gründlich zerstampfen.</li>
-      <li>Die Paste in etwas Öl kurz anrösten (bis aromatisch).</li>
-      <li>In ein Gefäß füllen und im Kühlschrank ca. 2 Wochen aufbewahren.</li>
+      <li>Alle trockenen Gewürze (Chilis, Koriander, Kreuzkümmel, Zimt, Nelken, Kardamom) in der Pfanne trocken rösten, bis es duftet.</li>
+      <li>Mit Schalotten, Galgant, Zitronengras, Knoblauch im Mörser (oder Mixer) zu einer feinen Paste verarbeiten.</li>
+      <li>Optional: Paste in wenig Öl kurz anrösten – intensiviert das Aroma.</li>
+      <li>Luftdicht abfüllen, gekühlt ca. 2 Wochen haltbar (länger einfrieren).</li>
     </ol>
   </div>
   <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
@@ -2525,36 +2530,34 @@ if (typeof window.updateRecipe !== 'function') {
 <!-- =========================================================
      ROTE CURRY-PASTE
 ========================================================= -->
-<section id="rotecurrypaste" class="recipe basics">
-  <h2>🟥 Rote Curry-Paste</h2>
+<section id="rote-curry-paste" class="recipe hauptspeisen">
+  <h2>🔴 Rote Curry-Paste</h2>
   <p class="meta">
-    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 20 Min | 👥 Portionen:
-    <input type="number" id="rcp-portionen" value="1" min="1" style="width:60px"
+    ⏱️ Zubereitungszeit: 15–20 Min | 🕒 Gesamtzeit: 20 Min | 👥 Portionen:
+    <input type="number" id="rcp-portionen" value="12" min="1" style="width:60px"
            onchange="updateRecipe('#rcp-zutaten', '#rcp-portionen')">
   </p>
   <div class="zutaten">
     <h3>🥗 Zutaten</h3>
     <ul id="rcp-zutaten">
       <li><span data-base="50">50</span> g getrocknete kleine Chilis</li>
-      <li><span data-base="5">5</span> Knoblauchzehen</li>
+      <li><span data-base="1">1</span> EL Zitronengras, fein gehackt</li>
+      <li><span data-base="0.5">0.5</span> EL Galgant, fein gehackt</li>
+      <li><span data-base="3">3</span> Knoblauchzehen</li>
       <li><span data-base="3">3</span> Schalotten</li>
-      <li><span data-base="1">1</span> EL fein gehacktes Zitronengras</li>
-      <li><span data-base="0.5">0.5</span> EL fein gehackter Galgant</li>
       <li><span data-base="1">1</span> TL Kurkumapulver</li>
-      <li><span data-base="1">1</span> TL Pfeffer</li>
+      <li><span data-base="0.5">0.5</span> TL Pfeffer</li>
       <li><span data-base="0.5">0.5</span> TL Salz</li>
     </ul>
   </div>
   <div class="zubereitung">
     <h3>👩‍🍳 Zubereitung</h3>
     <ol>
-      <li>Getrocknete Chilis, Galgant, Zitronengras und Salz gründlich zerstampfen.</li>
-      <li>Schalotten, Knoblauch, Kurkuma, Pfeffer zugeben und fein stampfen.</li>
-      <li>In ein Gefäß füllen und im Kühlschrank ca. 2 Wochen aufbewahren.</li>
+      <li>Getrocknete Chilis (falls sehr hart) kurz in warmem Wasser einweichen, ausdrücken.</li>
+      <li>Chilis, Galgant, Zitronengras & Salz im Mörser fein stampfen.</li>
+      <li>Schalotten, Knoblauch, Kurkuma & Pfeffer zugeben und zu feiner Paste verarbeiten.</li>
+      <li>Luftdicht abfüllen, bis 2 Wochen gekühlt haltbar (portionsweise einfrieren).</li>
     </ol>
   </div>
   <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
 </section>
-
-
-  
