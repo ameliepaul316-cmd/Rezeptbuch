@@ -2756,6 +2756,11 @@ if (typeof window.updateRecipe !== 'function') {
 
 <script>
 /*
+
+
+<!-- Universelle Portions-Skalierung -->
+<script>
+/*
   Universelle Portions-Skalierung
   - Nimmt pro <section class="recipe"> den Standardwert des Inputs als "Basisportionen".
   - Skaliert alle <span data-base="..."> relativ zu dieser Basis.
@@ -2765,12 +2770,16 @@ if (typeof window.updateRecipe !== 'function') {
 */
 (function () {
   function toNumber(val) {
-    const n = parseFloat(val);
+    if (val == null) return null;
+    // Komma als Dezimaltrennzeichen tolerieren
+    const n = parseFloat(String(val).replace(',', '.'));
     return isNaN(n) ? null : n;
   }
 
   function formatAmount(x) {
-    if (x >= 1 || Math.abs(x - Math.round(x)) < 1e-9) {
+    // sehr kleine numerische Fehler glätten
+    const eps = 1e-9;
+    if (Math.abs(x - Math.round(x)) < eps || x >= 1) {
       return String(Math.round(x));
     }
     return String(Math.round(x * 10) / 10);
@@ -2816,47 +2825,45 @@ if (typeof window.updateRecipe !== 'function') {
     document.querySelectorAll('section.recipe').forEach(attachScaling);
   }
 
-  // Falls es alte onchange-Handler gibt, stören die nicht – wir übernehmen die Kontrolle.
-  document.addEventListener('DOMContentLoaded', initAll);
-  // Expose für manuelle Re-Init (optional)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAll);
+  } else {
+    initAll();
+  }
+
+  // Expose für manuelles Re-Init (optional)
   window.initRecipeScaling = initAll;
 })();
 </script>
-  /* ===========================
+
+<style>
+/* ===========================
    Responsive Design
    =========================== */
 @media (max-width: 768px) {
   body {
-    font-size: 16px; /* etwas größer lesbar */
+    font-size: 16px;
     line-height: 1.5;
     margin: 0;
     padding: 0;
   }
 
-  h1, h2, h3 {
-    word-wrap: break-word;
-  }
+  h1, h2, h3 { word-wrap: break-word; }
 
   /* Cover-Bereiche anpassen */
   .cover {
-    height: auto; /* nicht 100vh auf Handy */
+    height: auto;      /* nicht 100vh auf Handy */
     padding: 40px 15px;
     font-size: 1.6rem;
   }
-
-  .cover h1 {
-    font-size: 1.8rem;
-  }
+  .cover h1 { font-size: 1.8rem; }
 
   /* Rezeptbox */
   .recipe {
     margin: 12px 8px;
     padding: 15px;
   }
-
-  .recipe h2 {
-    font-size: 1.3rem;
-  }
+  .recipe h2 { font-size: 1.3rem; }
 
   .meta {
     font-size: 0.9rem;
@@ -2864,7 +2871,6 @@ if (typeof window.updateRecipe !== 'function') {
     flex-wrap: wrap;
     gap: 4px;
   }
-
   .meta input[type="number"] {
     width: 50px;
     font-size: 1rem;
@@ -2872,14 +2878,8 @@ if (typeof window.updateRecipe !== 'function') {
   }
 
   /* Zutaten & Zubereitung enger */
-  .zutaten ul {
-    padding-left: 18px;
-    font-size: 0.95rem;
-  }
-  .zubereitung p, 
-  .zubereitung ol {
-    font-size: 0.95rem;
-  }
+  .zutaten ul { padding-left: 18px; font-size: 0.95rem; }
+  .zubereitung p, .zubereitung ol { font-size: 0.95rem; }
 
   /* Quick-Back-Button */
   .back-button {
@@ -2889,10 +2889,12 @@ if (typeof window.updateRecipe !== 'function') {
     font-size: 1rem;
     margin-top: 16px;
     padding: 10px;
-    position: sticky; /* bleibt sichtbar */
+    position: sticky;  /* bleibt sichtbar */
     bottom: 0;
     background: #ffe89a;
     border: 2px solid #e5c56a;
     z-index: 999;
   }
 }
+</style>
+  
