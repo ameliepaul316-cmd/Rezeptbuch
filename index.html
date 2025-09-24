@@ -104,32 +104,135 @@ html{scroll-behavior:smooth}
   </div>
 </section>
 
-<!-- Inhaltsverzeichnis -->
-<section id="toc" class="section" style="background:var(--beige)">
-  <div class="container section-card">
-    <div class="kicker">Inhaltsverzeichnis</div>
-    <h2>Springe direkt zur Kategorie</h2>
-    <div class="toc-grid">
-      <div class="toc-block"><h3>🍳 Frühstück</h3></div>
-      <div class="toc-block"><h3>🍽️ Hauptspeisen</h3></div>
-      <div class="toc-block"><h3>🧁 Bakery</h3></div>
-      <div class="toc-block"><h3>🍮 Snacks & Desserts</h3></div>
-      <div class="toc-block"><h3>🍹 Drinks</h3></div>
+<!-- INHALTSVERZEICHNIS -->
+<section id="toc" class="toc">
+  <div class="wrap">
+    <h2>Inhaltsverzeichnis</h2>
+
+    <!-- Frühstück -->
+    <div class="cat" style="--bg:var(--gelb)">
+      <h3>🥐 Frühstück</h3>
+      <ul>
+        <li><a href="#acai-bowl">Acai Bowl</a></li>
+        <li><a href="#apfelringe">Apfelringe</a></li>
+        <li><a href="#avocado-brot">Avocado Brot</a></li>
+        <li><a href="#baguette">Baguette</a></li>
+        <li><a href="#brotdinkel">Dinkel-Walnuss-Brot</a></li>
+        <li><a href="#diy-granola">DIY Granola</a></li>
+        <li><a href="#overnight-oats">Overnight Oats</a></li>
+        <li><a href="#protein-snickers-quark">Proteinreicher Snickers-Quark</a></li>
+        <li><a href="#waffeln">Waffeln</a></li>
+      </ul>
     </div>
-    <p class="note">Alle Rezepte alphabetisch sortiert in ihren Kategorien.</p>
+
+    <!-- Hauptspeisen -->
+    <div class="cat" style="--bg:var(--mint)">
+      <h3>🥗 Hauptspeisen</h3>
+      <ul>
+        <li><a href="#auberginen-zucchini-lasagne">Auberginen-Zucchini Lasagne</a></li>
+        <li><a href="#bohnenburger">Bohnenburger</a></li>
+        <li><a href="#gemuesesuppe">Gemüsesuppe</a></li>
+        <li><a href="#gemuesespiesse">Gemüsespieße</a></li>
+        <li><a href="#gemuesepfanne">Gemüsepfanne</a></li>
+        <li><a href="#hackfleischrolle">Hackfleischrolle (veggie)</a></li>
+        <li><a href="#indisches-quinoa-curry">Indisches Quinoa-Curry</a></li>
+        <li><a href="#kartoffelsuppe">Kartoffelsuppe</a></li>
+        <li><a href="#mex-enchilada-lasagne">Mexikanische Enchilada-Lasagne</a></li>
+        <li><a href="#pak-choi">Pak Choi mit Nudeln</a></li>
+        <li><a href="#petersilienwurzel-suppe">Petersilienwurzel-Suppe</a></li>
+        <li><a href="#poke-bowl">Poke Bowl</a></li>
+        <li><a href="#quinoa-chili">Quinoa Chili sin Carne</a></li>
+        <li><a href="#ravioli-ricotta">Ravioli mit Ricotta &amp; Spinat</a></li>
+        <li><a href="#risotto">Risotto</a></li>
+        <li><a href="#servietten-knoedel">Serviettenknödel</a></li>
+        <li><a href="#spargelcremesuppe">Spargelcremesuppe</a></li>
+        <li><a href="#vegetarische-reispfanne">Vegetarische Reispfanne</a></li>
+        <li><a href="#zucchini-puffer">Zucchini-Puffer</a></li>
+      </ul>
+    </div>
+
+    <!-- Bakery -->
+    <div class="cat" style="--bg:var(--rosa)">
+      <h3>🍰 Bakery</h3>
+      <ul>
+        <li><a href="#apfelkuchen">Apfelkuchen</a></li>
+        <li><a href="#brownies">Brownies</a></li>
+        <li><a href="#erdbeerkuchen">Erdbeerkuchen</a></li>
+        <li><a href="#flammenherz">Flammendes Herz</a></li>
+        <li><a href="#himbeerbaiser">Himbeerbaiser</a></li>
+        <li><a href="#kuchen-standard">Kuchen Standard</a></li>
+        <li><a href="#nougatkuchen">Nougatkuchen</a></li>
+        <li><a href="#nussecken">Nussecken</a></li>
+        <li><a href="#streuselkuchen">Streuselkuchen</a></li>
+        <li><a href="#tiramisu">Tiramisu</a></li>
+      </ul>
+
+      <h4>Plätzchen</h4>
+      <ul>
+        <li><a href="#butter-plaetzchen">Butterplätzchen</a></li>
+        <li><a href="#kokosplaetzchen">Kokosplätzchen</a></li>
+        <li><a href="#zimtschnecken">Zimtschnecken</a></li>
+        <li><a href="#weitere-plaetzchen1">Mandelhörnchen</a></li>
+        <li><a href="#weitere-plaetzchen2">Vanillekipferl</a></li>
+      </ul>
+    </div>
+
+    <!-- Snacks & Desserts -->
+    <div class="cat" style="--bg:var(--orange)">
+      <h3>🍪 Snacks & Desserts</h3>
+      <ul>
+        <li><a href="#candied-pecans">Candied Pecans</a></li>
+        <li><a href="#cookies">Cookies</a></li>
+        <li><a href="#creme-mousse">Mousse au Chocolat</a></li>
+        <li><a href="#dampfnudeln">Dampfnudeln</a></li>
+        <li><a href="#energy-baellchen">Energybällchen</a></li>
+        <li><a href="#guacamole">Guacamole</a></li>
+        <li><a href="#kreppel">Kreppel</a></li>
+        <li><a href="#marzipan-pralinen">Marzipan-Pralinen</a></li>
+        <li><a href="#thai-frit-banane">Thai Frittierte Banane</a></li>
+        <li><a href="#thai-pancake-roti">Thai Pancake Roti</a></li>
+        <li><a href="#thai-sticky-rice">Thai Sticky Rice mit Mango</a></li>
+      </ul>
+    </div>
+
+    <!-- Drinks -->
+    <div class="cat" style="--bg:var(--blau)">
+      <h3>🍹 Drinks</h3>
+      <ul>
+        <li><a href="#butterkeks-cocktail">Butterkeks Cocktail</a></li>
+        <li><a href="#mai-tai">Mai Tai</a></li>
+        <li><a href="#mojito">Mojito</a></li>
+        <li><a href="#pina-colada">Pina Colada</a></li>
+        <li><a href="#tequila-sunrise">Tequila Sunrise</a></li>
+        <li><a href="#virgin-mary">Virgin Mary (alkoholfrei)</a></li>
+        <li><a href="#iced-chai-latte">Iced Chai Latte (alkoholfrei)</a></li>
+      </ul>
+    </div>
+
+    <!-- International -->
+    <div class="cat" style="--bg:#eee">
+      <h3>🌍 International</h3>
+      <ul>
+        <li><a href="#dhal">Dhal – Linsencurry</a></li>
+        <li><a href="#sri-lanka-roti">Sri Lanka Coconut Roti</a></li>
+        <li><a href="#thai-fruehlingsrollen">Thai Frühlingsrollen</a></li>
+        <li><a href="#thai-gruenes-curry">Thai Grünes Curry</a></li>
+        <li><a href="#thai-massaman-curry">Thai Massaman Curry</a></li>
+        <li><a href="#thai-pad-thai">Thai Pad Thai</a></li>
+        <li><a href="#thai-curry-pasten">Thai Currypasten</a></li>
+      </ul>
+    </div>
+
+    <!-- Extra -->
+    <div class="cat" style="--bg:#fafafa">
+      <h3>✨ Extra</h3>
+      <ul>
+        <li><a href="#bierteig">Bierteig</a></li>
+        <li><a href="#eiersauce">Eiersauce mit Bratkartoffeln</a></li>
+        <li><a href="#pesto">Pesto à la Paul</a></li>
+        <li><a href="#tortilla-wraps">Tortilla-Wraps</a></li>
+      </ul>
+    </div>
+
   </div>
 </section>
-
-<!-- Quick Jump -->
-<nav class="quickjump" aria-label="Schnellsprung">
-  <a href="#toc">⬆️ Inhalt</a>
-  <a href="#cover">🏠</a>
-  <a href="#breakfast">🍳</a>
-  <a href="#mains">🍽️</a>
-  <a href="#bakery">🧁</a>
-  <a href="#snacks">🍮</a>
-  <a href="#drinks">🍹</a>
-</nav>
-
-</body>
-</html>
