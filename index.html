@@ -464,7 +464,6 @@
 </html>
 
 
-
 <!-- Frühstück-Cover -->
 <section id="fruehstueck-cover" class="cover fruehstueck-cover">
   <h1>🥐 Frühstück</h1>
@@ -2561,3 +2560,87 @@ if (typeof window.updateRecipe !== 'function') {
   </div>
   <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
 </section>
+
+
+  
+<!-- ====================== GLOBAL SERVINGS FIX + CLEANUP ====================== -->
+<style>
+  /* Alle "Zurück"-Buttons komplett ausblenden */
+  .back-button { display: none !important; }
+
+  /* Optional: hübscher iPhone-Look für die Rezepte (keine Pflicht) */
+  @media (max-width: 430px) {
+    .recipe { margin: 16px 10px; border-radius: 18px; }
+    .recipe h2 { font-size: 1.15rem; }
+    .meta input[type="number"] { width: 64px !important; }
+  }
+</style>
+
+<script>
+/*
+  Universelle Portions-Skalierung
+  - Nimmt pro <section class="recipe"> den Standardwert des Inputs als "Basisportionen".
+  - Skaliert alle <span data-base="..."> relativ zu dieser Basis.
+  - Speichert Originalwerte in data-orig, damit kein Fehler durch mehrfaches Rechnen entsteht.
+  - Rundet: >=1 → ganze Zahlen; <1 → 1 Nachkommastelle.
+  - Optional: Wenn du eine andere Basis willst, setze am <section> data-base-servings="X".
+*/
+(function () {
+  function toNumber(val) {
+    const n = parseFloat(val);
+    return isNaN(n) ? null : n;
+  }
+
+  function formatAmount(x) {
+    if (x >= 1 || Math.abs(x - Math.round(x)) < 1e-9) {
+      return String(Math.round(x));
+    }
+    return String(Math.round(x * 10) / 10);
+  }
+
+  function attachScaling(sec) {
+    const input = sec.querySelector('input[type="number"]');
+    if (!input) return;
+
+    // Basisportionen: aus data-base-servings ODER aus dem Default-Value des Inputs
+    const fromAttr = toNumber(sec.getAttribute('data-base-servings'));
+    const fromInputDefault = toNumber(input.getAttribute('value') || input.defaultValue || input.value);
+    const baseServings = fromAttr || fromInputDefault || 1;
+    sec.dataset.baseServings = baseServings;
+
+    // Zutaten-Spans sichern
+    sec.querySelectorAll('[data-base]').forEach(span => {
+      if (!span.dataset.orig) {
+        const orig = toNumber(span.getAttribute('data-base'));
+        if (orig !== null) span.dataset.orig = String(orig);
+      }
+    });
+
+    const update = () => {
+      const desired = Math.max(1, toNumber(input.value) || 1);
+      const factor = desired / parseFloat(sec.dataset.baseServings || '1');
+
+      sec.querySelectorAll('[data-base]').forEach(span => {
+        const orig = toNumber(span.dataset.orig);
+        if (orig === null) return;
+        const scaled = orig * factor;
+        span.textContent = formatAmount(scaled);
+      });
+    };
+
+    // Live-Update + Initial
+    input.addEventListener('input', update);
+    input.addEventListener('change', update);
+    update();
+  }
+
+  function initAll() {
+    document.querySelectorAll('section.recipe').forEach(attachScaling);
+  }
+
+  // Falls es alte onchange-Handler gibt, stören die nicht – wir übernehmen die Kontrolle.
+  document.addEventListener('DOMContentLoaded', initAll);
+  // Expose für manuelle Re-Init (optional)
+  window.initRecipeScaling = initAll;
+})();
+</script>
