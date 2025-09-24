@@ -815,34 +815,6 @@ if (typeof window.updateRecipe !== 'function') {
   <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück zum Inhaltsverzeichnis</a>
 </section>
 
-<!-- =========================================================
-     7) BAGUETTE (falls noch nicht eingefügt – identisch skaliert)
-     Wenn du es schon oben hast, diesen Block bitte überspringen.
-========================================================= -->
-<section id="baguette" class="recipe fruehstueck">
-  <h2>🥖 Baguette</h2>
-  <p class="meta">⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 1 h 20 Min | 👥 Portionen:
-    <input type="number" id="baguette-portionen-2" value="1" min="1" style="width:60px;"
-      onchange="updateRecipe('#baguette-zutaten-2', '#baguette-portionen-2')">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul id="baguette-zutaten-2">
-      <li><span data-base="250">250</span> g Mehl Type 550</li>
-      <li><span data-base="160">160</span> ml lauwarmes Wasser</li>
-      <li><span data-base="6">6</span> g Salz</li>
-      <li><span data-base="10">10</span> g frische Hefe oder <span data-base="3">3</span> g Trockenhefe</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <p>Hefe mit lauwarmem Wasser und 1 TL Zucker aktivieren (ca. 10 Min). 20 Min im Topf gehen lassen, dann 1 h in Form gehen lassen. Bei 200 °C ca. 20 Min backen (Ofen vorheizen).</p>
-  </div>
-
-  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück zum Inhaltsverzeichnis</a>
-</section>
 
 <!-- =========================================================
      Minimales Styling (nutzt deine bestehenden Klassen)
@@ -880,3 +852,625 @@ if (typeof window.updateRecipe !== 'function') {
 }
 .back-button:hover { filter: brightness(0.97); }
 </style>
+
+
+
+<!-- =========================================================
+     HAUPTSPEISEN – COVER (Mintgrün)
+========================================================= -->
+<section id="hauptspeisen-cover" class="cover hauptspeisen">
+  <h1>🥗 Hauptspeisen</h1>
+  <p>Frisch, gesund & sättigend – von Suppen bis Currys.</p>
+</section>
+
+<style>
+.cover.hauptspeisen {
+  background: #b8f5c1; /* Mintgrün Pastell */
+  border: 3px solid #89d69a;
+  border-radius: 20px;
+  padding: 60px 20px;
+  margin: 24px 12px;
+  text-align: center;
+  font-family: 'Georgia', serif;
+  color: #134c25;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+}
+.cover.hauptspeisen h1 {
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+.cover.hauptspeisen p {
+  font-size: 1.1em;
+}
+</style>
+
+<!-- =========================================================
+     SUPPEN & EINTÖPFE – REZEPTE
+========================================================= -->
+
+<!-- 1) GEMÜSESUPPE -->
+<section id="gemuesesuppe" class="recipe hauptspeisen">
+  <h2>🥕 Gemüsesuppe</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 30 Min | 👥 Portionen:
+    <input type="number" id="gs-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#gs-zutaten', '#gs-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="gs-zutaten">
+      <li><span data-base="1500">1500</span> ml Gemüsebrühe</li>
+      <li>1 Bund Suppengrün (Sellerie, Lauch, Karotte)</li>
+      <li><span data-base="2">2</span> Kartoffeln</li>
+      <li><span data-base="1">1</span> Knoblauchzehe</li>
+      <li><span data-base="1">1</span> Zwiebel</li>
+      <li><span data-base="1">1</span> Zucchini</li>
+      <li><span data-base="1">1</span> Paprika</li>
+      <li><span data-base="1">1</span> EL Rosmarin (gehackt)</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Brühe aufsetzen und zum Kochen bringen.</li>
+      <li>Suppengrün, Kartoffeln, Knoblauch und Zwiebel vorbereiten und in mundgerechte Stücke schneiden.</li>
+      <li>Alles in die Brühe geben und 10 Min köcheln lassen.</li>
+      <li>Zucchini, Paprika und Rosmarin zugeben, weitere 5–10 Min köcheln.</li>
+      <li>Mit Salz & Pfeffer großzügig abschmecken.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+<!-- 2) KARTOFFELSUPPE -->
+<section id="kartoffelsuppe" class="recipe hauptspeisen">
+  <h2>🥔 Kartoffelsuppe</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 25 Min | 🕒 Gesamtzeit: 40 Min | 👥 Portionen:
+    <input type="number" id="ks-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#ks-zutaten', '#ks-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="ks-zutaten">
+      <li><span data-base="800">800</span> g Kartoffeln</li>
+      <li><span data-base="1">1</span> Zwiebel</li>
+      <li><span data-base="2">2</span> Karotten</li>
+      <li><span data-base="1">1</span> Lauchstange</li>
+      <li><span data-base="1000">1000</span> ml Gemüsebrühe</li>
+      <li><span data-base="100">100</span> ml Sahne</li>
+      <li>Salz, Pfeffer, Muskat</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Kartoffeln, Karotten und Zwiebel würfeln, Lauch in Ringe schneiden.</li>
+      <li>In Brühe 20 Min weich kochen.</li>
+      <li>Teilweise pürieren (nach gewünschter Konsistenz).</li>
+      <li>Sahne einrühren, mit Salz, Pfeffer, Muskat abschmecken.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+<!-- 3) MARKGLÖSSCHEN -->
+<section id="markgloesschen" class="recipe hauptspeisen">
+  <h2>🍲 Markglößchen</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 30 Min | 👥 Portionen:
+    <input type="number" id="mg-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#mg-zutaten', '#mg-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="mg-zutaten">
+      <li><span data-base="60">60</span> g Rindermark</li>
+      <li><span data-base="1">1</span> Ei</li>
+      <li><span data-base="60">60</span> g Semmelbrösel</li>
+      <li>Salz, Muskat</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Rindermark schmelzen, mit Ei und Semmelbröseln vermengen.</li>
+      <li>Mit Salz und Muskat würzen, 10 Min ruhen lassen.</li>
+      <li>Kleine Klößchen formen, in heißer Brühe ca. 10 Min ziehen lassen (nicht kochen!).</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+<!-- 4) PETERSILIENWURZELSUPPE -->
+<section id="petersilienwurzelsuppe" class="recipe hauptspeisen">
+  <h2>🌿 Petersilienwurzelsuppe</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 35 Min | 👥 Portionen:
+    <input type="number" id="pw-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#pw-zutaten', '#pw-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="pw-zutaten">
+      <li><span data-base="500">500</span> g Petersilienwurzeln</li>
+      <li><span data-base="1">1</span> Zwiebel</li>
+      <li><span data-base="700">700</span> ml Gemüsebrühe</li>
+      <li><span data-base="100">100</span> ml Sahne</li>
+      <li>Salz, Pfeffer, Muskat</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Petersilienwurzeln & Zwiebel würfeln, in Butter anschwitzen.</li>
+      <li>Brühe zugeben, 20 Min köcheln lassen.</li>
+      <li>Fein pürieren, Sahne einrühren, würzen.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+<!-- 5) SPARGELCREMESUPPE -->
+<section id="spargelcremesuppe" class="recipe hauptspeisen">
+  <h2>🥬 Spargelcremesuppe</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 25 Min | 🕒 Gesamtzeit: 40 Min | 👥 Portionen:
+    <input type="number" id="sp-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#sp-zutaten', '#sp-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="sp-zutaten">
+      <li><span data-base="500">500</span> g weißer Spargel</li>
+      <li><span data-base="1">1</span> Zwiebel</li>
+      <li><span data-base="30">30</span> g Butter</li>
+      <li><span data-base="30">30</span> g Mehl</li>
+      <li><span data-base="750">750</span> ml Gemüsebrühe</li>
+      <li><span data-base="100">100</span> ml Sahne</li>
+      <li>Salz, Pfeffer, Muskat</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Spargel schälen, Enden abschneiden, Stücke schneiden.</li>
+      <li>Zwiebel anschwitzen, Mehl einrühren → Mehlschwitze.</li>
+      <li>Brühe zugießen, Spargelstücke zugeben, 15 Min köcheln.</li>
+      <li>Pürieren, Sahne unterrühren, würzen.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+<!-- 6) KÜRBISSUPPE -->
+<section id="kuerbissuppe" class="recipe hauptspeisen">
+  <h2>🎃 Kürbissuppe</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 35 Min | 👥 Portionen:
+    <input type="number" id="ksu-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#ksu-zutaten', '#ksu-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="ksu-zutaten">
+      <li><span data-base="800">800</span> g Hokkaido-Kürbis</li>
+      <li><span data-base="1">1</span> Zwiebel</li>
+      <li><span data-base="2">2</span> Karotten</li>
+      <li><span data-base="700">700</span> ml Gemüsebrühe</li>
+      <li><span data-base="150">150</span> ml Sahne oder Kokosmilch</li>
+      <li>Salz, Pfeffer, Muskat</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Kürbis mit Schale würfeln (Kerne entfernen), Karotten & Zwiebel kleinschneiden.</li>
+      <li>Alles anschwitzen, Brühe zugeben, 20 Min köcheln lassen.</li>
+      <li>Pürieren, Sahne/Kokosmilch unterrühren, würzen.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+<style>
+.recipe.hauptspeisen {
+  background: #e7fff0;
+  border: 2px solid #9ce0b3;
+  border-radius: 16px;
+  padding: 18px;
+  margin: 18px 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+.recipe.hauptspeisen h2 { margin-top: 0; }
+</style><!-- =========================================================
+     HAUPTSPEISEN – COVER (Mintgrün)
+========================================================= -->
+<section id="hauptspeisen-cover" class="cover hauptspeisen">
+  <h1>🥗 Hauptspeisen</h1>
+  <p>Frisch, gesund & sättigend – von Suppen bis Currys.</p>
+</section>
+
+<style>
+.cover.hauptspeisen {
+  background: #b8f5c1; /* Mintgrün Pastell */
+  border: 3px solid #89d69a;
+  border-radius: 20px;
+  padding: 60px 20px;
+  margin: 24px 12px;
+  text-align: center;
+  font-family: 'Georgia', serif;
+  color: #134c25;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+}
+.cover.hauptspeisen h1 {
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+.cover.hauptspeisen p {
+  font-size: 1.1em;
+}
+</style>
+
+<!-- =========================================================
+     SUPPEN & EINTÖPFE – REZEPTE
+========================================================= -->
+
+<!-- 1) GEMÜSESUPPE -->
+<section id="gemuesesuppe" class="recipe hauptspeisen">
+  <h2>🥕 Gemüsesuppe</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 30 Min | 👥 Portionen:
+    <input type="number" id="gs-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#gs-zutaten', '#gs-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="gs-zutaten">
+      <li><span data-base="1500">1500</span> ml Gemüsebrühe</li>
+      <li>1 Bund Suppengrün (Sellerie, Lauch, Karotte)</li>
+      <li><span data-base="2">2</span> Kartoffeln</li>
+      <li><span data-base="1">1</span> Knoblauchzehe</li>
+      <li><span data-base="1">1</span> Zwiebel</li>
+      <li><span data-base="1">1</span> Zucchini</li>
+      <li><span data-base="1">1</span> Paprika</li>
+      <li><span data-base="1">1</span> EL Rosmarin (gehackt)</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Brühe aufsetzen und zum Kochen bringen.</li>
+      <li>Suppengrün, Kartoffeln, Knoblauch und Zwiebel vorbereiten und in mundgerechte Stücke schneiden.</li>
+      <li>Alles in die Brühe geben und 10 Min köcheln lassen.</li>
+      <li>Zucchini, Paprika und Rosmarin zugeben, weitere 5–10 Min köcheln.</li>
+      <li>Mit Salz & Pfeffer großzügig abschmecken.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+<!-- 2) KARTOFFELSUPPE -->
+<section id="kartoffelsuppe" class="recipe hauptspeisen">
+  <h2>🥔 Kartoffelsuppe</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 25 Min | 🕒 Gesamtzeit: 40 Min | 👥 Portionen:
+    <input type="number" id="ks-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#ks-zutaten', '#ks-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="ks-zutaten">
+      <li><span data-base="800">800</span> g Kartoffeln</li>
+      <li><span data-base="1">1</span> Zwiebel</li>
+      <li><span data-base="2">2</span> Karotten</li>
+      <li><span data-base="1">1</span> Lauchstange</li>
+      <li><span data-base="1000">1000</span> ml Gemüsebrühe</li>
+      <li><span data-base="100">100</span> ml Sahne</li>
+      <li>Salz, Pfeffer, Muskat</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Kartoffeln, Karotten und Zwiebel würfeln, Lauch in Ringe schneiden.</li>
+      <li>In Brühe 20 Min weich kochen.</li>
+      <li>Teilweise pürieren (nach gewünschter Konsistenz).</li>
+      <li>Sahne einrühren, mit Salz, Pfeffer, Muskat abschmecken.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+<!-- 3) MARKGLÖSSCHEN -->
+<section id="markgloesschen" class="recipe hauptspeisen">
+  <h2>🍲 Markglößchen</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 30 Min | 👥 Portionen:
+    <input type="number" id="mg-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#mg-zutaten', '#mg-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="mg-zutaten">
+      <li><span data-base="60">60</span> g Rindermark</li>
+      <li><span data-base="1">1</span> Ei</li>
+      <li><span data-base="60">60</span> g Semmelbrösel</li>
+      <li>Salz, Muskat</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Rindermark schmelzen, mit Ei und Semmelbröseln vermengen.</li>
+      <li>Mit Salz und Muskat würzen, 10 Min ruhen lassen.</li>
+      <li>Kleine Klößchen formen, in heißer Brühe ca. 10 Min ziehen lassen (nicht kochen!).</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+<!-- 4) PETERSILIENWURZELSUPPE -->
+<section id="petersilienwurzelsuppe" class="recipe hauptspeisen">
+  <h2>🌿 Petersilienwurzelsuppe</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 35 Min | 👥 Portionen:
+    <input type="number" id="pw-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#pw-zutaten', '#pw-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="pw-zutaten">
+      <li><span data-base="500">500</span> g Petersilienwurzeln</li>
+      <li><span data-base="1">1</span> Zwiebel</li>
+      <li><span data-base="700">700</span> ml Gemüsebrühe</li>
+      <li><span data-base="100">100</span> ml Sahne</li>
+      <li>Salz, Pfeffer, Muskat</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Petersilienwurzeln & Zwiebel würfeln, in Butter anschwitzen.</li>
+      <li>Brühe zugeben, 20 Min köcheln lassen.</li>
+      <li>Fein pürieren, Sahne einrühren, würzen.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+<!-- 5) SPARGELCREMESUPPE -->
+<section id="spargelcremesuppe" class="recipe hauptspeisen">
+  <h2>🥬 Spargelcremesuppe</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 25 Min | 🕒 Gesamtzeit: 40 Min | 👥 Portionen:
+    <input type="number" id="sp-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#sp-zutaten', '#sp-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="sp-zutaten">
+      <li><span data-base="500">500</span> g weißer Spargel</li>
+      <li><span data-base="1">1</span> Zwiebel</li>
+      <li><span data-base="30">30</span> g Butter</li>
+      <li><span data-base="30">30</span> g Mehl</li>
+      <li><span data-base="750">750</span> ml Gemüsebrühe</li>
+      <li><span data-base="100">100</span> ml Sahne</li>
+      <li>Salz, Pfeffer, Muskat</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Spargel schälen, Enden abschneiden, Stücke schneiden.</li>
+      <li>Zwiebel anschwitzen, Mehl einrühren → Mehlschwitze.</li>
+      <li>Brühe zugießen, Spargelstücke zugeben, 15 Min köcheln.</li>
+      <li>Pürieren, Sahne unterrühren, würzen.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+<!-- 6) KÜRBISSUPPE -->
+<section id="kuerbissuppe" class="recipe hauptspeisen">
+  <h2>🎃 Kürbissuppe</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 35 Min | 👥 Portionen:
+    <input type="number" id="ksu-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#ksu-zutaten', '#ksu-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="ksu-zutaten">
+      <li><span data-base="800">800</span> g Hokkaido-Kürbis</li>
+      <li><span data-base="1">1</span> Zwiebel</li>
+      <li><span data-base="2">2</span> Karotten</li>
+      <li><span data-base="700">700</span> ml Gemüsebrühe</li>
+      <li><span data-base="150">150</span> ml Sahne oder Kokosmilch</li>
+      <li>Salz, Pfeffer, Muskat</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Kürbis mit Schale würfeln (Kerne entfernen), Karotten & Zwiebel kleinschneiden.</li>
+      <li>Alles anschwitzen, Brühe zugeben, 20 Min köcheln lassen.</li>
+      <li>Pürieren, Sahne/Kokosmilch unterrühren, würzen.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+<style>
+.recipe.hauptspeisen {
+  background: #e7fff0;
+  border: 2px solid #9ce0b3;
+  border-radius: 16px;
+  padding: 18px;
+  margin: 18px 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+.recipe.hauptspeisen h2 { margin-top: 0; }
+</style>
+
+
+
+
+
+<!-- =========================================================
+     PASTA & NUDELN – COVER
+========================================================= -->
+<section id="pasta-cover" class="cover hauptspeisen">
+  <h1>🍝 Pasta & Nudeln</h1>
+  <p>Cremig, würzig & immer ein Genuss.</p>
+</section>
+
+<!-- =========================================================
+     KÄSENUDELN (Quattro Formaggi)
+========================================================= -->
+<section id="kaesenudeln" class="recipe hauptspeisen">
+  <h2>🧀 Käsenudeln (Quattro Formaggi)</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 30 Min | 👥 Portionen:
+    <input type="number" id="kn-portionen" value="6" min="1" style="width:60px"
+           onchange="updateRecipe('#kn-zutaten', '#kn-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥗 Zutaten</h3>
+    <ul id="kn-zutaten">
+      <li><span data-base="700">700</span> g Penne</li>
+      <li><span data-base="750">750</span> ml Milch</li>
+      <li><span data-base="2">2</span> EL Mehl</li>
+      <li><span data-base="2">2</span> EL Margarine</li>
+      <li><span data-base="800">800</span> g Tomaten, geschält (Dose)</li>
+      <li><span data-base="500">500</span> g Gouda, gerieben</li>
+      <li>Salz, Pfeffer, Muskat</li>
+      <li>Optional: etwas Gorgonzola</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Penne in Salzwasser bissfest kochen.</li>
+      <li>Aus Margarine und Mehl eine Mehlschwitze herstellen, mit Milch aufgießen, 10 Min köcheln lassen.</li>
+      <li>Gouda einrühren, mit Salz, Pfeffer & Muskat würzen.</li>
+      <li>Nudeln in Auflaufform geben, mit Sauce übergießen, Tomaten & restlichen Käse darüber.</li>
+      <li>Im Ofen bei 200 °C (Ober-/Unterhitze) ca. 35–40 Min goldbraun backen.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+<!-- =========================================================
+     NUDELN MIT KÜRBISSAUCE
+========================================================= -->
+<section id="kuerbispasta" class="recipe hauptspeisen">
+  <h2>🎃 Nudeln mit Kürbissauce</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 15 Min | 🕒 Gesamtzeit: 25 Min | 👥 Portionen:
+    <input type="number" id="kp-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#kp-zutaten', '#kp-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥗 Zutaten</h3>
+    <ul id="kp-zutaten">
+      <li><span data-base="400">400</span> g Nudeln (z. B. Penne oder Spaghetti)</li>
+      <li><span data-base="500">500</span> g Hokkaido-Kürbis</li>
+      <li><span data-base="1">1</span> Zwiebel</li>
+      <li><span data-base="2">2</span> Knoblauchzehen</li>
+      <li><span data-base="200">200</span> ml Sahne oder Kokosmilch</li>
+      <li><span data-base="50">50</span> g Parmesan, frisch gerieben</li>
+      <li>Olivenöl, Salz, Pfeffer, Muskat</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Nudeln nach Packungsangabe kochen.</li>
+      <li>Kürbis würfeln, Zwiebel & Knoblauch hacken, in Olivenöl anschwitzen.</li>
+      <li>Mit Brühe ablöschen, 15 Min weich köcheln.</li>
+      <li>Fein pürieren, Sahne unterrühren, mit Salz, Pfeffer & Muskat würzen.</li>
+      <li>Nudeln mit Sauce mischen, mit Parmesan servieren.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
+
+<!-- =========================================================
+     RAVIOLI MIT RICOTTA & SPINAT
+========================================================= -->
+<section id="ravioli" class="recipe hauptspeisen">
+  <h2>🥬 Ravioli mit Ricotta & Spinat</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 40 Min | 🕒 Gesamtzeit: 60 Min | 👥 Portionen:
+    <input type="number" id="rv-portionen" value="4" min="1" style="width:60px"
+           onchange="updateRecipe('#rv-zutaten', '#rv-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥗 Zutaten</h3>
+    <ul id="rv-zutaten">
+      <li><span data-base="300">300</span> g Mehl</li>
+      <li><span data-base="3">3</span> Eier</li>
+      <li><span data-base="250">250</span> g Ricotta</li>
+      <li><span data-base="200">200</span> g frischer Spinat</li>
+      <li><span data-base="50">50</span> g Parmesan</li>
+      <li>Muskat, Salz, Pfeffer</li>
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      <li>Aus Mehl & Eiern Nudelteig kneten, 30 Min ruhen lassen.</li>
+      <li>Spinat blanchieren, fein hacken, mit Ricotta & Parmesan mischen, würzen.</li>
+      <li>Teig dünn ausrollen, kleine Füllungen setzen, Ravioli formen & verschließen.</li>
+      <li>In Salzwasser 4–5 Min gar ziehen lassen.</li>
+      <li>Mit etwas Olivenöl & Parmesan servieren.</li>
+    </ol>
+  </div>
+
+  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
+</section>
