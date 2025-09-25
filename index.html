@@ -48,6 +48,92 @@
       max-width:var(--iphone-w);
     }
 
+
+
+
+
+    <!-- Suchleiste -->
+<div class="searchbox">
+  <input type="search" id="recipeSearch" placeholder="🔍 Rezept suchen..." />
+  <ul id="searchResults"></ul>
+</div>
+
+<style>
+.searchbox{
+  margin: 10px auto 20px;
+  max-width: 340px;
+  position: relative;
+}
+.searchbox input{
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  font-size: 14px;
+}
+#searchResults{
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  position: absolute;
+  width: 100%;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  max-height: 220px;
+  overflow-y: auto;
+  display: none; /* erst unsichtbar */
+  z-index: 99;
+}
+#searchResults li{
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+#searchResults li:hover{
+  background: #f1f1f1;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  const search = document.getElementById("recipeSearch");
+  const results = document.getElementById("searchResults");
+  const headings = document.querySelectorAll("h2"); // alle Rezepttitel
+  
+  search.addEventListener("input", function(){
+    const term = this.value.toLowerCase();
+    results.innerHTML = "";
+    if(term.length < 2){ results.style.display="none"; return; }
+    
+    let found = 0;
+    headings.forEach(h=>{
+      const text = h.textContent.toLowerCase();
+      if(text.includes(term)){
+        const li = document.createElement("li");
+        li.textContent = h.textContent;
+        li.addEventListener("click", ()=>{
+          h.scrollIntoView({behavior:"smooth", block:"start"});
+          results.style.display="none";
+          search.value = "";
+        });
+        results.appendChild(li);
+        found++;
+      }
+    });
+    results.style.display = found ? "block" : "none";
+  });
+});
+</script>
+
+
+  
+
+
+
+
+    
     /* ========== Inhaltsverzeichnis ========== */
     .toc.beige{
       background: var(--beige);
