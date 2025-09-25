@@ -46,20 +46,7 @@
       margin:0 auto;
       width:100%;
       max-width:var(--iphone-w);
-      /* auf großen Screens mittig, auf iPhone vollbreit */
     }
-
-<!-- ======= COVER (Beige, im Stil der Kategorien) ======= -->
-<section id="cover" class="category-cover" style="background-color:#F6F1E7; color:#333; min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:20px;">
-  <div style="border:3px dashed #e4dccb; padding:40px; border-radius:20px; text-align:center; max-width:90%; background:#fff;">
-    <h1 style="font-size:2.2em; margin-bottom:20px; font-family:'Georgia','Times New Roman',serif;">
-      Meine Lieblingsrezepte
-    </h1>
-    <div style="font-size:1.6em; margin-top:10px; color:#666;">🍽️</div>
-  </div>
-</section>
-    
-
 
     /* ========== Inhaltsverzeichnis ========== */
     .toc.beige{
@@ -103,11 +90,8 @@
       opacity:.9;
     }
 
-    /* Listen-Styling (Unterkategorien eingerückt & klar lesbar) */
     ul{list-style:none;margin:6px 0 10px;padding:0}
-    .cat > ul > li{ /* Direkt in Kategorie (ohne Unterkategorie) */
-      margin:0; 
-    }
+    .cat > ul > li{margin:0;} 
     .cat ul li a{
       display:block;
       padding:10px 12px;
@@ -126,14 +110,12 @@
       background:#fff;
     }
 
-    /* Unterkategorie-Block */
     .cat h4 + ul{
       border-left: 3px solid rgba(0,0,0,.08);
       margin-left: 6px;
       padding-left: 10px;
     }
 
-    /* Kleinere Link-Pills */
     .pill{
       display:inline-block;
       font-size: 12px;
@@ -146,7 +128,6 @@
       margin: 4px 6px 0 0;
     }
 
-    /* ========== Quickjump (unten rechts, fixiert) ========== */
     .quickjump{
       position: fixed;
       right: 14px;
@@ -175,7 +156,6 @@
       box-shadow: 0 8px 18px rgba(0,0,0,.1);
     }
 
-    /* ========== Helfer ========== */
     .space{height:16px}
     .note{
       color:var(--muted);
@@ -184,10 +164,7 @@
       margin-top:6px;
     }
 
-    /* Besseres Scrollen auf iOS */
     html{scroll-behavior:smooth}
-
-    /* Safe areas (iPhone mit Notch) */
     .quickjump{ padding-bottom: env(safe-area-inset-bottom, 0); }
     .toc.beige{ padding-bottom: calc(110px + env(safe-area-inset-bottom, 0)); }
   </style>
@@ -196,20 +173,13 @@
 
   <main class="page">
 
-    <!-- ======= COVER (beige) ======= -->
-    <section id="cover" class="cover beige">
-      <div class="cover-frame">
-        <h1>Meine Lieblingsrezepte</h1>
-        <p class="subtitle">Hausgemacht · sortiert · klickbar</p>
-        <div class="badges">
-          <span class="badge">🥐 Frühstück</span>
-          <span class="badge">🥗 Hauptspeisen</span>
-          <span class="badge">🍰 Bakery</span>
-          <span class="badge">🍊 Snacks & Desserts</span>
-          <span class="badge">🍹 Drinks</span>
-        </div>
-        <div class="space"></div>
-        <p class="note">Tippe unten rechts auf „📖 Inhalt“, um direkt ins Inhaltsverzeichnis zu springen.</p>
+    <!-- ======= NEUES COVER ======= -->
+    <section id="cover" class="category-cover" style="background-color:#F6F1E7; color:#333; min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:20px;">
+      <div style="border:3px dashed #e4dccb; padding:40px; border-radius:20px; text-align:center; max-width:90%; background:#fff;">
+        <h1 style="font-size:2.2em; margin-bottom:20px; font-family:'Georgia','Times New Roman',serif;">
+          Meine Lieblingsrezepte
+        </h1>
+        <div style="font-size:1.6em; margin-top:10px; color:#666;">🍽️</div>
       </div>
     </section>
 
