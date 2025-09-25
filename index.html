@@ -2575,20 +2575,17 @@ if (typeof window.updateRecipe !== 'function') {
 
 
   
-
-<!-- =======================
-📖 Apfelkuchen
-======================= -->
-<section id="apfelkuchen" class="recipe-section" style="background-color:#fff0f3; padding:20px; min-height:100vh;">
+<section id="apfelkuchen" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
   <h2>🍎 Apfelkuchen</h2>
-  <div class="info-box">
-    <p><strong>Zubereitungszeit:</strong> 30 Min</p>
-    <p><strong>Gesamtzeit:</strong> 1 h</p>
-    <p><strong>Portionen:</strong> <input type="number" value="8" min="1" onchange="updateRecipe(this)"> </p>
-  </div>
-  <div class="ingredients-box">
-    <h3>Zutaten</h3>
-    <ul>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 30 Min | 🕒 Gesamtzeit: 1 h | 👥 Portionen:
+    <input type="number" id="apfel-portionen" value="8" min="1" style="width:60px"
+           onchange="updateRecipe('#apfel-zutaten', '#apfel-portionen')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="apfel-zutaten">
       <li><span data-base="250">250</span> g Mehl</li>
       <li><span data-base="125">125</span> g Zucker</li>
       <li><span data-base="125">125</span> g Butter</li>
@@ -2597,151 +2594,13 @@ if (typeof window.updateRecipe !== 'function') {
       <li><span data-base="4">4</span> Äpfel</li>
     </ul>
   </div>
-  <div class="instructions-box">
-    <h3>Zubereitung</h3>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
     <p>Alle Zutaten außer Äpfel zu einem Teig verarbeiten. In eine gefettete Form geben. Äpfel schälen, in Spalten schneiden und obenauf legen. Bei 180 °C ca. 45 Min backen.</p>
   </div>
 </section>
 
-<!-- =======================
-📖 Brownie
-======================= -->
-<section id="brownie" class="recipe-section" style="background-color:#fff0f3; padding:20px; min-height:100vh;">
-  <h2>🍫 Brownie</h2>
-  <div class="info-box">
-    <p><strong>Zubereitungszeit:</strong> 15 Min</p>
-    <p><strong>Gesamtzeit:</strong> 35 Min</p>
-    <p><strong>Portionen:</strong> <input type="number" value="12" min="1" onchange="updateRecipe(this)"> </p>
-  </div>
-  <div class="ingredients-box">
-    <h3>Zutaten</h3>
-    <ul>
-      <li><span data-base="200">200</span> g Zartbitterschokolade</li>
-      <li><span data-base="125">125</span> g Butter</li>
-      <li><span data-base="1">1</span> Päckchen Vanillezucker</li>
-      <li><span data-base="3">3</span> Eier</li>
-      <li><span data-base="200">200</span> g brauner Zucker</li>
-      <li><span data-base="150">150</span> g Mehl</li>
-      <li><span data-base="1">1</span> TL Backpulver</li>
-      <li><span data-base="1">1</span> EL Kakaopulver</li>
-      <li><span data-base="1">1</span> Prise Salz</li>
-    </ul>
-  </div>
-  <div class="instructions-box">
-    <h3>Zubereitung</h3>
-    <p>Schokolade mit Butter schmelzen. Eier mit Zucker schaumig schlagen, Schokomasse unterrühren. Mehl, Backpulver, Kakao und Salz mischen und unterheben. In eine gefettete Form geben und bei 175 °C ca. 20 Min backen.</p>
-  </div>
-</section>
-
-<!-- =======================
-📖 Erdbeerkuchen
-======================= -->
-<section id="erdbeerkuchen" class="recipe-section" style="background-color:#fff0f3; padding:20px; min-height:100vh;">
-  <h2>🍓 Erdbeerkuchen</h2>
-  <div class="info-box">
-    <p><strong>Zubereitungszeit:</strong> 25 Min</p>
-    <p><strong>Gesamtzeit:</strong> 1 h</p>
-    <p><strong>Portionen:</strong> <input type="number" value="12" min="1" onchange="updateRecipe(this)"> </p>
-  </div>
-  <div class="ingredients-box">
-    <h3>Zutaten</h3>
-    <ul>
-      <li><span data-base="200">200</span> g Mehl</li>
-      <li><span data-base="100">100</span> g Zucker</li>
-      <li><span data-base="100">100</span> g Butter</li>
-      <li><span data-base="2">2</span> Eier</li>
-      <li><span data-base="1">1</span> Päckchen Backpulver</li>
-      <li><span data-base="500">500</span> g Erdbeeren</li>
-      <li><span data-base="1">1</span> Päckchen Tortenguss</li>
-    </ul>
-  </div>
-  <div class="instructions-box">
-    <h3>Zubereitung</h3>
-    <p>Boden aus Mehl, Zucker, Butter, Eiern und Backpulver herstellen. In Springform backen (ca. 20 Min bei 180 °C). Auskühlen lassen, Erdbeeren darauf verteilen, mit Tortenguss überziehen und kaltstellen.</p>
-  </div>
-</section>
-
-<!-- =======================
-📖 Marmorkuchen
-======================= -->
-<section id="marmorkuchen" class="recipe-section" style="background-color:#fff0f3; padding:20px; min-height:100vh;">
-  <h2>🍰 Marmorkuchen</h2>
-  <div class="info-box">
-    <p><strong>Zubereitungszeit:</strong> 20 Min</p>
-    <p><strong>Gesamtzeit:</strong> 55 Min</p>
-    <p><strong>Portionen:</strong> <input type="number" value="12" min="1" onchange="updateRecipe(this)"> </p>
-  </div>
-  <div class="ingredients-box">
-    <h3>Zutaten</h3>
-    <ul>
-      <li><span data-base="250">250</span> g Butter</li>
-      <li><span data-base="220">220</span> g Zucker</li>
-      <li><span data-base="3">3</span> Eier</li>
-      <li><span data-base="1">1</span> Päckchen Vanillezucker</li>
-      <li><span data-base="450">450</span> g Mehl</li>
-      <li><span data-base="1">1</span> Päckchen Backpulver</li>
-      <li><span data-base="50">50</span> ml Milch</li>
-      <li><span data-base="20">20</span> g Kakaopulver</li>
-    </ul>
-  </div>
-  <div class="instructions-box">
-    <h3>Zubereitung</h3>
-    <p>Butter, Zucker, Eier und Vanillezucker cremig rühren. Mehl mit Backpulver und Milch unterheben. Hälfte des Teigs in Form, zur anderen Hälfte Kakao geben. Beide Teige marmorartig vermischen. Bei 160 °C ca. 35 Min backen.</p>
-  </div>
-</section>
-
-<!-- =======================
-📖 Nougatkuchen
-======================= -->
-<section id="nougatkuchen" class="recipe-section" style="background-color:#fff0f3; padding:20px; min-height:100vh;">
-  <h2>🍫 Nougatkuchen</h2>
-  <div class="info-box">
-    <p><strong>Zubereitungszeit:</strong> 30 Min</p>
-    <p><strong>Gesamtzeit:</strong> 1 h</p>
-    <p><strong>Portionen:</strong> <input type="number" value="10" min="1" onchange="updateRecipe(this)"> </p>
-  </div>
-  <div class="ingredients-box">
-    <h3>Zutaten</h3>
-    <ul>
-      <li><span data-base="200">200</span> g Nougat</li>
-      <li><span data-base="200">200</span> g Butter</li>
-      <li><span data-base="200">200</span> g Zucker</li>
-      <li><span data-base="4">4</span> Eier</li>
-      <li><span data-base="250">250</span> g Mehl</li>
-      <li><span data-base="1">1</span> Päckchen Backpulver</li>
-    </ul>
-  </div>
-  <div class="instructions-box">
-    <h3>Zubereitung</h3>
-    <p>Nougat und Butter schmelzen. Eier und Zucker cremig rühren, Nougatmasse unterheben. Mehl und Backpulver mischen und dazugeben. Bei 180 °C ca. 40 Min backen.</p>
-  </div>
-</section>
-
-<!-- =======================
-📖 Streuselkuchen
-======================= -->
-<section id="streuselkuchen" class="recipe-section" style="background-color:#fff0f3; padding:20px; min-height:100vh;">
-  <h2>🍪 Streuselkuchen</h2>
-  <div class="info-box">
-    <p><strong>Zubereitungszeit:</strong> 25 Min</p>
-    <p><strong>Gesamtzeit:</strong> 55 Min</p>
-    <p><strong>Portionen:</strong> <input type="number" value="12" min="1" onchange="updateRecipe(this)"> </p>
-  </div>
-  <div class="ingredients-box">
-    <h3>Zutaten</h3>
-    <ul>
-      <li><span data-base="400">400</span> g Mehl</li>
-      <li><span data-base="200">200</span> g Zucker</li>
-      <li><span data-base="250">250</span> g Butter</li>
-      <li><span data-base="1">1</span> Ei</li>
-      <li><span data-base="1">1</span> Päckchen Vanillezucker</li>
-    </ul>
-  </div>
-  <div class="instructions-box">
-    <h3>Zubereitung</h3>
-    <p>Aus Mehl, Zucker, Butter, Ei und Vanillezucker Streusel herstellen. Hälfte als Boden in gefettete Form drücken, Rest als Streusel darüber. Bei 180 °C ca. 30 Min backen.</p>
-  </div>
-</section>
 
 
 
@@ -2750,6 +2609,9 @@ if (typeof window.updateRecipe !== 'function') {
 
 
 
+
+
+  
   
 <!-- ====================== GLOBAL SERVINGS FIX + CLEANUP ====================== -->
 <style>
@@ -2764,147 +2626,51 @@ if (typeof window.updateRecipe !== 'function') {
   }
 </style>
 
-<script>
-/*
 
 
-<!-- Universelle Portions-Skalierung -->
-<script>
+
+
+
+
+
+
+  <script>
 /*
   Universelle Portions-Skalierung
-  - Nimmt pro <section class="recipe"> den Standardwert des Inputs als "Basisportionen".
-  - Skaliert alle <span data-base="..."> relativ zu dieser Basis.
-  - Speichert Originalwerte in data-orig, damit kein Fehler durch mehrfaches Rechnen entsteht.
-  - Rundet: >=1 → ganze Zahlen; <1 → 1 Nachkommastelle.
-  - Optional: Wenn du eine andere Basis willst, setze am <section> data-base-servings="X".
+  - Pro <section class="recipe">: liest Basis-Portionen aus dem Input-Default (oder data-base-servings).
+  - Skaliert alle <span data-base="..."> relativ dazu.
+  - Originalwerte werden in data-orig konserviert (keine Rundungsdrift).
 */
 (function () {
-  function toNumber(val) {
-    if (val == null) return null;
-    // Komma als Dezimaltrennzeichen tolerieren
-    const n = parseFloat(String(val).replace(',', '.'));
-    return isNaN(n) ? null : n;
-  }
+  function num(v){ if(v==null) return null; const n=parseFloat(String(v).replace(',','.')); return isNaN(n)?null:n; }
+  function fmt(x){ return (x>=1 || Math.abs(x-Math.round(x))<1e-9) ? String(Math.round(x)) : String(Math.round(x*10)/10); }
 
-  function formatAmount(x) {
-    // sehr kleine numerische Fehler glätten
-    const eps = 1e-9;
-    if (Math.abs(x - Math.round(x)) < eps || x >= 1) {
-      return String(Math.round(x));
-    }
-    return String(Math.round(x * 10) / 10);
-  }
+  function bind(sec){
+    const input=sec.querySelector('input[type="number"]'); if(!input) return;
+    const baseAttr=num(sec.getAttribute('data-base-servings'));
+    const baseInput=num(input.getAttribute('value')||input.defaultValue||input.value);
+    const baseServings=baseAttr||baseInput||1;
+    sec.dataset.baseServings=baseServings;
 
-  function attachScaling(sec) {
-    const input = sec.querySelector('input[type="number"]');
-    if (!input) return;
-
-    // Basisportionen: aus data-base-servings ODER aus dem Default-Value des Inputs
-    const fromAttr = toNumber(sec.getAttribute('data-base-servings'));
-    const fromInputDefault = toNumber(input.getAttribute('value') || input.defaultValue || input.value);
-    const baseServings = fromAttr || fromInputDefault || 1;
-    sec.dataset.baseServings = baseServings;
-
-    // Zutaten-Spans sichern
-    sec.querySelectorAll('[data-base]').forEach(span => {
-      if (!span.dataset.orig) {
-        const orig = toNumber(span.getAttribute('data-base'));
-        if (orig !== null) span.dataset.orig = String(orig);
-      }
+    sec.querySelectorAll('[data-base]').forEach(s=>{
+      if(!s.dataset.orig){ const o=num(s.getAttribute('data-base')); if(o!=null) s.dataset.orig=String(o); }
     });
 
-    const update = () => {
-      const desired = Math.max(1, toNumber(input.value) || 1);
-      const factor = desired / parseFloat(sec.dataset.baseServings || '1');
-
-      sec.querySelectorAll('[data-base]').forEach(span => {
-        const orig = toNumber(span.dataset.orig);
-        if (orig === null) return;
-        const scaled = orig * factor;
-        span.textContent = formatAmount(scaled);
+    const update=()=>{
+      const desired=Math.max(1, num(input.value)||1);
+      const f=desired/num(sec.dataset.baseServings||'1');
+      sec.querySelectorAll('[data-base]').forEach(s=>{
+        const o=num(s.dataset.orig); if(o==null) return;
+        s.textContent = fmt(o*f);
       });
     };
-
-    // Live-Update + Initial
-    input.addEventListener('input', update);
-    input.addEventListener('change', update);
+    input.addEventListener('input',update);
+    input.addEventListener('change',update);
     update();
   }
 
-  function initAll() {
-    document.querySelectorAll('section.recipe').forEach(attachScaling);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initAll);
-  } else {
-    initAll();
-  }
-
-  // Expose für manuelles Re-Init (optional)
-  window.initRecipeScaling = initAll;
+  function init(){ document.querySelectorAll('section.recipe').forEach(bind); }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded',init); } else { init(); }
+  window.initRecipeScaling=init;
 })();
 </script>
-
-<style>
-/* ===========================
-   Responsive Design
-   =========================== */
-@media (max-width: 768px) {
-  body {
-    font-size: 16px;
-    line-height: 1.5;
-    margin: 0;
-    padding: 0;
-  }
-
-  h1, h2, h3 { word-wrap: break-word; }
-
-  /* Cover-Bereiche anpassen */
-  .cover {
-    height: auto;      /* nicht 100vh auf Handy */
-    padding: 40px 15px;
-    font-size: 1.6rem;
-  }
-  .cover h1 { font-size: 1.8rem; }
-
-  /* Rezeptbox */
-  .recipe {
-    margin: 12px 8px;
-    padding: 15px;
-  }
-  .recipe h2 { font-size: 1.3rem; }
-
-  .meta {
-    font-size: 0.9rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-  }
-  .meta input[type="number"] {
-    width: 50px;
-    font-size: 1rem;
-    padding: 2px;
-  }
-
-  /* Zutaten & Zubereitung enger */
-  .zutaten ul { padding-left: 18px; font-size: 0.95rem; }
-  .zubereitung p, .zubereitung ol { font-size: 0.95rem; }
-
-  /* Quick-Back-Button */
-  .back-button {
-    display: block;
-    width: 100%;
-    text-align: center;
-    font-size: 1rem;
-    margin-top: 16px;
-    padding: 10px;
-    position: sticky;  /* bleibt sichtbar */
-    bottom: 0;
-    background: #ffe89a;
-    border: 2px solid #e5c56a;
-    z-index: 999;
-  }
-}
-</style>
-  
