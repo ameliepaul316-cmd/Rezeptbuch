@@ -3,108 +3,50 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Meine Lieblingsrezepte – Cover & Inhaltsverzeichnis</title>
+  <!-- ========================== -->
+<!-- 📖 HAUPTCOVER -->
+<!-- ========================== -->
+<section id="cover" class="cover beige" style="
+  min-height:100dvh;
+  background:var(--beige);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:40px 20px;
+">
+  <div style="
+    position:relative;
+    background:#fff;
+    border:4px solid var(--border);
+    border-radius:26px;
+    padding:60px 30px;
+    max-width:92%;
+    text-align:center;
+    box-shadow:0 8px 22px rgba(0,0,0,.08);
+  ">
+    <!-- Symbol-Deko -->
+    <div style="
+      position:absolute; 
+      top:-20px; left:50%;
+      transform:translateX(-50%);
+      font-size:26px;
+      background:var(--beige);
+      padding:0 12px;
+    ">🍴</div>
 
-  <style>
-    /* ========== Design-Variablen (Pastell) ========== */
-    :root{
-      --beige:#F6F1E7;
-      --text:#2b2b2b;
-      --muted:#7b7b7b;
-      --border:#e4dccb;
+    <h1 style="margin:0; font-size:clamp(28px,7vw,38px); letter-spacing:.5px;">
+      Meine Lieblingsrezepte
+    </h1>
 
-      --gelb:#FFF6BF;        /* Frühstück */
-      --mint:#CFF5E7;        /* Hauptspeisen */
-      --rosa:#FFD3E2;        /* Bakery */
-      --orange:#FFD8B1;      /* Snacks & Desserts */
-      --blau:#CFE9FF;        /* Drinks */
+    </p>
 
-      --link:#3a6ea5;
-      --link-hover:#214e7c;
-
-      --shadow: 0 6px 18px rgba(0,0,0,.06);
-      --radius: 18px;
-      --radius-sm: 12px;
-      --maxw: 700px;     /* Tablet */
-      --iphone-w: 430px; /* iPhone Breite */
-    }
-
-    /* ========== Reset + Typo ========== */
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0}
-    body{
-      font-family: ui-sans-serif, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
-      color:var(--text);
-      background:#ffffff;
-      line-height:1.55;
-      -webkit-font-smoothing:antialiased;
-      text-rendering:optimizeLegibility;
-    }
-
-    /* iPhone-optimierte Mittelspalte */
-    .page{
-      margin:0 auto;
-      width:100%;
-      max-width:var(--iphone-w);
-      /* auf großen Screens mittig, auf iPhone vollbreit */
-    }
-
-    /* ========== Cover ========== */
-    .cover.beige{
-      min-height: 100dvh;
-      background: var(--beige);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:48px 20px;
-    }
-    .cover-frame{
-      width:100%;
-      background: #fff;
-      border: 3px solid var(--border);
-      border-radius: calc(var(--radius) + 6px);
-      box-shadow: var(--shadow);
-      padding: 38px 26px 30px;
-      position:relative;
-      isolation:isolate;
-    }
-    .cover-frame::before,
-    .cover-frame::after{
-      content:"";
-      position:absolute;
-      inset:12px;
-      border:2px dashed #eadfca;
-      border-radius: var(--radius);
-      pointer-events:none;
-    }
-    .cover h1{
-      margin:0;
-      font-size: clamp(28px, 6.5vw, 40px);
-      text-align:center;
-      letter-spacing:.5px;
-    }
-    .cover .subtitle{
-      margin-top:14px;
-      text-align:center;
-      color:var(--muted);
-      font-size: 14px;
-    }
-    .cover .badges{
-      margin-top:22px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      justify-content:center;
-    }
-    .badge{
-      padding:8px 12px;
-      border-radius:999px;
-      font-size:12px;
-      border:1px solid var(--border);
-      background:#fff;
-      box-shadow: var(--shadow);
+    <div style="margin-top:26px; display:flex; flex-wrap:wrap; gap:10px; justify-content:center;">
+      <span style="padding:8px 14px; border-radius:999px; font-size:13px; border:1px solid var(--border); background:#fff;">🥐 Frühstück</span>
+      <span style="padding:8px 14px; border-radius:999px; font-size:13px; border:1px solid var(--border); background:#fff;">🥗 Hauptspeisen</span>
+      <span style="padding:8px 14px; border-radius:999px; font-size:13px; border:1px solid var(--border); background:#fff;">🍰 Bakery</span>
+      <span style="padding:8px 14px; border-radius:999px; font-size:13px; border:1px solid var(--border); background:#fff;">🍊 Snacks & Desserts</span>
+      <span style="padding:8px 14px; border-radius:999px; font-size:13px; border:1px solid var(--border); background:#fff;">🍹 Drinks</span>
+    </div>
     }
 
     /* ========== Inhaltsverzeichnis ========== */
