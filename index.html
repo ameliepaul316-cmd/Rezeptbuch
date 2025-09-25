@@ -2563,29 +2563,18 @@ if (typeof window.updateRecipe !== 'function') {
 
 
 
-<!-- ========================== -->
-<!-- 🍰 BAKERY COVER -->
-<!-- ========================== -->
-<section id="bakery-cover" class="category-cover" style="background-color:#f8d7e6; color:#333; min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:20px;">
-  <div style="border:3px dashed #e091b6; padding:40px; border-radius:20px; text-align:center; max-width:90%;">
-    <h1 style="font-size:2.2em; margin-bottom:10px;">🍰 Bakery</h1>
-    <p style="font-size:1.1em;">Süße Kuchen, Torten & Plätzchen – alles, was das Herz begehrt.</p>
-  </div>
-</section>
+<!-- 🍰 Bakery – Kuchen & Torten -->
 
-
-  
+<!-- Apfelkuchen -->
 <section id="apfelkuchen" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
   <h2>🍎 Apfelkuchen</h2>
   <p class="meta">
     ⏱️ Zubereitungszeit: 30 Min | 🕒 Gesamtzeit: 1 h | 👥 Portionen:
-    <input type="number" id="apfel-portionen" value="8" min="1" style="width:60px"
-           onchange="updateRecipe('#apfel-zutaten', '#apfel-portionen')">
+    <input type="number" id="apfelkuchen-portionen" value="8" min="1" style="width:60px">
   </p>
-
   <div class="zutaten">
     <h3>🥕 Zutaten</h3>
-    <ul id="apfel-zutaten">
+    <ul id="apfelkuchen-zutaten">
       <li><span data-base="250">250</span> g Mehl</li>
       <li><span data-base="125">125</span> g Zucker</li>
       <li><span data-base="125">125</span> g Butter</li>
@@ -2594,10 +2583,264 @@ if (typeof window.updateRecipe !== 'function') {
       <li><span data-base="4">4</span> Äpfel</li>
     </ul>
   </div>
-
   <div class="zubereitung">
     <h3>👩‍🍳 Zubereitung</h3>
     <p>Alle Zutaten außer Äpfel zu einem Teig verarbeiten. In eine gefettete Form geben. Äpfel schälen, in Spalten schneiden und obenauf legen. Bei 180 °C ca. 45 Min backen.</p>
+  </div>
+</section>
+
+<!-- Brownie -->
+<section id="brownie" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
+  <h2>🍫 Brownie</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 15 Min | 🕒 Gesamtzeit: 35 Min | 👥 Portionen:
+    <input type="number" id="brownie-portionen" value="12" min="1" style="width:60px">
+  </p>
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="brownie-zutaten">
+      <li><span data-base="200">200</span> g Zartbitterschokolade</li>
+      <li><span data-base="125">125</span> g Butter</li>
+      <li><span data-base="1">1</span> Pck Vanillezucker</li>
+      <li><span data-base="3">3</span> Eier</li>
+      <li><span data-base="200">200</span> g brauner Zucker</li>
+      <li><span data-base="150">150</span> g Weizenmehl</li>
+      <li><span data-base="1">1</span> TL Backpulver</li>
+      <li><span data-base="1">1</span> Prise Salz</li>
+      <li><span data-base="1">1</span> EL Kakaopulver</li>
+    </ul>
+  </div>
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <p>Ofen auf 175 °C Ober-/Unterhitze vorheizen. Schokolade und Butter schmelzen. Eier mit Zucker schaumig schlagen. Schokomasse zugeben. Mehl, Backpulver, Salz, Kakao mischen und unterheben. In gefettete Form füllen, ca. 20 Min backen.</p>
+  </div>
+</section>
+
+<!-- Erdbeerkuchen -->
+<section id="erdbeerkuchen" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
+  <h2>🍓 Erdbeerkuchen</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 25 Min | 🕒 Gesamtzeit: 1 h | 👥 Portionen:
+    <input type="number" id="erdbeerkuchen-portionen" value="12" min="1" style="width:60px">
+  </p>
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="erdbeerkuchen-zutaten">
+      <li><span data-base="200">200</span> g Mehl</li>
+      <li><span data-base="100">100</span> g Zucker</li>
+      <li><span data-base="100">100</span> g Butter</li>
+      <li><span data-base="2">2</span> Eier</li>
+      <li><span data-base="1">1</span> TL Backpulver</li>
+      <li><span data-base="500">500</span> g Erdbeeren</li>
+      <li><span data-base="1">1</span> Pck Tortenguss</li>
+    </ul>
+  </div>
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <p>Teig aus Mehl, Butter, Zucker, Eiern und Backpulver herstellen, in Springform füllen und bei 180 °C ca. 25 Min backen. Abkühlen lassen. Mit Erdbeeren belegen, Tortenguss nach Packung zubereiten und darüber verteilen.</p>
+  </div>
+</section>
+
+<!-- Marmorkuchen -->
+<section id="marmorkuchen" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
+  <h2>🍰 Marmorkuchen (Standardkuchen)</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 1 h | 👥 Portionen:
+    <input type="number" id="marmorkuchen-portionen" value="12" min="1" style="width:60px">
+  </p>
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="marmorkuchen-zutaten">
+      <li><span data-base="250">250</span> g Butter</li>
+      <li><span data-base="250">250</span> g Zucker</li>
+      <li><span data-base="3">3</span> Eier</li>
+      <li><span data-base="500">500</span> g Mehl</li>
+      <li><span data-base="1">1</span> Pck Backpulver</li>
+      <li><span data-base="100">100</span> ml Milch</li>
+      <li><span data-base="2">2</span> EL Kakaopulver</li>
+      <li><span data-base="1">1</span> Fläschchen Rumaroma</li>
+    </ul>
+  </div>
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <p>Butter, Zucker, Eier schaumig schlagen. Mehl und Backpulver zufügen, Milch einrühren. Teig halbieren, eine Hälfte mit Kakao und Rumaroma mischen. Beide Teige in gefettete Form füllen, marmorieren. Bei 160 °C ca. 35 Min backen.</p>
+  </div>
+</section>
+
+<!-- Nougatkuchen -->
+<section id="nougatkuchen" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
+  <h2>🍮 Nougatkuchen</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 25 Min | 🕒 Gesamtzeit: 1 h | 👥 Portionen:
+    <input type="number" id="nougatkuchen-portionen" value="12" min="1" style="width:60px">
+  </p>
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="nougatkuchen-zutaten">
+      <li><span data-base="200">200</span> g weiche Butter</li>
+      <li><span data-base="150">150</span> g Zucker</li>
+      <li><span data-base="4">4</span> Eier</li>
+      <li><span data-base="200">200</span> g Haselnussnougat</li>
+      <li><span data-base="250">250</span> g Mehl</li>
+      <li><span data-base="1">1</span> TL Backpulver</li>
+    </ul>
+  </div>
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <p>Butter und Zucker cremig schlagen. Eier einzeln unterrühren. Geschmolzenes Nougat einrühren. Mehl und Backpulver unterheben. In gefettete Form füllen und bei 175 °C ca. 40 Min backen.</p>
+  </div>
+</section>
+
+<!-- Streuselkuchen -->
+<section id="streuselkuchen" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
+  <h2>🍪 Streuselkuchen</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 25 Min | 🕒 Gesamtzeit: 1 h 10 Min | 👥 Portionen:
+    <input type="number" id="streuselkuchen-portionen" value="12" min="1" style="width:60px">
+  </p>
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="streuselkuchen-zutaten">
+      <li><span data-base="300">300</span> g Mehl</li>
+      <li><span data-base="200">200</span> g Butter</li>
+      <li><span data-base="150">150</span> g Zucker</li>
+      <li><span data-base="1">1</span> Pck Vanillezucker</li>
+      <li><span data-base="1">1</span> Ei</li>
+      <li><span data-base="500">500</span> g Obst (z. B. Kirschen, Zwetschgen, Äpfel)</li>
+    </ul>
+  </div>
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <p>Mehl, Zucker, Vanillezucker und Butter zu Streuseln verarbeiten. Hälfte als Boden in eine Form drücken. Obst darauf verteilen. Restliche Streusel darüberstreuen. Bei 180 °C ca. 40–45 Min backen.</p>
+  </div>
+</section>
+
+  
+
+<!-- 🍪 Bakery – Plätzchen & Kleingebäck -->
+
+<!-- Butterplätzchen -->
+<section id="butterplaetzchen" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
+  <h2>🍪 Butterplätzchen</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 35 Min | 👥 Portionen:
+    <input type="number" id="butterplaetzchen-portionen" value="40" min="1" style="width:60px">
+  </p>
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="butterplaetzchen-zutaten">
+      <li><span data-base="200">200</span> g Butter (weich)</li>
+      <li><span data-base="100">100</span> g Zucker</li>
+      <li><span data-base="1">1</span> Ei</li>
+      <li><span data-base="400">400</span> g Mehl</li>
+      <li><span data-base="1">1</span> TL Backpulver</li>
+      <li><span data-base="3">3</span> EL Sahne</li>
+    </ul>
+  </div>
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <p>Alles zu einem glatten Teig verkneten (bei Bedarf etwas Mehl zufügen). 15 Min kühlen, ausrollen, ausstechen. Bei 190 °C 10–12 Min backen.</p>
+  </div>
+</section>
+
+<!-- Kokosmakronen -->
+<section id="kokosmakronen" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
+  <h2>🥥 Kokosmakronen</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 15 Min | 🕒 Gesamtzeit: 30 Min | 👥 Portionen:
+    <input type="number" id="kokosmakronen-portionen" value="30" min="1" style="width:60px">
+  </p>
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="kokosmakronen-zutaten">
+      <li><span data-base="200">200</span> g Kokosraspel</li>
+      <li><span data-base="150">150</span> g Zucker</li>
+      <li><span data-base="3">3</span> Eiweiß</li>
+      <li><span data-base="1">1</span> Pck Vanillezucker</li>
+      <li><span data-base="30">30</span> Oblaten</li>
+    </ul>
+  </div>
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <p>Eiweiß steif schlagen, Zucker & Vanillezucker einrieseln lassen. Kokosraspel unterheben. Häufchen auf Oblaten setzen und bei 160 °C ca. 15 Min backen.</p>
+  </div>
+</section>
+
+<!-- Nussecken -->
+<section id="nussecken" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
+  <h2>🌰 Nussecken</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 45 Min | 👥 Portionen:
+    <input type="number" id="nussecken-portionen" value="33" min="1" style="width:60px">
+  </p>
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="nussecken-zutaten">
+      <li><span data-base="130">130</span> g Butter/Margarine (Teig)</li>
+      <li><span data-base="130">130</span> g Zucker (Teig)</li>
+      <li><span data-base="2">2</span> Eier</li>
+      <li><span data-base="300">300</span> g Mehl</li>
+      <li><span data-base="1">1</span> TL Backpulver</li>
+      <li><span data-base="4">4</span> EL Aprikosenmarmelade</li>
+      <li><span data-base="200">200</span> g Butter (Belag)</li>
+      <li><span data-base="200">200</span> g Zucker (Belag)</li>
+      <li><span data-base="200">200</span> g Haselnüsse, gemahlen</li>
+      <li><span data-base="200">200</span> g Haselnüsse, gehackt</li>
+      <li><span data-base="100">100</span> g Kuvertüre</li>
+    </ul>
+  </div>
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <p>Mürbeteig aus Butter, Zucker, Eiern, Mehl, Backpulver herstellen und aufs Blech ausrollen. Mit Marmelade bestreichen. Butter & Zucker schmelzen, Nüsse einrühren, aufstreichen. Bei 175 °C ca. 25 Min backen. Warm in Dreiecke schneiden, Spitzen in Kuvertüre tauchen.</p>
+  </div>
+</section>
+
+<!-- Spitzbuben (Linzer Plätzchen) -->
+<section id="spitzbuben" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
+  <h2>❤️ Spitzbuben (Linzer Plätzchen)</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 30 Min | 🕒 Gesamtzeit: 2 h | 👥 Portionen:
+    <input type="number" id="spitzbuben-portionen" value="40" min="1" style="width:60px">
+  </p>
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="spitzbuben-zutaten">
+      <li><span data-base="250">250</span> g Mehl</li>
+      <li><span data-base="125">125</span> g Zucker</li>
+      <li><span data-base="150">150</span> g Butter</li>
+      <li><span data-base="2">2</span> Eigelb</li>
+      <li><span data-base="1">1</span> Prise Salz</li>
+      <li><span data-base="200">200</span> g Marmelade (z. B. Himbeer)</li>
+      <li><span data-base="50">50</span> g Puderzucker</li>
+    </ul>
+  </div>
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <p>Mürbeteig aus Mehl, Zucker, Butter, Eigelb & Salz kneten, 30–60 Min kühlen. Ausrollen, ausstechen (Hälfte mit Loch). Bei 180 °C ca. 10 Min backen. Mit Marmelade füllen, zusammensetzen, mit Puderzucker bestäuben.</p>
+  </div>
+</section>
+
+<!-- Vanillekipferl -->
+<section id="vanillekipferl" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
+  <h2>🌙 Vanillekipferl</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: 25 Min | 🕒 Gesamtzeit: 1 h | 👥 Portionen:
+    <input type="number" id="vanillekipferl-portionen" value="40" min="1" style="width:60px">
+  </p>
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="vanillekipferl-zutaten">
+      <li><span data-base="280">280</span> g Mehl</li>
+      <li><span data-base="100">100</span> g Zucker</li>
+      <li><span data-base="200">200</span> g Butter (kalt, in Stücken)</li>
+      <li><span data-base="100">100</span> g gemahlene Mandeln</li>
+      <li><span data-base="2">2</span> Pck Vanillezucker</li>
+      <li><span data-base="50">50</span> g Puderzucker (zum Wälzen)</li>
+    </ul>
+  </div>
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <p>Teig fix verkneten, kurz kühlen. Zu Kipferln formen und bei 175 °C 10–12 Min backen. Noch warm vorsichtig in Puderzucker wälzen.</p>
   </div>
 </section>
 
@@ -2608,10 +2851,10 @@ if (typeof window.updateRecipe !== 'function') {
 
 
 
-
-
-
   
+  
+
+
   
 <!-- ====================== GLOBAL SERVINGS FIX + CLEANUP ====================== -->
 <style>
@@ -2628,12 +2871,7 @@ if (typeof window.updateRecipe !== 'function') {
 
 
 
-
-
-
-
-
-
+  
   <script>
 /*
   Universelle Portions-Skalierung
