@@ -1,3 +1,5 @@
+
+
 <!doctype html>
 <html lang="de">
 <head>
@@ -105,57 +107,128 @@
       box-shadow: var(--shadow);
     }
 
-   <!-- ========================== -->
-<!-- 📖 HAUPTCOVER -->
-<!-- ========================== -->
-<section id="cover" class="cover beige" style="
-  min-height:100dvh;
-  background:var(--beige);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:40px 20px;
-">
-  <div style="
-    position:relative;
-    background:#fff;
-    border:4px solid var(--border);
-    border-radius:26px;
-    padding:60px 30px;
-    max-width:92%;
-    text-align:center;
-    box-shadow:0 8px 22px rgba(0,0,0,.08);
-  ">
-    <!-- Symbol-Deko -->
-    <div style="
-      position:absolute; 
-      top:-20px; left:50%;
-      transform:translateX(-50%);
-      font-size:26px;
-      background:var(--beige);
-      padding:0 12px;
-    ">🍴</div>
+    /* ========== Inhaltsverzeichnis ========== */
+    .toc.beige{
+      background: var(--beige);
+      padding: 28px 14px 110px; /* Platz für Quickjump */
+    }
+    .toc .wrap{
+      background:#fff;
+      border:1.5px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:20px 14px;
+    }
+    .toc h2{
+      margin:0 0 14px;
+      font-size: clamp(22px, 5.2vw, 28px);
+      text-align:center;
+    }
+    .divider{
+      height:1px;background:#eee;margin:18px 0;
+    }
+    .cat{
+      border-radius: var(--radius);
+      padding:14px;
+      margin: 12px 0 18px;
+      border:1px solid #eee;
+    }
+    .cat.gelb   { background: var(--gelb); }
+    .cat.mint   { background: var(--mint); }
+    .cat.rosa   { background: var(--rosa); }
+    .cat.orange { background: var(--orange); }
+    .cat.blau   { background: var(--blau); }
 
-    <h1 style="margin:0; font-size:clamp(28px,7vw,38px); letter-spacing:.5px;">
-      Meine Lieblingsrezepte
-    </h1>
-    <p style="margin-top:12px; font-size:15px; color:var(--muted);">
-      Hausgemacht · sortiert · klickbar
-    </p>
+    .cat > h3{
+      margin:0 0 8px;
+      font-size: clamp(18px, 4.6vw, 22px);
+    }
+    .cat h4{
+      margin:14px 0 4px;
+      font-size: 15px;
+      opacity:.9;
+    }
 
-    <div style="margin-top:26px; display:flex; flex-wrap:wrap; gap:10px; justify-content:center;">
-      <span style="padding:8px 14px; border-radius:999px; font-size:13px; border:1px solid var(--border); background:#fff;">🥐 Frühstück</span>
-      <span style="padding:8px 14px; border-radius:999px; font-size:13px; border:1px solid var(--border); background:#fff;">🥗 Hauptspeisen</span>
-      <span style="padding:8px 14px; border-radius:999px; font-size:13px; border:1px solid var(--border); background:#fff;">🍰 Bakery</span>
-      <span style="padding:8px 14px; border-radius:999px; font-size:13px; border:1px solid var(--border); background:#fff;">🍊 Snacks & Desserts</span>
-      <span style="padding:8px 14px; border-radius:999px; font-size:13px; border:1px solid var(--border); background:#fff;">🍹 Drinks</span>
-    </div>
+    /* Listen-Styling (Unterkategorien eingerückt & klar lesbar) */
+    ul{list-style:none;margin:6px 0 10px;padding:0}
+    .cat > ul > li{ /* Direkt in Kategorie (ohne Unterkategorie) */
+      margin:0; 
+    }
+    .cat ul li a{
+      display:block;
+      padding:10px 12px;
+      margin: 6px 0;
+      background:#ffffffc9;
+      border:1px solid #ffffff;
+      border-radius: var(--radius-sm);
+      text-decoration:none;
+      color:var(--text);
+      transition: transform .06s ease, box-shadow .2s ease, background .2s ease;
+      box-shadow: 0 1px 0 rgba(0,0,0,.02);
+    }
+    .cat ul li a:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(0,0,0,.08);
+      background:#fff;
+    }
 
-    <p style="margin-top:30px; font-size:13px; color:var(--muted);">
-      ⬇️ Scrolle oder nutze den Quickjump unten rechts
-    </p>
-  </div>
-</section>
+    /* Unterkategorie-Block */
+    .cat h4 + ul{
+      border-left: 3px solid rgba(0,0,0,.08);
+      margin-left: 6px;
+      padding-left: 10px;
+    }
+
+    /* Kleinere Link-Pills */
+    .pill{
+      display:inline-block;
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border:1px solid #e7e7e7;
+      background:#fff;
+      text-decoration:none;
+      color:var(--text);
+      margin: 4px 6px 0 0;
+    }
+
+    /* ========== Quickjump (unten rechts, fixiert) ========== */
+    .quickjump{
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 50;
+    }
+    .quickjump a{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius: 12px;
+      text-decoration:none;
+      color:var(--text);
+      font-size: 13px;
+      box-shadow: var(--shadow);
+      transition: transform .06s ease, box-shadow .2s ease;
+    }
+    .quickjump a:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(0,0,0,.1);
+    }
+
+    /* ========== Helfer ========== */
+    .space{height:16px}
+    .note{
+      color:var(--muted);
+      font-size:12px;
+      text-align:center;
+      margin-top:6px;
+    }
 
     /* Besseres Scrollen auf iOS */
     html{scroll-behavior:smooth}
@@ -320,6 +393,8 @@
             <li><a href="#spitzbuben">Spitzbuben (Linzer Plätzchen)</a></li>
             <li><a href="#vanillekipferl">Vanillekipferl</a></li>
           </ul>
+
+
 
           <h4>Sonstiges Gebäck</h4>
           <ul>
