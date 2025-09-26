@@ -3635,3 +3635,63 @@ if (typeof window.updateRecipe !== 'function') {
   window.initRecipeScaling=init;
 })();
 </script>
+
+
+
+
+<script>
+/* ===== DB -> Frontend: Alles laden und ins DOM setzen ===== */
+(function(){
+  const bySel = (sel, root=document) => root.querySelector(sel);
+
+  async function renderRecipeRecord(rec){
+    const id = rec.id;
+    const title = rec.title;
+    const cat = rec.category;
+    const sub = rec.subcategory || '';
+    const servings = rec.servings;
+    const prep = rec.prep;
+    const total = rec.total;
+    const ingredients = JSON.parse(rec.ingredients_json || '[]');
+    const steps = JSON.parse(rec.steps_json || '[]');
+
+    // Diese drei Funktionen müssen global verfügbar sein:
+    const resolveTargets = window.resolveTargets || window.__resolveTargets;
+    const buildRecipeSection = window.buildRecipeSection || window.__buildRecipeSection;
+
+    if(!resolveTargets || !buildRecipeSection){
+      console.warn('resolveTargets/buildRecipeSection nicht global. Bitte exportieren, siehe nächster Schritt.');
+      return;
+    }
+
+    const { tocList, contentAnchor } = resolveTargets(cat, sub);
+    if(!tocList || !contentAnchor){ console.warn('Ziel nicht gefunden:', cat, sub); return; }
+
+    const html = buildRecipeSection({ id, title, servings, prep, total, ingredients, steps, cat });
+    const t = document.createElement('template'); t.innerHTML = html.trim();
+    const section = t.content.firstElementChild;
+
+    contentAnchor.insertAdjacentElement('afterend', section);
+
+    if (!tocList.querySelector(`a[href="#${id}"]`)) {
+      const li = document.createElement('li');
+      const a = document.createElement('a'); a.href = '#' + id; a.textContent = title;
+      li.appendChild(a); tocList.appendChild(li);
+    }
+  }
+
+  async function loadAllRecipes(){
+    try{
+      const res = await fetch('/api/recipes', { headers:{accept:'application/json'} });
+      if(!res.ok) throw new Error('GET /api/recipes fehlgeschlagen');
+      const list = await res.json();
+      for(const rec of list){ await renderRecipeRecord(rec); }
+      if (window.rebuildSearch) window.rebuildSearch();
+      if (window.initRecipeScaling) window.initRecipeScaling();
+    }catch(e){ console.error('Rezepte laden fehlgeschlagen:', e); }
+  }
+
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', loadAllRecipes); }
+  else { loadAllRecipes(); }
+})();
+</script>
