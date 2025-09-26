@@ -6,63 +6,75 @@
   <title>Meine Lieblingsrezepte – Cover & Inhaltsverzeichnis</title>
 
   <style>
-    /* ========== Design-Variablen (Pastell) ========== */
     :root{
       --beige:#F6F1E7;
       --text:#2b2b2b;
       --muted:#7b7b7b;
       --border:#e4dccb;
-
-      --gelb:#FFF6BF;        /* Frühstück */
-      --mint:#CFF5E7;        /* Hauptspeisen */
-      --rosa:#FFD3E2;        /* Bakery */
-      --orange:#FFD8B1;      /* Snacks & Desserts */
-      --blau:#CFE9FF;        /* Drinks */
-
-      --link:#3a6ea5;
-      --link-hover:#214e7c;
-
+      --gelb:#FFF6BF;
+      --mint:#CFF5E7;
+      --rosa:#FFD3E2;
+      --orange:#FFD8B1;
+      --blau:#CFE9FF;
       --shadow: 0 6px 18px rgba(0,0,0,.06);
       --radius: 18px;
       --radius-sm: 12px;
-      --maxw: 700px;     /* Tablet */
-      --iphone-w: 430px; /* iPhone Breite */
+      --iphone-w: 430px;
     }
 
-    /* ========== Reset + Typo ========== */
     *{box-sizing:border-box}
     html,body{margin:0;padding:0}
     body{
-      font-family: ui-sans-serif, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      font-family: ui-sans-serif, -apple-system, Segoe UI, Roboto, Arial;
       color:var(--text);
       background:#ffffff;
       line-height:1.55;
-      -webkit-font-smoothing:antialiased;
-      text-rendering:optimizeLegibility;
     }
 
-    /* iPhone-optimierte Mittelspalte */
     .page{
       margin:0 auto;
       width:100%;
       max-width:var(--iphone-w);
     }
 
+    /* Cover */
+    .cover.beige{
+      min-height: 100dvh;
+      background: var(--beige);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 20px;
+    }
+    .cover-frame{
+      width:100%;
+      background: #fff;
+      border: 3px dashed var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 38px 26px 30px;
+      text-align:center;
+    }
+    .cover h1{
+      margin:0;
+      font-size: clamp(28px, 6.5vw, 40px);
+      font-family: "Georgia","Times New Roman",serif;
+    }
+    .cover .subtitle{
+      margin-top:14px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .cover .icon{
+      margin-top:18px;
+      font-size:1.8em;
+      color: var(--muted);
+    }
 
-
-
-
-
-  
-
-
-
-
-    
-    /* ========== Inhaltsverzeichnis ========== */
+    /* TOC */
     .toc.beige{
       background: var(--beige);
-      padding: 28px 14px 110px; /* Platz für Quickjump */
+      padding: 28px 14px 110px;
     }
     .toc .wrap{
       background:#fff;
@@ -73,147 +85,160 @@
     }
     .toc h2{
       margin:0 0 14px;
-      font-size: clamp(22px, 5.2vw, 28px);
       text-align:center;
+      font-size: clamp(22px, 5.2vw, 28px);
     }
-    .divider{
-      height:1px;background:#eee;margin:18px 0;
-    }
-    .cat{
-      border-radius: var(--radius);
-      padding:14px;
-      margin: 12px 0 18px;
-      border:1px solid #eee;
-    }
-    .cat.gelb   { background: var(--gelb); }
-    .cat.mint   { background: var(--mint); }
-    .cat.rosa   { background: var(--rosa); }
-    .cat.orange { background: var(--orange); }
-    .cat.blau   { background: var(--blau); }
 
-    .cat > h3{
-      margin:0 0 8px;
-      font-size: clamp(18px, 4.6vw, 22px);
+    /* Suchbox */
+    .searchbox {
+      margin: 12px 0 20px;
+      text-align: center;
     }
-    .cat h4{
-      margin:14px 0 4px;
-      font-size: 15px;
-      opacity:.9;
+    .searchbox input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
     }
+    #searchResults {
+      margin-top: 10px;
+      list-style: none;
+      padding: 0;
+      text-align: left;
+    }
+    #searchResults li {
+      margin: 4px 0;
+    }
+    #searchResults a {
+      display: block;
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      color: var(--text);
+      background: #fafafa;
+      border: 1px solid #eee;
+    }
+    #searchResults a:hover {
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .divider{height:1px;background:#eee;margin:18px 0;}
+    .cat{padding:14px;margin:12px 0 18px;border-radius:var(--radius);border:1px solid #eee;}
+    .cat.gelb{background:var(--gelb);}
+    .cat.mint{background:var(--mint);}
+    .cat.rosa{background:var(--rosa);}
+    .cat.orange{background:var(--orange);}
+    .cat.blau{background:var(--blau);}
+    .cat h3{margin:0 0 8px;font-size: clamp(18px, 4.6vw, 22px);}
+    .cat h4{margin:14px 0 4px;font-size:15px;opacity:.9;}
 
     ul{list-style:none;margin:6px 0 10px;padding:0}
-    .cat > ul > li{margin:0;} 
-    .cat ul li a{
-      display:block;
-      padding:10px 12px;
-      margin: 6px 0;
-      background:#ffffffc9;
-      border:1px solid #ffffff;
-      border-radius: var(--radius-sm);
-      text-decoration:none;
-      color:var(--text);
-      transition: transform .06s ease, box-shadow .2s ease, background .2s ease;
-      box-shadow: 0 1px 0 rgba(0,0,0,.02);
-    }
-    .cat ul li a:hover{
-      transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(0,0,0,.08);
-      background:#fff;
-    }
-
-    .cat h4 + ul{
-      border-left: 3px solid rgba(0,0,0,.08);
-      margin-left: 6px;
-      padding-left: 10px;
-    }
-
-    .pill{
-      display:inline-block;
-      font-size: 12px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border:1px solid #e7e7e7;
-      background:#fff;
-      text-decoration:none;
-      color:var(--text);
-      margin: 4px 6px 0 0;
-    }
-
-    .quickjump{
-      position: fixed;
-      right: 14px;
-      bottom: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      z-index: 50;
-    }
-    .quickjump a{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      padding:10px 12px;
-      background:#fff;
-      border:1px solid var(--border);
-      border-radius: 12px;
-      text-decoration:none;
-      color:var(--text);
-      font-size: 13px;
-      box-shadow: var(--shadow);
-      transition: transform .06s ease, box-shadow .2s ease;
-    }
-    .quickjump a:hover{
-      transform: translateY(-1px);
-      box-shadow: 0 8px 18px rgba(0,0,0,.1);
-    }
-
-    .space{height:16px}
-    .note{
-      color:var(--muted);
-      font-size:12px;
-      text-align:center;
-      margin-top:6px;
-    }
+    .cat ul li a{display:block;padding:10px 12px;margin:6px 0;background:#ffffffc9;border:1px solid #ffffff;border-radius:var(--radius-sm);text-decoration:none;color:var(--text);}
+    .cat ul li a:hover{background:#fff;box-shadow:0 6px 16px rgba(0,0,0,.08);}
 
     html{scroll-behavior:smooth}
-    .quickjump{ padding-bottom: env(safe-area-inset-bottom, 0); }
-    .toc.beige{ padding-bottom: calc(110px + env(safe-area-inset-bottom, 0)); }
   </style>
 </head>
 <body>
 
   <main class="page">
 
-    <!-- ======= NEUES COVER ======= -->
-    <section id="cover" class="category-cover" style="background-color:#F6F1E7; color:#333; min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:20px;">
-      <div style="border:3px dashed #e4dccb; padding:40px; border-radius:20px; text-align:center; max-width:90%; background:#fff;">
-        <h1 style="font-size:2.2em; margin-bottom:20px; font-family:'Georgia','Times New Roman',serif;">
-          Meine Lieblingsrezepte
-        </h1>
-        <div style="font-size:1.6em; margin-top:10px; color:#666;">🍽️</div>
+    <!-- ======= COVER ======= -->
+    <section id="cover" class="cover beige">
+      <div class="cover-frame">
+        <h1>Meine Lieblingsrezepte</h1>
+        <p class="subtitle">Hausgemacht · sortiert · klickbar</p>
+        <div class="icon">🍽️</div>
       </div>
     </section>
 
-    <!-- ======= INHALTSVERZEICHNIS (beige) ======= -->
+    <!-- ======= INHALTSVERZEICHNIS ======= -->
     <section id="toc" class="toc beige">
       <div class="wrap">
         <h2>Inhaltsverzeichnis</h2>
-    <!-- 🔍 Suchleiste -->
-    <div class="searchbox">
-      <input type="search" id="recipeSearch" placeholder="🔍 Rezept suchen..." />
-      <ul id="searchResults"></ul>
-    </div>
+
+        <!-- Suchbox -->
+        <div class="searchbox">
+          <input type="text" id="recipeSearch" placeholder="🔍 Rezept suchen...">
+          <ul id="searchResults"></ul>
+        </div>
+
+        <!-- Beispielkategorie -->
+        <div class="cat gelb" id="fruehstueck">
+          <h3>🥐 Frühstück</h3>
+          <ul>
+            <li><a href="#baguette">Baguette</a></li>
+            <li><a href="#brownie">Brownie</a></li>
+            <li><a href="#tiramisu">Tiramisu</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======= Beispielrezepte ======= -->
+    <section id="baguette">
+      <h2 id="baguette">Baguette</h2>
+      <p>Rezeptdetails …</p>
+    </section>
+
+    <section id="brownie">
+      <h2 id="brownie">Brownie</h2>
+      <p>Rezeptdetails …</p>
+    </section>
+
+    <section id="tiramisu">
+      <h2 id="tiramisu">Tiramisu</h2>
+      <p>Rezeptdetails …</p>
+    </section>
+
+  </main>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("recipeSearch");
+    const results = document.getElementById("searchResults");
+
+    if (!input || !results) return;
+
+    input.addEventListener("input", () => {
+      const query = input.value.toLowerCase().trim();
+      results.innerHTML = "";
+
+      if (query.length < 2) return;
+
+      const recipes = document.querySelectorAll("h2[id]");
+      recipes.forEach(h2 => {
+        const title = h2.textContent.toLowerCase();
+        if (title.includes(query)) {
+          const li = document.createElement("li");
+          const link = document.createElement("a");
+          link.href = "#" + h2.id;
+          link.textContent = h2.textContent;
+          li.appendChild(link);
+          results.appendChild(li);
+        }
+      });
+
+      if (results.innerHTML === "") {
+        const li = document.createElement("li");
+        li.textContent = "❌ Kein Treffer";
+        results.appendChild(li);
+      }
+    });
+  });
+  </script>
+</body>
+</html>
 
 
 
-    <!-- 🔍 Suchleiste -->
-    <div class="searchbox">
-      <input type="search" id="recipeSearch" placeholder="🔍 Rezept suchen..." />
-      <ul id="searchResults"></ul>
-    </div>
 
 
-        
+
+
         <!-- Frühstück -->
         <div class="cat gelb" id="fruehstueck">
           <h3>🥐 Frühstück</h3>
