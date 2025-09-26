@@ -1,3 +1,476 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Meine Lieblingsrezepte – Cover & Inhaltsverzeichnis</title>
+
+  <style>
+    /* ========== Design-Variablen (Pastell) ========== */
+    :root{
+      --beige:#F6F1E7;
+      --text:#2b2b2b;
+      --muted:#7b7b7b;
+      --border:#e4dccb;
+
+      --gelb:#FFF6BF;        /* Frühstück */
+      --mint:#CFF5E7;        /* Hauptspeisen */
+      --rosa:#FFD3E2;        /* Bakery */
+      --orange:#FFD8B1;      /* Snacks & Desserts */
+      --blau:#CFE9FF;        /* Drinks */
+
+      --link:#3a6ea5;
+      --link-hover:#214e7c;
+
+      --shadow: 0 6px 18px rgba(0,0,0,.06);
+      --radius: 18px;
+      --radius-sm: 12px;
+      --maxw: 700px;     /* Tablet */
+      --iphone-w: 430px; /* iPhone Breite */
+    }
+
+    /* ========== Reset + Typo ========== */
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family: ui-sans-serif, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color:var(--text);
+      background:#ffffff;
+      line-height:1.55;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+
+    /* iPhone-optimierte Mittelspalte */
+    .page{
+      margin:0 auto;
+      width:100%;
+      max-width:var(--iphone-w);
+    }
+
+    /* ========== Inhaltsverzeichnis ========== */
+    .toc.beige{
+      background: var(--beige);
+      padding: 28px 14px 110px; /* Platz für Quickjump */
+    }
+    .toc .wrap{
+      background:#fff;
+      border:1.5px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:20px 14px;
+    }
+    .toc h2{
+      margin:0 0 14px;
+      font-size: clamp(22px, 5.2vw, 28px);
+      text-align:center;
+    }
+    .divider{
+      height:1px;background:#eee;margin:18px 0;
+    }
+    .cat{
+      border-radius: var(--radius);
+      padding:14px;
+      margin: 12px 0 18px;
+      border:1px solid #eee;
+    }
+    .cat.gelb   { background: var(--gelb); }
+    .cat.mint   { background: var(--mint); }
+    .cat.rosa   { background: var(--rosa); }
+    .cat.orange { background: var(--orange); }
+    .cat.blau   { background: var(--blau); }
+
+    .cat > h3{
+      margin:0 0 8px;
+      font-size: clamp(18px, 4.6vw, 22px);
+    }
+    .cat h4{
+      margin:14px 0 4px;
+      font-size: 15px;
+      opacity:.9;
+    }
+
+    ul{list-style:none;margin:6px 0 10px;padding:0}
+    .cat > ul > li{margin:0;} 
+    .cat ul li a{
+      display:block;
+      padding:10px 12px;
+      margin: 6px 0;
+      background:#ffffffc9;
+      border:1px solid #ffffff;
+      border-radius: var(--radius-sm);
+      text-decoration:none;
+      color:var(--text);
+      transition: transform .06s ease, box-shadow .2s ease, background .2s ease;
+      box-shadow: 0 1px 0 rgba(0,0,0,.02);
+    }
+    .cat ul li a:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(0,0,0,.08);
+      background:#fff;
+    }
+
+    .cat h4 + ul{
+      border-left: 3px solid rgba(0,0,0,.08);
+      margin-left: 6px;
+      padding-left: 10px;
+    }
+
+    .pill{
+      display:inline-block;
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border:1px solid #e7e7e7;
+      background:#fff;
+      text-decoration:none;
+      color:var(--text);
+      margin: 4px 6px 0 0;
+    }
+
+    .quickjump{
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 50;
+    }
+    .quickjump a{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius: 12px;
+      text-decoration:none;
+      color:var(--text);
+      font-size: 13px;
+      box-shadow: var(--shadow);
+      transition: transform .06s ease, box-shadow .2s ease;
+    }
+    .quickjump a:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(0,0,0,.1);
+    }
+
+    .space{height:16px}
+    .note{
+      color:var(--muted);
+      font-size:12px;
+      text-align:center;
+      margin-top:6px;
+    }
+
+    html{scroll-behavior:smooth}
+    .quickjump{ padding-bottom: env(safe-area-inset-bottom, 0); }
+    .toc.beige{ padding-bottom: calc(110px + env(safe-area-inset-bottom, 0)); }
+  </style>
+</head>
+<body>
+
+    /* 🔍 Suchbox Styles (neu) */
+    <style>
+    .searchbox{ margin:12px 0 20px; }
+    .searchbox input{
+      width:100%;
+      padding:10px 14px;
+      border:1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size:14px;
+      outline:none;
+    }
+    #searchResults{ list-style:none; margin:10px 0 0; padding:0; }
+    #searchResults li{ margin:6px 0; }
+    #searchResults a{
+      display:block;
+      padding:8px 10px;
+      background:#fafafa;
+      border:1px solid #eee;
+      border-radius:var(--radius-sm);
+      color:var(--text);
+      text-decoration:none;
+    }
+  </style>
+
+  <main class="page">
+
+    <!-- ======= NEUES COVER ======= -->
+    <section id="cover" class="category-cover" style="background-color:#F6F1E7; color:#333; min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:20px;">
+      <div style="border:3px dashed #e4dccb; padding:40px; border-radius:20px; text-align:center; max-width:90%; background:#fff;">
+        <h1 style="font-size:2.2em; margin-bottom:20px; font-family:'Georgia','Times New Roman',serif;">
+          Meine Lieblingsrezepte
+        </h1>
+        <div style="font-size:1.6em; margin-top:10px; color:#666;">🍽️</div>
+      </div>
+    </section>
+
+    <!-- ======= INHALTSVERZEICHNIS (beige) ======= -->
+    <section id="toc" class="toc beige">
+      <div class="wrap">
+        <h2>Inhaltsverzeichnis</h2>
+
+        <!-- 🔍 Suchleiste -->
+        <div class="searchbox">
+          <input type="search" id="recipeSearch" placeholder="🔍 Rezept suchen..." />
+          <ul id="searchResults"></ul>
+        </div>
+
+        <!-- Frühstück -->
+        <div class="cat gelb" id="fruehstueck">
+          <h3>🥐 Frühstück</h3>
+          <ul>
+            <li><a href="#baguette">Baguette</a></li>
+            <li><a href="#dinkel-walnuss-brot">Dinkel-Walnuss-Brot</a></li>
+            <li><a href="#granola">Granola</a></li>
+            <li><a href="#lievito-madre">Lievito Madre</a></li>
+            <li><a href="#overnight-oats">Overnight Oats</a></li>
+            <li><a href="#protein-snickers-quark">Proteinreicher Snickers-Quark</a></li>
+            <li><a href="#walnussbutter">Walnussbutter</a></li>
+          </ul>
+          <div>
+            <a class="pill" href="#cover">⬆️ Zurück zum Cover</a>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Hauptspeisen -->
+        <div class="cat mint" id="hauptspeisen">
+          <h3>🥗 Hauptspeisen</h3>
+
+          <h4>🍲 Suppen & Eintöpfe</h4>
+          <ul>
+            <li><a href="#gemuesesuppe">Gemüsesuppe</a></li>
+            <li><a href="#kartoffelsuppe">Kartoffelsuppe</a></li>
+            <li><a href="#marktgloesschen">Marktglößchen</a></li>
+            <li><a href="#petersilienwurzel-suppe">Petersilienwurzelsuppe</a></li>
+            <li><a href="#spargelcremesuppe">Spargelcremesuppe</a></li>
+            <li><a href="#kuerbissuppe">Kürbissuppe</a></li>
+          </ul>
+
+          <h4>🍝 Pasta & Nudeln</h4>
+          <ul>
+            <li><a href="#kaesenudeln">Käsenudeln (quattro formaggi)</a></li>
+            <li><a href="#kuerbisnudeln">Nudeln mit Kürbissauce</a></li>
+            <li><a href="#ravioli-ricotta">Ravioli mit Ricotta & Spinat</a></li>
+          </ul>
+
+          <h4>🍕 Pizza</h4>
+          <ul>
+            <li><a href="#pizzabroetchen">Pizzabrötchen</a></li>
+            <li><a href="#pizzateig">Pizzateig</a></li>
+          </ul>
+
+          <h4>🍚 Reis- & Getreidegerichte</h4>
+          <ul>
+            <li><a href="#indisches-quinoa-curry">Indisches Quinoa Curry</a></li>
+            <li><a href="#pacific-poke-bowl">Pacific Poke Bowl</a></li>
+            <li><a href="#poke-bowl">Poké Bowl</a></li>
+            <li><a href="#quinoa-chili">Quinoa Chili (vegetarisch)</a></li>
+            <li><a href="#risotto">Risotto</a></li>
+            <li><a href="#veg-reispfanne">Vegetarische Reispfanne mit Karotten & Paprika</a></li>
+          </ul>
+
+          <h4>🌍 Internationale Küche & Currys</h4>
+          <ul>
+            <li><a href="#auberginen-lasagne">Auberginen-Zucchini-Lasagne</a></li>
+            <li><a href="#dhal">Dhal (Sri Lanka)</a></li>
+            <li><a href="#gruenes-curry">Grünes Curry</a></li>
+            <li><a href="#hackfleischrolle">Hackfleischrolle</a></li>
+            <li><a href="#massaman-curry">Massaman Curry</a></li>
+            <li><a href="#enchilada-lasagne">Mexikanische Enchilada-Lasagne</a></li>
+            <li><a href="#pad-thai">Pad Thai</a></li>
+            <li><a href="#rotes-curry">Rotes Curry</a></li>
+            <li><a href="#sri-lanka-roti">Sri Lanka Coconut Roti</a></li>
+            <li><a href="#tacofino">Tacofino</a></li>
+          </ul>
+
+          <h4>🥗 Snacks, Beilagen & Fingerfood</h4>
+          <ul>
+            <li><a href="#bohnenpatty">Bohnenpatty</a></li>
+            <li><a href="#brokkolisalat">Brokkolisalat</a></li>
+            <li><a href="#fruehlingsrollen">Frühlingsrollen (Thai)</a></li>
+            <li><a href="#focaccia">Focaccia</a></li>
+            <li><a href="#gemuesepfanne">Gemüsepfanne</a></li>
+            <li><a href="#gemuesespiesse">Gemüsespieße</a></li>
+            <li><a href="#serviettenknoedel">Serviettenknödel</a></li>
+            <li><a href="#stockbrot">Stockbrot</a></li>
+            <li><a href="#tortilla-wrap">Tortilla Wrap DIY</a></li>
+            <li><a href="#zucchinipuffer">Zucchinipuffer</a></li>
+          </ul>
+
+          <h4>🥫 Basics & Saucen</h4>
+          <ul>
+            <li><a href="#bierteig">Bierteig</a></li>
+            <li><a href="#eiersauce">Eiersauce mit Bratkartoffeln</a></li>
+            <li><a href="#guacamole">Guacamole</a></li>
+            <li><a href="#knoblauchsauce">Knoblauchsauce</a></li>
+            <li><a href="#pesto">Pesto (Pesto Paul)</a></li>
+            <li><a href="#salatsauce">Salatsauce</a></li>
+          </ul>
+
+          <h4>🌶️ Curry-Pasten</h4>
+          <ul>
+            <li><a href="#gruenecurry-paste">Grüne Curry-Paste</a></li>
+            <li><a href="#massaman-paste">Massaman Curry-Paste</a></li>
+            <li><a href="#rotecurry-paste">Rote Curry-Paste</a></li>
+          </ul>
+
+          <div>
+            <a class="pill" href="#cover">⬆️ Zurück zum Cover</a>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Bakery -->
+        <div class="cat rosa" id="bakery">
+          <h3>🍰 Bakery</h3>
+          <h4>Kuchen & Torten</h4>
+          <ul>
+            <li><a href="#apfelkuchen">Apfelkuchen</a></li>
+            <li><a href="#brownie">Brownie</a></li>
+            <li><a href="#erdbeerkuchen">Erdbeerkuchen</a></li>
+            <li><a href="#marmorkuchen">Marmorkuchen (Standardkuchen)</a></li>
+            <li><a href="#nougatkuchen">Nougatkuchen</a></li>
+            <li><a href="#streuselkuchen">Streuselkuchen</a></li>
+          </ul>
+
+          <h4>Plätzchen & Kleingebäck</h4>
+          <ul>
+            <li><a href="#butterplaetzchen">Butterplätzchen</a></li>
+            <li><a href="#kokosmakronen">Kokosmakronen</a></li>
+            <li><a href="#nussecken">Nussecken</a></li>
+            <li><a href="#spitzbuben">Spitzbuben (Linzer Plätzchen)</a></li>
+            <li><a href="#vanillekipferl">Vanillekipferl</a></li>
+          </ul>
+
+          <h4>Sonstiges Gebäck</h4>
+          <ul>
+            <li><a href="#dampfnudeln">Dampfnudeln</a></li>
+            <li><a href="#flammendes-herz">Flammendes Herz</a></li>
+            <li><a href="#frosting">Frosting</a></li>
+            <li><a href="#kreppel">Kreppel</a></li>
+            <li><a href="#waffeln">Waffeln</a></li>
+            <li><a href="#zimtschnecken">Zimtschnecken</a></li>
+          </ul>
+          <div>
+            <a class="pill" href="#cover">⬆️ Zurück zum Cover</a>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Snacks & Desserts -->
+        <div class="cat orange" id="snacks">
+          <h3>🍊 Snacks & Desserts</h3>
+          <ul>
+            <li><a href="#candied-pecan">Candied Pecan</a></li>
+            <li><a href="#energybaellchen">Energiebällchen</a></li>
+            <li><a href="#frittierte-banane">Frittierte Banane</a></li>
+            <li><a href="#himbeerbaiser">Himbeerbaiser</a></li>
+            <li><a href="#marzipanpralinen">Marzipanpralinen</a></li>
+            <li><a href="#mousse-chocolat">Mousse au Chocolat</a></li>
+            <li><a href="#roti-thai">Roti Thai Pancake</a></li>
+            <li><a href="#sticky-rice">Sticky Rice mit Mango</a></li>
+            <li><a href="#tiramisu">Tiramisu</a></li>
+          </ul>
+          <div>
+            <a class="pill" href="#cover">⬆️ Zurück zum Cover</a>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Drinks -->
+        <div class="cat blau" id="drinks">
+          <h3>🍹 Drinks</h3>
+          <ul>
+            <li><a href="#butterkeks-cocktail">Butterkeks Cocktail</a></li>
+            <li><a href="#mai-tai">Mai Tai</a></li>
+            <li><a href="#mojito">Mojito</a></li>
+            <li><a href="#pina-colada">Piña Colada</a></li>
+            <li><a href="#tequila-sunrise">Tequila Sunrise</a></li>
+            <li><a href="#virgin-mojito">Virgin Mojito (alkoholfrei)</a></li>
+            <li><a href="#iced-chai">Iced Chai Latte (alkoholfrei)</a></li>
+          </ul>
+          <div>
+            <a class="pill" href="#cover">⬆️ Zurück zum Cover</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ⭐ Nur-Rezepte-Suche: Script hinzugefügt -->
+  <script>
+  (function () {
+    const input = document.getElementById('recipeSearch');
+    const results = document.getElementById('searchResults');
+    if (!input || !results) return;
+
+    // Nur Links, die richtige Rezepte sind: .cat ul li a
+    const links = Array.from(document.querySelectorAll('.cat ul li a'));
+    const items = links.map(a => ({
+      text: a.textContent.trim(),
+      href: a.getAttribute('href')
+    }));
+
+    // Akzent-/Groß-/Kleinschreibung-robuste Suche
+    const normalize = s =>
+      s.toLowerCase()
+       .normalize('NFD')
+       .replace(/\p{Diacritic}/gu, '');
+
+    const normItems = items.map(it => ({ ...it, n: normalize(it.text) }));
+
+    function render(list) {
+      results.innerHTML = '';
+      if (!list.length) { results.style.display = 'none'; return; }
+      results.style.display = 'block';
+      list.slice(0, 25).forEach(it => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = it.href;
+        a.textContent = it.text;
+        li.appendChild(a);
+        results.appendChild(li);
+      });
+    }
+
+    input.addEventListener('input', () => {
+      const q = normalize(input.value || '');
+      if (!q) { results.innerHTML = ''; results.style.display = 'none'; return; }
+      const matched = normItems.filter(it => it.n.includes(q));
+      render(matched);
+    });
+
+    // Beim Klick Ergebnisliste einklappen
+    results.addEventListener('click', (e) => {
+      if (e.target && e.target.tagName === 'A') {
+        results.innerHTML = '';
+        results.style.display = 'none';
+        // Navigation läuft ganz normal weiter
+      }
+    });
+  })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
