@@ -3902,46 +3902,7 @@ if (typeof window.updateRecipe !== 'function') {
 
 
   
-  <script>
-/*
-  Universelle Portions-Skalierung
-  - Pro <section class="recipe">: liest Basis-Portionen aus dem Input-Default (oder data-base-servings).
-  - Skaliert alle <span data-base="..."> relativ dazu.
-  - Originalwerte werden in data-orig konserviert (keine Rundungsdrift).
-*/
-(function () {
-  function num(v){ if(v==null) return null; const n=parseFloat(String(v).replace(',','.')); return isNaN(n)?null:n; }
-  function fmt(x){ return (x>=1 || Math.abs(x-Math.round(x))<1e-9) ? String(Math.round(x)) : String(Math.round(x*10)/10); }
-
-  function bind(sec){
-    const input=sec.querySelector('input[type="number"]'); if(!input) return;
-    const baseAttr=num(sec.getAttribute('data-base-servings'));
-    const baseInput=num(input.getAttribute('value')||input.defaultValue||input.value);
-    const baseServings=baseAttr||baseInput||1;
-    sec.dataset.baseServings=baseServings;
-
-    sec.querySelectorAll('[data-base]').forEach(s=>{
-      if(!s.dataset.orig){ const o=num(s.getAttribute('data-base')); if(o!=null) s.dataset.orig=String(o); }
-    });
-
-    const update=()=>{
-      const desired=Math.max(1, num(input.value)||1);
-      const f=desired/num(sec.dataset.baseServings||'1');
-      sec.querySelectorAll('[data-base]').forEach(s=>{
-        const o=num(s.dataset.orig); if(o==null) return;
-        s.textContent = fmt(o*f);
-      });
-    };
-    input.addEventListener('input',update);
-    input.addEventListener('change',update);
-    update();
-  }
-
-  function init(){ document.querySelectorAll('section.recipe').forEach(bind); }
-  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded',init); } else { init(); }
-  window.initRecipeScaling=init;
-})();
-</script>
+  
 
 
 
