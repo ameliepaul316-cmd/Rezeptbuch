@@ -55,3 +55,58 @@ export const onRequestPost: PagesFunction<Env> = async ({ env, request }) => {
     return new Response(JSON.stringify({ error: "Invalid JSON body" }), { status: 400, headers: { "content-type": "application/json" } });
   }
 };
+
+
+
+export const onRequestPut: PagesFunction<Env> = async ({ env, request }) => {
+  try {
+    const url = new URL(request.url);
+    const id = url.searchParams.get('id');
+    if (!id) return new Response(JSON.stringify({ error: "id fehlt" }), { status: 400 });
+
+    const body = await request.json();
+    const title = String(body.title || '').trim();
+    const category = String(body.category || '').trim();
+    const subcategory = (body.subcategory ?? '').toString().trim();
+    const servings = Math.max(1, parseInt(body.servings ?? '1', 10));
+    const prep = String(body.prep || '').trim();
+    const total = String(body.total || '').trim();
+    const ingredients: string[] = Array.isArray(body.ingredients) ? body.ingredients.map(String) : [];
+    const steps: string[] = Array.isArray(body.steps) ? body.steps.map(String) : [];
+
+    if (!title || !category || !prep || !total || !ingredients.length || !steps.length) {
+      return new Response(JSON.stringify({ error: "Felder unvollständig" }), { status: 400 });
+    }
+
+    const { success } = await env.DB.prepare(
+      `UPDATE recipes
+       SET title=?2, category=?3, subcategory=?4, servings=?5, prep=?6, total=?7,
+           ingredients_json=?8, steps_json=?9
+       WHERE id=?1`
+    ).bind(
+      id, title, category, subcategory, servings, prep, total,
+      safeJSON(ingredients), safeJSON(steps)
+    ).run();
+
+    if (!success) return new Response(JSON.stringify({ error: "Update fehlgeschlagen" }), { status: 500 });
+
+    return new Response(JSON.stringify({ ok: true, id }), {
+      headers: { "content-type": "application/json; charset=utf-8" }
+    });
+  } catch {
+    return new Response(JSON.stringify({ error: "Invalid JSON body" }), { status: 400 });
+  }
+};
+
+export const onRequestDelete: PagesFunction<Env> = async ({ env, request }) => {
+  const url = new URL(request.url);
+  const id = url.searchParams.get('id');
+  if (!id) return new Response(JSON.stringify({ error: "id fehlt" }), { status: 400 });
+
+  const { success } = await env.DB.prepare(`DELETE FROM recipes WHERE id=?1`).bind(id).run();
+  if (!success) return new Response(JSON.stringify({ error: "Löschen fehlgeschlagen" }), { status: 500 });
+
+  return new Response(JSON.stringify({ ok: true }), {
+    headers: { "content-type": "application/json; charset=utf-8" }
+  });
+};
