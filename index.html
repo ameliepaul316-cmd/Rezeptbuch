@@ -171,6 +171,304 @@
 </head>
 <body>
 
+
+<!-- =========================
+     ➕ Rezept hinzufügen (Modal)
+========================== -->
+<style>
+  .add-btn {
+    position: fixed; top: 14px; left: 14px; z-index: 1000;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 12px; border-radius: 12px;
+    background:#fff; border:1px solid #ddd; box-shadow: 0 6px 16px rgba(0,0,0,.08);
+    color:#222; text-decoration: none; font-size: 14px;
+  }
+  .add-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 22px rgba(0,0,0,.1); }
+
+  .modal-backdrop{ position: fixed; inset:0; background: rgba(0,0,0,.25);
+    display:none; align-items:center; justify-content:center; z-index: 1001; }
+  .modal { width: min(720px, 92vw); background:#fff; border:1.5px solid #eee;
+    border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.12); padding: 16px 16px 4px; }
+  .modal h3{ margin: 2px 0 10px; }
+  .modal .grid{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+  .modal .grid-1{ display:grid; grid-template-columns: 1fr; gap:12px; }
+  .modal label{ font-size: 12px; color: #666; display:block; margin-bottom:4px; }
+  .modal input[type="text"], .modal input[type="number"], .modal select, .modal textarea{
+    width:100%; padding:10px 12px; border:1.5px solid #e5e5e5; border-radius:12px; font-size:14px;
+    outline:none; background:#fff;
+  }
+  .modal textarea{ min-height:120px; resize: vertical; }
+  .modal .actions{ display:flex; gap:10px; justify-content:flex-end; padding: 10px 0 6px; }
+  .btn{ padding:10px 12px; border-radius:10px; border:1px solid #ddd; background:#f8f8f8; cursor:pointer; }
+  .btn.primary{ background:#2f6fed; border-color:#2a61d0; color:#fff; }
+  .btn:disabled{ opacity:.6; cursor:not-allowed; }
+</style>
+
+<a class="add-btn" href="#" id="openAddRecipe">➕ Rezept</a>
+
+<div class="modal-backdrop" id="addRecipeModal">
+  <form class="modal" id="recipeForm">
+    <h3>Neues Rezept hinzufügen</h3>
+
+    <div class="grid">
+      <div>
+        <label for="title">Name des Rezepts</label>
+        <input id="title" type="text" required placeholder="z. B. Tomatenrisotto">
+      </div>
+      <div>
+        <label for="servings">Portionen</label>
+        <input id="servings" type="number" min="1" value="4" required>
+      </div>
+      <div>
+        <label for="prep">Zubereitungszeit (z. B. 20 Min)</label>
+        <input id="prep" type="text" required>
+      </div>
+      <div>
+        <label for="total">Gesamtzeit (z. B. 45 Min)</label>
+        <input id="total" type="text" required>
+      </div>
+      <div>
+        <label for="category">Hauptkategorie</label>
+        <select id="category" required></select>
+      </div>
+      <div>
+        <label for="subcategory">Unterkategorie (falls vorhanden)</label>
+        <select id="subcategory" disabled></select>
+      </div>
+    </div>
+
+    <div class="grid-1" style="margin-top:12px">
+      <div>
+        <label for="ingredients">Zutaten (eine pro Zeile – mit Menge am Anfang, z. B. "250 g Mehl")</label>
+        <textarea id="ingredients" placeholder="250 g Mehl&#10;1 TL Salz&#10;..."></textarea>
+      </div>
+      <div>
+        <label for="steps">Zubereitung (Schritte; jede Zeile wird ein Schritt)</label>
+        <textarea id="steps" placeholder="Zwiebel würfeln...&#10;Anschwitzen..."></textarea>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn" id="cancelAdd">Abbrechen</button>
+      <button type="submit" class="btn primary">Speichern</button>
+    </div>
+  </form>
+</div>
+
+  
+<script>
+/* ===== Kategorien ===== */
+window.CATS = {
+  "Frühstück": [],
+  "Hauptspeise": [
+    "Suppen & Eintöpfe",
+    "Pasta & Nudeln",
+    "Pizza",
+    "Reis & Getreidegerichte",
+    "Internationale Küche & Currys",
+    "Snacks, Beilage & Fingerfood",
+    "Basics & Saucen",
+    "Curry-Paste"
+  ],
+  "Bakery": [
+    "Kuchen & Torten",
+    "Plätzchen & Kleingebäck",
+    "Sonstiges Gebäck"
+  ],
+  "Snacks & Desserts": [],
+  "Drinks": []
+};
+
+/* ===== Ziel-Orte (Cover + TOC-Liste) bestimmen ===== */
+window.resolveTargets = function(cat, subcat){
+  const pick = sel => sel.split(',').map(s=>s.trim()).map(s=>document.querySelector(s)).find(Boolean);
+  const map = {
+    "Hauptspeise": {
+      "Suppen & Eintöpfe":              { cover:"#suppen-und-eintoepfe-cover", toc:"#hauptspeisen .cat ul" },
+      "Pasta & Nudeln":                 { cover:"#pasta-und-nudeln-cover", toc:"#hauptspeisen .cat ul" },
+      "Pizza":                          { cover:"#pizza-cover", toc:"#hauptspeisen .cat ul" },
+      "Reis & Getreidegerichte":        { cover:"section[id*='reis-'][id$='cover'], section#reis-und-getreide-cover, section#pasta-und-nudeln-cover + section", toc:"#hauptspeisen .cat ul" },
+      "Internationale Küche & Currys":  { cover:"#internationale-kueche-und-currys-cover, section[id*='internationale'][id$='cover']", toc:"#hauptspeisen .cat ul" },
+      "Snacks, Beilage & Fingerfood":   { cover:"#snacks-beilagen-und-fingerfood-cover", toc:"#hauptspeisen .cat ul" },
+      "Basics & Saucen":                { cover:"#basics-und-saucen-cover", toc:"#hauptspeisen .cat ul" },
+      "Curry-Paste":                    { cover:"#curry-pasten-cover", toc:"#hauptspeisen .cat ul" }
+    },
+    "Bakery": {
+      "Kuchen & Torten":                { cover:"#kuchen-und-torten-cover", toc:"#bakery .cat ul" },
+      "Plätzchen & Kleingebäck":        { cover:"#plätzchen-und-kleingebäck-cover", toc:"#bakery .cat ul" },
+      "Sonstiges Gebäck":               { cover:"#sonstiges-gebäck-cover", toc:"#bakery .cat ul" }
+    },
+    "Snacks & Desserts":                { cover:"#snacks-cover", toc:"#snacks .cat ul" },
+    "Drinks":                           { cover:"#drinks-cover", toc:"#drinks .cat ul" },
+    "Frühstück":                        { cover:"#fruehstueck-cover", toc:"#fruehstueck ul" }
+  };
+
+  let cfg = map[cat];
+  if (cfg && typeof cfg === 'object' && subcat && cfg[subcat]) cfg = cfg[subcat];
+
+  const contentAnchor = cfg ? pick(cfg.cover) : document.body;
+  const tocList = cfg?.toc ? document.querySelector(cfg.toc) : null;
+  return { tocList, contentAnchor };
+};
+
+/* ===== HTML für ein Rezept bauen ===== */
+window.buildRecipeSection = function({id, title, servings, prep, total, ingredients, steps, cat}){
+  const ingLis = (ingredients||[]).map(line=>{
+    if (typeof line === 'string') {
+      const m = line.trim().match(/^(\d+(?:[.,]\d+)?)\s+(.*)$/);
+      if (m) { const val=m[1].replace(',','.'); return `<li><span data-base="${val}">${val}</span> ${m[2]}</li>`; }
+      return `<li>${line.trim()}</li>`;
+    }
+    return '';
+  }).join('\n');
+
+  const stepsOl = (steps||[]).map(s=>`<li>${(typeof s==='string'?s:s?.text||'').trim()}</li>`).join('\n');
+
+  const catClass =
+    cat === "Frühstück" ? "fruehstueck" :
+    cat === "Hauptspeise" ? "hauptspeisen" :
+    cat === "Bakery" ? "bakery" :
+    cat === "Snacks & Desserts" ? "snacks" :
+    cat === "Drinks" ? "drinks" : "";
+
+  return `
+<section id="${id}" class="recipe ${catClass}">
+  <h2>${title}</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: ${prep} | 🕒 Gesamtzeit: ${total} | 👥 Portionen:
+    <input type="number" value="${servings}" min="1" style="width:60px"
+           onchange="window.updateRecipe && window.updateRecipe('#${id}-zutaten', '#${id} input[type=number]')">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="${id}-zutaten">
+      ${ingLis}
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      ${stepsOl}
+    </ol>
+  </div>
+</section>`;
+};
+
+/* (optional) einfache Suche neu binden */
+window.rebuildSearch = function(){
+  const input = document.getElementById('recipeSearch');
+  const results = document.getElementById('searchResults');
+  if(!input || !results) return;
+  const normalize = s => s.toLowerCase();
+  function items(){
+    return Array.from(document.querySelectorAll('.cat ul li a'))
+      .map(a=>({text:a.textContent.trim(), href:a.getAttribute('href')}));
+  }
+  function render(list){
+    results.innerHTML=''; if(!list.length){ results.style.display='none'; return; }
+    results.style.display='block';
+    list.slice(0,25).forEach(it=>{
+      const li=document.createElement('li'); const a=document.createElement('a'); a.href=it.href; a.textContent=it.text; li.appendChild(a); results.appendChild(li);
+    });
+  }
+  input.oninput = () => {
+    const q = normalize(input.value||''); if(!q){ results.innerHTML=''; results.style.display='none'; return; }
+    render(items().filter(it=>normalize(it.text).includes(q)));
+  };
+};
+</script>
+  
+<script>
+/* ===== Modal steuern + Speichern (POST /api/recipes) ===== */
+(function(){
+  const by = (sel, r=document)=>r.querySelector(sel);
+  const openBtn = by('#openAddRecipe');
+  const modal   = by('#addRecipeModal');
+  const form    = by('#recipeForm');
+  const cancel  = by('#cancelAdd');
+  const catSel  = by('#category');
+  const subSel  = by('#subcategory');
+
+  function openModal(e){ if(e) e.preventDefault(); modal.style.display='flex'; }
+  function closeModal(){ modal.style.display='none'; form.reset(); subSel.innerHTML=''; subSel.disabled=true; }
+  openBtn.addEventListener('click', openModal);
+  cancel.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
+
+  // Kategorien füllen
+  (function fillCats(){
+    const cats = Object.keys(window.CATS||{});
+    catSel.innerHTML = `<option value="" disabled selected>Bitte wählen…</option>` + cats.map(c=>`<option>${c}</option>`).join('');
+  })();
+  catSel.addEventListener('change', ()=>{
+    const subs = (window.CATS||{})[catSel.value] || [];
+    subSel.innerHTML=''; subSel.disabled = !subs.length;
+    if (!subs.length) return;
+    subSel.innerHTML = `<option value="" disabled selected>Unterkategorie wählen…</option>` + subs.map(s=>`<option>${s}</option>`).join('');
+  });
+
+  // Speichern
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const title = by('#title').value.trim();
+    const category = catSel.value;
+    const subcategory = subSel.value || '';
+    const servings = Math.max(1, parseInt(by('#servings').value || '1', 10));
+    const prep  = by('#prep').value.trim();
+    const total = by('#total').value.trim();
+    const ingredients = by('#ingredients').value.split('\n').map(s=>s.trim()).filter(Boolean);
+    const steps       = by('#steps').value.split('\n').map(s=>s.trim()).filter(Boolean);
+    if(!title || !category){ alert('Bitte Titel und Kategorie ausfüllen.'); return; }
+
+    // 1) API
+    let saved = { ok:false };
+    try{
+      const res = await fetch('/api/recipes', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ title, servings, prep, total, category, subcategory, ingredients, steps })
+      });
+      saved = await res.json();
+    }catch(err){ console.error(err); }
+
+    if(!saved.ok){ alert('Speichern fehlgeschlagen. Prüfe Functions + D1 Binding.'); return; }
+
+    // 2) Sofort ins DOM
+    const id = saved.id || (title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'rezept') + '-' + Date.now();
+    const { tocList, contentAnchor } = window.resolveTargets(category, subcategory);
+    const html = window.buildRecipeSection({ id, title, servings, prep, total, ingredients, steps, cat: category });
+    const t = document.createElement('template'); t.innerHTML = html.trim();
+    const section = t.content.firstElementChild;
+    (contentAnchor || document.body).insertAdjacentElement('afterend', section);
+    if (tocList) {
+      const li = document.createElement('li'); const a = document.createElement('a');
+      a.href = '#' + id; a.textContent = title; li.appendChild(a); tocList.appendChild(li);
+    }
+    if (window.initRecipeScaling) window.initRecipeScaling();
+    if (window.rebuildSearch) window.rebuildSearch();
+
+    closeModal();
+    setTimeout(()=>{ location.hash = '#' + id; }, 50);
+  });
+})();
+</script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
    <!-- /* 🔍 Suchbox Styles (neu) */ -->
     <style>
     .searchbox{ margin:12px 0 20px; }
@@ -485,8 +783,7 @@
     <a href="#drinks-cover">🍹 Drinks</a>
   </nav>
 
-</body>
-</html>
+
 
 
 <!-- Frühstück-Cover -->
@@ -3695,3 +3992,9 @@ if (typeof window.updateRecipe !== 'function') {
   else { loadAllRecipes(); }
 })();
 </script>
+
+
+
+
+  </body>
+</html>
