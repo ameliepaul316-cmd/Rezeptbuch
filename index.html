@@ -311,18 +311,22 @@ window.resolveTargets = function(cat, subcat){
   return { tocList, contentAnchor };
 };
 
-function buildRecipeSection({id, title, servings, prep, total, ingredients, steps, cat, sub, dbId}) {
-  const ingLis = ingredients.map(line=>{
-    const m = String(line).trim().match(/^(\d+(?:[.,]\d+)?)\s+(.*)$/);
-    if(m){
-      const val = m[1].replace(',','.');
-      const rest = m[2];
-      return `<li><span data-base="${val}">${val}</span> ${rest}</li>`;
+
+
+  <script>
+window.buildRecipeSection = function({
+  id, title, servings, prep, total, ingredients, steps, cat, sub, dbId
+}){
+  const ingLis = (ingredients||[]).map(line=>{
+    if (typeof line === 'string') {
+      const m = line.trim().match(/^(\d+(?:[.,]\d+)?)\s+(.*)$/);
+      if (m) { const val=m[1].replace(',','.'); return `<li><span data-base="${val}">${val}</span> ${m[2]}</li>`; }
+      return `<li>${line.trim()}</li>`;
     }
-    return `<li>${String(line).trim()}</li>`;
+    return '';
   }).join('\n');
 
-  const stepsOl = steps.map(s=>`<li>${String(s).trim()}</li>`).join('\n');
+  const stepsOl = (steps||[]).map(s=>`<li>${(typeof s==='string'?s:s?.text||'').trim()}</li>`).join('\n');
 
   const catClass =
     cat === "Frühstück" ? "fruehstueck" :
@@ -332,15 +336,7 @@ function buildRecipeSection({id, title, servings, prep, total, ingredients, step
     cat === "Drinks" ? "drinks" : "";
 
   return `
-<section id="${id}" class="recipe ${catClass}"
-         data-recipe-id="${dbId || id}"
-         data-category="${cat || ''}"
-         data-subcategory="${sub || ''}">
-  <div style="display:flex; gap:8px; justify-content:flex-end; margin-bottom:6px;">
-    <button class="btn btn-edit" data-id="${dbId || id}" style="padding:6px 10px;">✏️ Bearbeiten</button>
-    <button class="btn btn-delete" data-id="${dbId || id}" style="padding:6px 10px;">🗑️ Löschen</button>
-  </div>
-
+<section id="${id}" class="recipe ${catClass}" data-category="${cat||''}" data-subcategory="${sub||''}">
   <h2>${title}</h2>
   <p class="meta">
     ⏱️ Zubereitungszeit: ${prep} | 🕒 Gesamtzeit: ${total} | 👥 Portionen:
@@ -361,8 +357,17 @@ function buildRecipeSection({id, title, servings, prep, total, ingredients, step
       ${stepsOl}
     </ol>
   </div>
+
+  <div class="actions" style="display:flex; gap:8px; margin:10px 0 0;">
+    <button type="button" class="btn btn-edit" data-id="${dbId||''}">✏️ Bearbeiten</button>
+    <button type="button" class="btn btn-delete" data-id="${dbId||''}">🗑️ Löschen</button>
+  </div>
 </section>`;
-}
+};
+</script>
+
+
+
 
   
 
