@@ -311,18 +311,18 @@ window.resolveTargets = function(cat, subcat){
   return { tocList, contentAnchor };
 };
 
-/* ===== HTML für ein Rezept bauen ===== */
-window.buildRecipeSection = function({id, title, servings, prep, total, ingredients, steps, cat}){
-  const ingLis = (ingredients||[]).map(line=>{
-    if (typeof line === 'string') {
-      const m = line.trim().match(/^(\d+(?:[.,]\d+)?)\s+(.*)$/);
-      if (m) { const val=m[1].replace(',','.'); return `<li><span data-base="${val}">${val}</span> ${m[2]}</li>`; }
-      return `<li>${line.trim()}</li>`;
+function buildRecipeSection({id, title, servings, prep, total, ingredients, steps, cat, sub, dbId}) {
+  const ingLis = ingredients.map(line=>{
+    const m = String(line).trim().match(/^(\d+(?:[.,]\d+)?)\s+(.*)$/);
+    if(m){
+      const val = m[1].replace(',','.');
+      const rest = m[2];
+      return `<li><span data-base="${val}">${val}</span> ${rest}</li>`;
     }
-    return '';
+    return `<li>${String(line).trim()}</li>`;
   }).join('\n');
 
-  const stepsOl = (steps||[]).map(s=>`<li>${(typeof s==='string'?s:s?.text||'').trim()}</li>`).join('\n');
+  const stepsOl = steps.map(s=>`<li>${String(s).trim()}</li>`).join('\n');
 
   const catClass =
     cat === "Frühstück" ? "fruehstueck" :
@@ -332,12 +332,20 @@ window.buildRecipeSection = function({id, title, servings, prep, total, ingredie
     cat === "Drinks" ? "drinks" : "";
 
   return `
-<section id="${id}" class="recipe ${catClass}">
+<section id="${id}" class="recipe ${catClass}"
+         data-recipe-id="${dbId || id}"
+         data-category="${cat || ''}"
+         data-subcategory="${sub || ''}">
+  <div style="display:flex; gap:8px; justify-content:flex-end; margin-bottom:6px;">
+    <button class="btn btn-edit" data-id="${dbId || id}" style="padding:6px 10px;">✏️ Bearbeiten</button>
+    <button class="btn btn-delete" data-id="${dbId || id}" style="padding:6px 10px;">🗑️ Löschen</button>
+  </div>
+
   <h2>${title}</h2>
   <p class="meta">
     ⏱️ Zubereitungszeit: ${prep} | 🕒 Gesamtzeit: ${total} | 👥 Portionen:
     <input type="number" value="${servings}" min="1" style="width:60px"
-           onchange="window.updateRecipe && window.updateRecipe('#${id}-zutaten', '#${id} input[type=number]')">
+           onchange="window.updateRecipe && window.updateRecipe()">
   </p>
 
   <div class="zutaten">
@@ -354,7 +362,9 @@ window.buildRecipeSection = function({id, title, servings, prep, total, ingredie
     </ol>
   </div>
 </section>`;
-};
+}
+
+  
 
 /* (optional) einfache Suche neu binden */
 window.rebuildSearch = function(){
@@ -4099,6 +4109,182 @@ if (typeof window.updateRecipe !== 'function') {
 })();
 </script>
 
+
+
+
+
+  
+<script>
+(function(){
+  const modal = document.getElementById('addRecipeModal');
+  const form  = document.getElementById('recipeForm');
+  const catSelect = document.getElementById('category');
+  const subSelect = document.getElementById('subcategory');
+
+  // Merker: sind wir gerade im Bearbeiten-Modus?
+  window.__editingRecipeId = null;
+
+  // Öffnen/Schließen wie in deinem Formular-Script:
+  function openModal(){ modal.style.display = 'flex'; }
+  function closeModal(){ modal.style.display = 'none'; window.__editingRecipeId = null; }
+
+  // 1) Klicks abfangen: Löschen / Bearbeiten
+  document.addEventListener('click', async (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+
+    // --- löschen ---
+    if (btn.classList.contains('btn-delete')) {
+      const dbId = btn.dataset.id;
+      if (!dbId) return;
+      if (!confirm('Dieses Rezept wirklich löschen?')) return;
+
+      const res = await fetch('/api/recipes?id=' + encodeURIComponent(dbId), { method: 'DELETE' });
+      if(!res.ok){ alert('Löschen fehlgeschlagen'); return; }
+
+      // Section löschen + TOC-Eintrag entfernen
+      const sec = btn.closest('section.recipe');
+      if (sec) {
+        const hash = '#' + sec.id;
+        sec.remove();
+        document.querySelectorAll(`.cat ul li a[href="${hash}"]`).forEach(a => a.parentElement.remove());
+      }
+      return;
+    }
+
+    // --- bearbeiten ---
+    if (btn.classList.contains('btn-edit')) {
+      const sec = btn.closest('section.recipe');
+      const dbId = btn.dataset.id;
+      if (!sec || !dbId) return;
+
+      window.__editingRecipeId = dbId;
+
+      // Felder aus der Section lesen
+      const title = sec.querySelector('h2')?.textContent.trim() || '';
+      const servings = parseInt(sec.querySelector('.meta input[type=number]')?.value || '1', 10) || 1;
+      const cat = sec.dataset.category || '';
+      const sub = sec.dataset.subcategory || '';
+
+      const ings = Array.from(sec.querySelectorAll('.zutaten li')).map(li=>{
+        const span = li.querySelector('[data-base]');
+        if (span) {
+          const base = span.getAttribute('data-base') || span.dataset.orig || span.textContent.trim();
+          const rest = li.textContent.replace(span.textContent,'').trim();
+          return `${base} ${rest}`;
+        }
+        return li.textContent.trim();
+      });
+
+      const steps = Array.from(sec.querySelectorAll('.zubereitung ol li')).map(li=>li.textContent.trim());
+
+      // Modal befüllen
+      document.getElementById('title').value = title;
+      document.getElementById('servings').value = String(servings);
+      document.getElementById('prep').value =
+        (sec.querySelector('.meta')?.textContent.match(/Zubereitungszeit:\s*([^|]+)/)?.[1] || '').trim();
+      document.getElementById('total').value =
+        (sec.querySelector('.meta')?.textContent.match(/Gesamtzeit:\s*([^|]+)/)?.[1] || '').trim();
+      document.getElementById('ingredients').value = ings.join('\n');
+      document.getElementById('steps').value = steps.join('\n');
+
+      // Kategorie/Unterkategorie korrekt setzen
+      if (cat) {
+        catSelect.value = cat;
+        catSelect.dispatchEvent(new Event('change')); // füllt Sub-Options
+        if (sub) {
+          subSelect.value = sub;
+        }
+      }
+
+      openModal();
+      return;
+    }
+  });
+
+  // 2) Submit: wenn wir bearbeiten → PUT; sonst → POST (neues Rezept)
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+
+    const title = document.getElementById('title').value.trim();
+    const category = catSelect.value;
+    const subcategory = (subSelect.value || '').trim();
+    const servings = Math.max(1, parseInt(document.getElementById('servings').value || '1', 10));
+    const prep = document.getElementById('prep').value.trim();
+    const total = document.getElementById('total').value.trim();
+    const ingredients = (document.getElementById('ingredients').value || '').split('\n').map(s=>s.trim()).filter(Boolean);
+    const steps = (document.getElementById('steps').value || '').split('\n').map(s=>s.trim()).filter(Boolean);
+
+    if (!title || !category || !prep || !total || !ingredients.length || !steps.length) {
+      alert('Bitte alle Pflichtfelder ausfüllen.'); return;
+    }
+
+    // ===== BEARBEITEN (PUT) =====
+    if (window.__editingRecipeId) {
+      const res = await fetch('/api/recipes?id=' + encodeURIComponent(window.__editingRecipeId), {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, category, subcategory, servings, prep, total, ingredients, steps })
+      });
+      if (!res.ok) { alert('Speichern fehlgeschlagen'); return; }
+      // Einfach Seite neu laden → alles sauber neu gezeichnet
+      location.reload();
+      return;
+    }
+
+    // ===== NEU (POST) =====
+    const res = await fetch('/api/recipes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, category, subcategory, servings, prep, total, ingredients, steps })
+    });
+    if (!res.ok) { alert('Speichern fehlgeschlagen'); return; }
+    const data = await res.json(); // { ok: true, id: "<DB-ID>" }
+
+    // DOM-ID für den Anker erzeugen (lesbar)
+    const slug = (s) => s.toLowerCase()
+      .normalize('NFD').replace(/\p{Diacritic}/gu,'')
+      .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')
+      .slice(0,64) || 'rezept';
+    let domId = slug(title);
+    let i=2; while(document.getElementById(domId)) domId = slug(title) + '-' + (i++);
+
+    // Ziel (Cover & TOC-Liste) suchen
+    const targets = (typeof resolveTargets === 'function') ? resolveTargets(category, subcategory) : {};
+    const contentAnchor = targets?.contentAnchor || document.querySelector('#' + (category?.toLowerCase() || '') + '-cover') || document.body;
+    const tocList = targets?.tocList || document.querySelector('.cat ul');
+
+    // Section einfügen
+    const html = buildRecipeSection({
+      id: domId,
+      title, servings, prep, total,
+      ingredients, steps,
+      cat: category, sub: subcategory,
+      dbId: data.id // <-- D1-ID mitgeben
+    });
+    const t = document.createElement('template');
+    t.innerHTML = html.trim();
+    contentAnchor.insertAdjacentElement('afterend', t.content.firstElementChild);
+
+    // TOC-Eintrag hinzufügen (Fallback-Funktion aus B)
+    if (typeof addToTOC === 'function') {
+      addToTOC({ title, id: domId, cat: category, sub: subcategory });
+    } else if (tocList) {
+      const li = document.createElement('li');
+      const a = document.createElement('a'); a.href = '#' + domId; a.textContent = title;
+      li.appendChild(a); tocList.appendChild(li);
+    }
+
+    // Suche & Portionsrechner neu binden
+    if (typeof rebuildSearch === 'function') rebuildSearch();
+    if (typeof window.initRecipeScaling === 'function') window.initRecipeScaling();
+
+    // Modal zu + hinspringen
+    closeModal();
+    setTimeout(()=>{ location.hash = '#' + domId; }, 50);
+  });
+})();
+</script>
 
   
 
