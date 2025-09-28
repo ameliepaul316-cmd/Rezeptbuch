@@ -3996,5 +3996,111 @@ if (typeof window.updateRecipe !== 'function') {
 
 
 
+
+
+  <script>
+/* ========= 1) Portionsrechner: globale Helfer bereitstellen ========= */
+(function(){
+  function num(v){ if(v==null) return null; const n=parseFloat(String(v).replace(',','.')); return isNaN(n)?null:n; }
+  function fmt(x){ return (x>=1 || Math.abs(x-Math.round(x))<1e-9) ? String(Math.round(x)) : String(Math.round(x*10)/10); }
+
+  function bindSection(sec){
+    const input = sec.querySelector('.meta input[type="number"]');
+    if(!input) return;
+
+    // Basis-Portionen merken (aus value beim Einfügen)
+    const baseServings = parseFloat(input.getAttribute('value') || input.value || '1') || 1;
+    sec.dataset.baseServings = String(baseServings);
+
+    // alle data-base vorbereiten (Originalwerte sichern)
+    sec.querySelectorAll('[data-base]').forEach(s=>{
+      if(!s.dataset.orig){
+        const o = num(s.getAttribute('data-base'));
+        if(o!=null) s.dataset.orig = String(o);
+      }
+    });
+
+    const update = ()=>{
+      const desired = Math.max(1, parseFloat(input.value || '1') || 1);
+      const f = desired / (parseFloat(sec.dataset.baseServings||'1') || 1);
+      sec.querySelectorAll('[data-base]').forEach(s=>{
+        const o = num(s.dataset.orig); if(o==null) return;
+        s.textContent = fmt(o * f);
+      });
+    };
+
+    input.addEventListener('input', update);
+    input.addEventListener('change', update);
+    update();
+  }
+
+  // Öffentliche Funktionen:
+  window.initRecipeScaling = function(){
+    document.querySelectorAll('section.recipe').forEach(bindSection);
+  };
+
+  // Kompatibilität für dein inline onchange="updateRecipe(...)"
+  window.updateRecipe = function(/*zutatenSel, inputSel*/){
+    // wir ignorieren Parameter und skalieren die ganze Section, das ist robuster
+    const sec = event?.target ? event.target.closest('section.recipe') : null;
+    if(sec) bindSection(sec);
+  };
+
+  // beim ersten Laden einmal binden
+  if (document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', ()=>window.initRecipeScaling());
+  } else {
+    window.initRecipeScaling();
+  }
+})();
+</script>
+
+<script>
+/* ========= 2) TOC-Helfer: robustes Finden/Erzeugen von Einträgen ========= */
+(function(){
+  // Falls du schon resolveTargets hast, lassen wir die in Ruhe.
+  // Hier kommt ein Fallback, falls keine tocList gefunden wurde.
+
+  window.addToTOC = function({title, id, cat, sub}){
+    let ul = null;
+
+    // 1) Versuche: vorhandene TARGETS-Logik (wenn gesetzt)
+    if (typeof resolveTargets === 'function') {
+      try {
+        const t = resolveTargets(cat, sub);
+        ul = t?.tocList || null;
+      } catch {}
+    }
+
+    // 2) Fallback: nimm die erste UL im passenden Kategorienblock
+    if(!ul){
+      // Grobe Heuristik: Abschnitts-Container je Kategorie
+      const catId =
+        cat === 'Bakery' ? '#bakery' :
+        cat === 'Drinks' ? '#drinks' :
+        (cat && cat.toLowerCase().includes('haupt')) ? '#hauptspeisen' :
+        (cat && cat.toLowerCase().includes('snacks')) ? '#snacks' :
+        (cat && cat.toLowerCase().includes('früh') || cat && cat.toLowerCase().includes('frueh')) ? '#fruehstueck' :
+        null;
+
+      const root = catId ? document.querySelector(catId) : document;
+      ul = root?.querySelector('.cat ul') || root?.querySelector('ul') || document.querySelector('.cat ul');
+    }
+
+    if(!ul) return; // notfalls nix tun
+
+    const li = document.createElement('li');
+    const a  = document.createElement('a');
+    a.href = '#' + id;
+    a.textContent = title;
+    li.appendChild(a);
+    ul.appendChild(li);
+  };
+})();
+</script>
+
+
+  
+
   </body>
 </html>
