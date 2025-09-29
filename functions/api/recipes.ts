@@ -6,7 +6,7 @@ function safeJSON(val: unknown) { return JSON.stringify(val ?? null); }
 
 export const onRequestGet: PagesFunction<Env> = async ({ env }) => {
   const { results } = await env.DB
-  .prepare(`
+.prepare(`
       SELECT
         id, title, category, subcategory, servings, prep, total,
         ingredients_json, steps_json, created_at
