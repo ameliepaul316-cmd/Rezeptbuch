@@ -6,8 +6,23 @@ function safeJSON(val: unknown) { return JSON.stringify(val ?? null); }
 
 export const onRequestGet: PagesFunction<Env> = async ({ env }) => {
   const { results } = await env.DB
-    .prepare(`SELECT id,title,category,subcategory,servings,prep,total,ingredients_json,steps_json,created_at
-              FROM recipes ORDER BY created_at DESC`)
+  .prepare(`
+      SELECT
+        id, title, category, subcategory, servings, prep, total,
+        ingredients_json, steps_json, created_at
+      FROM recipes
+      ORDER BY
+        CASE category
+          WHEN 'Frühstück'           THEN 1
+          WHEN 'Hauptspeise'         THEN 2
+          WHEN 'Bakery'              THEN 3
+          WHEN 'Snacks & Desserts'   THEN 4
+          WHEN 'Drinks'              THEN 5
+          ELSE 6
+        END,
+        subcategory COLLATE NOCASE ASC,
+        title       COLLATE NOCASE ASC
+    `)
     .all();
 
   return new Response(JSON.stringify(results), {
