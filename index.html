@@ -283,6 +283,8 @@ window.CATS = {
   ]
 };
 </script>
+
+  
   
 <script>
 /* ===== Alphabetisch einfügen (TOC + Content) & TOC-Finder ===== */
@@ -306,7 +308,6 @@ window.CATS = {
     return document.querySelector(map[cat]||null);
   };
 
-  // UL im TOC passend zur Kategorie/Unterkategorie finden
   window.getTocList = function(cat, sub){
     const root = catRoot(cat);
     if(!root) return document.querySelector('.cat ul');
@@ -318,7 +319,6 @@ window.CATS = {
     return el || root.querySelector('.cat ul');
   };
 
-  // <li> alphabetisch in <ul> einsortieren
   window.insertSortedTOC = function(ul, li){
     const key = norm(li.textContent);
     const items = Array.from(ul.children).filter(x=>x.tagName==='LI');
@@ -326,7 +326,6 @@ window.CATS = {
     if (at) ul.insertBefore(li, at); else ul.appendChild(li);
   };
 
-  // Section alphabetisch hinter passendes Cover einsortieren
   window.insertSortedSection = function({section, cat, sub}){
     const t = (typeof resolveTargets === 'function') ? resolveTargets(cat, sub) : null;
     const cover =
@@ -356,6 +355,7 @@ window.CATS = {
 })();
 </script>
 
+  
 
 <script>
 /* ===== Ziel-Orte (Cover + TOC-Liste) bestimmen (gefixt) ===== */
