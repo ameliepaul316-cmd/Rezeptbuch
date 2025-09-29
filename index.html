@@ -362,36 +362,37 @@ window.resolveTargets = function(cat, subcat){
     sel.split(',').map(s=>s.trim()).map(s=>document.querySelector(s)).find(Boolean);
 
   const map = {
-    "Hauptspeise": {
-      "Suppen & Eintöpfe":             { cover:"#suppen-und-eintoepfe-cover", toc:"#hauptspeisen .cat ul" },
-      "Pasta & Nudeln":                { cover:"#pasta-und-nudeln-cover", toc:"#hauptspeisen .cat ul" },
-      "Pizza":                         { cover:"#pizza-cover", toc:"#hauptspeisen .cat ul" },
-      "Reis & Getreidegerichte":       { cover:"#reis-und-getreide-cover, section[id*='reis'][id$='cover'], section[id*='getreide'][id$='cover']", toc:"#hauptspeisen .cat ul" },
-      "Internationale Küche & Currys": { cover:"#internationale-kueche-und-currys-cover, section[id*='internationale'][id$='cover'], section[id*='curry'][id$='cover']", toc:"#hauptspeisen .cat ul" },
-      "Snacks, Beilage & Fingerfood":  { cover:"#snacks-beilagen-und-fingerfood-cover", toc:"#hauptspeisen .cat ul" },
-      "Basics & Saucen":               { cover:"#basics-und-saucen-cover", toc:"#hauptspeisen .cat ul" },
-      "Curry-Paste":                   { cover:"#curry-pasten-cover", toc:"#hauptspeisen .cat ul" }
-    },
-    "Bakery": {
-      "Kuchen & Torten":               { cover:"#kuchen-und-torten-cover", toc:"#bakery .cat ul" },
-      "Plätzchen & Kleingebäck":       { cover:"#plätzchen-und-kleingebäck-cover", toc:"#bakery .cat ul" },
-      "Sonstiges Gebäck":              { cover:"#sonstiges-gebäck-cover", toc:"#bakery .cat ul" }
-    },
-    "Snacks & Desserts":               { cover:"#snacks-cover", toc:"#snacks .cat ul" },
+  "Hauptspeise": {
+    "Suppen & Eintöpfe":             { cover:"#suppen-und-eintoepfe-cover", toc:"#hauptspeisen .cat ul" },
+    "Pasta & Nudeln":                { cover:"#pasta-und-nudeln-cover", toc:"#hauptspeisen .cat ul" },
+    "Pizza":                         { cover:"#pizza-cover", toc:"#hauptspeisen .cat ul" },
+    "Reis & Getreidegerichte":       { cover:"#reis-und-getreide-cover", toc:"#hauptspeisen .cat ul" },
+    "Internationale Küche & Currys": { cover:"#internationale-kueche-und-currys-cover", toc:"#hauptspeisen .cat ul" },
+    "Snacks, Beilage & Fingerfood":  { cover:"#snacks-beilagen-und-fingerfood-cover", toc:"#hauptspeisen .cat ul" },
+    "Basics & Saucen":               { cover:"#basics-und-saucen-cover", toc:"#hauptspeisen .cat ul" },
+    "Curry-Paste":                   { cover:"#curry-pasten-cover", toc:"#hauptspeisen .cat ul" }
+  },
+  "Bakery": {
+    "Kuchen & Torten":               { cover:"#kuchen-und-torten-cover", toc:"#bakery .cat ul" },
+    "Plätzchen & Kleingebäck":       { cover:"#plätzchen-und-kleingebäck-cover", toc:"#bakery .cat ul" },
+    "Sonstiges Gebäck":              { cover:"#sonstiges-gebäck-cover", toc:"#bakery .cat ul" }
+  },
+  "Snacks & Desserts":               { cover:"#snacks-cover", toc:"#snacks .cat ul" },
 
-    /* Drinks mit Unterkategorien */
-    "Drinks": {
-      "Alkoholische Getränke":         { cover:"#drinks-alkoholische-getraenke-cover",       toc:"#drinks-alkoholische-list" },
-      "Nicht-alkoholische Getränke":   { cover:"#drinks-nicht-alkoholische-getraenke-cover", toc:"#drinks-nicht-alkoholische-list" }
-    },
+  /* Drinks – an deine echten IDs angepasst */
+  "Drinks": {
+    "Alkoholische Getränke":         { cover:"#alkoholische-getraenke-cover",       toc:"#drinks-alkoholische-list" },
+    "Nicht-alkoholische Getränke":   { cover:"#alkoholfreie-getraenke-cover",       toc:"#drinks-nicht-alkoholische-list" }
+  },
 
-    /* Frühstück mit Unterkategorien */
-    "Frühstück": {
-      "Brot & Aufstriche":             { cover:"#fruehstueck-brot-und-aufstriche-cover", toc:"#fruehstueck-brot-aufstriche-list" },
-      "Sonstiges":                      { cover:"#fruehstueck-sonstiges-cover",           toc:"#fruehstueck-sonstiges-list" }
-    }
-  };
+  /* Frühstück – an deine echten IDs angepasst */
+  "Frühstück": {
+    "Brot & Aufstriche":             { cover:"#brot-und-aufstriche-cover",          toc:"#fruehstueck-brot-aufstriche-list" },
+    "Sonstiges":                     { cover:"#fruehstueck-sonstiges-cover",        toc:"#fruehstueck-sonstiges-list" }
+  }
+};
 
+  
   let cfg = map[cat];
   if (cfg && typeof cfg === 'object' && subcat && cfg[subcat]) cfg = cfg[subcat];
 
@@ -417,7 +418,9 @@ window.resolveTargets = function(cat, subcat){
   return { tocList, contentAnchor };
 };
 
-/* ===== Rezept-Sektion aufbauen ===== */
+
+    <!-- ===== FIX: Rezept-Sektion aufbauen (korrekte Template-Literals) ===== -->
+<script>
 window.buildRecipeSection = function({
   id, title, servings, prep, total, ingredients, steps, cat, sub, dbId
 }){
@@ -443,40 +446,81 @@ window.buildRecipeSection = function({
     cat === "Drinks" ? "drinks" : "";
 
   return `
-<section id="\${id}" class="recipe \${catClass}"
-         data-recipe-id="\${dbId || id}"
-         data-category="\${cat || ''}"
-         data-subcategory="\${sub || ''}">
+<section id="${id}" class="recipe ${catClass}"
+         data-recipe-id="${dbId || id}"
+         data-category="${cat || ''}"
+         data-subcategory="${sub || ''}">
   <div style="display:flex; gap:8px; justify-content:flex-end; margin-bottom:6px;">
-    <button class="btn btn-edit" data-id="\${dbId || id}" style="padding:6px 10px;">✏️ Bearbeiten</button>
-    <button class="btn btn-delete" data-id="\${dbId || id}" style="padding:6px 10px;">🗑️ Löschen</button>
+    <button class="btn btn-edit" data-id="${dbId || id}" style="padding:6px 10px;">✏️ Bearbeiten</button>
+    <button class="btn btn-delete" data-id="${dbId || id}" style="padding:6px 10px;">🗑️ Löschen</button>
   </div>
 
-  <h2>\${title}</h2>
+  <h2>${title}</h2>
   <p class="meta">
-    ⏱️ Zubereitungszeit: \${prep} | 🕒 Gesamtzeit: \${total} | 👥 Portionen:
-<input type="number" value="\${servings}" min="1" style="width:60px"
-       oninput="window.updateRecipe && window.updateRecipe()"
-       onchange="window.updateRecipe && window.updateRecipe()">
+    ⏱️ Zubereitungszeit: ${prep} | 🕒 Gesamtzeit: ${total} | 👥 Portionen:
+    <input type="number" value="${servings}" min="1" style="width:60px"
+           oninput="window.updateRecipe && window.updateRecipe()"
+           onchange="window.updateRecipe && window.updateRecipe()">
   </p>
 
   <div class="zutaten">
     <h3>🥕 Zutaten</h3>
-    <ul id="\${id}-zutaten">
-      \${ingLis}
+    <ul id="${id}-zutaten">
+      ${ingLis}
     </ul>
   </div>
 
   <div class="zubereitung">
     <h3>👩‍🍳 Zubereitung</h3>
     <ol>
-      \${stepsOl}
+      ${stepsOl}
     </ol>
   </div>
 </section>`;
 };
-/* Fallback-Alias, falls andere Skripte __buildRecipeSection nutzen */
 window.__buildRecipeSection = window.buildRecipeSection;
+</script>
+
+<!-- ===== Delete-Logik: Rezept + TOC-Link(e) entfernen ===== -->
+<script>
+(function(){
+  document.addEventListener('click', async (e)=>{
+    const btn = e.target.closest('button.btn-delete');
+    if (!btn) return;
+
+    const dbId = btn.dataset.id;
+    if (!dbId) return;
+
+    if (!confirm('Dieses Rezept wirklich löschen?')) return;
+
+    // Backend löschen
+    try{
+      const res = await fetch('/api/recipes?id=' + encodeURIComponent(dbId), { method:'DELETE' });
+      if(!res.ok){ alert('Löschen fehlgeschlagen'); return; }
+    }catch(err){
+      alert('Netzwerkfehler beim Löschen'); return;
+    }
+
+    // Rezept-Section aus DOM entfernen
+    const sec = btn.closest('section.recipe');
+    if (sec) {
+      const hash = '#' + sec.id;
+      sec.remove();
+
+      // Alle passenden TOC-Einträge entfernen
+      document.querySelectorAll(`.cat ul li a[href="${hash}"]`).forEach(a=>{
+        const li = a.parentElement;
+        if (li) li.remove();
+      });
+
+      // Suche/Sortierung neu binden (falls vorhanden)
+      if (window.rebuildSearch) window.rebuildSearch();
+      if (window.sortExistingTOCLists) window.sortExistingTOCLists();
+    }
+  });
+})();
+</script>
+    
 
 /* ===== Suche neu binden (wird von unten nachgeladenen Rezepten erneut aufgerufen) ===== */
 window.rebuildSearch = function(){
