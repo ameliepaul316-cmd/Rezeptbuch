@@ -171,7 +171,6 @@
 </head>
 <body>
 
-
 <!-- =========================
      ➕ Rezept hinzufügen (Modal)
 ========================== -->
@@ -255,7 +254,6 @@
   </form>
 </div>
 
-  
 <script>
 /* ===== Kategorien ===== */
 window.CATS = {
@@ -311,9 +309,7 @@ window.resolveTargets = function(cat, subcat){
   return { tocList, contentAnchor };
 };
 
-
-
-  <script>
+/* ===== Rezept-Sektion aufbauen ===== */
 window.buildRecipeSection = function({
   id, title, servings, prep, total, ingredients, steps, cat, sub, dbId
 }){
@@ -336,7 +332,15 @@ window.buildRecipeSection = function({
     cat === "Drinks" ? "drinks" : "";
 
   return `
-<section id="${id}" class="recipe ${catClass}" data-category="${cat||''}" data-subcategory="${sub||''}">
+<section id="${id}" class="recipe ${catClass}"
+         data-recipe-id="${dbId || id}"
+         data-category="${cat || ''}"
+         data-subcategory="${sub || ''}">
+  <div style="display:flex; gap:8px; justify-content:flex-end; margin-bottom:6px;">
+    <button class="btn btn-edit" data-id="${dbId || id}" style="padding:6px 10px;">✏️ Bearbeiten</button>
+    <button class="btn btn-delete" data-id="${dbId || id}" style="padding:6px 10px;">🗑️ Löschen</button>
+  </div>
+
   <h2>${title}</h2>
   <p class="meta">
     ⏱️ Zubereitungszeit: ${prep} | 🕒 Gesamtzeit: ${total} | 👥 Portionen:
@@ -357,21 +361,10 @@ window.buildRecipeSection = function({
       ${stepsOl}
     </ol>
   </div>
-
-  <div class="actions" style="display:flex; gap:8px; margin:10px 0 0;">
-    <button type="button" class="btn btn-edit" data-id="${dbId||''}">✏️ Bearbeiten</button>
-    <button type="button" class="btn btn-delete" data-id="${dbId||''}">🗑️ Löschen</button>
-  </div>
 </section>`;
 };
-</script>
 
-
-
-
-  
-
-/* (optional) einfache Suche neu binden */
+/* ===== Suche neu binden (wird von unten nachgeladenen Rezepten erneut aufgerufen) ===== */
 window.rebuildSearch = function(){
   const input = document.getElementById('recipeSearch');
   const results = document.getElementById('searchResults');
@@ -393,79 +386,33 @@ window.rebuildSearch = function(){
     render(items().filter(it=>normalize(it.text).includes(q)));
   };
 };
-</script>
-  
-<script>
-/* ===== Modal steuern + Speichern (POST /api/recipes) ===== */
+
+/* ===== Modal öffnen/schließen (ohne Submit-Logik, die ist unten!) ===== */
 (function(){
   const by = (sel, r=document)=>r.querySelector(sel);
   const openBtn = by('#openAddRecipe');
   const modal   = by('#addRecipeModal');
-  const form    = by('#recipeForm');
   const cancel  = by('#cancelAdd');
   const catSel  = by('#category');
   const subSel  = by('#subcategory');
 
   function openModal(e){ if(e) e.preventDefault(); modal.style.display='flex'; }
-  function closeModal(){ modal.style.display='none'; form.reset(); subSel.innerHTML=''; subSel.disabled=true; }
-  openBtn.addEventListener('click', openModal);
-  cancel.addEventListener('click', closeModal);
-  modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
+  function closeModal(){ modal.style.display='none'; subSel.innerHTML=''; subSel.disabled=true; }
+  if (openBtn) openBtn.addEventListener('click', openModal);
+  if (cancel)  cancel.addEventListener('click', closeModal);
+  modal?.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
 
   // Kategorien füllen
   (function fillCats(){
     const cats = Object.keys(window.CATS||{});
+    if (!catSel) return;
     catSel.innerHTML = `<option value="" disabled selected>Bitte wählen…</option>` + cats.map(c=>`<option>${c}</option>`).join('');
   })();
-  catSel.addEventListener('change', ()=>{
+  catSel?.addEventListener('change', ()=>{
     const subs = (window.CATS||{})[catSel.value] || [];
     subSel.innerHTML=''; subSel.disabled = !subs.length;
     if (!subs.length) return;
     subSel.innerHTML = `<option value="" disabled selected>Unterkategorie wählen…</option>` + subs.map(s=>`<option>${s}</option>`).join('');
-  });
-
-  // Speichern
-  form.addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    const title = by('#title').value.trim();
-    const category = catSel.value;
-    const subcategory = subSel.value || '';
-    const servings = Math.max(1, parseInt(by('#servings').value || '1', 10));
-    const prep  = by('#prep').value.trim();
-    const total = by('#total').value.trim();
-    const ingredients = by('#ingredients').value.split('\n').map(s=>s.trim()).filter(Boolean);
-    const steps       = by('#steps').value.split('\n').map(s=>s.trim()).filter(Boolean);
-    if(!title || !category){ alert('Bitte Titel und Kategorie ausfüllen.'); return; }
-
-    // 1) API
-    let saved = { ok:false };
-    try{
-      const res = await fetch('/api/recipes', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ title, servings, prep, total, category, subcategory, ingredients, steps })
-      });
-      saved = await res.json();
-    }catch(err){ console.error(err); }
-
-    if(!saved.ok){ alert('Speichern fehlgeschlagen. Prüfe Functions + D1 Binding.'); return; }
-
-    // 2) Sofort ins DOM
-    const id = saved.id || (title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'rezept') + '-' + Date.now();
-    const { tocList, contentAnchor } = window.resolveTargets(category, subcategory);
-    const html = window.buildRecipeSection({ id, title, servings, prep, total, ingredients, steps, cat: category });
-    const t = document.createElement('template'); t.innerHTML = html.trim();
-    const section = t.content.firstElementChild;
-    (contentAnchor || document.body).insertAdjacentElement('afterend', section);
-    if (tocList) {
-      const li = document.createElement('li'); const a = document.createElement('a');
-      a.href = '#' + id; a.textContent = title; li.appendChild(a); tocList.appendChild(li);
-    }
-    if (window.initRecipeScaling) window.initRecipeScaling();
-    if (window.rebuildSearch) window.rebuildSearch();
-
-    closeModal();
-    setTimeout(()=>{ location.hash = '#' + id; }, 50);
   });
 })();
 </script>
@@ -473,19 +420,8 @@ window.rebuildSearch = function(){
 
 
 
-  
-
-
-
-
-
-
-
-
-  
-
-   <!-- /* 🔍 Suchbox Styles (neu) */ -->
-    <style>
+    <!-- /* 🔍 Suchbox Styles */ -->
+  <style>
     .searchbox{ margin:12px 0 20px; }
     .searchbox input{
       width:100%;
@@ -510,7 +446,7 @@ window.rebuildSearch = function(){
 
   <main class="page">
 
-    <!-- ======= NEUES COVER ======= -->
+    <!-- ======= COVER ======= -->
     <section id="cover" class="category-cover" style="background-color:#F6F1E7; color:#333; min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:20px;">
       <div style="border:3px dashed #e4dccb; padding:40px; border-radius:20px; text-align:center; max-width:90%; background:#fff;">
         <h1 style="font-size:2.2em; margin-bottom:20px; font-family:'Georgia','Times New Roman',serif;">
@@ -520,7 +456,7 @@ window.rebuildSearch = function(){
       </div>
     </section>
 
-    <!-- ======= INHALTSVERZEICHNIS (beige) ======= -->
+    <!-- ======= INHALTSVERZEICHNIS ======= -->
     <section id="toc" class="toc beige">
       <div class="wrap">
         <h2>Inhaltsverzeichnis</h2>
@@ -543,9 +479,7 @@ window.rebuildSearch = function(){
             <li><a href="#protein-snickers-quark">Proteinreicher Snickers-Quark</a></li>
             <li><a href="#walnussbutter">Walnussbutter</a></li>
           </ul>
-          <div>
-            <a class="pill" href="#cover">⬆️ Zurück zum Cover</a>
-          </div>
+          <div><a class="pill" href="#cover">⬆️ Zurück zum Cover</a></div>
         </div>
 
         <div class="divider"></div>
@@ -632,9 +566,7 @@ window.rebuildSearch = function(){
             <li><a href="#rotecurry-paste">Rote Curry-Paste</a></li>
           </ul>
 
-          <div>
-            <a class="pill" href="#cover">⬆️ Zurück zum Cover</a>
-          </div>
+          <div><a class="pill" href="#cover">⬆️ Zurück zum Cover</a></div>
         </div>
 
         <div class="divider"></div>
@@ -642,6 +574,7 @@ window.rebuildSearch = function(){
         <!-- Bakery -->
         <div class="cat rosa" id="bakery">
           <h3>🍰 Bakery</h3>
+
           <h4>Kuchen & Torten</h4>
           <ul>
             <li><a href="#apfelkuchen">Apfelkuchen</a></li>
@@ -670,9 +603,8 @@ window.rebuildSearch = function(){
             <li><a href="#waffeln">Waffeln</a></li>
             <li><a href="#zimtschnecken">Zimtschnecken</a></li>
           </ul>
-          <div>
-            <a class="pill" href="#cover">⬆️ Zurück zum Cover</a>
-          </div>
+
+          <div><a class="pill" href="#cover">⬆️ Zurück zum Cover</a></div>
         </div>
 
         <div class="divider"></div>
@@ -691,9 +623,7 @@ window.rebuildSearch = function(){
             <li><a href="#sticky-rice">Sticky Rice mit Mango</a></li>
             <li><a href="#tiramisu">Tiramisu</a></li>
           </ul>
-          <div>
-            <a class="pill" href="#cover">⬆️ Zurück zum Cover</a>
-          </div>
+          <div><a class="pill" href="#cover">⬆️ Zurück zum Cover</a></div>
         </div>
 
         <div class="divider"></div>
@@ -710,36 +640,25 @@ window.rebuildSearch = function(){
             <li><a href="#virgin-mojito">Virgin Mojito (alkoholfrei)</a></li>
             <li><a href="#iced-chai">Iced Chai Latte (alkoholfrei)</a></li>
           </ul>
-          <div>
-            <a class="pill" href="#cover">⬆️ Zurück zum Cover</a>
-          </div>
+          <div><a class="pill" href="#cover">⬆️ Zurück zum Cover</a></div>
         </div>
       </div>
     </section>
-
   </main>
 
-  <!-- ⭐ Nur-Rezepte-Suche: Script hinzugefügt -->
+  <!-- ⭐ Nur-Rezepte-Suche (liest aktuelle TOC-Links) -->
   <script>
   (function () {
     const input = document.getElementById('recipeSearch');
     const results = document.getElementById('searchResults');
     if (!input || !results) return;
 
-    // Nur Links, die richtige Rezepte sind: .cat ul li a
-    const links = Array.from(document.querySelectorAll('.cat ul li a'));
-    const items = links.map(a => ({
-      text: a.textContent.trim(),
-      href: a.getAttribute('href')
-    }));
+    function collectItems(){
+      const links = Array.from(document.querySelectorAll('.cat ul li a'));
+      return links.map(a => ({ text: a.textContent.trim(), href: a.getAttribute('href') }));
+    }
 
-    // Akzent-/Groß-/Kleinschreibung-robuste Suche
-    const normalize = s =>
-      s.toLowerCase()
-       .normalize('NFD')
-       .replace(/\p{Diacritic}/gu, '');
-
-    const normItems = items.map(it => ({ ...it, n: normalize(it.text) }));
+    const normalize = s => s.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
 
     function render(list) {
       results.innerHTML = '';
@@ -757,36 +676,23 @@ window.rebuildSearch = function(){
 
     input.addEventListener('input', () => {
       const q = normalize(input.value || '');
-      if (!q) { results.innerHTML = ''; results.style.display = 'none'; return; }
-      const matched = normItems.filter(it => it.n.includes(q));
+      if (!q) { results.innerHTML=''; results.style.display='none'; return; }
+      const items = collectItems();
+      const matched = items.filter(it => normalize(it.text).includes(q));
       render(matched);
     });
 
-    // Beim Klick Ergebnisliste einklappen
     results.addEventListener('click', (e) => {
       if (e.target && e.target.tagName === 'A') {
         results.innerHTML = '';
         results.style.display = 'none';
-        // Navigation läuft ganz normal weiter
       }
     });
+
+    // globaler Rebind-Helfer, damit unten nach dem DB-Laden neu gebunden werden kann
+    window.rebuildSearch && window.rebuildSearch();
   })();
   </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   <!-- ======= QUICKJUMP (unten rechts) ======= -->
   <nav class="quickjump" aria-label="Schnellsprung">
@@ -798,6 +704,7 @@ window.rebuildSearch = function(){
     <a href="#drinks-cover">🍹 Drinks</a>
   </nav>
 
+  
 
 
 
