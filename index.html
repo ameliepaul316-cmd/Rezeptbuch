@@ -3891,6 +3891,8 @@ if (typeof window.updateRecipe !== 'function') {
 
   
 
+
+
   <!-- ====================== GLOBAL SERVINGS FIX + CLEANUP ====================== -->
 <style>
   /* Alle "Zurück"-Buttons komplett ausblenden */
@@ -3907,8 +3909,6 @@ if (typeof window.updateRecipe !== 'function') {
 <script>
 /* ===== DB -> Frontend: Alles laden und ins DOM setzen ===== */
 (function(){
-  const bySel = (sel, root=document) => root.querySelector(sel);
-
   async function renderRecipeRecord(rec){
     const id = rec.id;
     const title = rec.title;
@@ -3920,42 +3920,46 @@ if (typeof window.updateRecipe !== 'function') {
     const ingredients = JSON.parse(rec.ingredients_json || '[]');
     const steps = JSON.parse(rec.steps_json || '[]');
 
-    // Diese zwei Funktionen müssen global verfügbar sein:
-    const resolveTargets = window.resolveTargets || window.__resolveTargets;
-    const buildRecipeSection = window.buildRecipeSection || window.__buildRecipeSection;
+    const resolveTargets = window.resolveTargets;
+    const buildRecipeSection = window.buildRecipeSection;
 
     if(!resolveTargets || !buildRecipeSection){
-      console.warn('resolveTargets/buildRecipeSection nicht global. Bitte exportieren.');
+      console.warn('resolveTargets/buildRecipeSection nicht global.');
       return;
     }
 
-    const { tocList, contentAnchor } = resolveTargets(cat, sub);
-    if(!contentAnchor){ console.warn('Ziel nicht gefunden:', cat, sub); return; }
+    const { tocList } = resolveTargets(cat, sub);
 
     const html = buildRecipeSection({
-      id,
-      title, servings, prep, total, ingredients, steps, cat, sub,
-      dbId: rec.id   // ← wichtig, damit Edit/Delete die DB-ID kennt
+      id, title, servings, prep, total, ingredients, steps, cat, sub,
+      dbId: rec.id
     });
 
     const t = document.createElement('template');
     t.innerHTML = html.trim();
     const section = t.content.firstElementChild;
 
-    // Einfügen direkt nach Cover (oder ans Ende des Body als Fallback)
-    const pos = (contentAnchor === document.body) ? 'beforeend' : 'afterend';
-    contentAnchor.insertAdjacentElement(pos, section);
+    // Alphabetisch einsortieren
+    if (typeof insertSortedSection === 'function') {
+      insertSortedSection({ section, cat, sub });
+    } else {
+      document.body.appendChild(section);
+    }
 
-    // ⬅️ NEU: Portionsrechner sofort binden
     if (window.initRecipeScaling) window.initRecipeScaling();
 
-    // TOC-Eintrag sicher hinzufügen (wenn verfügbar)
     if (tocList && !tocList.querySelector(`a[href="#${id}"]`)) {
       const li = document.createElement('li');
       const a = document.createElement('a');
-      a.href = '#' + id; a.textContent = title;
+      a.href = '#' + id;
+      a.textContent = title;
       li.appendChild(a);
-      tocList.appendChild(li);
+
+      if (typeof insertSortedTOC === 'function') {
+        insertSortedTOC(tocList, li);
+      } else {
+        tocList.appendChild(li);
+      }
     }
   }
 
@@ -3971,6 +3975,7 @@ if (typeof window.updateRecipe !== 'function') {
 
       if (window.rebuildSearch) window.rebuildSearch();
       if (window.initRecipeScaling) window.initRecipeScaling();
+      if (window.sortExistingTOCLists) window.sortExistingTOCLists();
     }catch(e){
       console.error('Rezepte laden fehlgeschlagen:', e);
     }
@@ -3985,7 +3990,7 @@ if (typeof window.updateRecipe !== 'function') {
 </script>
 
 <script>
-/* ========= 1) Portionsrechner: globale Helfer bereitstellen ========= */
+/* ========= 1) Portionsrechner ========= */
 (function(){
   function num(v){ if(v==null) return null; const n=parseFloat(String(v).replace(',','.')); return isNaN(n)?null:n; }
   function fmt(x){ return (x>=1 || Math.abs(x-Math.round(x))<1e-9) ? String(Math.round(x)) : String(Math.round(x*10)/10); }
@@ -3994,11 +3999,9 @@ if (typeof window.updateRecipe !== 'function') {
     const input = sec.querySelector('.meta input[type="number"]');
     if(!input) return;
 
-    // Basis-Portionen merken (aus value beim Einfügen)
     const baseServings = parseFloat(input.getAttribute('value') || input.value || '1') || 1;
     sec.dataset.baseServings = String(baseServings);
 
-    // alle data-base vorbereiten (Originalwerte sichern)
     sec.querySelectorAll('[data-base]').forEach(s=>{
       if(!s.dataset.orig){
         const o = num(s.getAttribute('data-base'));
@@ -4020,18 +4023,15 @@ if (typeof window.updateRecipe !== 'function') {
     update();
   }
 
-  // Öffentliche Funktionen:
   window.initRecipeScaling = function(){
     document.querySelectorAll('section.recipe').forEach(bindSection);
   };
 
-  // Kompatibilität für inline onchange="updateRecipe(...)"
   window.updateRecipe = function(){
     const sec = event?.target ? event.target.closest('section.recipe') : null;
     if(sec) bindSection(sec);
   };
 
-  // beim ersten Laden einmal binden
   if (document.readyState === 'loading'){
     document.addEventListener('DOMContentLoaded', ()=>window.initRecipeScaling());
   } else {
@@ -4041,12 +4041,11 @@ if (typeof window.updateRecipe !== 'function') {
 </script>
 
 <script>
-/* ========= 2) TOC-Helfer: robustes Finden/Erzeugen von Einträgen ========= */
+/* ========= 2) TOC-Helfer ========= */
 (function(){
   window.addToTOC = function({title, id, cat, sub}){
     let ul = null;
 
-    // 1) Versuche: vorhandene TARGETS-Logik
     if (typeof resolveTargets === 'function') {
       try {
         const t = resolveTargets(cat, sub);
@@ -4054,7 +4053,6 @@ if (typeof window.updateRecipe !== 'function') {
       } catch {}
     }
 
-    // 2) Fallback
     if(!ul){
       const catId =
         cat === 'Bakery' ? '#bakery' :
@@ -4075,31 +4073,33 @@ if (typeof window.updateRecipe !== 'function') {
     a.href = '#' + id;
     a.textContent = title;
     li.appendChild(a);
-    ul.appendChild(li);
+
+    if (typeof insertSortedTOC === 'function') {
+      insertSortedTOC(ul, li);
+    } else {
+      ul.appendChild(li);
+    }
   };
 })();
 </script>
 
 <script>
-/* ========= 3) Modal: Editieren/Löschen + Submit (POST/PUT) ========= */
+/* ========= 3) Modal: Editieren/Löschen + Submit ========= */
 (function(){
   const modal = document.getElementById('addRecipeModal');
   const form  = document.getElementById('recipeForm');
   const catSelect = document.getElementById('category');
   const subSelect = document.getElementById('subcategory');
 
-  // Merker: sind wir gerade im Bearbeiten-Modus?
   window.__editingRecipeId = null;
 
   function openModal(){ modal.style.display = 'flex'; }
   function closeModal(){ modal.style.display = 'none'; window.__editingRecipeId = null; }
 
-  // Delegation: Buttons abfangen
   document.addEventListener('click', async (e)=>{
     const btn = e.target.closest('button');
     if(!btn) return;
 
-    // --- löschen ---
     if (btn.classList.contains('btn-delete')) {
       const dbId = btn.dataset.id;
       if (!dbId) return;
@@ -4117,7 +4117,6 @@ if (typeof window.updateRecipe !== 'function') {
       return;
     }
 
-    // --- bearbeiten ---
     if (btn.classList.contains('btn-edit')) {
       const sec = btn.closest('section.recipe');
       const dbId = btn.dataset.id;
@@ -4162,7 +4161,6 @@ if (typeof window.updateRecipe !== 'function') {
     }
   });
 
-  // Submit: PUT (Edit) oder POST (Neu)
   form.addEventListener('submit', async (e)=>{
     e.preventDefault();
 
@@ -4179,7 +4177,6 @@ if (typeof window.updateRecipe !== 'function') {
       alert('Bitte alle Pflichtfelder ausfüllen.'); return;
     }
 
-    // ===== BEARBEITEN (PUT) =====
     if (window.__editingRecipeId) {
       const res = await fetch('/api/recipes?id=' + encodeURIComponent(window.__editingRecipeId), {
         method: 'PUT',
@@ -4191,16 +4188,14 @@ if (typeof window.updateRecipe !== 'function') {
       return;
     }
 
-    // ===== NEU (POST) =====
     const res = await fetch('/api/recipes', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title, category, subcategory, servings, prep, total, ingredients, steps })
     });
     if (!res.ok) { alert('Speichern fehlgeschlagen'); return; }
-    const data = await res.json(); // { ok: true, id: "<DB-ID>" }
+    const data = await res.json();
 
-    // DOM-ID für den Anker erzeugen (lesbar + eindeutig)
     const slug = (s) => s.toLowerCase()
       .normalize('NFD').replace(/\p{Diacritic}/gu,'')
       .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')
@@ -4208,52 +4203,48 @@ if (typeof window.updateRecipe !== 'function') {
     let domId = slug(title);
     let i=2; while(document.getElementById(domId)) domId = slug(title) + '-' + (i++);
 
-    // Ziel (Cover & TOC-Liste) suchen
     const targets = (typeof resolveTargets === 'function') ? resolveTargets(category, subcategory) : {};
-    const fallbackAnchor =
-      document.querySelector('#' + (
-        category === 'Frühstück' ? 'fruehstueck' :
-        category && category.toLowerCase().includes('haupt') ? 'hauptspeisen' :
-        category && category.toLowerCase().includes('snacks') ? 'snacks' :
-        (category || '').toLowerCase()
-      ) + '-cover') || document.body;
-
-    const contentAnchor = targets?.contentAnchor || fallbackAnchor;
+    const contentAnchor = targets?.contentAnchor || document.body;
     const tocList = targets?.tocList || document.querySelector('.cat ul');
 
-    // Section einfügen
     const html = buildRecipeSection({
       id: domId,
       title, servings, prep, total,
       ingredients, steps,
       cat: category, sub: subcategory,
-      dbId: data.id // <-- D1-ID mitgeben
+      dbId: data.id
     });
     const t = document.createElement('template');
     t.innerHTML = html.trim();
     const section = t.content.firstElementChild;
 
-    const pos = (contentAnchor === document.body) ? 'beforeend' : 'afterend';
-    contentAnchor.insertAdjacentElement(pos, section);
-
-    // Portionsrechner direkt binden
-    if (typeof window.initRecipeScaling === 'function') window.initRecipeScaling();
-
-    // TOC-Eintrag hinzufügen (oder Fallback)
-    if (typeof addToTOC === 'function') {
-      addToTOC({ title, id: domId, cat: category, sub: subcategory });
-    } else if (tocList) {
-      const li = document.createElement('li');
-      const a = document.createElement('a'); a.href = '#' + domId; a.textContent = title;
-      li.appendChild(a); tocList.appendChild(li);
+    if (typeof insertSortedSection === 'function') {
+      insertSortedSection({ section, cat: category, sub: subcategory });
+    } else {
+      contentAnchor.insertAdjacentElement('afterend', section);
     }
 
-    // Suche neu binden
+    if (typeof window.initRecipeScaling === 'function') window.initRecipeScaling();
+
+    if (tocList) {
+      const li = document.createElement('li');
+      const a = document.createElement('a'); a.href = '#' + domId; a.textContent = title;
+      li.appendChild(a);
+
+      if (typeof insertSortedTOC === 'function') {
+        insertSortedTOC(tocList, li);
+      } else {
+        tocList.appendChild(li);
+      }
+    }
+
     if (typeof rebuildSearch === 'function') rebuildSearch();
 
-    // Modal zu + hinspringen
     closeModal();
     setTimeout(()=>{ location.hash = '#' + domId; }, 50);
   });
 })();
 </script>
+
+
+  
