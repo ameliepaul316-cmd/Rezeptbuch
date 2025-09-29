@@ -417,7 +417,7 @@ window.resolveTargets = function(cat, subcat){
 
   return { tocList, contentAnchor };
 };
-
+<script>
 
     <!-- ===== FIX: Rezept-Sektion aufbauen (korrekte Template-Literals) ===== -->
 <script>
@@ -481,46 +481,7 @@ window.buildRecipeSection = function({
 window.__buildRecipeSection = window.buildRecipeSection;
 </script>
 
-<!-- ===== Delete-Logik: Rezept + TOC-Link(e) entfernen ===== -->
-<script>
-(function(){
-  document.addEventListener('click', async (e)=>{
-    const btn = e.target.closest('button.btn-delete');
-    if (!btn) return;
 
-    const dbId = btn.dataset.id;
-    if (!dbId) return;
-
-    if (!confirm('Dieses Rezept wirklich löschen?')) return;
-
-    // Backend löschen
-    try{
-      const res = await fetch('/api/recipes?id=' + encodeURIComponent(dbId), { method:'DELETE' });
-      if(!res.ok){ alert('Löschen fehlgeschlagen'); return; }
-    }catch(err){
-      alert('Netzwerkfehler beim Löschen'); return;
-    }
-
-    // Rezept-Section aus DOM entfernen
-    const sec = btn.closest('section.recipe');
-    if (sec) {
-      const hash = '#' + sec.id;
-      sec.remove();
-
-      // Alle passenden TOC-Einträge entfernen
-      document.querySelectorAll(`.cat ul li a[href="${hash}"]`).forEach(a=>{
-        const li = a.parentElement;
-        if (li) li.remove();
-      });
-
-      // Suche/Sortierung neu binden (falls vorhanden)
-      if (window.rebuildSearch) window.rebuildSearch();
-      if (window.sortExistingTOCLists) window.sortExistingTOCLists();
-    }
-  });
-})();
-</script>
-    
 
 /* ===== Suche neu binden (wird von unten nachgeladenen Rezepten erneut aufgerufen) ===== */
 window.rebuildSearch = function(){
