@@ -907,64 +907,73 @@ window.rebuildSearch = function(){
     .meta input[type="number"] { width: 64px !important; }
   }
 </style>
-<style>
-/* Grundkarte */
-section.recipe{
-  background:#fff;
-  border:1.5px solid var(--border);
-  border-radius: 18px;
-  box-shadow: var(--shadow);
-  padding:16px 14px 12px;
-  margin: 18px 12px;
-}
 
-/* farbige Akzente je Hauptkategorie – mit zartem Pastell-Hintergrund */
-section.recipe.fruehstueck {
-  background:#fff;
-  background-image: linear-gradient(0deg, rgba(255,246,191,.35), rgba(255,246,191,.35)); /* --gelb */
-  border-color:#e6db95;
-  box-shadow: 0 6px 18px rgba(230,219,149,.25);
-}
-section.recipe.hauptspeisen{
-  background:#fff;
-  background-image: linear-gradient(0deg, rgba(207,245,231,.35), rgba(207,245,231,.35)); /* --mint */
-  border-color:#8fdac7;
-  box-shadow: 0 6px 18px rgba(143,218,199,.25);
-}
-section.recipe.bakery{
-  background:#fff;
-  background-image: linear-gradient(0deg, rgba(255,211,226,.35), rgba(255,211,226,.35)); /* --rosa */
-  border-color:#ff99cc;
-  box-shadow: 0 6px 18px rgba(255,153,204,.25);
-}
-section.recipe.snacks{
-  background:#fff;
-  background-image: linear-gradient(0deg, rgba(255,216,177,.35), rgba(255,216,177,.35)); /* --orange */
-  border-color:#ffb266;
-  box-shadow: 0 6px 18px rgba(255,178,102,.25);
-}
-section.recipe.drinks{
-  background:#fff;
-  background-image: linear-gradient(0deg, rgba(207,233,255,.35), rgba(207,233,255,.35)); /* --blau */
-  border-color:#99cfff;
-  box-shadow: 0 6px 18px rgba(153,207,255,.25);
-}
 
-/* kleine Header-Underline im Akzentton (wie gehabt) */
-section.recipe.fruehstueck h3{ border-bottom:2px solid #FFF6BF; padding-bottom:4px; }
-section.recipe.hauptspeisen h3{ border-bottom:2px solid #CFF5E7; padding-bottom:4px; }
-section.recipe.bakery h3{ border-bottom:2px solid #FFD3E2; padding-bottom:4px; }
-section.recipe.snacks h3{ border-bottom:2px solid #FFD8B1; padding-bottom:4px; }
-section.recipe.drinks h3{ border-bottom:2px solid #CFE9FF; padding-bottom:4px; }
+
+<script>
+/* === Alle Rezept-Sektionen je (Kategorie, Unterkategorie) alphabetisch sortieren === */
+(function(){
+  const norm = s => (s||'').toLowerCase()
+    .normalize('NFD').replace(/\p{Diacritic}/gu,'').trim();
+
+  function resortGroup(cat, sub){
+    const sel = Array.from(document.querySelectorAll('section.recipe'))
+      .filter(s => (s.dataset.category||'') === (cat||'')
+                && (s.dataset.subcategory||'') === (sub||''));
+    if (sel.length < 2) return;
+
+    sel.sort((a,b)=>{
+      const A = norm(a.querySelector('h2')?.textContent);
+      const B = norm(b.querySelector('h2')?.textContent);
+      return A.localeCompare(B);
+    });
+
+    // Anker hinter dem passenden Cover finden
+    const t = (typeof resolveTargets==='function') ? resolveTargets(cat, sub) : {};
+    const anchor = t?.contentAnchor ||
+      document.querySelector('#' + (cat||'').toLowerCase() + '-cover') ||
+      document.querySelector('#cover') || document.body;
+
+    // in richtiger Reihenfolge direkt nach dem Cover platzieren
+    let ref = anchor;
+    sel.forEach(sec => { ref.insertAdjacentElement('afterend', sec); ref = sec; });
+
+    // Sicherheitsnetz: richtige Farbklasse forcieren
+    sel.forEach(sec=>{
+      sec.classList.remove('fruehstueck','hauptspeisen','bakery','snacks','drinks');
+      if (cat === 'Frühstück') sec.classList.add('fruehstueck');
+      else if (cat === 'Hauptspeise') sec.classList.add('hauptspeisen');
+      else if (cat === 'Bakery') sec.classList.add('bakery');
+      else if (cat === 'Snacks & Desserts') sec.classList.add('snacks');
+      else if (cat === 'Drinks') sec.classList.add('drinks');
+    });
+  }
+
+  window.sortAllSections = function(){
+    // alle (Kategorie, Unterkategorie)-Paare durchgehen
+    const pairs = new Set();
+    document.querySelectorAll('section.recipe').forEach(sec=>{
+      pairs.add(JSON.stringify({cat: sec.dataset.category||'', sub: sec.dataset.subcategory||''}));
+    });
+    pairs.forEach(str=>{
+      const {cat, sub} = JSON.parse(str);
+      resortGroup(cat, sub);
+    });
+  };
+
+  // für punktuelles Nachsortieren nach dem Einfügen
+  window.resortGroupFor = function(section){
+    if (!section) return;
+    resortGroup(section.dataset.category||'', section.dataset.subcategory||'');
+  };
+})();
+</script>
+
   
 
-/* Zutaten-/Schritte-Listen hübsch */
-section.recipe .zutaten ul{ margin:8px 0 0; padding-left: 18px; list-style: disc; }
-section.recipe .zubereitung ol{ margin:8px 0 0; padding-left: 18px; }
-section.recipe .meta{ font-size: .95rem; color: var(--muted); }
-section.recipe .meta input[type=number]{ margin-left:6px; }
-</style>
 
+
+  
   <script>
 /* ===== DB -> Frontend: Alles laden und ins DOM setzen (gefixt) ===== */
 (function(){
