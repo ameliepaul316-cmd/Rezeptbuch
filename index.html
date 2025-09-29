@@ -368,8 +368,9 @@ window.buildRecipeSection = function({
   <h2>${title}</h2>
   <p class="meta">
     ⏱️ Zubereitungszeit: ${prep} | 🕒 Gesamtzeit: ${total} | 👥 Portionen:
-    <input type="number" value="${servings}" min="1" style="width:60px"
-           onchange="window.updateRecipe && window.updateRecipe()">
+<input type="number" value="${servings}" min="1" style="width:60px"
+       oninput="window.updateRecipe && window.updateRecipe()"
+       onchange="window.updateRecipe && window.updateRecipe()">
   </p>
 
   <div class="zutaten">
@@ -3818,7 +3819,8 @@ if (typeof window.updateRecipe !== 'function') {
 </section>
 
   
- <!-- ====================== GLOBAL SERVINGS FIX + CLEANUP ====================== -->
+
+  <!-- ====================== GLOBAL SERVINGS FIX + CLEANUP ====================== -->
 <style>
   /* Alle "Zurück"-Buttons komplett ausblenden */
   .back-button { display: none !important; }
@@ -3830,14 +3832,6 @@ if (typeof window.updateRecipe !== 'function') {
     .meta input[type="number"] { width: 64px !important; }
   }
 </style>
-
-
-
-  
-  
-
-
-
 
 <script>
 /* ===== DB -> Frontend: Alles laden und ins DOM setzen ===== */
@@ -3855,34 +3849,42 @@ if (typeof window.updateRecipe !== 'function') {
     const ingredients = JSON.parse(rec.ingredients_json || '[]');
     const steps = JSON.parse(rec.steps_json || '[]');
 
-    // Diese drei Funktionen müssen global verfügbar sein:
+    // Diese zwei Funktionen müssen global verfügbar sein:
     const resolveTargets = window.resolveTargets || window.__resolveTargets;
     const buildRecipeSection = window.buildRecipeSection || window.__buildRecipeSection;
 
     if(!resolveTargets || !buildRecipeSection){
-      console.warn('resolveTargets/buildRecipeSection nicht global. Bitte exportieren, siehe nächster Schritt.');
+      console.warn('resolveTargets/buildRecipeSection nicht global. Bitte exportieren.');
       return;
     }
 
     const { tocList, contentAnchor } = resolveTargets(cat, sub);
-if(!contentAnchor){ console.warn('Ziel nicht gefunden:', cat, sub); return; }
+    if(!contentAnchor){ console.warn('Ziel nicht gefunden:', cat, sub); return; }
 
-const html = buildRecipeSection({
-  id,
-  title, servings, prep, total, ingredients, steps, cat, sub,
-  dbId: rec.id   // ← wichtig
-});
-    
-    const t = document.createElement('template'); t.innerHTML = html.trim();
+    const html = buildRecipeSection({
+      id,
+      title, servings, prep, total, ingredients, steps, cat, sub,
+      dbId: rec.id   // ← wichtig, damit Edit/Delete die DB-ID kennt
+    });
+
+    const t = document.createElement('template');
+    t.innerHTML = html.trim();
     const section = t.content.firstElementChild;
 
-const pos = (contentAnchor === document.body) ? 'beforeend' : 'afterend';
-contentAnchor.insertAdjacentElement(pos, section /* bzw. t.content.firstElementChild */);
+    // Einfügen direkt nach Cover (oder ans Ende des Body als Fallback)
+    const pos = (contentAnchor === document.body) ? 'beforeend' : 'afterend';
+    contentAnchor.insertAdjacentElement(pos, section);
 
-    if (!tocList.querySelector(`a[href="#${id}"]`)) {
+    // ⬅️ NEU: Portionsrechner sofort binden
+    if (window.initRecipeScaling) window.initRecipeScaling();
+
+    // TOC-Eintrag sicher hinzufügen (wenn verfügbar)
+    if (tocList && !tocList.querySelector(`a[href="#${id}"]`)) {
       const li = document.createElement('li');
-      const a = document.createElement('a'); a.href = '#' + id; a.textContent = title;
-      li.appendChild(a); tocList.appendChild(li);
+      const a = document.createElement('a');
+      a.href = '#' + id; a.textContent = title;
+      li.appendChild(a);
+      tocList.appendChild(li);
     }
   }
 
@@ -3891,23 +3893,27 @@ contentAnchor.insertAdjacentElement(pos, section /* bzw. t.content.firstElementC
       const res = await fetch('/api/recipes', { headers:{accept:'application/json'} });
       if(!res.ok) throw new Error('GET /api/recipes fehlgeschlagen');
       const list = await res.json();
-      for(const rec of list){ await renderRecipeRecord(rec); }
+
+      for(const rec of list){
+        await renderRecipeRecord(rec);
+      }
+
       if (window.rebuildSearch) window.rebuildSearch();
       if (window.initRecipeScaling) window.initRecipeScaling();
-    }catch(e){ console.error('Rezepte laden fehlgeschlagen:', e); }
+    }catch(e){
+      console.error('Rezepte laden fehlgeschlagen:', e);
+    }
   }
 
-  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', loadAllRecipes); }
-  else { loadAllRecipes(); }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', loadAllRecipes);
+  } else {
+    loadAllRecipes();
+  }
 })();
 </script>
 
-
-
-
-
-
-  <script>
+<script>
 /* ========= 1) Portionsrechner: globale Helfer bereitstellen ========= */
 (function(){
   function num(v){ if(v==null) return null; const n=parseFloat(String(v).replace(',','.')); return isNaN(n)?null:n; }
@@ -3948,9 +3954,8 @@ contentAnchor.insertAdjacentElement(pos, section /* bzw. t.content.firstElementC
     document.querySelectorAll('section.recipe').forEach(bindSection);
   };
 
-  // Kompatibilität für dein inline onchange="updateRecipe(...)"
-  window.updateRecipe = function(/*zutatenSel, inputSel*/){
-    // wir ignorieren Parameter und skalieren die ganze Section, das ist robuster
+  // Kompatibilität für inline onchange="updateRecipe(...)"
+  window.updateRecipe = function(){
     const sec = event?.target ? event.target.closest('section.recipe') : null;
     if(sec) bindSection(sec);
   };
@@ -3967,13 +3972,10 @@ contentAnchor.insertAdjacentElement(pos, section /* bzw. t.content.firstElementC
 <script>
 /* ========= 2) TOC-Helfer: robustes Finden/Erzeugen von Einträgen ========= */
 (function(){
-  // Falls du schon resolveTargets hast, lassen wir die in Ruhe.
-  // Hier kommt ein Fallback, falls keine tocList gefunden wurde.
-
   window.addToTOC = function({title, id, cat, sub}){
     let ul = null;
 
-    // 1) Versuche: vorhandene TARGETS-Logik (wenn gesetzt)
+    // 1) Versuche: vorhandene TARGETS-Logik
     if (typeof resolveTargets === 'function') {
       try {
         const t = resolveTargets(cat, sub);
@@ -3981,22 +3983,21 @@ contentAnchor.insertAdjacentElement(pos, section /* bzw. t.content.firstElementC
       } catch {}
     }
 
-    // 2) Fallback: nimm die erste UL im passenden Kategorienblock
+    // 2) Fallback
     if(!ul){
-      // Grobe Heuristik: Abschnitts-Container je Kategorie
       const catId =
         cat === 'Bakery' ? '#bakery' :
         cat === 'Drinks' ? '#drinks' :
         (cat && cat.toLowerCase().includes('haupt')) ? '#hauptspeisen' :
         (cat && cat.toLowerCase().includes('snacks')) ? '#snacks' :
-        (cat && cat.toLowerCase().includes('früh') || cat && cat.toLowerCase().includes('frueh')) ? '#fruehstueck' :
+        (cat && (cat.toLowerCase().includes('früh') || cat.toLowerCase().includes('frueh'))) ? '#fruehstueck' :
         null;
 
       const root = catId ? document.querySelector(catId) : document;
       ul = root?.querySelector('.cat ul') || root?.querySelector('ul') || document.querySelector('.cat ul');
     }
 
-    if(!ul) return; // notfalls nix tun
+    if(!ul) return;
 
     const li = document.createElement('li');
     const a  = document.createElement('a');
@@ -4008,12 +4009,8 @@ contentAnchor.insertAdjacentElement(pos, section /* bzw. t.content.firstElementC
 })();
 </script>
 
-
-
-
-
-  
 <script>
+/* ========= 3) Modal: Editieren/Löschen + Submit (POST/PUT) ========= */
 (function(){
   const modal = document.getElementById('addRecipeModal');
   const form  = document.getElementById('recipeForm');
@@ -4023,11 +4020,10 @@ contentAnchor.insertAdjacentElement(pos, section /* bzw. t.content.firstElementC
   // Merker: sind wir gerade im Bearbeiten-Modus?
   window.__editingRecipeId = null;
 
-  // Öffnen/Schließen wie in deinem Formular-Script:
   function openModal(){ modal.style.display = 'flex'; }
   function closeModal(){ modal.style.display = 'none'; window.__editingRecipeId = null; }
 
-  // 1) Klicks abfangen: Löschen / Bearbeiten
+  // Delegation: Buttons abfangen
   document.addEventListener('click', async (e)=>{
     const btn = e.target.closest('button');
     if(!btn) return;
@@ -4041,7 +4037,6 @@ contentAnchor.insertAdjacentElement(pos, section /* bzw. t.content.firstElementC
       const res = await fetch('/api/recipes?id=' + encodeURIComponent(dbId), { method: 'DELETE' });
       if(!res.ok){ alert('Löschen fehlgeschlagen'); return; }
 
-      // Section löschen + TOC-Eintrag entfernen
       const sec = btn.closest('section.recipe');
       if (sec) {
         const hash = '#' + sec.id;
@@ -4059,7 +4054,6 @@ contentAnchor.insertAdjacentElement(pos, section /* bzw. t.content.firstElementC
 
       window.__editingRecipeId = dbId;
 
-      // Felder aus der Section lesen
       const title = sec.querySelector('h2')?.textContent.trim() || '';
       const servings = parseInt(sec.querySelector('.meta input[type=number]')?.value || '1', 10) || 1;
       const cat = sec.dataset.category || '';
@@ -4077,7 +4071,6 @@ contentAnchor.insertAdjacentElement(pos, section /* bzw. t.content.firstElementC
 
       const steps = Array.from(sec.querySelectorAll('.zubereitung ol li')).map(li=>li.textContent.trim());
 
-      // Modal befüllen
       document.getElementById('title').value = title;
       document.getElementById('servings').value = String(servings);
       document.getElementById('prep').value =
@@ -4087,13 +4080,10 @@ contentAnchor.insertAdjacentElement(pos, section /* bzw. t.content.firstElementC
       document.getElementById('ingredients').value = ings.join('\n');
       document.getElementById('steps').value = steps.join('\n');
 
-      // Kategorie/Unterkategorie korrekt setzen
       if (cat) {
         catSelect.value = cat;
-        catSelect.dispatchEvent(new Event('change')); // füllt Sub-Options
-        if (sub) {
-          subSelect.value = sub;
-        }
+        catSelect.dispatchEvent(new Event('change'));
+        if (sub) subSelect.value = sub;
       }
 
       openModal();
@@ -4101,7 +4091,7 @@ contentAnchor.insertAdjacentElement(pos, section /* bzw. t.content.firstElementC
     }
   });
 
-  // 2) Submit: wenn wir bearbeiten → PUT; sonst → POST (neues Rezept)
+  // Submit: PUT (Edit) oder POST (Neu)
   form.addEventListener('submit', async (e)=>{
     e.preventDefault();
 
@@ -4126,7 +4116,6 @@ contentAnchor.insertAdjacentElement(pos, section /* bzw. t.content.firstElementC
         body: JSON.stringify({ title, category, subcategory, servings, prep, total, ingredients, steps })
       });
       if (!res.ok) { alert('Speichern fehlgeschlagen'); return; }
-      // Einfach Seite neu laden → alles sauber neu gezeichnet
       location.reload();
       return;
     }
@@ -4140,7 +4129,7 @@ contentAnchor.insertAdjacentElement(pos, section /* bzw. t.content.firstElementC
     if (!res.ok) { alert('Speichern fehlgeschlagen'); return; }
     const data = await res.json(); // { ok: true, id: "<DB-ID>" }
 
-    // DOM-ID für den Anker erzeugen (lesbar)
+    // DOM-ID für den Anker erzeugen (lesbar + eindeutig)
     const slug = (s) => s.toLowerCase()
       .normalize('NFD').replace(/\p{Diacritic}/gu,'')
       .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')
@@ -4149,18 +4138,16 @@ contentAnchor.insertAdjacentElement(pos, section /* bzw. t.content.firstElementC
     let i=2; while(document.getElementById(domId)) domId = slug(title) + '-' + (i++);
 
     // Ziel (Cover & TOC-Liste) suchen
-const fallbackAnchor =
-  document.querySelector('#' + (
-    category === 'Frühstück' ? 'fruehstueck' :
-    category && category.toLowerCase().includes('haupt') ? 'hauptspeisen' :
-    category && category.toLowerCase().includes('snacks') ? 'snacks' :
-    (category || '').toLowerCase()
-  ) + '-cover') || document.body;
+    const targets = (typeof resolveTargets === 'function') ? resolveTargets(category, subcategory) : {};
+    const fallbackAnchor =
+      document.querySelector('#' + (
+        category === 'Frühstück' ? 'fruehstueck' :
+        category && category.toLowerCase().includes('haupt') ? 'hauptspeisen' :
+        category && category.toLowerCase().includes('snacks') ? 'snacks' :
+        (category || '').toLowerCase()
+      ) + '-cover') || document.body;
 
-const contentAnchor = targets?.contentAnchor || fallbackAnchor;
-const pos = (contentAnchor === document.body) ? 'beforeend' : 'afterend';
-contentAnchor.insertAdjacentElement(pos, t.content.firstElementChild);
-    
+    const contentAnchor = targets?.contentAnchor || fallbackAnchor;
     const tocList = targets?.tocList || document.querySelector('.cat ul');
 
     // Section einfügen
@@ -4173,9 +4160,15 @@ contentAnchor.insertAdjacentElement(pos, t.content.firstElementChild);
     });
     const t = document.createElement('template');
     t.innerHTML = html.trim();
-    contentAnchor.insertAdjacentElement('afterend', t.content.firstElementChild);
+    const section = t.content.firstElementChild;
 
-    // TOC-Eintrag hinzufügen (Fallback-Funktion aus B)
+    const pos = (contentAnchor === document.body) ? 'beforeend' : 'afterend';
+    contentAnchor.insertAdjacentElement(pos, section);
+
+    // Portionsrechner direkt binden
+    if (typeof window.initRecipeScaling === 'function') window.initRecipeScaling();
+
+    // TOC-Eintrag hinzufügen (oder Fallback)
     if (typeof addToTOC === 'function') {
       addToTOC({ title, id: domId, cat: category, sub: subcategory });
     } else if (tocList) {
@@ -4184,9 +4177,8 @@ contentAnchor.insertAdjacentElement(pos, t.content.firstElementChild);
       li.appendChild(a); tocList.appendChild(li);
     }
 
-    // Suche & Portionsrechner neu binden
+    // Suche neu binden
     if (typeof rebuildSearch === 'function') rebuildSearch();
-    if (typeof window.initRecipeScaling === 'function') window.initRecipeScaling();
 
     // Modal zu + hinspringen
     closeModal();
@@ -4194,24 +4186,3 @@ contentAnchor.insertAdjacentElement(pos, t.content.firstElementChild);
   });
 })();
 </script>
-
-  
-
-  </body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-
-
-  
