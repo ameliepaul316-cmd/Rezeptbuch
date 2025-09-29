@@ -284,9 +284,12 @@ window.CATS = {
 };
 
 /* ===== Alphabetisch einfügen (TOC + Content) & TOC-Finder ===== */
-(function(){
-  const norm = s => (s||'').toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'').trim();
-  window.normalizeKey = norm;
+  const norm = s => (s||'')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu,'')
+    .replace(/[^\p{Letter}\p{Number}]+/gu,' ') // trenner vereinheitlichen
+    .trim();
 
   const catRoot = (cat)=>{
     const map = {
