@@ -277,8 +277,6 @@ window.CATS = {
   "Drinks": []
 };
 
-
-  <script>
 /* ===== Alphabetisch einfügen (TOC + Content) & TOC-Finder ===== */
 (function(){
   const norm = s => (s||'').toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'').trim();
@@ -304,7 +302,6 @@ window.CATS = {
     // Suche h4 mit passendem Text, nimm das nächste UL dahinter
     const h4 = Array.from(root.querySelectorAll('h4')).find(el => norm(el.textContent).includes(norm(sub)));
     if(!h4){
-      // Fallback: erstes UL unter der Kategorie
       return root.querySelector('.cat ul');
     }
     let el = h4.nextElementSibling;
@@ -328,7 +325,6 @@ window.CATS = {
       document.querySelector('#' + (cat?.toLowerCase()||'') + '-cover') ||
       document.querySelector('#cover') || document.body;
 
-    // Kandidaten in gleicher (Kat/Sub)-Gruppe
     const all = Array.from(document.querySelectorAll('section.recipe'))
       .filter(s => s !== section
         && ((s.dataset.category||'').toLowerCase() === (cat||'').toLowerCase())
@@ -341,7 +337,6 @@ window.CATS = {
     else cover.insertAdjacentElement('afterend', section);
   };
 
-  // Einmalige Initial-Sortierung bestehender TOC-Listen (optional, schadet nicht)
   window.sortExistingTOCLists = function(){
     document.querySelectorAll('.cat ul').forEach(ul=>{
       const items = Array.from(ul.children).filter(li=>li.tagName==='LI');
