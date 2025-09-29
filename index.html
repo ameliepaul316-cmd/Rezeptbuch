@@ -257,7 +257,10 @@
 <script>
 /* ===== Kategorien ===== */
 window.CATS = {
-  "Frühstück": [],
+  "Frühstück": [
+    "Brot & Aufstriche",
+    "Sonstiges"
+  ],
   "Hauptspeise": [
     "Suppen & Eintöpfe",
     "Pasta & Nudeln",
@@ -274,7 +277,10 @@ window.CATS = {
     "Sonstiges Gebäck"
   ],
   "Snacks & Desserts": [],
-  "Drinks": []
+  "Drinks": [
+    "Alkoholische Getränke",
+    "Nicht-alkoholische Getränke"
+  ]
 };
 
 /* ===== Alphabetisch einfügen (TOC + Content) & TOC-Finder ===== */
@@ -347,7 +353,9 @@ window.CATS = {
 })();
 </script>
 
-  
+
+
+  <script>
 /* ===== Ziel-Orte (Cover + TOC-Liste) bestimmen ===== */
 window.resolveTargets = function(cat, subcat){
   const pick = sel =>
@@ -370,34 +378,42 @@ window.resolveTargets = function(cat, subcat){
       "Sonstiges Gebäck":              { cover:"#sonstiges-gebäck-cover", toc:"#bakery .cat ul" }
     },
     "Snacks & Desserts":               { cover:"#snacks-cover", toc:"#snacks .cat ul" },
-    "Drinks":                          { cover:"#drinks-cover", toc:"#drinks .cat ul" },
-    "Frühstück":                       { cover:"#fruehstueck-cover", toc:"#fruehstueck ul" }
+
+    /* Drinks mit Unterkategorien */
+    "Drinks": {
+      "Alkoholische Getränke":         { cover:"#drinks-alkoholische-getraenke-cover",       toc:"#drinks-alkoholische-list" },
+      "Nicht-alkoholische Getränke":   { cover:"#drinks-nicht-alkoholische-getraenke-cover", toc:"#drinks-nicht-alkoholische-list" }
+    },
+
+    /* Frühstück mit Unterkategorien */
+    "Frühstück": {
+      "Brot & Aufstriche":             { cover:"#fruehstueck-brot-und-aufstriche-cover", toc:"#fruehstueck-brot-aufstriche-list" },
+      "Sonstiges":                      { cover:"#fruehstueck-sonstiges-cover",           toc:"#fruehstueck-sonstiges-list" }
+    }
   };
 
   let cfg = map[cat];
   if (cfg && typeof cfg === 'object' && subcat && cfg[subcat]) cfg = cfg[subcat];
 
-const contentAnchor =
-  (cfg && pick(cfg.cover)) ||
-  document.querySelector('#' + (
-    cat === 'Frühstück' ? 'fruehstueck' :
-    cat && cat.toLowerCase().includes('haupt') ? 'hauptspeisen' :
-    cat && cat.toLowerCase().includes('snacks') ? 'snacks' :
-    (cat || '').toLowerCase()
-  ) + '-cover') ||
-  document.body;
-
-  
-const tocList = (cfg && cfg.toc ? document.querySelector(cfg.toc) : null)
-  || document.querySelector('#' + (
+  const contentAnchor =
+    (cfg && pick(cfg.cover)) ||
+    document.querySelector('#' + (
       cat === 'Frühstück' ? 'fruehstueck' :
       cat && cat.toLowerCase().includes('haupt') ? 'hauptspeisen' :
       cat && cat.toLowerCase().includes('snacks') ? 'snacks' :
       (cat || '').toLowerCase()
-    ) + ' .cat ul')
-  || document.querySelector('.cat ul');
+    ) + '-cover') ||
+    document.body;
 
-  
+  const tocList = (cfg && cfg.toc ? document.querySelector(cfg.toc) : null)
+    || document.querySelector('#' + (
+        cat === 'Frühstück' ? 'fruehstueck' :
+        cat && cat.toLowerCase().includes('haupt') ? 'hauptspeisen' :
+        cat && cat.toLowerCase().includes('snacks') ? 'snacks' :
+        (cat || '').toLowerCase()
+      ) + ' .cat ul')
+    || document.querySelector('.cat ul');
+
   return { tocList, contentAnchor };
 };
 
@@ -427,34 +443,34 @@ window.buildRecipeSection = function({
     cat === "Drinks" ? "drinks" : "";
 
   return `
-<section id="${id}" class="recipe ${catClass}"
-         data-recipe-id="${dbId || id}"
-         data-category="${cat || ''}"
-         data-subcategory="${sub || ''}">
+<section id="\${id}" class="recipe \${catClass}"
+         data-recipe-id="\${dbId || id}"
+         data-category="\${cat || ''}"
+         data-subcategory="\${sub || ''}">
   <div style="display:flex; gap:8px; justify-content:flex-end; margin-bottom:6px;">
-    <button class="btn btn-edit" data-id="${dbId || id}" style="padding:6px 10px;">✏️ Bearbeiten</button>
-    <button class="btn btn-delete" data-id="${dbId || id}" style="padding:6px 10px;">🗑️ Löschen</button>
+    <button class="btn btn-edit" data-id="\${dbId || id}" style="padding:6px 10px;">✏️ Bearbeiten</button>
+    <button class="btn btn-delete" data-id="\${dbId || id}" style="padding:6px 10px;">🗑️ Löschen</button>
   </div>
 
-  <h2>${title}</h2>
+  <h2>\${title}</h2>
   <p class="meta">
-    ⏱️ Zubereitungszeit: ${prep} | 🕒 Gesamtzeit: ${total} | 👥 Portionen:
-<input type="number" value="${servings}" min="1" style="width:60px"
+    ⏱️ Zubereitungszeit: \${prep} | 🕒 Gesamtzeit: \${total} | 👥 Portionen:
+<input type="number" value="\${servings}" min="1" style="width:60px"
        oninput="window.updateRecipe && window.updateRecipe()"
        onchange="window.updateRecipe && window.updateRecipe()">
   </p>
 
   <div class="zutaten">
     <h3>🥕 Zutaten</h3>
-    <ul id="${id}-zutaten">
-      ${ingLis}
+    <ul id="\${id}-zutaten">
+      \${ingLis}
     </ul>
   </div>
 
   <div class="zubereitung">
     <h3>👩‍🍳 Zubereitung</h3>
     <ol>
-      ${stepsOl}
+      \${stepsOl}
     </ol>
   </div>
 </section>`;
@@ -503,7 +519,7 @@ window.rebuildSearch = function(){
   if (cancel)  cancel.addEventListener('click', closeModal);
   modal?.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
 
-  // Kategorien füllen
+  // Kategorien füllen (kommt aus window.CATS)
   (function fillCats(){
     const cats = Object.keys(window.CATS||{});
     if (!catSel) return;
@@ -518,7 +534,7 @@ window.rebuildSearch = function(){
 })();
 </script>
 
-<!-- 🔍 Suchbox Styles -->
+<!-- 🔍 Suchbox Styles (unverändert) -->
 <style>
   .searchbox{ margin:12px 0 20px; }
   .searchbox input{
@@ -544,7 +560,7 @@ window.rebuildSearch = function(){
 
 <main class="page">
 
-  <!-- ======= COVER ======= -->
+  <!-- ======= COVER (unverändert) ======= -->
   <section id="cover" class="category-cover" style="background-color:#F6F1E7; color:#333; min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:20px;">
     <div style="border:3px dashed #e4dccb; padding:40px; border-radius:20px; text-align:center; max-width:90%; background:#fff;">
       <h1 style="font-size:2.2em; margin-bottom:20px; font-family:'Georgia','Times New Roman',serif;">
@@ -568,101 +584,49 @@ window.rebuildSearch = function(){
       <!-- Frühstück -->
       <div class="cat gelb" id="fruehstueck">
         <h3>🥐 Frühstück</h3>
-        <ul>
-          <li><a href="#baguette">Baguette</a></li>
-          <li><a href="#dinkel-walnuss-brot">Dinkel-Walnuss-Brot</a></li>
-          <li><a href="#granola">Granola</a></li>
-          <li><a href="#lievito-madre">Lievito Madre</a></li>
-          <li><a href="#overnight-oats">Overnight Oats</a></li>
-          <li><a href="#protein-snickers-quark">Proteinreicher Snickers-Quark</a></li>
-          <li><a href="#walnussbutter">Walnussbutter</a></li>
+
+        <h4>Brot & Aufstriche</h4>
+        <ul id="fruehstueck-brot-aufstriche-list">
+          <!-- leer – wird dynamisch gefüllt -->
         </ul>
+
+        <h4>Sonstiges</h4>
+        <ul id="fruehstueck-sonstiges-list">
+          <!-- leer – wird dynamisch gefüllt -->
+        </ul>
+
         <div><a class="pill" href="#cover">⬆️ Zurück zum Cover</a></div>
       </div>
 
       <div class="divider"></div>
 
-      <!-- Hauptspeisen -->
+      <!-- Hauptspeisen (bestehende Unterkategorien bleiben, Listen hier leer) -->
       <div class="cat mint" id="hauptspeisen">
         <h3>🥗 Hauptspeisen</h3>
 
         <h4>🍲 Suppen & Eintöpfe</h4>
-        <ul>
-          <li><a href="#gemuesesuppe">Gemüsesuppe</a></li>
-          <li><a href="#kartoffelsuppe">Kartoffelsuppe</a></li>
-          <li><a href="#markgloesschen">Marktglößchen</a></li>
-          <li><a href="#petersilienwurzel-suppe">Petersilienwurzelsuppe</a></li>
-          <li><a href="#spargelcremesuppe">Spargelcremesuppe</a></li>
-          <li><a href="#kuerbissuppe">Kürbissuppe</a></li>
-        </ul>
+        <ul></ul>
 
         <h4>🍝 Pasta & Nudeln</h4>
-        <ul>
-          <li><a href="#kaesenudeln">Käsenudeln (quattro formaggi)</a></li>
-          <li><a href="#kuerbisnudeln">Nudeln mit Kürbissauce</a></li>
-          <li><a href="#ravioli-ricotta">Ravioli mit Ricotta & Spinat</a></li>
-        </ul>
+        <ul></ul>
 
         <h4>🍕 Pizza</h4>
-        <ul>
-          <li><a href="#pizzabroetchen">Pizzabrötchen</a></li>
-          <li><a href="#pizzateig">Pizzateig</a></li>
-        </ul>
+        <ul></ul>
 
         <h4>🍚 Reis- & Getreidegerichte</h4>
-        <ul>
-          <li><a href="#indisches-quinoa-curry">Indisches Quinoa Curry</a></li>
-          <li><a href="#pacific-poke-bowl">Pacific Poke Bowl</a></li>
-          <li><a href="#poke-bowl">Poké Bowl</a></li>
-          <li><a href="#quinoa-chili">Quinoa Chili (vegetarisch)</a></li>
-          <li><a href="#risotto">Risotto</a></li>
-          <li><a href="#veg-reispfanne">Vegetarische Reispfanne mit Karotten & Paprika</a></li>
-        </ul>
+        <ul></ul>
 
         <h4>🌍 Internationale Küche & Currys</h4>
-        <ul>
-          <li><a href="#auberginen-lasagne">Auberginen-Zucchini-Lasagne</a></li>
-          <li><a href="#dhal">Dhal (Sri Lanka)</a></li>
-          <li><a href="#gruenes-curry">Grünes Curry</a></li>
-          <li><a href="#hackfleischrolle">Hackfleischrolle</a></li>
-          <li><a href="#massaman-curry">Massaman Curry</a></li>
-          <li><a href="#enchilada-lasagne">Mexikanische Enchilada-Lasagne</a></li>
-          <li><a href="#pad-thai">Pad Thai</a></li>
-          <li><a href="#rotes-curry">Rotes Curry</a></li>
-          <li><a href="#sri-lanka-roti">Sri Lanka Coconut Roti</a></li>
-          <li><a href="#tacofino">Tacofino</a></li>
-        </ul>
+        <ul></ul>
 
         <h4>🥗 Snacks, Beilagen & Fingerfood</h4>
-        <ul>
-          <li><a href="#bohnenpatty">Bohnenpatty</a></li>
-          <li><a href="#brokkolisalat">Brokkolisalat</a></li>
-          <li><a href="#fruehlingsrollen">Frühlingsrollen (Thai)</a></li>
-          <li><a href="#focaccia">Focaccia</a></li>
-          <li><a href="#gemuesepfanne">Gemüsepfanne</a></li>
-          <li><a href="#gemuesespiesse">Gemüsespieße</a></li>
-          <li><a href="#serviettenknoedel">Serviettenknödel</a></li>
-          <li><a href="#stockbrot">Stockbrot</a></li>
-          <li><a href="#tortilla-wrap">Tortilla Wrap DIY</a></li>
-          <li><a href="#zucchinipuffer">Zucchinipuffer</a></li>
-        </ul>
+        <ul></ul>
 
         <h4>🥫 Basics & Saucen</h4>
-        <ul>
-          <li><a href="#bierteig">Bierteig</a></li>
-          <li><a href="#eiersauce">Eiersauce mit Bratkartoffeln</a></li>
-          <li><a href="#guacamole">Guacamole</a></li>
-          <li><a href="#knoblauchsauce">Knoblauchsauce</a></li>
-          <li><a href="#pesto">Pesto (Pesto Paul)</a></li>
-          <li><a href="#salatsauce">Salatsauce</a></li>
-        </ul>
+        <ul></ul>
 
         <h4>🌶️ Curry-Pasten</h4>
-        <ul>
-          <li><a href="#gruenecurry-paste">Grüne Curry-Paste</a></li>
-          <li><a href="#massaman-paste">Massaman Curry-Paste</a></li>
-          <li><a href="#rotecurry-paste">Rote Curry-Paste</a></li>
-        </ul>
+        <ul></ul>
 
         <div><a class="pill" href="#cover">⬆️ Zurück zum Cover</a></div>
       </div>
@@ -674,33 +638,13 @@ window.rebuildSearch = function(){
         <h3>🍰 Bakery</h3>
 
         <h4>Kuchen & Torten</h4>
-        <ul>
-          <li><a href="#apfelkuchen">Apfelkuchen</a></li>
-          <li><a href="#brownie">Brownie</a></li>
-          <li><a href="#erdbeerkuchen">Erdbeerkuchen</a></li>
-          <li><a href="#marmorkuchen">Marmorkuchen (Standardkuchen)</a></li>
-          <li><a href="#nougatkuchen">Nougatkuchen</a></li>
-          <li><a href="#streuselkuchen">Streuselkuchen</a></li>
-        </ul>
+        <ul></ul>
 
         <h4>Plätzchen & Kleingebäck</h4>
-        <ul>
-          <li><a href="#butterplaetzchen">Butterplätzchen</a></li>
-          <li><a href="#kokosmakronen">Kokosmakronen</a></li>
-          <li><a href="#nussecken">Nussecken</a></li>
-          <li><a href="#spitzbuben">Spitzbuben (Linzer Plätzchen)</a></li>
-          <li><a href="#vanillekipferl">Vanillekipferl</a></li>
-        </ul>
+        <ul></ul>
 
         <h4>Sonstiges Gebäck</h4>
-        <ul>
-          <li><a href="#dampfnudeln">Dampfnudeln</a></li>
-          <li><a href="#flammendes-herz">Flammendes Herz</a></li>
-          <li><a href="#frosting">Frosting</a></li>
-          <li><a href="#kreppel">Kreppel</a></li>
-          <li><a href="#waffeln">Waffeln</a></li>
-          <li><a href="#zimtschnecken">Zimtschnecken</a></li>
-        </ul>
+        <ul></ul>
 
         <div><a class="pill" href="#cover">⬆️ Zurück zum Cover</a></div>
       </div>
@@ -711,40 +655,34 @@ window.rebuildSearch = function(){
       <div class="cat orange" id="snacks">
         <h3>🍊 Snacks & Desserts</h3>
         <ul>
-          <li><a href="#candied-pecan">Candied Pecan</a></li>
-          <li><a href="#energybaellchen">Energiebällchen</a></li>
-          <li><a href="#frittierte-banane">Frittierte Banane</a></li>
-          <li><a href="#himbeerbaiser">Himbeerbaiser</a></li>
-          <li><a href="#marzipanpralinen">Marzipanpralinen</a></li>
-          <li><a href="#mousse-chocolat">Mousse au Chocolat</a></li>
-          <li><a href="#roti-thai">Roti Thai Pancake</a></li>
-          <li><a href="#sticky-rice">Sticky Rice mit Mango</a></li>
-          <li><a href="#tiramisu">Tiramisu</a></li>
+          <!-- leer – wird dynamisch gefüllt -->
         </ul>
         <div><a class="pill" href="#cover">⬆️ Zurück zum Cover</a></div>
       </div>
 
       <div class="divider"></div>
 
-      <!-- Drinks -->
+      <!-- Drinks mit Unterkategorien -->
       <div class="cat blau" id="drinks">
         <h3>🍹 Drinks</h3>
-        <ul>
-          <li><a href="#butterkeks-cocktail">Butterkeks Cocktail</a></li>
-          <li><a href="#mai-tai">Mai Tai</a></li>
-          <li><a href="#mojito">Mojito</a></li>
-          <li><a href="#pina-colada">Piña Colada</a></li>
-          <li><a href="#tequila-sunrise">Tequila Sunrise</a></li>
-          <li><a href="#virgin-mojito">Virgin Mojito (alkoholfrei)</a></li>
-          <li><a href="#iced-chai">Iced Chai Latte (alkoholfrei)</a></li>
+
+        <h4>Alkoholische Getränke</h4>
+        <ul id="drinks-alkoholische-list">
+          <!-- leer – wird dynamisch gefüllt -->
         </ul>
+
+        <h4>Nicht-alkoholische Getränke</h4>
+        <ul id="drinks-nicht-alkoholische-list">
+          <!-- leer – wird dynamisch gefüllt -->
+        </ul>
+
         <div><a class="pill" href="#cover">⬆️ Zurück zum Cover</a></div>
       </div>
     </div>
   </section>
 </main>
 
-<!-- ⭐ Nur-Rezepte-Suche (liest aktuelle TOC-Links) -->
+<!-- ⭐ Nur-Rezepte-Suche (liest aktuelle TOC-Links) – unverändert -->
 <script>
 (function () {
   const input = document.getElementById('recipeSearch');
@@ -792,25 +730,15 @@ window.rebuildSearch = function(){
 })();
 </script>
 
-  
-
-
-
-
-
-
-
-  <!-- ======= QUICKJUMP (unten rechts) ======= -->
-  <nav class="quickjump" aria-label="Schnellsprung">
-    <a href="#toc">📖 Inhalt</a>
-    <a href="#fruehstueck-cover">🥐 Frühstück</a>
-    <a href="#hauptspeisen-cover">🥗 Hauptspeisen</a>
-    <a href="#bakery-cover">🍰 Bakery</a>
-    <a href="#snacks-cover">🍊 Snacks</a>
-    <a href="#drinks-cover">🍹 Drinks</a>
-  </nav>
-
-  
+<!-- ======= QUICKJUMP (unten rechts) – unverändert ======= -->
+<nav class="quickjump" aria-label="Schnellsprung">
+  <a href="#toc">📖 Inhalt</a>
+  <a href="#fruehstueck-cover">🥐 Frühstück</a>
+  <a href="#hauptspeisen-cover">🥗 Hauptspeisen</a>
+  <a href="#bakery-cover">🍰 Bakery</a>
+  <a href="#snacks-cover">🍊 Snacks</a>
+  <a href="#drinks-cover">🍹 Drinks</a>
+</nav>
 
 
 
@@ -823,388 +751,19 @@ window.rebuildSearch = function(){
   </div>
 </section>
 
-<!-- Baguette Rezept -->
-<section id="baguette" class="recipe fruehstueck">
-  <h2>🥖 Baguette</h2>
-  <p class="meta">⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 1 h 20 Min | 👥 Portionen: 
-    <input type="number" id="baguette-portionen" value="1" min="1" style="width:50px;" 
-      onchange="updateBaguette()">
-  </p>
-
-  <div class="zutaten">
-    <h3> Zutaten</h3>
-    <ul id="baguette-zutaten">
-      <li><span data-base="250">250</span> g Mehl Type 550</li>
-      <li><span data-base="160">160</span> ml lauwarmes Wasser</li>
-      <li><span data-base="6">6</span> g Salz</li>
-      <li><span data-base="10">10</span> g frische Hefe oder <span data-base="3">3</span> g Trockenhefe</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <p>
-      Hefe mit lauwarmem Wasser und 1 TL Zucker aktivieren (ca. 10 Min).<br>
-      20 Min im Topf gehen lassen, dann 1 h in Form gehen lassen.<br>
-      Bei 200 °C ca. 20 Min backen (Ofen vorheizen).
-    </p>
-  </div>
-
-  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück zum Inhaltsverzeichnis</a>
+<!-- =========================================================
+     Frühstück – UNTERKATEGORIE-COVER
+========================================================= -->
+<section id="brot-und-aufstriche-cover" class="cover fruehstueck"
+         style="background-color:#FFF6BF; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 0;">
+  <h1 style="font-size:2em; margin:0;">🥖 Brot & Aufstriche</h1>
 </section>
 
-<script>
-function updateBaguette() {
-  let portionen = document.getElementById("baguette-portionen").value;
-  let zutaten = document.querySelectorAll("#baguette-zutaten span");
-  zutaten.forEach(span => {
-    let base = span.getAttribute("data-base");
-    span.innerText = Math.round(base * portionen);
-  });
-}
-</script>
-
-<style>
-/* Frühstück-Cover Styling */
-.fruehstueck-cover {
-  background: #fffacd; /* Pastellgelb */
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2.2rem;
-  font-family: 'Brush Script MT', cursive;
-  border: 5px dashed #d4af37;
-}
-
-/* Rezeptbox Styling */
-.recipe {
-  background: #fffef5;
-  border: 2px solid #f1d26a;
-  border-radius: 15px;
-  padding: 20px;
-  margin: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-.recipe h2 {
-  font-family: 'Segoe UI', sans-serif;
-  color: #444;
-  margin-bottom: 10px;
-}
-.meta {
-  background: #fef4c5;
-  padding: 8px;
-  border-radius: 10px;
-  font-size: 0.95rem;
-}
-.zutaten, .zubereitung {
-  margin-top: 15px;
-}
-.zutaten ul {
-  padding-left: 20px;
-}
-</style>
-
-
-
-<!-- ========================================================
-     Gemeinsame JS-Helfer (wird nur definiert, falls noch nicht vorhanden)
-========================================================= -->
-<script>
-if (typeof window.updateRecipe !== 'function') {
-  window.updateRecipe = function(listSelector, inputSelector) {
-    const factor = Math.max(1, parseFloat(document.querySelector(inputSelector).value || 1));
-    document.querySelectorAll(listSelector + " [data-base]").forEach(el => {
-      const base = parseFloat(el.getAttribute("data-base"));
-      if (!isNaN(base)) {
-        // Wenn es sich um ganze Gramm/ML handelt, runden; sonst 1 Nachkommastelle
-        const scaled = (base % 1 === 0) ? Math.round(base * factor) : Math.round(base * factor * 10)/10;
-        el.textContent = scaled;
-      }
-    });
-  };
-}
-</script>
-
-<!-- =========================================================
-     1) DINKEL–WALNUSS–BROT (Frühstück)
-========================================================= -->
-<section id="dinkel-walnuss-brot" class="recipe fruehstueck">
-  <h2>🍞 Dinkel-Walnuss-Brot</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 30–40 Min aktiv | 🕒 Gesamtzeit: über Nacht | 👥 Portionen:
-    <input type="number" id="dwb-portionen" value="1" min="1" style="width:60px"
-           onchange="updateRecipe('#dwb-zutaten', '#dwb-portionen')">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥕 Zutaten (für 1 Brot, ca. 1–1,1 kg)</h3>
-    <ul id="dwb-zutaten">
-      <li><strong>Mehl & Trieb</strong></li>
-      <li><span data-base="500">500</span> g Dinkelmehl Type 630</li>
-      <li><span data-base="150">150</span> g Dinkelvollkornmehl</li>
-      <li><span data-base="100">100</span> g Lievito Madre (aktiv)</li>
-      <li><span data-base="3">3</span> g Trockenhefe (≈ 1 gestrichener TL)</li>
-      <li><span data-base="5">5</span> g Backmalz (Pulver) (≈ 1 TL)</li>
-      <li><strong>Flüssigkeit & Würze</strong></li>
-      <li><span data-base="400">400</span> g Wasser, lauwarm (24–26 °C) – ggf. +20 g bei Bedarf</li>
-      <li><span data-base="12">12</span> g Salz</li>
-      <li><span data-base="20">20</span> g Honig (oder Zucker)</li>
-      <li><span data-base="15">15</span> g Olivenöl (optional)</li>
-      <li><strong>Aroma & Einlage</strong></li>
-      <li><span data-base="80">80</span> g Walnüsse, grob gehackt & leicht angeröstet</li>
-      <li><span data-base="1">1</span> TL Oregano (trocken)</li>
-      <li><span data-base="1">1</span> TL Thymian (trocken)</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung (18:30 → 22:30 Schlaf → Backen 7–8 Uhr)</h3>
-    <p><strong>18:30 – Autolyse</strong><br>
-      Mehle + <em>350 g</em> Wasser nur grob mischen, 30 Min abgedeckt ruhen lassen.</p>
-    <p><strong>19:00 – Hauptteig</strong><br>
-      LM, restliches Wasser (≈ 50 g), Trockenhefe, Honig und Olivenöl einrühren. Salz, Backmalz, Oregano &amp; Thymian zugeben. 8–10 Min kneten (von Hand 10–12 Min), bis der Teig glatt und elastisch ist.</p>
-    <p><strong>19:15 – Walnüsse</strong><br>
-      Walnüsse nur kurz unterkneten, damit sie nicht zerdrückt werden.</p>
-    <p><strong>19:20–21:20 – Stockgare (≈ 2 Std)</strong><br>
-      Teig in geölte Schüssel legen. In der 1. Stunde 2–3× dehnen &amp; falten (alle 20–30 Min). Danach weitere 30–60 Min ruhen.</p>
-    <p><strong>21:20 – Formen</strong><br>
-      Teig vorsichtig rund vorformen, 15 Min entspannen. Straff rundwirken, Naht nach oben ins gut bemehlte Gärkörbchen.</p>
-    <p><strong>21:45 – Kühlschrank</strong><br>
-      8–9 Std bei 4 °C kalt gehen lassen (Stückgare).</p>
-    <p><strong>Am Morgen</strong><br>
-      Ofen/Stahl/Dutch Oven auf 250 °C vorheizen (mind. 30 Min). Teig stürzen, einschneiden. 15 Min bei 250 °C mit Dampf/Deckel; dann Dampf ablassen/Deckel ab und auf 210 °C reduzieren. 30–35 Min ausbacken, letzte 5 Min Tür spaltbreit für extra Kruste.</p>
-    <p><strong>Abkühlen</strong><br>
-      Mind. 1 h auf Gitter auskühlen lassen.</p>
-    <p><strong>Hinweise</strong><br>
-      Backmalz = bessere Bräunung/Kruste. Oregano/Thymian = mediterrane Note. Kleine Hefemenge + LM = sicherer Trieb + tolles Aroma. Wasser nach Gefühl anpassen (Dinkel schwankt).</p>
-  </div>
-
-  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück zum Inhaltsverzeichnis</a>
+<section id="fruehstueck-sonstiges-cover" class="cover fruehstueck"
+         style="background-color:#FFF6BF; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 0;">
+  <h1 style="font-size:2em; margin:0;">✨ Frühstück – Sonstiges</h1>
 </section>
 
-<!-- =========================================================
-     2) DIY GRANOLA
-========================================================= -->
-<section id="granola" class="recipe fruehstueck">
-  <h2>🥣 DIY Granola</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 10 Min | 🍳 Backzeit: 15–20 Min | 👥 Portionen:
-    <input type="number" id="granola-portionen" value="10" min="1" style="width:60px"
-           onchange="updateRecipe('#granola-zutaten', '#granola-portionen')">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul id="granola-zutaten">
-      <li><span data-base="250">250</span> g Haferflocken</li>
-      <li><span data-base="100">100</span> g Mandelstifte</li>
-      <li><span data-base="100">100</span> g Ahornsirup</li>
-      <li><span data-base="80">80</span> g Kokosöl</li>
-      <li>Prise Zimt</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Kokosöl und Ahornsirup im Topf erwärmen, bis das Öl geschmolzen ist. Vom Herd nehmen; nach Geschmack mit Zimt, Vanille oder Salz verfeinern.</li>
-      <li>Mandelstifte einrühren, dann Haferflocken zugeben und alles gleichmäßig vermengen. Auf Backpapier verteilen und leicht andrücken.</li>
-      <li>Bei 160 °C Umluft 15–20 Min backen; nach 10 Min einmal wenden (nicht wieder flach drücken).</li>
-      <li>Herausnehmen, vorsichtig wenden und komplett auskühlen lassen. In ein großes, verschließbares Glas füllen.</li>
-    </ol>
-  </div>
-
-  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück zum Inhaltsverzeichnis</a>
-</section>
-
-<!-- =========================================================
-     3) LIEVITO MADRE (Starter)
-========================================================= -->
-<section id="lievito-madre" class="recipe fruehstueck">
-  <h2>🍞 Lievito Madre (Weizensauerteig)</h2>
-  <p class="meta">
-    ⏱️ Aktivarbeit: kurz täglich | 🕒 Gesamt: ~1 Woche | 👥 Portionen:
-    <input type="number" id="lm-portionen" value="4" min="1" style="width:60px"
-           onchange="updateRecipe('#lm-zutaten', '#lm-portionen')">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥕 Zutaten (Ansatz)</h3>
-    <ul id="lm-zutaten">
-      <li><span data-base="200">200</span> g Weizenmehl</li>
-      <li><span data-base="100">100</span> g Wasser (lauwarm)</li>
-      <li><span data-base="1">1</span> TL Honig</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung & Pflege</h3>
-    <p><strong>Tag 1:</strong><br>
-      Zutaten vermengen, fester Teig (wie Kaugummi) & zu Kugel rollen. Mit scharfem Messer kreuzweise einschneiden. In ein Glas legen, mit feuchtem Tuch abdecken und bei 26–28 °C 48 h gehen lassen.</p>
-    <p><strong>Tag 3:</strong><br>
-      Kugel aufschneiden – sie sollte leicht aufgegangen sein, evtl. mit kleinen Bläschen. Auffrischen: 100 g Mehl + 50 g Wasser unterkneten. Wieder zur Kugel formen, einschneiden, warm gehen lassen (ca. 24 h).</p>
-    <p><strong>Tag 4–7 (täglich auffrischen):</strong><br>
-      100 g vorhandene LM nehmen, mit 100 g Mehl + 50 g Wasser verkneten, Rest verwerfen. 4–6 h warm reifen, danach kühl stellen bis zur nächsten Auffrischung.</p>
-    <p><strong>Nach 1 Woche:</strong><br>
-      LM sollte sich in 4–5 h verdoppeln, mild-säuerlich & fruchtig riechen → backbereit.</p>
-    <p><strong>Pflege:</strong><br>
-      Bei Raumtemperatur alle 1–2 Tage, im Kühlschrank etwa wöchentlich auffrischen. Vor dem Backen immer auffrischen und Verdopplung abwarten.</p>
-    <p><strong>Trocknen:</strong><br>
-      Dünn ausstreichen, 1–2 Tage trocknen lassen und zu Pulver mahlen (oder im Ofen &lt; 40 °C). Kühl & dunkel im Schraubglas lagern.</p>
-    <p><strong>Wiederbelebung:</strong><br>
-      <em>1) Rehydrieren:</em> 10 g getrocknete LM + 10 g Wasser + 10 g Mehl mischen, 12–24 h bei 26–28 °C stehen lassen.<br>
-      <em>2) Erste Fütterung:</em> 20 g rehydrierte Masse + 20 g Mehl + 10 g Wasser, Kugel formen, einschneiden, 4–6 h warm gehen lassen.<br>
-      <em>3) Weitere Auffrischungen:</em> 1–2× täglich 1 : 1 : 0,5 (LM : Mehl : Wasser) füttern, warm reifen lassen, bis Verdopplung in 4–5 h.<br>
-      <em>4) Einsatzbereit:</em> nach 2–4 Tagen wieder triebstark.</p>
-  </div>
-
-  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück zum Inhaltsverzeichnis</a>
-</section>
-
-<!-- =========================================================
-     4) OVERNIGHT OATS
-========================================================= -->
-<section id="overnight-oats" class="recipe fruehstueck">
-  <h2>🥣 Overnight Oats</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 5 Min | 🕒 Ruhe: über Nacht | 👥 Portionen:
-    <input type="number" id="oats-portionen" value="1" min="1" style="width:60px"
-           onchange="updateRecipe('#oats-zutaten', '#oats-portionen')">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥕 Zutaten (Toppings nach Wahl)</h3>
-    <ul id="oats-zutaten">
-      <li>Kokosraspeln</li>
-      <li>Banane</li>
-      <li>Himbeeren</li>
-      <li>Nüsse</li>
-      <li>Apfel</li>
-      <li>Zimt</li>
-      <li>Vanille?</li>
-      <li>Kakao</li>
-      <li>Ahornsirup</li>
-      <li>Milch</li>
-      <li>Haferflocken</li>
-      <li>Schokotrops</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <p>Basis-Verhältnis: <strong>3 : 1 Milch : Haferflocken</strong>. Alles in ein Glas geben, mischen, optional süßen (Ahornsirup), über Nacht kalt stellen. Morgens mit Toppings servieren.</p>
-  </div>
-
-  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück zum Inhaltsverzeichnis</a>
-</section>
-
-<!-- =========================================================
-     5) PROTEINREICHER SNICKERS-QUARK
-========================================================= -->
-<section id="protein-snickers-quark" class="recipe fruehstueck">
-  <h2>🍫 Proteinreicher „Snickers“-Quark</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 10 Min | 🕒 Gesamtzeit: 10 Min | 👥 Portionen:
-    <input type="number" id="snq-portionen" value="1" min="1" style="width:60px"
-           onchange="updateRecipe('#snq-zutaten', '#snq-portionen')">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul id="snq-zutaten">
-      <li><span data-base="300">300</span> g Magerquark</li>
-      <li><span data-base="10">10</span> g Erdnüsse</li>
-      <li><span data-base="20">20</span> g Erdnussbutter (oder Erdnussmus)</li>
-      <li><span data-base="5">5</span> g Kokosöl</li>
-      <li><span data-base="3">3</span> g Backkakao</li>
-      <li><span data-base="5">5</span> g Cornflakes (oder Hafer-Crunchies)</li>
-      <li><span data-base="5">5</span> g Haferflocken</li>
-      <li>n. B. Karamellsirup</li>
-      <li>n. B. Schokotropfen</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Kokosöl erwärmen und mit Erdnüssen, Kakaopulver und Haferflocken verrühren.</li>
-      <li>Quark mit Erdnussbutter glatt rühren.</li>
-      <li>Kakaomasse unter den Quark heben.</li>
-      <li>Mit Crunchies/Cornflakes, Erdnüssen und nach Belieben Schokodrops &amp; Karamellsirup toppen.</li>
-    </ol>
-    <p><em>Eiweißreich, kohlenhydratarm, mit „guten“ Fetten.</em></p>
-  </div>
-
-  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück zum Inhaltsverzeichnis</a>
-</section>
-
-<!-- =========================================================
-     6) WALNUSSBUTTER
-========================================================= -->
-<section id="walnussbutter" class="recipe fruehstueck">
-  <h2>🧈 Walnussbutter</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 10 Min | 🕒 Gesamtzeit: 10 Min | 👥 Portionen:
-    <input type="number" id="wabu-portionen" value="4" min="1" style="width:60px"
-           onchange="updateRecipe('#wabu-zutaten', '#wabu-portionen')">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul id="wabu-zutaten">
-      <li><span data-base="120">120</span> g Butter, weich</li>
-      <li><span data-base="50">50</span> g Walnüsse</li>
-      <li>Salz</li>
-      <li>bissl Pfeffer</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <p>Butter schmelzen, Walnüsse pürieren, zusammen mischen und würzen.</p>
-  </div>
-
-  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück zum Inhaltsverzeichnis</a>
-</section>
-
-
-<!-- =========================================================
-     Minimales Styling (nutzt deine bestehenden Klassen)
-     – nur falls noch nicht vorhanden –
-========================================================= -->
-<style>
-.recipe.fruehstueck {
-  background: #fffacd; /* Pastellgelb */
-  border: 2px solid #f1d26a;
-  border-radius: 16px;
-  padding: 18px;
-  margin: 18px 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-}
-.recipe.fruehstueck h2 {
-  margin-top: 0;
-}
-.meta {
-  background: #fef4c5;
-  padding: 8px 10px;
-  border-radius: 10px;
-  font-size: 0.95rem;
-}
-.zutaten h3, .zubereitung h3 { margin-bottom: 6px; }
-.zutaten ul { padding-left: 22px; }
-.back-button {
-  display: inline-block;
-  margin-top: 14px;
-  text-decoration: none;
-  background: #f8dfa6;
-  border: 1px solid #e5c56a;
-  padding: 8px 12px;
-  border-radius: 10px;
-  color: #3a2e00;
-}
-.back-button:hover { filter: brightness(0.97); }
-</style>
 
 <!-- Hauptspeisen-Cover -->
 <section id="hauptspeisen-cover" class="cover hauptspeisen" 
@@ -1216,357 +775,21 @@ if (typeof window.updateRecipe !== 'function') {
 </section>
 
 <!-- =========================================================
-     suppen&eintöpfe – UNTERKATEGORIE-COVER
+     suppen & eintöpfe – UNTERKATEGORIE-COVER
 ========================================================= -->
 <section id="suppen-und-eintoepfe-cover" class="cover hauptspeisen" 
          style="background-color:#CFF5E7; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 0;">
   <h1 style="font-size:2em; margin:0;">🍲 Suppen & Eintöpfe</h1>
 </section>
 
-<!-- 1) GEMÜSESUPPE -->
-<section id="gemuesesuppe" class="recipe hauptspeisen">
-  <h2>🥕 Gemüsesuppe</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 30 Min | 👥 Portionen:
-    <input type="number" id="gs-portionen" value="4" min="1" style="width:60px"
-           onchange="updateRecipe('#gs-zutaten', '#gs-portionen')">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul id="gs-zutaten">
-      <li><span data-base="1500">1500</span> ml Gemüsebrühe</li>
-      <li>1 Bund Suppengrün (Sellerie, Lauch, Karotte)</li>
-      <li><span data-base="2">2</span> Kartoffeln</li>
-      <li><span data-base="1">1</span> Knoblauchzehe</li>
-      <li><span data-base="1">1</span> Zwiebel</li>
-      <li><span data-base="1">1</span> Zucchini</li>
-      <li><span data-base="1">1</span> Paprika</li>
-      <li><span data-base="1">1</span> EL Rosmarin (gehackt)</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Brühe aufsetzen und zum Kochen bringen.</li>
-      <li>Suppengrün, Kartoffeln, Knoblauch und Zwiebel vorbereiten und in mundgerechte Stücke schneiden.</li>
-      <li>Alles in die Brühe geben und 10 Min köcheln lassen.</li>
-      <li>Zucchini, Paprika und Rosmarin zugeben, weitere 5–10 Min köcheln.</li>
-      <li>Mit Salz & Pfeffer großzügig abschmecken.</li>
-    </ol>
-  </div>
-
-  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
-</section>
-
-<!-- 2) KARTOFFELSUPPE -->
-<section id="kartoffelsuppe" class="recipe hauptspeisen">
-  <h2>🥔 Kartoffelsuppe</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 25 Min | 🕒 Gesamtzeit: 40 Min | 👥 Portionen:
-    <input type="number" id="ks-portionen" value="4" min="1" style="width:60px"
-           onchange="updateRecipe('#ks-zutaten', '#ks-portionen')">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul id="ks-zutaten">
-      <li><span data-base="800">800</span> g Kartoffeln</li>
-      <li><span data-base="1">1</span> Zwiebel</li>
-      <li><span data-base="2">2</span> Karotten</li>
-      <li><span data-base="1">1</span> Lauchstange</li>
-      <li><span data-base="1000">1000</span> ml Gemüsebrühe</li>
-      <li><span data-base="100">100</span> ml Sahne</li>
-      <li>Salz, Pfeffer, Muskat</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Kartoffeln, Karotten und Zwiebel würfeln, Lauch in Ringe schneiden.</li>
-      <li>In Brühe 20 Min weich kochen.</li>
-      <li>Teilweise pürieren (nach gewünschter Konsistenz).</li>
-      <li>Sahne einrühren, mit Salz, Pfeffer, Muskat abschmecken.</li>
-    </ol>
-  </div>
-
-  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
-</section>
-
-<!-- 3) MARKGLÖSSCHEN -->
-<section id="markgloesschen" class="recipe hauptspeisen">
-  <h2>🍲 Markglößchen</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 30 Min | 👥 Portionen:
-    <input type="number" id="mg-portionen" value="4" min="1" style="width:60px"
-           onchange="updateRecipe('#mg-zutaten', '#mg-portionen')">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul id="mg-zutaten">
-      <li><span data-base="60">60</span> g Rindermark</li>
-      <li><span data-base="1">1</span> Ei</li>
-      <li><span data-base="60">60</span> g Semmelbrösel</li>
-      <li>Salz, Muskat</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Rindermark schmelzen, mit Ei und Semmelbröseln vermengen.</li>
-      <li>Mit Salz und Muskat würzen, 10 Min ruhen lassen.</li>
-      <li>Kleine Klößchen formen, in heißer Brühe ca. 10 Min ziehen lassen (nicht kochen!).</li>
-    </ol>
-  </div>
-
-  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
-</section>
-
-<!-- 4) PETERSILIENWURZELSUPPE -->
-<section id="petersilienwurzel-suppe" class="recipe hauptspeisen">
-  <h2>🌿 Petersilienwurzelsuppe</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 35 Min | 👥 Portionen:
-    <input type="number" id="pw-portionen" value="4" min="1" style="width:60px"
-           onchange="updateRecipe('#pw-zutaten', '#pw-portionen')">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul id="pw-zutaten">
-      <li><span data-base="500">500</span> g Petersilienwurzeln</li>
-      <li><span data-base="1">1</span> Zwiebel</li>
-      <li><span data-base="700">700</span> ml Gemüsebrühe</li>
-      <li><span data-base="100">100</span> ml Sahne</li>
-      <li>Salz, Pfeffer, Muskat</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Petersilienwurzeln & Zwiebel würfeln, in Butter anschwitzen.</li>
-      <li>Brühe zugeben, 20 Min köcheln lassen.</li>
-      <li>Fein pürieren, Sahne einrühren, würzen.</li>
-    </ol>
-  </div>
-
-  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
-</section>
-
-<!-- 5) SPARGELCREMESUPPE -->
-<section id="spargelcremesuppe" class="recipe hauptspeisen">
-  <h2>🥬 Spargelcremesuppe</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 25 Min | 🕒 Gesamtzeit: 40 Min | 👥 Portionen:
-    <input type="number" id="sp-portionen" value="4" min="1" style="width:60px"
-           onchange="updateRecipe('#sp-zutaten', '#sp-portionen')">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul id="sp-zutaten">
-      <li><span data-base="500">500</span> g weißer Spargel</li>
-      <li><span data-base="1">1</span> Zwiebel</li>
-      <li><span data-base="30">30</span> g Butter</li>
-      <li><span data-base="30">30</span> g Mehl</li>
-      <li><span data-base="750">750</span> ml Gemüsebrühe</li>
-      <li><span data-base="100">100</span> ml Sahne</li>
-      <li>Salz, Pfeffer, Muskat</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Spargel schälen, Enden abschneiden, Stücke schneiden.</li>
-      <li>Zwiebel anschwitzen, Mehl einrühren → Mehlschwitze.</li>
-      <li>Brühe zugießen, Spargelstücke zugeben, 15 Min köcheln.</li>
-      <li>Pürieren, Sahne unterrühren, würzen.</li>
-    </ol>
-  </div>
-
-  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
-</section>
-
-<!-- 6) KÜRBISSUPPE -->
-<section id="kuerbissuppe" class="recipe hauptspeisen">
-  <h2>🎃 Kürbissuppe</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 35 Min | 👥 Portionen:
-    <input type="number" id="ksu-portionen" value="4" min="1" style="width:60px"
-           onchange="updateRecipe('#ksu-zutaten', '#ksu-portionen')">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul id="ksu-zutaten">
-      <li><span data-base="800">800</span> g Hokkaido-Kürbis</li>
-      <li><span data-base="1">1</span> Zwiebel</li>
-      <li><span data-base="2">2</span> Karotten</li>
-      <li><span data-base="700">700</span> ml Gemüsebrühe</li>
-      <li><span data-base="150">150</span> ml Sahne oder Kokosmilch</li>
-      <li>Salz, Pfeffer, Muskat</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Kürbis mit Schale würfeln (Kerne entfernen), Karotten & Zwiebel kleinschneiden.</li>
-      <li>Alles anschwitzen, Brühe zugeben, 20 Min köcheln lassen.</li>
-      <li>Pürieren, Sahne/Kokosmilch unterrühren, würzen.</li>
-    </ol>
-  </div>
-
-  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
-</section>
-
-<style>
-.recipe.hauptspeisen {
-  background: #e7fff0;
-  border: 2px solid #9ce0b3;
-  border-radius: 16px;
-  padding: 18px;
-  margin: 18px 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-}
-.recipe.hauptspeisen h2 { margin-top: 0; }
-</style>
-
-
-
-
-
-
 <!-- =========================================================
-     PASTA & NUDELN – UNTERKATEGORIE-COVER
+     pasta & nudeln – UNTERKATEGORIE-COVER
 ========================================================= -->
 <section id="pasta-und-nudeln-cover" class="cover hauptspeisen" 
          style="background-color:#CFF5E7; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 0;">
   <h1 style="font-size:2em; margin:0;">🍝 Pasta & Nudeln</h1>
 </section>
 
-<!-- =========================================================
-     KÄSENUDELN (Quattro Formaggi)
-========================================================= -->
-<section id="kaesenudeln" class="recipe hauptspeisen">
-  <h2>🧀 Käsenudeln (Quattro Formaggi)</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 30 Min | 👥 Portionen:
-    <input type="number" id="kn-portionen" value="6" min="1" style="width:60px"
-           onchange="updateRecipe('#kn-zutaten', '#kn-portionen')">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥗 Zutaten</h3>
-    <ul id="kn-zutaten">
-      <li><span data-base="700">700</span> g Penne</li>
-      <li><span data-base="750">750</span> ml Milch</li>
-      <li><span data-base="2">2</span> EL Mehl</li>
-      <li><span data-base="2">2</span> EL Margarine</li>
-      <li><span data-base="800">800</span> g Tomaten, geschält (Dose)</li>
-      <li><span data-base="500">500</span> g Gouda, gerieben</li>
-      <li>Salz, Pfeffer, Muskat</li>
-      <li>Optional: etwas Gorgonzola</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Penne in Salzwasser bissfest kochen.</li>
-      <li>Aus Margarine und Mehl eine Mehlschwitze herstellen, mit Milch aufgießen, 10 Min köcheln lassen.</li>
-      <li>Gouda einrühren, mit Salz, Pfeffer & Muskat würzen.</li>
-      <li>Nudeln in Auflaufform geben, mit Sauce übergießen, Tomaten & restlichen Käse darüber.</li>
-      <li>Im Ofen bei 200 °C (Ober-/Unterhitze) ca. 35–40 Min goldbraun backen.</li>
-    </ol>
-  </div>
-
-  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
-</section>
-
-<!-- =========================================================
-     NUDELN MIT KÜRBISSAUCE
-========================================================= -->
-<section id="kuerbisnudeln" class="recipe hauptspeisen">
-  <h2>🎃 Nudeln mit Kürbissauce</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 15 Min | 🕒 Gesamtzeit: 25 Min | 👥 Portionen:
-    <input type="number" id="kp-portionen" value="4" min="1" style="width:60px"
-           onchange="updateRecipe('#kp-zutaten', '#kp-portionen')">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥗 Zutaten</h3>
-    <ul id="kp-zutaten">
-      <li><span data-base="400">400</span> g Nudeln (z. B. Penne oder Spaghetti)</li>
-      <li><span data-base="500">500</span> g Hokkaido-Kürbis</li>
-      <li><span data-base="1">1</span> Zwiebel</li>
-      <li><span data-base="2">2</span> Knoblauchzehen</li>
-      <li><span data-base="200">200</span> ml Sahne oder Kokosmilch</li>
-      <li><span data-base="50">50</span> g Parmesan, frisch gerieben</li>
-      <li>Olivenöl, Salz, Pfeffer, Muskat</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Nudeln nach Packungsangabe kochen.</li>
-      <li>Kürbis würfeln, Zwiebel & Knoblauch hacken, in Olivenöl anschwitzen.</li>
-      <li>Mit Brühe ablöschen, 15 Min weich köcheln.</li>
-      <li>Fein pürieren, Sahne unterrühren, mit Salz, Pfeffer & Muskat würzen.</li>
-      <li>Nudeln mit Sauce mischen, mit Parmesan servieren.</li>
-    </ol>
-  </div>
-
-  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
-</section>
-
-<!-- =========================================================
-     RAVIOLI MIT RICOTTA & SPINAT
-========================================================= -->
-<section id="ravioli-ricotta" class="recipe hauptspeisen">
-  <h2>🥬 Ravioli mit Ricotta & Spinat</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 40 Min | 🕒 Gesamtzeit: 60 Min | 👥 Portionen:
-    <input type="number" id="rv-portionen" value="4" min="1" style="width:60px"
-           onchange="updateRecipe('#rv-zutaten', '#rv-portionen')">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥗 Zutaten</h3>
-    <ul id="rv-zutaten">
-      <li><span data-base="300">300</span> g Mehl</li>
-      <li><span data-base="3">3</span> Eier</li>
-      <li><span data-base="250">250</span> g Ricotta</li>
-      <li><span data-base="200">200</span> g frischer Spinat</li>
-      <li><span data-base="50">50</span> g Parmesan</li>
-      <li>Muskat, Salz, Pfeffer</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Aus Mehl & Eiern Nudelteig kneten, 30 Min ruhen lassen.</li>
-      <li>Spinat blanchieren, fein hacken, mit Ricotta & Parmesan mischen, würzen.</li>
-      <li>Teig dünn ausrollen, kleine Füllungen setzen, Ravioli formen & verschließen.</li>
-      <li>In Salzwasser 4–5 Min gar ziehen lassen.</li>
-      <li>Mit etwas Olivenöl & Parmesan servieren.</li>
-    </ol>
-  </div>
-
-  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
-</section>
-
-
-  
 <!-- =========================================================
      pizza – UNTERKATEGORIE-COVER
 ========================================================= -->
@@ -1575,557 +798,35 @@ if (typeof window.updateRecipe !== 'function') {
   <h1 style="font-size:2em; margin:0;">🍕 Pizza</h1>
 </section>
 
-
 <!-- =========================================================
-     PIZZATEIG
+     reis & getreide – UNTERKATEGORIE-COVER
 ========================================================= -->
-<section id="pizzateig" class="recipe hauptspeisen">
-  <h2>🍞 Pizzateig</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 20 Min + Gehzeit | 🕒 Gesamtzeit: ca. 2 Std | 👥 Portionen:
-    <input type="number" id="pt-portionen" value="4" min="1" style="width:60px"
-           onchange="updateRecipe('#pt-zutaten', '#pt-portionen')">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥗 Zutaten</h3>
-    <ul id="pt-zutaten">
-      <li><span data-base="500">500</span> g Weizenmehl (Type 550)</li>
-      <li><span data-base="10">10</span> g Salz</li>
-      <li><span data-base="10">10</span> g Olivenöl</li>
-      <li><span data-base="320">320</span> ml lauwarmes Wasser</li>
-      <li><span data-base="20">20</span> g frische Hefe (oder 7 g Trockenhefe)</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Hefe in lauwarmem Wasser auflösen, 5 Min ruhen lassen.</li>
-      <li>Mehl, Salz, Olivenöl und Hefewasser zu einem geschmeidigen Teig kneten.</li>
-      <li>Abgedeckt an einem warmen Ort ca. 1 Stunde gehen lassen.</li>
-      <li>Teig ausrollen, nach Wunsch belegen und bei 220 °C (Ober-/Unterhitze) 12–15 Min backen.</li>
-    </ol>
-  </div>
-
-  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
-</section>
-
-<!-- =========================================================
-     PIZZABRÖTCHEN
-========================================================= -->
-<section id="pizzabroetchen" class="recipe hauptspeisen">
-  <h2>🥯 Pizzabrötchen</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 15 Min + Gehzeit | 🕒 Gesamtzeit: ca. 1 Std | 👥 Portionen:
-    <input type="number" id="pb-portionen" value="12" min="1" style="width:60px"
-           onchange="updateRecipe('#pb-zutaten', '#pb-portionen')">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥗 Zutaten</h3>
-    <ul id="pb-zutaten">
-      <li><span data-base="500">500</span> g Mehl</li>
-      <li><span data-base="1">1</span> Würfel frische Hefe (42 g)</li>
-      <li><span data-base="300">300</span> ml lauwarmes Wasser</li>
-      <li><span data-base="2">2</span> EL Olivenöl</li>
-      <li><span data-base="1">1</span> TL Salz</li>
-      <li>Optional: Käsewürfel, Kräuter, Knoblauchbutter zum Füllen</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Hefe im lauwarmen Wasser auflösen, kurz ruhen lassen.</li>
-      <li>Mit Mehl, Salz und Olivenöl zu einem Teig kneten.</li>
-      <li>Teig abgedeckt 30–45 Min gehen lassen.</li>
-      <li>Kleine Brötchen formen, optional füllen, auf Backblech setzen.</li>
-      <li>Bei 200 °C (Ober-/Unterhitze) 15–20 Min goldbraun backen.</li>
-    </ol>
-  </div>
-
-  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
-</section>
-
-
-
-<!-- =========================================================
-   reis und getreide – UNTERKATEGORIE-COVER
-========================================================= -->
-<section id="pasta-und-nudeln-cover" class="cover hauptspeisen" 
+<section id="reis-und-getreide-cover" class="cover hauptspeisen" 
          style="background-color:#CFF5E7; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 0;">
   <h1 style="font-size:2em; margin:0;">🍚 Reis- & Getreidegerichte</h1>
 </section>
 
 <!-- =========================================================
-     INDISCHES QUINOA CURRY
+     internationale küche & currys – UNTERKATEGORIE-COVER
 ========================================================= -->
-<section id="indisches-quinoa-curry" class="recipe hauptspeisen">
-  <h2>🌶️ Indisches Quinoa Curry</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 15 Min | 🕒 Gesamtzeit: 25 Min | 👥 Portionen:
-    <input type="number" id="qc-portionen" value="2" min="1" style="width:60px"
-           onchange="updateRecipe('#qc-zutaten', '#qc-portionen')">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥗 Zutaten</h3>
-    <ul id="qc-zutaten">
-      <li><span data-base="50">50</span> g Cashewkerne</li>
-      <li><span data-base="50">50</span> g rote Zwiebeln</li>
-      <li><span data-base="80">80</span> g Mango-Fruchtfleisch</li>
-      <li><span data-base="10">10</span> g frischer Ingwer</li>
-      <li><span data-base="15">15</span> g Ghee</li>
-      <li><span data-base="1">1</span> TL scharfes Currypulver</li>
-      <li><span data-base="40">40</span> g TK-Erbsen</li>
-      <li><span data-base="80">80</span> g weißer Quinoa</li>
-      <li><span data-base="300">300</span> g heiße Gemüsebrühe</li>
-      <li><span data-base="0.5">0.5</span> TL Amchur oder 1 EL Limettensaft</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Cashews ohne Fett in einer Pfanne anrösten.</li>
-      <li>Zwiebel, Mango und Ingwer fein hacken, mit Ghee, Curry, Erbsen & Quinoa 3 Min dünsten.</li>
-      <li>Mit Gemüsebrühe ablöschen und ca. 22 Min garen.</li>
-      <li>Zum Schluss Cashews & Limettensaft unterrühren.</li>
-    </ol>
-  </div>
-
-  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
-</section>
-
-<!-- =========================================================
-     PACIFIC POKE BOWL
-========================================================= -->
-<section id="pacific-poke-bowl" class="recipe hauptspeisen">
-  <h2>🌊 Pacific Poke Bowl</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 25 Min | 🕒 Gesamtzeit: 40 Min | 👥 Portionen:
-    <input type="number" id="pp-portionen" value="2" min="1" style="width:60px"
-           onchange="updateRecipe('#pp-zutaten', '#pp-portionen')">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥗 Zutaten</h3>
-    <ul id="pp-zutaten">
-      <li>Reis</li>
-      <li>Ramen-Ei (Soja-Marinade)</li>
-      <li>Karotten, gestiftelt</li>
-      <li>Sesam & Algen</li>
-      <li>Corn Salsa</li>
-      <li>Pesto-Tofu</li>
-      <li>Wasabi-Mayo</li>
-      <li>Pacific Ponzu Sauce</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Reis kochen und in Schalen anrichten.</li>
-      <li>Toppings (Ei, Gemüse, Tofu) vorbereiten und dekorativ anrichten.</li>
-      <li>Mit Sesam & Algen bestreuen, mit Ponzu & Wasabi-Mayo servieren.</li>
-    </ol>
-  </div>
-
-  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
-</section>
-
-<!-- =========================================================
-     POKÉ BOWL
-========================================================= -->
-<section id="poke-bowl" class="recipe hauptspeisen">
-  <h2>🥗 Poké Bowl</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 30 Min | 👥 Portionen:
-    <input type="number" id="pb-portionen2" value="2" min="1" style="width:60px"
-           onchange="updateRecipe('#pb-zutaten2', '#pb-portionen2')">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥗 Zutaten</h3>
-    <ul id="pb-zutaten2">
-      <li><span data-base="200">200</span> g Sushi-Reis</li>
-      <li>Avocado</li>
-      <li>Edamame</li>
-      <li>Gurke</li>
-      <li>Mango</li>
-      <li>Tofu oder veganes Protein</li>
-      <li>Sojasauce, Sesam, Frühlingszwiebeln</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Sushi-Reis nach Packung zubereiten.</li>
-      <li>Gemüse & Mango würfeln, Tofu knusprig anbraten.</li>
-      <li>Alles in einer Schüssel dekorativ anrichten, mit Sesam & Sojasauce servieren.</li>
-    </ol>
-  </div>
-
-  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
-</section>
-
-<!-- =========================================================
-     QUINOA CHILI
-========================================================= -->
-<section id="quinoa-chili" class="recipe hauptspeisen">
-  <h2>🌶️ Quinoa Chili (vegetarisch)</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 15 Min | 🕒 Gesamtzeit: 40 Min | 👥 Portionen:
-    <input type="number" id="qcch-portionen" value="4" min="1" style="width:60px"
-           onchange="updateRecipe('#qcch-zutaten', '#qcch-portionen')">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥗 Zutaten</h3>
-    <ul id="qcch-zutaten">
-      <li><span data-base="150">150</span> g Quinoa</li>
-      <li><span data-base="200">200</span> g Veggie-Hack</li>
-      <li><span data-base="2">2</span> Paprika</li>
-      <li><span data-base="1">1</span> Dose Mais</li>
-      <li><span data-base="1">1</span> Dose Kidneybohnen</li>
-      <li><span data-base="400">400</span> g passierte Tomaten</li>
-      <li>Zwiebel, Knoblauch, Chili, Kreuzkümmel, Paprika, Salz, Pfeffer</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Quinoa nach Packungsanweisung garen.</li>
-      <li>Zwiebel & Knoblauch anschwitzen, Veggie-Hack anbraten.</li>
-      <li>Gemüse & Gewürze zufügen, mit Tomaten ablöschen, 15–20 Min köcheln.</li>
-      <li>Zum Schluss Quinoa unterrühren, abschmecken.</li>
-    </ol>
-  </div>
-
-  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
-</section>
-
-<!-- =========================================================
-     RISOTTO
-========================================================= -->
-<section id="risotto" class="recipe hauptspeisen">
-  <h2>🍚 Risotto</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 10 Min | 🕒 Gesamtzeit: 30 Min | 👥 Portionen:
-    <input type="number" id="rs-portionen" value="4" min="1" style="width:60px"
-           onchange="updateRecipe('#rs-zutaten', '#rs-portionen')">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥗 Zutaten</h3>
-    <ul id="rs-zutaten">
-      <li><span data-base="250">250</span> g Risotto-Reis</li>
-      <li><span data-base="1">1</span> Zwiebel</li>
-      <li><span data-base="100">100</span> ml Weißwein</li>
-      <li><span data-base="700">700</span> ml Gemüsebrühe</li>
-      <li><span data-base="50">50</span> g Parmesan</li>
-      <li>Butter, Salz, Pfeffer</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Zwiebel in Butter anschwitzen, Reis zufügen.</li>
-      <li>Mit Weißwein ablöschen, nach und nach Brühe angießen.</li>
-      <li>Unter Rühren ca. 20 Min garen, bis cremig.</li>
-      <li>Parmesan einrühren, würzen und sofort servieren.</li>
-    </ol>
-  </div>
-
-  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
-</section>
-
-<!-- =========================================================
-     VEGETARISCHE REISPFANNE
-========================================================= -->
-<section id="veg-reispfanne" class="recipe hauptspeisen">
-  <h2>🥕 Vegetarische Reispfanne</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 15 Min | 🕒 Gesamtzeit: 25 Min | 👥 Portionen:
-    <input type="number" id="vrp-portionen" value="4" min="1" style="width:60px"
-           onchange="updateRecipe('#vrp-zutaten', '#vrp-portionen')">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥗 Zutaten</h3>
-    <ul id="vrp-zutaten">
-      <li><span data-base="250">250</span> g Reis</li>
-      <li><span data-base="2">2</span> Karotten</li>
-      <li><span data-base="1">1</span> Paprika</li>
-      <li><span data-base="2">2</span> EL Sojasauce</li>
-      <li>Frühlingszwiebeln, Salz, Pfeffer</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Reis vorkochen.</li>
-      <li>Gemüse würfeln und kurz anbraten.</li>
-      <li>Reis hinzufügen, mit Sojasauce würzen.</li>
-      <li>Frisch mit Frühlingszwiebeln servieren.</li>
-    </ol>
-  </div>
-
-  <a href="#inhaltsverzeichnis" class="back-button">⬅️ Zurück</a>
-</section>
-
-
-<!-- =========================================================
-     internationale köche & curry – UNTERKATEGORIE-COVER
-========================================================= -->
-<section id="internationale-küche-und currys-cover" class="cover hauptspeisen" 
+<section id="internationale-kueche-und-currys-cover" class="cover hauptspeisen" 
          style="background-color:#CFF5E7; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 0;">
   <h1 style="font-size:2em; margin:0;">🌍 Internationale Küche & Currys</h1>
 </section>
 
-  
-<!-- Erdbeerkuchen -->
-<section id="erdbeerkuchen" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
-  <h2>🍓 Erdbeerkuchen</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 25 Min | 🕒 Gesamtzeit: 1 h | 👥 Portionen:
-    <input type="number" id="erdbeerkuchen-portionen" value="12" min="1" style="width:60px">
-  </p>
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul id="erdbeerkuchen-zutaten">
-      <li><span data-base="200">200</span> g Mehl</li>
-      <li><span data-base="100">100</span> g Zucker</li>
-      <li><span data-base="100">100</span> g Butter</li>
-      <li><span data-base="2">2</span> Eier</li>
-      <li><span data-base="1">1</span> TL Backpulver</li>
-      <li><span data-base="500">500</span> g Erdbeeren</li>
-      <li><span data-base="1">1</span> Pck Tortenguss</li>
-    </ul>
-  </div>
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <p>Teig aus Mehl, Butter, Zucker, Eiern und Backpulver herstellen, in Springform füllen und bei 180 °C ca. 25 Min backen. Abkühlen lassen. Mit Erdbeeren belegen, Tortenguss nach Packung zubereiten und darüber verteilen.</p>
-  </div>
-</section>
-
-<!-- Marmorkuchen -->
-<section id="marmorkuchen" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
-  <h2>🍰 Marmorkuchen (Standardkuchen)</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 1 h | 👥 Portionen:
-    <input type="number" id="marmorkuchen-portionen" value="12" min="1" style="width:60px">
-  </p>
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul id="marmorkuchen-zutaten">
-      <li><span data-base="250">250</span> g Butter</li>
-      <li><span data-base="250">250</span> g Zucker</li>
-      <li><span data-base="3">3</span> Eier</li>
-      <li><span data-base="500">500</span> g Mehl</li>
-      <li><span data-base="1">1</span> Pck Backpulver</li>
-      <li><span data-base="100">100</span> ml Milch</li>
-      <li><span data-base="2">2</span> EL Kakaopulver</li>
-      <li><span data-base="1">1</span> Fläschchen Rumaroma</li>
-    </ul>
-  </div>
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <p>Butter, Zucker, Eier schaumig schlagen. Mehl und Backpulver zufügen, Milch einrühren. Teig halbieren, eine Hälfte mit Kakao und Rumaroma mischen. Beide Teige in gefettete Form füllen, marmorieren. Bei 160 °C ca. 35 Min backen.</p>
-  </div>
-</section>
-
-<!-- Nougatkuchen -->
-<section id="nougatkuchen" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
-  <h2>🍮 Nougatkuchen</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 25 Min | 🕒 Gesamtzeit: 1 h | 👥 Portionen:
-    <input type="number" id="nougatkuchen-portionen" value="12" min="1" style="width:60px">
-  </p>
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul id="nougatkuchen-zutaten">
-      <li><span data-base="200">200</span> g weiche Butter</li>
-      <li><span data-base="150">150</span> g Zucker</li>
-      <li><span data-base="4">4</span> Eier</li>
-      <li><span data-base="200">200</span> g Haselnussnougat</li>
-      <li><span data-base="250">250</span> g Mehl</li>
-      <li><span data-base="1">1</span> TL Backpulver</li>
-    </ul>
-  </div>
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <p>Butter und Zucker cremig schlagen. Eier einzeln unterrühren. Geschmolzenes Nougat einrühren. Mehl und Backpulver unterheben. In gefettete Form füllen und bei 175 °C ca. 40 Min backen.</p>
-  </div>
-</section>
-
-<!-- Streuselkuchen -->
-<section id="streuselkuchen" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
-  <h2>🍪 Streuselkuchen</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 25 Min | 🕒 Gesamtzeit: 1 h 10 Min | 👥 Portionen:
-    <input type="number" id="streuselkuchen-portionen" value="12" min="1" style="width:60px">
-  </p>
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul id="streuselkuchen-zutaten">
-      <li><span data-base="300">300</span> g Mehl</li>
-      <li><span data-base="200">200</span> g Butter</li>
-      <li><span data-base="150">150</span> g Zucker</li>
-      <li><span data-base="1">1</span> Pck Vanillezucker</li>
-      <li><span data-base="1">1</span> Ei</li>
-      <li><span data-base="500">500</span> g Obst (z. B. Kirschen, Zwetschgen, Äpfel)</li>
-    </ul>
-  </div>
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <p>Mehl, Zucker, Vanillezucker und Butter zu Streuseln verarbeiten. Hälfte als Boden in eine Form drücken. Obst darauf verteilen. Restliche Streusel darüberstreuen. Bei 180 °C ca. 40–45 Min backen.</p>
-  </div>
-</section>
-
-  
-
 <!-- =========================================================
-     plätzchen und kleingebäck – UNTERKATEGORIE-COVER
+     plätzchen & kleingebäck – UNTERKATEGORIE-COVER (Bakery)
 ========================================================= -->
 <section id="plätzchen-und-kleingebäck-cover" class="cover bakery" 
          style="background-color:#FFD3E2; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 0;">
   <h1 style="font-size:2em; margin:0;">Plätzchen & Kleingebäck</h1>
 </section>
 
+  
 
-
-
-<!-- Butterplätzchen -->
-<section id="butterplaetzchen" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
-  <h2>🍪 Butterplätzchen</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 35 Min | 👥 Portionen:
-    <input type="number" id="butterplaetzchen-portionen" value="40" min="1" style="width:60px">
-  </p>
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul id="butterplaetzchen-zutaten">
-      <li><span data-base="200">200</span> g Butter (weich)</li>
-      <li><span data-base="100">100</span> g Zucker</li>
-      <li><span data-base="1">1</span> Ei</li>
-      <li><span data-base="400">400</span> g Mehl</li>
-      <li><span data-base="1">1</span> TL Backpulver</li>
-      <li><span data-base="3">3</span> EL Sahne</li>
-    </ul>
-  </div>
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <p>Alles zu einem glatten Teig verkneten (bei Bedarf etwas Mehl zufügen). 15 Min kühlen, ausrollen, ausstechen. Bei 190 °C 10–12 Min backen.</p>
-  </div>
-</section>
-
-<!-- Kokosmakronen -->
-<section id="kokosmakronen" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
-  <h2>🥥 Kokosmakronen</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 15 Min | 🕒 Gesamtzeit: 30 Min | 👥 Portionen:
-    <input type="number" id="kokosmakronen-portionen" value="30" min="1" style="width:60px">
-  </p>
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul id="kokosmakronen-zutaten">
-      <li><span data-base="200">200</span> g Kokosraspel</li>
-      <li><span data-base="150">150</span> g Zucker</li>
-      <li><span data-base="3">3</span> Eiweiß</li>
-      <li><span data-base="1">1</span> Pck Vanillezucker</li>
-      <li><span data-base="30">30</span> Oblaten</li>
-    </ul>
-  </div>
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <p>Eiweiß steif schlagen, Zucker & Vanillezucker einrieseln lassen. Kokosraspel unterheben. Häufchen auf Oblaten setzen und bei 160 °C ca. 15 Min backen.</p>
-  </div>
-</section>
-
-<!-- Nussecken -->
-<section id="nussecken" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
-  <h2>🌰 Nussecken</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 20 Min | 🕒 Gesamtzeit: 45 Min | 👥 Portionen:
-    <input type="number" id="nussecken-portionen" value="33" min="1" style="width:60px">
-  </p>
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul id="nussecken-zutaten">
-      <li><span data-base="130">130</span> g Butter/Margarine (Teig)</li>
-      <li><span data-base="130">130</span> g Zucker (Teig)</li>
-      <li><span data-base="2">2</span> Eier</li>
-      <li><span data-base="300">300</span> g Mehl</li>
-      <li><span data-base="1">1</span> TL Backpulver</li>
-      <li><span data-base="4">4</span> EL Aprikosenmarmelade</li>
-      <li><span data-base="200">200</span> g Butter (Belag)</li>
-      <li><span data-base="200">200</span> g Zucker (Belag)</li>
-      <li><span data-base="200">200</span> g Haselnüsse, gemahlen</li>
-      <li><span data-base="200">200</span> g Haselnüsse, gehackt</li>
-      <li><span data-base="100">100</span> g Kuvertüre</li>
-    </ul>
-  </div>
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <p>Mürbeteig aus Butter, Zucker, Eiern, Mehl, Backpulver herstellen und aufs Blech ausrollen. Mit Marmelade bestreichen. Butter & Zucker schmelzen, Nüsse einrühren, aufstreichen. Bei 175 °C ca. 25 Min backen. Warm in Dreiecke schneiden, Spitzen in Kuvertüre tauchen.</p>
-  </div>
-</section>
-
-<!-- Spitzbuben (Linzer Plätzchen) -->
-<section id="spitzbuben" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
-  <h2>❤️ Spitzbuben (Linzer Plätzchen)</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 30 Min | 🕒 Gesamtzeit: 2 h | 👥 Portionen:
-    <input type="number" id="spitzbuben-portionen" value="40" min="1" style="width:60px">
-  </p>
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul id="spitzbuben-zutaten">
-      <li><span data-base="250">250</span> g Mehl</li>
-      <li><span data-base="125">125</span> g Zucker</li>
-      <li><span data-base="150">150</span> g Butter</li>
-      <li><span data-base="2">2</span> Eigelb</li>
-      <li><span data-base="1">1</span> Prise Salz</li>
-      <li><span data-base="200">200</span> g Marmelade (z. B. Himbeer)</li>
-      <li><span data-base="50">50</span> g Puderzucker</li>
-    </ul>
-  </div>
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <p>Mürbeteig aus Mehl, Zucker, Butter, Eigelb & Salz kneten, 30–60 Min kühlen. Ausrollen, ausstechen (Hälfte mit Loch). Bei 180 °C ca. 10 Min backen. Mit Marmelade füllen, zusammensetzen, mit Puderzucker bestäuben.</p>
-  </div>
-</section>
-
-<!-- Vanillekipferl -->
-<section id="vanillekipferl" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
-  <h2>🌙 Vanillekipferl</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: 25 Min | 🕒 Gesamtzeit: 1 h | 👥 Portionen:
-    <input type="number" id="vanillekipferl-portionen" value="40" min="1" style="width:60px">
-  </p>
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul id="vanillekipferl-zutaten">
-      <li><span data-base="280">280</span> g Mehl</li>
-      <li><span data-base="100">100</span> g Zucker</li>
-      <li><span data-base="200">200</span> g Butter (kalt, in Stücken)</li>
-      <li><span data-base="100">100</span> g gemahlene Mandeln</li>
-      <li><span data-base="2">2</span> Pck Vanillezucker</li>
-      <li><span data-base="50">50</span> g Puderzucker (zum Wälzen)</li>
-    </ul>
-  </div>
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <p>Teig fix verkneten, kurz kühlen. Zu Kipferln formen und bei 175 °C 10–12 Min backen. Noch warm vorsichtig in Puderzucker wälzen.</p>
-  </div>
-</section>
-
+  <!-- =========================================================
+     Plätzchen & Kleingebäck: (vorhergehende Rezepte entfernt)
+========================================================= -->
 
 <!-- =========================================================
      sonstiges gebäck – UNTERKATEGORIE-COVER
@@ -2137,203 +838,9 @@ if (typeof window.updateRecipe !== 'function') {
 
 
 
-<!-- Dampfnudeln -->
-<section id="dampfnudeln" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
-  <h2>🍥 Dampfnudeln</h2>
-  <p class="meta">
-    ⏱️ Aktiv: 30 Min | 🕒 Gesamt: ~2 Std | 👥 Portionen:
-    <input type="number" id="dampfnudeln-servings" value="6" min="1" style="width:64px">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul>
-      <li><span data-base="500">500</span> g Weizenmehl (550)</li>
-      <li><span data-base="7">7</span> g Trockenhefe (oder 21 g frisch)</li>
-      <li><span data-base="60">60</span> g Zucker</li>
-      <li><span data-base="1">1</span> TL Salz</li>
-      <li><span data-base="250">250</span> ml Milch, lauwarm</li>
-      <li><span data-base="60">60</span> g Butter, weich</li>
-      <li><span data-base="1">1</span> Ei (M)</li>
-      <li><strong>Pfanne:</strong> <span data-base="30">30</span> g Butter, <span data-base="150">150</span> ml Wasser, <span data-base="1">1</span> EL Zucker</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Mehl, Zucker, Salz mischen. Hefe in der lauwarmen Milch lösen, mit Ei &amp; Butter zum Mehl geben, 8–10 Min kneten.</li>
-      <li>Abgedeckt 60 Min gehen lassen. 6 Kugeln formen, 20–30 Min abgedeckt entspannen.</li>
-      <li>Pfanne: Butter, Wasser, Zucker aufkochen. Teigkugeln hineinsetzen, Deckel schließen.</li>
-      <li>Bei mittlerer Hitze ~20 Min garen, bis die Flüssigkeit verdampft &amp; der Boden karamellisiert.</li>
-    </ol>
-  </div>
-</section>
-
-<!-- Flammendes Herz -->
-<section id="flammendes-herz" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
-  <h2>❤️ Flammendes Herz</h2>
-  <p class="meta">
-    ⏱️ Aktiv: 25 Min | 🕒 Gesamt: 35–40 Min | 👥 Stück:
-    <input type="number" id="flammendes-herz-servings" value="20" min="1" style="width:64px">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥕 Zutaten (Spritzgebäck + Füllung)</h3>
-    <ul>
-      <li><span data-base="225">225</span> g Butter, weich</li>
-      <li><span data-base="100">100</span> g Puderzucker</li>
-      <li><span data-base="2">2</span> TL Vanillezucker</li>
-      <li><span data-base="50">50</span> ml Sahne</li>
-      <li><span data-base="250">250</span> g Mehl</li>
-      <li><span data-base="50">50</span> g Speisestärke</li>
-      <li><span data-base="150">150</span> g Nuss-Nougat-Creme</li>
-      <li><span data-base="150">150</span> g Zartbitter-Kuvertüre</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Butter, Puderzucker, Vanille schaumig rühren. Sahne, Mehl &amp; Stärke kurz unterrühren.</li>
-      <li>Mit großer Sterntülle „Flammen“ aufs Blech spritzen. 10–12 Min bei 180 °C O/U backen, abkühlen.</li>
-      <li>Je zwei Teile mit Nougat füllen, eine Seite in Kuvertüre tauchen, fest werden lassen.</li>
-    </ol>
-  </div>
-</section>
-
-<!-- Frosting (Schoko) -->
-<section id="frosting" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
-  <h2>🍫 Frosting (Schoko)</h2>
-  <p class="meta">
-    ⏱️ Aktiv: 10 Min | 🕒 Gesamt: 10 Min | 👥 Ergibt ca.:
-    <input type="number" id="frosting-servings" value="12" min="1" style="width:64px">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul>
-      <li><span data-base="280">280</span> g Puderzucker</li>
-      <li><span data-base="60">60</span> g Kakaopulver</li>
-      <li><span data-base="85">85</span> g Butter, weich</li>
-      <li><span data-base="80">80</span> ml Milch (nach Bedarf +)</li>
-      <li><span data-base="2">2</span> TL Vanilleextrakt</li>
-      <li><span data-base="0.25">0.25</span> TL Salz</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Butter cremig rühren. Puderzucker, Kakao, Salz und Vanille zugeben.</li>
-      <li>Milch portionsweise unterrühren, bis eine glatte, streichfähige Creme entsteht.</li>
-    </ol>
-    <p><em>Reicht für ~12 Muffins oder eine 24–26 cm Torte dünn.</em></p>
-  </div>
-</section>
-
-<!-- Kreppel (Berliner) -->
-<section id="kreppel" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
-  <h2>🍩 Kreppel (Berliner)</h2>
-  <p class="meta">
-    ⏱️ Aktiv: 30 Min | 🕒 Gesamt: ~1 h 45 | 👥 Stück:
-    <input type="number" id="kreppel-servings" value="12" min="1" style="width:64px">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul>
-      <li><span data-base="500">500</span> g Mehl</li>
-      <li><span data-base="70">70</span> g Zucker</li>
-      <li><span data-base="1">1</span> TL Salz</li>
-      <li><span data-base="1">1</span> Ei + <span data-base="1">1</span> Eigelb</li>
-      <li><span data-base="60">60</span> g weiche Butter</li>
-      <li><span data-base="250">250</span> ml Milch, lauwarm</li>
-      <li><span data-base="7">7</span> g Trockenhefe (oder 21 g frisch)</li>
-      <li>Marmelade zum Füllen, Zucker zum Wälzen</li>
-      <li>Öl zum Frittieren (Topf ~170–175 °C)</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Hefe in Milch lösen, mit Mehl, Zucker, Salz, Ei/ Eigelb &amp; Butter 8–10 Min kneten.</li>
-      <li>60 Min gehen lassen. 12 Teiglinge (60–70 g) rundschleifen, 20–30 Min abgedeckt entspannen.</li>
-      <li>In 170–175 °C Öl je Seite 2–3 Min goldbraun frittieren. Auf Küchenpapier abtropfen.</li>
-      <li>Mit Marmelade füllen, in Zucker wälzen.</li>
-    </ol>
-  </div>
-</section>
-
-<!-- Waffeln -->
-<section id="waffeln" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
-  <h2>🧇 Waffeln (klassisch)</h2>
-  <p class="meta">
-    ⏱️ Aktiv: 15 Min | 🕒 Gesamt: 30 Min | 👥 Stück:
-    <input type="number" id="waffeln-servings" value="8" min="1" style="width:64px">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul>
-      <li><span data-base="125">125</span> g Butter, weich</li>
-      <li><span data-base="100">100</span> g Zucker</li>
-      <li><span data-base="1">1</span> Pck Vanillezucker</li>
-      <li><span data-base="3">3</span> Eier</li>
-      <li><span data-base="250">250</span> g Mehl</li>
-      <li><span data-base="1">1</span> TL Backpulver</li>
-      <li><span data-base="200">200</span> ml Milch</li>
-      <li>Prise Salz</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Butter, Zucker, Vanille cremig rühren. Eier einzeln unterrühren.</li>
-      <li>Mehl, Backpulver, Salz mischen, mit Milch kurz unterziehen.</li>
-      <li>Im vorgeheizten Waffeleisen portionsweise goldbraun backen.</li>
-    </ol>
-  </div>
-</section>
-
-<!-- Zimtschnecken -->
-<section id="zimtschnecken" class="recipe bakery" style="background:#fff0f3; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #f7c6d5;">
-  <h2>🍥 Zimtschnecken</h2>
-  <p class="meta">
-    ⏱️ Aktiv: 30 Min | 🕒 Gesamt: ~2 Std | 👥 Stück:
-    <input type="number" id="zimtschnecken-servings" value="12" min="1" style="width:64px">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul>
-      <li><span data-base="500">500</span> g Mehl</li>
-      <li><span data-base="250">250</span> ml Milch, lauwarm</li>
-      <li><span data-base="75">75</span> g Zucker</li>
-      <li><span data-base="1">1</span> Würfel Hefe (42 g) oder <span data-base="7">7</span> g Trockenhefe</li>
-      <li><span data-base="75">75</span> g Butter, weich</li>
-      <li><span data-base="1">1</span> Ei</li>
-      <li><strong>Füllung:</strong> <span data-base="60">60</span> g Butter, weich · <span data-base="80">80</span> g brauner Zucker · <span data-base="2">2</span> TL Zimt</li>
-      <li><strong>Guss (optional):</strong> <span data-base="80">80</span> g Puderzucker · <span data-base="2">2</span> EL Milch</li>
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Hefe in Milch lösen. Mit Mehl, Zucker, Ei &amp; Butter zu weichem Teig kneten, 60 Min gehen lassen.</li>
-      <li>Rechteck (~40×30 cm) ausrollen, mit Butter bestreichen, Zucker &amp; Zimt mischen und aufstreuen.</li>
-      <li>Aufrollen, 12 Scheiben schneiden, in Form setzen, 20–30 Min gehen lassen.</li>
-      <li>Bei 180 °C O/U 20–25 Min backen. Optional mit Zuckerguss glasieren.</li>
-    </ol>
-  </div>
-</section>
-
-
-
-<!-- Snacks & Desserts-Cover -->
+<!-- =========================================================
+     Snacks & Desserts (Cover) – (alle Rezepte entfernt)
+========================================================= -->
 <section id="snacks-cover" class="cover snacks" 
          style="background:var(--orange); min-height:70vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:30px;">
   <div style="background:#fff; border:3px dashed #ffb266; border-radius:16px; padding:30px; max-width:92%; box-shadow:var(--shadow);">
@@ -2342,248 +849,11 @@ if (typeof window.updateRecipe !== 'function') {
   </div>
 </section>
 
-<!-- Candied Pecan -->
-<section id="candied-pecan" class="recipe snacks" style="background:#fff7f0; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #ffd1a3;">
-  <h2>🥜 Candied Pecan</h2>
-  <p class="meta">
-    ⏱️ Aktiv: 15 Min | 🕒 Gesamt: ~30 Min | 👥 Portionen:
-    <input type="number" id="candied-pecan-servings" value="10" min="1" style="width:64px">
-  </p>
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul>
-      <li><span data-base="200">200</span> g Pekannüsse</li>
-      <li><span data-base="100">100</span> g Zucker</li>
-      <li><span data-base="50">50</span> ml Wasser</li>
-      <li><span data-base="1">1</span> TL Zimt</li>
-      <li><span data-base="1">1</span> Prise Salz</li>
-    </ul>
-  </div>
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Zucker, Wasser, Zimt, Salz in Pfanne erhitzen.</li>
-      <li>Nüsse zugeben, rühren bis die Masse kristallisiert &amp; trocken wird.</li>
-      <li>Auf Backpapier auskühlen lassen, evtl. Stücke trennen.</li>
-    </ol>
-  </div>
-</section>
 
-<!-- Energiebällchen -->
-<section id="energybaellchen" class="recipe snacks" style="background:#fff7f0; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #ffd1a3;">
-  <h2>💪 Energiebällchen</h2>
-  <p class="meta">
-    ⏱️ Aktiv: 15 Min | 🕒 Gesamt: 15 Min | 👥 Stück:
-    <input type="number" id="energybaellchen-servings" value="20" min="1" style="width:64px">
-  </p>
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul>
-      <li><span data-base="200">200</span> g Haferflocken</li>
-      <li><span data-base="100">100</span> g Datteln (entsteint)</li>
-      <li><span data-base="50">50</span> g Nüsse nach Wahl</li>
-      <li><span data-base="2">2</span> EL Kakaopulver</li>
-      <li><span data-base="3">3</span> EL Honig oder Ahornsirup</li>
-    </ul>
-  </div>
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Alles im Mixer zerkleinern, bis eine formbare Masse entsteht.</li>
-      <li>Kleine Kugeln formen, 30 Min kaltstellen.</li>
-    </ol>
-  </div>
-</section>
 
-<!-- Frittierte Banane -->
-<section id="frittierte-banane" class="recipe snacks" style="background:#fff7f0; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #ffd1a3;">
-  <h2>🍌 Frittierte Banane</h2>
-  <p class="meta">
-    ⏱️ Aktiv: 10 Min | 🕒 Gesamt: 20 Min | 👥 Portionen:
-    <input type="number" id="frittierte-banane-servings" value="4" min="1" style="width:64px">
-  </p>
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul>
-      <li><span data-base="4">4</span> Bananen</li>
-      <li><span data-base="100">100</span> g Mehl</li>
-      <li><span data-base="50">50</span> g Speisestärke</li>
-      <li><span data-base="150">150</span> ml Wasser (kalt)</li>
-      <li><span data-base="1">1</span> TL Backpulver</li>
-      <li>Öl zum Frittieren</li>
-    </ul>
-  </div>
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Mehl, Stärke, Backpulver mit Wasser zu Teig rühren.</li>
-      <li>Banane in Stücke, durch Teig ziehen, bei 170–175 °C goldbraun frittieren.</li>
-    </ol>
-  </div>
-</section>
-
-<!-- Himbeerbaiser -->
-<section id="himbeerbaiser" class="recipe snacks" style="background:#fff7f0; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #ffd1a3;">
-  <h2>🍓 Himbeerbaiser</h2>
-  <p class="meta">
-    ⏱️ Aktiv: 20 Min | 🕒 Gesamt: ~1,5 Std | 👥 Stück:
-    <input type="number" id="himbeerbaiser-servings" value="12" min="1" style="width:64px">
-  </p>
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul>
-      <li><span data-base="3">3</span> Eiweiß</li>
-      <li><span data-base="150">150</span> g Zucker (fein)</li>
-      <li><span data-base="1">1</span> TL Zitronensaft</li>
-      <li><span data-base="100">100</span> g Himbeeren (frisch oder TK)</li>
-    </ul>
-  </div>
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Eiweiß steif schlagen, Zucker &amp; Zitronensaft einrieseln lassen.</li>
-      <li>Tuffs aufs Blech spritzen, Himbeerstückchen darauf.</li>
-      <li>Bei 100 °C ~90 Min trocknen, im Ofen abkühlen lassen.</li>
-    </ol>
-  </div>
-</section>
-
-<!-- Marzipanpralinen -->
-<section id="marzipanpralinen" class="recipe snacks" style="background:#fff7f0; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #ffd1a3;">
-  <h2>🌰 Marzipanpralinen</h2>
-  <p class="meta">
-    ⏱️ Aktiv: 15 Min | 🕒 Gesamt: 30 Min | 👥 Stück:
-    <input type="number" id="marzipanpralinen-servings" value="20" min="1" style="width:64px">
-  </p>
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul>
-      <li><span data-base="200">200</span> g blanchierte Mandeln</li>
-      <li><span data-base="150">150</span> g Puderzucker</li>
-      <li><span data-base="2">2</span> EL Rosenwasser oder Orangensaft</li>
-      <li>Kakaopulver zum Wälzen</li>
-    </ul>
-  </div>
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Mandeln fein mahlen, mit Puderzucker &amp; Flüssigkeit verkneten.</li>
-      <li>Kugeln formen, in Kakao wälzen, kaltstellen.</li>
-    </ol>
-  </div>
-</section>
-
-<!-- Mousse au chocolat -->
-<section id="mousse-chocolat" class="recipe snacks" style="background:#fff7f0; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #ffd1a3;">
-  <h2>🍫 Mousse au chocolat</h2>
-  <p class="meta">
-    ⏱️ Aktiv: 20 Min | 🕒 Gesamt: ~3 h 20 Min | 👥 Portionen:
-    <input type="number" id="mousse-chocolat-servings" value="4" min="1" style="width:64px">
-  </p>
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul>
-      <li><span data-base="200">200</span> g Zartbitterschokolade</li>
-      <li><span data-base="3">3</span> Eier (getrennt)</li>
-      <li><span data-base="50">50</span> g Zucker</li>
-      <li><span data-base="300">300</span> ml Schlagsahne</li>
-      <li><span data-base="1">1</span> Prise Salz</li>
-      <li><span data-base="1">1</span> TL Vanilleextrakt</li>
-    </ul>
-  </div>
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Schokolade schmelzen &amp; abkühlen. Eigelb mit Zucker cremig schlagen.</li>
-      <li>Eiweiß &amp; Sahne separat steif schlagen.</li>
-      <li>Schoko zur Eigelbmasse, dann Eischnee &amp; Sahne unterheben. 3 h kühlen.</li>
-    </ol>
-  </div>
-</section>
-
-<!-- Roti Thai Pancake -->
-<section id="roti-thai" class="recipe snacks" style="background:#fff7f0; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #ffd1a3;">
-  <h2>🥞 Roti Thai Pancake</h2>
-  <p class="meta">
-    ⏱️ Aktiv: 20 Min | 🕒 Gesamt: 40 Min | 👥 Portionen:
-    <input type="number" id="roti-thai-servings" value="6" min="1" style="width:64px">
-  </p>
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul>
-      <li><span data-base="250">250</span> g Mehl</li>
-      <li><span data-base="1">1</span> Ei</li>
-      <li><span data-base="120">120</span> ml Wasser</li>
-      <li><span data-base="1">1</span> EL Öl</li>
-      <li>Banane oder Schokolade als Füllung</li>
-    </ul>
-  </div>
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Mehl, Ei, Wasser, Öl verkneten, 20 Min ruhen lassen.</li>
-      <li>Dünn ausrollen, in Pfanne mit Füllung ausbacken, goldbraun wenden.</li>
-    </ol>
-  </div>
-</section>
-
-<!-- Sticky Rice mit Mango -->
-<section id="sticky-rice" class="recipe snacks" style="background:#fff7f0; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #ffd1a3;">
-  <h2>🥭 Sticky Rice mit Mango</h2>
-  <p class="meta">
-    ⏱️ Aktiv: 30 Min | 🕒 Gesamt: ~1 Std | 👥 Portionen:
-    <input type="number" id="sticky-rice-servings" value="4" min="1" style="width:64px">
-  </p>
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul>
-      <li><span data-base="200">200</span> g Klebreis</li>
-      <li><span data-base="200">200</span> ml Kokosmilch</li>
-      <li><span data-base="50">50</span> g Zucker</li>
-      <li><span data-base="1">1</span> Prise Salz</li>
-      <li><span data-base="2">2</span> reife Mangos</li>
-    </ul>
-  </div>
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Klebreis dämpfen/garen.</li>
-      <li>Kokosmilch mit Zucker &amp; Salz erhitzen. Hälfte zum Reis, Hälfte als Sauce.</li>
-      <li>Mit Mango in Scheiben servieren.</li>
-    </ol>
-  </div>
-</section>
-
-<!-- Tiramisu -->
-<section id="tiramisu" class="recipe snacks" style="background:#fff7f0; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #ffd1a3;">
-  <h2>☕ Tiramisu</h2>
-  <p class="meta">
-    ⏱️ Aktiv: 30 Min | 🕒 Gesamt: ~4 Std | 👥 Portionen:
-    <input type="number" id="tiramisu-servings" value="6" min="1" style="width:64px">
-  </p>
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul>
-      <li><span data-base="250">250</span> g Mascarpone</li>
-      <li><span data-base="200">200</span> g Löffelbiskuits</li>
-      <li><span data-base="3">3</span> Eier (getrennt)</li>
-      <li><span data-base="100">100</span> g Zucker</li>
-      <li><span data-base="200">200</span> ml starker Kaffee (kalt)</li>
-      <li>Kakaopulver zum Bestäuben</li>
-    </ul>
-  </div>
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Eigelb mit Zucker cremig rühren, Mascarpone unterheben.</li>
-      <li>Eiweiß steif schlagen, unterheben.</li>
-      <li>Biscuits kurz in Kaffee tauchen, mit Creme schichten. 4 Std kühlen, mit Kakao bestäuben.</li>
-    </ol>
-  </div>
-</section>
-  
-
-<!-- Drinks-Cover -->
+<!-- =========================================================
+     Drinks (Cover) – neue Unterkategorien hinzugefügt
+========================================================= -->
 <section id="drinks-cover" class="cover drinks" 
          style="background:var(--blau); min-height:70vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:30px;">
   <div style="background:#fff; border:3px dashed #99cfff; border-radius:16px; padding:30px; max-width:92%; box-shadow:var(--shadow);">
@@ -2592,187 +862,20 @@ if (typeof window.updateRecipe !== 'function') {
   </div>
 </section>
 
-<!-- Butterkeks Cocktail -->
-<section id="butterkeks-cocktail" class="recipe drinks" style="background:#f0f8ff; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #b3d9ff;">
-  <h2>🍪 Butterkeks Cocktail</h2>
-  <p class="meta">
-    ⏱️ Aktiv: 5 Min | 🕒 Gesamt: 5 Min | 👥 Portionen:
-    <input type="number" id="butterkeks-cocktail-servings" value="2" min="1" style="width:64px">
-  </p>
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul>
-      <li><span data-base="4">4</span> cl Butterkekscreme-Likör</li>
-      <li><span data-base="2">2</span> cl Wodka</li>
-      <li><span data-base="4">4</span> cl Milch oder Sahne</li>
-      <li><span data-base="1">1</span> cl Karamell- oder Vanillesirup</li>
-      <li>Eiswürfel</li>
-      <li>Deko: Schlagsahne, Butterkeksbrösel</li>
-    </ul>
-  </div>
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Eiswürfel in Shaker geben.</li>
-      <li>Likör, Wodka, Milch/Sahne &amp; Sirup zugeben, kräftig shaken.</li>
-      <li>In Glas füllen, nach Belieben mit Sahne &amp; Keks dekorieren.</li>
-    </ol>
-  </div>
+<!-- Drinks – UNTERKATEGORIE-COVER: Alkoholische Getränke -->
+<section id="alkoholische-getraenke-cover" class="cover drinks"
+         style="background-color:#CFE9FF; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 0;">
+  <h1 style="font-size:2em; margin:0;">🍸 Alkoholische Getränke</h1>
 </section>
 
-<!-- Mai Tai -->
-<section id="mai-tai" class="recipe drinks" style="background:#f0f8ff; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #b3d9ff;">
-  <h2>🌺 Mai Tai</h2>
-  <p class="meta">
-    ⏱️ Aktiv: 5 Min | 🕒 Gesamt: 5 Min | 👥 Portionen:
-    <input type="number" id="mai-tai-servings" value="1" min="1" style="width:64px">
-  </p>
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul>
-      <li><span data-base="4">4</span> cl Weißer Rum</li>
-      <li><span data-base="2">2</span> cl Brauner Rum</li>
-      <li><span data-base="2">2</span> cl Orangenlikör</li>
-      <li><span data-base="1">1</span> cl Mandelsirup (Orgeat)</li>
-      <li><span data-base="2">2</span> cl Limettensaft</li>
-      <li>Eiswürfel</li>
-    </ul>
-  </div>
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <p>Alles in Shaker mit Eis kräftig schütteln. In Glas mit frischem Eis abseihen, mit Limettenscheibe &amp; Minze garnieren.</p>
-  </div>
-</section>
-
-<!-- Mojito -->
-<section id="mojito" class="recipe drinks" style="background:#f0f8ff; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #b3d9ff;">
-  <h2>🌿 Mojito</h2>
-  <p class="meta">
-    ⏱️ Aktiv: 5 Min | 🕒 Gesamt: 5 Min | 👥 Portionen:
-    <input type="number" id="mojito-servings" value="1" min="1" style="width:64px">
-  </p>
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul>
-      <li><span data-base="5">5</span> cl Weißer Rum</li>
-      <li><span data-base="2">2</span> TL Rohrzucker</li>
-      <li><span data-base="1">1</span> Limette (geachtelt)</li>
-      <li><span data-base="6">6</span> Blätter Minze</li>
-      <li>Sodawasser</li>
-      <li>Eiswürfel</li>
-    </ul>
-  </div>
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Limettenstücke mit Zucker zerdrücken.</li>
-      <li>Minze leicht andrücken, Eis &amp; Rum zugeben.</li>
-      <li>Mit Soda auffüllen, sanft umrühren.</li>
-    </ol>
-  </div>
-</section>
-
-<!-- Piña Colada -->
-<section id="pina-colada" class="recipe drinks" style="background:#f0f8ff; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #b3d9ff;">
-  <h2>🍍 Piña Colada</h2>
-  <p class="meta">
-    ⏱️ Aktiv: 5 Min | 🕒 Gesamt: 5 Min | 👥 Portionen:
-    <input type="number" id="pina-colada-servings" value="1" min="1" style="width:64px">
-  </p>
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul>
-      <li><span data-base="4">4</span> cl Weißer Rum</li>
-      <li><span data-base="2">2</span> cl Kokoscreme</li>
-      <li><span data-base="8">8</span> cl Ananassaft</li>
-      <li>Eiswürfel</li>
-      <li>Deko: Ananasscheibe, Cocktailkirsche</li>
-    </ul>
-  </div>
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <p>Alles mit Eis im Shaker mixen oder im Blender cremig schlagen. In Glas füllen, mit Ananas &amp; Kirsche garnieren.</p>
-  </div>
-</section>
-
-<!-- Tequila Sunrise -->
-<section id="tequila-sunrise" class="recipe drinks" style="background:#f0f8ff; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #b3d9ff;">
-  <h2>🌅 Tequila Sunrise</h2>
-  <p class="meta">
-    ⏱️ Aktiv: 5 Min | 🕒 Gesamt: 5 Min | 👥 Portionen:
-    <input type="number" id="tequila-sunrise-servings" value="1" min="1" style="width:64px">
-  </p>
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul>
-      <li><span data-base="4">4</span> cl Tequila</li>
-      <li><span data-base="10">10</span> cl Orangensaft</li>
-      <li><span data-base="2">2</span> cl Grenadinesirup</li>
-      <li>Eiswürfel</li>
-    </ul>
-  </div>
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Tequila &amp; Orangensaft auf Eis ins Glas geben.</li>
-      <li>Grenadine langsam zugeben, sie sinkt nach unten → Sunrise-Effekt.</li>
-    </ol>
-  </div>
-</section>
-
-<!-- Virgin Mojito -->
-<section id="virgin-mojito" class="recipe drinks" style="background:#f0f8ff; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #b3d9ff;">
-  <h2>🌱 Virgin Mojito (alkoholfrei)</h2>
-  <p class="meta">
-    ⏱️ Aktiv: 5 Min | 🕒 Gesamt: 5 Min | 👥 Portionen:
-    <input type="number" id="virgin-mojito-servings" value="1" min="1" style="width:64px">
-  </p>
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul>
-      <li><span data-base="2">2</span> TL Rohrzucker</li>
-      <li><span data-base="1">1</span> Limette (geachtelt)</li>
-      <li><span data-base="6">6</span> Blätter Minze</li>
-      <li>Sodawasser</li>
-      <li>Eiswürfel</li>
-    </ul>
-  </div>
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <p>Limetten &amp; Zucker zerdrücken, Minze andrücken, mit Eis auffüllen &amp; Soda dazugeben.</p>
-  </div>
-</section>
-
-<!-- Iced Chai Latte -->
-<section id="iced-chai" class="recipe drinks" style="background:#f0f8ff; padding:20px; border-radius:16px; margin:18px 12px; border:1px solid #b3d9ff;">
-  <h2>🧊 Iced Chai Latte (alkoholfrei)</h2>
-  <p class="meta">
-    ⏱️ Aktiv: 10 Min | 🕒 Gesamt: 10 Min | 👥 Portionen:
-    <input type="number" id="iced-chai-servings" value="2" min="1" style="width:64px">
-  </p>
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul>
-      <li><span data-base="2">2</span> Beutel Chai-Tee</li>
-      <li><span data-base="300">300</span> ml Wasser</li>
-      <li><span data-base="200">200</span> ml Milch</li>
-      <li><span data-base="2">2</span> TL Honig oder Sirup</li>
-      <li>Eiswürfel</li>
-    </ul>
-  </div>
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      <li>Chai-Tee mit heißem Wasser ziehen lassen, abkühlen.</li>
-      <li>Mit Milch &amp; Honig verrühren, über Eis gießen.</li>
-    </ol>
-  </div>
+<!-- Drinks – UNTERKATEGORIE-COVER: Alkoholfreie Getränke -->
+<section id="alkoholfreie-getraenke-cover" class="cover drinks"
+         style="background-color:#CFE9FF; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 0;">
+  <h1 style="font-size:2em; margin:0;">🥤 Alkoholfreie Getränke</h1>
 </section>
 
   
-
-
-
+  
   <!-- ====================== GLOBAL SERVINGS FIX + CLEANUP ====================== -->
 <style>
   /* Alle "Zurück"-Buttons komplett ausblenden */
@@ -3128,3 +1231,14 @@ if (typeof window.updateRecipe !== 'function') {
 
 
   
+
+
+  
+
+
+
+
+
+  
+
+
