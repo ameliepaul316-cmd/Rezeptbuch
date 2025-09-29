@@ -306,8 +306,27 @@ window.resolveTargets = function(cat, subcat){
   let cfg = map[cat];
   if (cfg && typeof cfg === 'object' && subcat && cfg[subcat]) cfg = cfg[subcat];
 
-  const contentAnchor = cfg ? pick(cfg.cover) : document.body;
-  const tocList = cfg?.toc ? document.querySelector(cfg.toc) : null;
+const contentAnchor =
+  (cfg && pick(cfg.cover)) ||
+  document.querySelector('#' + (
+    cat === 'Frühstück' ? 'fruehstueck' :
+    cat && cat.toLowerCase().includes('haupt') ? 'hauptspeisen' :
+    cat && cat.toLowerCase().includes('snacks') ? 'snacks' :
+    (cat || '').toLowerCase()
+  ) + '-cover') ||
+  document.body;
+
+  
+const tocList = (cfg && cfg.toc ? document.querySelector(cfg.toc) : null)
+  || document.querySelector('#' + (
+      cat === 'Frühstück' ? 'fruehstueck' :
+      cat && cat.toLowerCase().includes('haupt') ? 'hauptspeisen' :
+      cat && cat.toLowerCase().includes('snacks') ? 'snacks' :
+      (cat || '').toLowerCase()
+    ) + ' .cat ul')
+  || document.querySelector('.cat ul');
+
+  
   return { tocList, contentAnchor };
 };
 
@@ -3846,13 +3865,19 @@ if (typeof window.updateRecipe !== 'function') {
     }
 
     const { tocList, contentAnchor } = resolveTargets(cat, sub);
-    if(!tocList || !contentAnchor){ console.warn('Ziel nicht gefunden:', cat, sub); return; }
+if(!contentAnchor){ console.warn('Ziel nicht gefunden:', cat, sub); return; }
 
-    const html = buildRecipeSection({ id, title, servings, prep, total, ingredients, steps, cat });
+const html = buildRecipeSection({
+  id,
+  title, servings, prep, total, ingredients, steps, cat, sub,
+  dbId: rec.id   // ← wichtig
+});
+    
     const t = document.createElement('template'); t.innerHTML = html.trim();
     const section = t.content.firstElementChild;
 
-    contentAnchor.insertAdjacentElement('afterend', section);
+const pos = (contentAnchor === document.body) ? 'beforeend' : 'afterend';
+contentAnchor.insertAdjacentElement(pos, section /* bzw. t.content.firstElementChild */);
 
     if (!tocList.querySelector(`a[href="#${id}"]`)) {
       const li = document.createElement('li');
@@ -4124,8 +4149,18 @@ if (typeof window.updateRecipe !== 'function') {
     let i=2; while(document.getElementById(domId)) domId = slug(title) + '-' + (i++);
 
     // Ziel (Cover & TOC-Liste) suchen
-    const targets = (typeof resolveTargets === 'function') ? resolveTargets(category, subcategory) : {};
-    const contentAnchor = targets?.contentAnchor || document.querySelector('#' + (category?.toLowerCase() || '') + '-cover') || document.body;
+const fallbackAnchor =
+  document.querySelector('#' + (
+    category === 'Frühstück' ? 'fruehstueck' :
+    category && category.toLowerCase().includes('haupt') ? 'hauptspeisen' :
+    category && category.toLowerCase().includes('snacks') ? 'snacks' :
+    (category || '').toLowerCase()
+  ) + '-cover') || document.body;
+
+const contentAnchor = targets?.contentAnchor || fallbackAnchor;
+const pos = (contentAnchor === document.body) ? 'beforeend' : 'afterend';
+contentAnchor.insertAdjacentElement(pos, t.content.firstElementChild);
+    
     const tocList = targets?.tocList || document.querySelector('.cat ul');
 
     // Section einfügen
