@@ -277,6 +277,82 @@ window.CATS = {
   "Drinks": []
 };
 
+
+  <script>
+/* ===== Alphabetisch einfügen (TOC + Content) & TOC-Finder ===== */
+(function(){
+  const norm = s => (s||'').toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'').trim();
+  window.normalizeKey = norm;
+
+  const catRoot = (cat)=>{
+    const map = {
+      'Frühstück':'#fruehstueck',
+      'Hauptspeise':'#hauptspeisen',
+      'Bakery':'#bakery',
+      'Snacks & Desserts':'#snacks',
+      'Drinks':'#drinks'
+    };
+    return document.querySelector(map[cat]||null);
+  };
+
+  // UL im TOC passend zur Kategorie/Unterkategorie finden
+  window.getTocList = function(cat, sub){
+    const root = catRoot(cat);
+    if(!root) return document.querySelector('.cat ul');
+    if(!sub)  return root.querySelector('.cat ul');
+
+    // Suche h4 mit passendem Text, nimm das nächste UL dahinter
+    const h4 = Array.from(root.querySelectorAll('h4')).find(el => norm(el.textContent).includes(norm(sub)));
+    if(!h4){
+      // Fallback: erstes UL unter der Kategorie
+      return root.querySelector('.cat ul');
+    }
+    let el = h4.nextElementSibling;
+    while(el && el.tagName !== 'UL') el = el.nextElementSibling;
+    return el || root.querySelector('.cat ul');
+  };
+
+  // <li> alphabetisch in <ul> einsortieren
+  window.insertSortedTOC = function(ul, li){
+    const key = norm(li.textContent);
+    const items = Array.from(ul.children).filter(x=>x.tagName==='LI');
+    const at = items.find(el => norm(el.textContent) > key);
+    if (at) ul.insertBefore(li, at); else ul.appendChild(li);
+  };
+
+  // Section alphabetisch hinter passendes Cover einsortieren
+  window.insertSortedSection = function({section, cat, sub}){
+    const t = (typeof resolveTargets === 'function') ? resolveTargets(cat, sub) : null;
+    const cover =
+      t?.contentAnchor ||
+      document.querySelector('#' + (cat?.toLowerCase()||'') + '-cover') ||
+      document.querySelector('#cover') || document.body;
+
+    // Kandidaten in gleicher (Kat/Sub)-Gruppe
+    const all = Array.from(document.querySelectorAll('section.recipe'))
+      .filter(s => s !== section
+        && ((s.dataset.category||'').toLowerCase() === (cat||'').toLowerCase())
+        && ((s.dataset.subcategory||'') === (sub||'')));
+
+    const key = norm(section.querySelector('h2')?.textContent);
+    const before = all.find(s => norm(s.querySelector('h2')?.textContent) > key);
+
+    if (before) before.parentNode.insertBefore(section, before);
+    else cover.insertAdjacentElement('afterend', section);
+  };
+
+  // Einmalige Initial-Sortierung bestehender TOC-Listen (optional, schadet nicht)
+  window.sortExistingTOCLists = function(){
+    document.querySelectorAll('.cat ul').forEach(ul=>{
+      const items = Array.from(ul.children).filter(li=>li.tagName==='LI');
+      items.sort((a,b)=>norm(a.textContent).localeCompare(norm(b.textContent)));
+      items.forEach(li=>ul.appendChild(li));
+    });
+  };
+})();
+</script>
+
+  
 /* ===== Ziel-Orte (Cover + TOC-Liste) bestimmen ===== */
 window.resolveTargets = function(cat, subcat){
   const pick = sel =>
