@@ -1090,22 +1090,7 @@ window.rebuildSearch = function(){
     if(!btn) return;
 
     // Löschen (siehe separater Delete-Block unten für robustere Variante)
-    if (btn.classList.contains('btn-delete')) {
-      const dbId = btn.dataset.id;
-      if (!dbId) return;
-      if (!confirm('Dieses Rezept wirklich löschen?')) return;
-
-      const res = await fetch('/api/recipes?id=' + encodeURIComponent(dbId), { method: 'DELETE' });
-      if(!res.ok){ alert('Löschen fehlgeschlagen'); return; }
-
-      const sec = btn.closest('section.recipe');
-      if (sec) {
-        const hash = '#' + sec.id;
-        sec.remove();
-        document.querySelectorAll(`.cat ul li a[href="${hash}"]`).forEach(a => a.parentElement.remove());
-      }
-      return;
-    }
+    
 
     if (btn.classList.contains('btn-edit')) {
       const sec = btn.closest('section.recipe');
@@ -1237,7 +1222,40 @@ window.rebuildSearch = function(){
 
 
   
+<script>
+/* ===== Delete-Logik: Rezept + TOC-Link(e) entfernen ===== */
+(function(){
+  document.addEventListener('click', async (e)=>{
+    const btn = e.target.closest('button.btn-delete');
+    if (!btn) return;
 
+    const dbId = btn.dataset.id;
+    if (!dbId) return;
+
+    if (!confirm('Dieses Rezept wirklich löschen?')) return;
+
+    try{
+      const res = await fetch('/api/recipes?id=' + encodeURIComponent(dbId), { method:'DELETE' });
+      if(!res.ok){ alert('Löschen fehlgeschlagen'); return; }
+    }catch(err){
+      alert('Netzwerkfehler beim Löschen'); return;
+    }
+
+    const sec = btn.closest('section.recipe');
+    if (sec) {
+      const hash = '#' + sec.id;
+      sec.remove();
+      document.querySelectorAll(`.cat ul li a[href="${hash}"]`).forEach(a=>{
+        const li = a.parentElement;
+        if (li) li.remove();
+      });
+      if (window.rebuildSearch) window.rebuildSearch();
+      if (window.sortExistingTOCLists) window.sortExistingTOCLists();
+    }
+  });
+})();
+</script>
+  
 
 
 
