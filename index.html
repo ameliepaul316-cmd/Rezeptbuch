@@ -354,71 +354,67 @@ window.CATS = {
 </script>
 
 
-
-  <script>
-/* ===== Ziel-Orte (Cover + TOC-Liste) bestimmen ===== */
+<script>
+/* ===== Ziel-Orte (Cover + TOC-Liste) bestimmen (gefixt) ===== */
 window.resolveTargets = function(cat, subcat){
   const pick = sel =>
-    sel.split(',').map(s=>s.trim()).map(s=>document.querySelector(s)).find(Boolean);
+    sel && sel.split(',').map(s=>s.trim()).map(s=>document.querySelector(s)).find(Boolean);
 
   const map = {
-  "Hauptspeise": {
-    "Suppen & Eintöpfe":             { cover:"#suppen-und-eintoepfe-cover", toc:"#hauptspeisen .cat ul" },
-    "Pasta & Nudeln":                { cover:"#pasta-und-nudeln-cover", toc:"#hauptspeisen .cat ul" },
-    "Pizza":                         { cover:"#pizza-cover", toc:"#hauptspeisen .cat ul" },
-    "Reis & Getreidegerichte":       { cover:"#reis-und-getreide-cover", toc:"#hauptspeisen .cat ul" },
-    "Internationale Küche & Currys": { cover:"#internationale-kueche-und-currys-cover", toc:"#hauptspeisen .cat ul" },
-    "Snacks, Beilage & Fingerfood":  { cover:"#snacks-beilagen-und-fingerfood-cover", toc:"#hauptspeisen .cat ul" },
-    "Basics & Saucen":               { cover:"#basics-und-saucen-cover", toc:"#hauptspeisen .cat ul" },
-    "Curry-Paste":                   { cover:"#curry-pasten-cover", toc:"#hauptspeisen .cat ul" }
-  },
-  "Bakery": {
-    "Kuchen & Torten":               { cover:"#kuchen-und-torten-cover", toc:"#bakery .cat ul" },
-    "Plätzchen & Kleingebäck":       { cover:"#plätzchen-und-kleingebäck-cover", toc:"#bakery .cat ul" },
-    "Sonstiges Gebäck":              { cover:"#sonstiges-gebäck-cover", toc:"#bakery .cat ul" }
-  },
-  "Snacks & Desserts":               { cover:"#snacks-cover", toc:"#snacks .cat ul" },
+    "Hauptspeise": {
+      "Suppen & Eintöpfe":             { cover:"#suppen-und-eintoepfe-cover", toc:"#hauptspeisen ul" },
+      "Pasta & Nudeln":                { cover:"#pasta-und-nudeln-cover",     toc:"#hauptspeisen ul" },
+      "Pizza":                         { cover:"#pizza-cover",                toc:"#hauptspeisen ul" },
+      "Reis & Getreidegerichte":       { cover:"#reis-und-getreide-cover",    toc:"#hauptspeisen ul" },
+      "Internationale Küche & Currys": { cover:"#internationale-kueche-und-currys-cover", toc:"#hauptspeisen ul" },
+      "Snacks, Beilage & Fingerfood":  { cover:"#snacks-beilagen-und-fingerfood-cover",    toc:"#hauptspeisen ul" },
+      "Basics & Saucen":               { cover:"#basics-und-saucen-cover",    toc:"#hauptspeisen ul" },
+      "Curry-Paste":                   { cover:"#curry-pasten-cover",         toc:"#hauptspeisen ul" }
+    },
+    "Bakery": {
+      "Kuchen & Torten":               { cover:"#kuchen-und-torten-cover",            toc:"#bakery ul" },
+      "Plätzchen & Kleingebäck":       { cover:"#plätzchen-und-kleingebäck-cover",    toc:"#bakery ul" },
+      "Sonstiges Gebäck":              { cover:"#sonstiges-gebäck-cover",             toc:"#bakery ul" }
+    },
+    "Snacks & Desserts":               { cover:"#snacks-cover", toc:"#snacks ul" },
 
-  /* Drinks – an deine echten IDs angepasst */
-  "Drinks": {
-    "Alkoholische Getränke":         { cover:"#alkoholische-getraenke-cover",       toc:"#drinks-alkoholische-list" },
-    "Nicht-alkoholische Getränke":   { cover:"#alkoholfreie-getraenke-cover",       toc:"#drinks-nicht-alkoholische-list" }
-  },
+    "Drinks": {
+      "Alkoholische Getränke":         { cover:"#alkoholische-getraenke-cover",     toc:"#drinks-alkoholische-list" },
+      "Nicht-alkoholische Getränke":   { cover:"#alkoholfreie-getraenke-cover",     toc:"#drinks-nicht-alkoholische-list" }
+    },
 
-  /* Frühstück – an deine echten IDs angepasst */
-  "Frühstück": {
-    "Brot & Aufstriche":             { cover:"#brot-und-aufstriche-cover",          toc:"#fruehstueck-brot-aufstriche-list" },
-    "Sonstiges":                     { cover:"#fruehstueck-sonstiges-cover",        toc:"#fruehstueck-sonstiges-list" }
-  }
-};
+    "Frühstück": {
+      "Brot & Aufstriche":             { cover:"#brot-und-aufstriche-cover",        toc:"#fruehstueck-brot-aufstriche-list" },
+      "Sonstiges":                     { cover:"#fruehstueck-sonstiges-cover",      toc:"#fruehstueck-sonstiges-list" }
+    }
+  };
 
-  
   let cfg = map[cat];
   if (cfg && typeof cfg === 'object' && subcat && cfg[subcat]) cfg = cfg[subcat];
 
+  const guessId =
+    cat === 'Frühstück' ? 'fruehstueck' :
+    (cat||'').toLowerCase().includes('haupt') ? 'hauptspeisen' :
+    (cat||'').toLowerCase().includes('snacks') ? 'snacks' :
+    (cat||'').toLowerCase();
+
   const contentAnchor =
     (cfg && pick(cfg.cover)) ||
-    document.querySelector('#' + (
-      cat === 'Frühstück' ? 'fruehstueck' :
-      cat && cat.toLowerCase().includes('haupt') ? 'hauptspeisen' :
-      cat && cat.toLowerCase().includes('snacks') ? 'snacks' :
-      (cat || '').toLowerCase()
-    ) + '-cover') ||
+    document.querySelector('#' + guessId + '-cover') ||
     document.body;
 
-  const tocList = (cfg && cfg.toc ? document.querySelector(cfg.toc) : null)
-    || document.querySelector('#' + (
-        cat === 'Frühstück' ? 'fruehstueck' :
-        cat && cat.toLowerCase().includes('haupt') ? 'hauptspeisen' :
-        cat && cat.toLowerCase().includes('snacks') ? 'snacks' :
-        (cat || '').toLowerCase()
-      ) + ' .cat ul')
-    || document.querySelector('.cat ul');
+  const tocList =
+    (cfg && cfg.toc && document.querySelector(cfg.toc)) ||
+    document.querySelector('#' + guessId + ' ul') ||
+    document.querySelector('.cat ul');
 
   return { tocList, contentAnchor };
 };
 </script>
+  
 
+  
+  
     <!-- ===== FIX: Rezept-Sektion aufbauen (korrekte Template-Literals) ===== -->
 <script>
 window.buildRecipeSection = function({
@@ -482,7 +478,7 @@ window.__buildRecipeSection = window.buildRecipeSection;
 </script>
 
 
-
+<script>
 /* ===== Suche neu binden (wird von unten nachgeladenen Rezepten erneut aufgerufen) ===== */
 window.rebuildSearch = function(){
   const input = document.getElementById('recipeSearch');
@@ -509,7 +505,7 @@ window.rebuildSearch = function(){
   };
 };
 
-/* ===== Modal öffnen/schließen (ohne Submit-Logik, die ist unten!) ===== */
+/* ===== Modal öffnen/schließen (ohne Submit-Logik) ===== */
 (function(){
   const by = (sel, r=document)=>r.querySelector(sel);
   const openBtn = by('#openAddRecipe');
@@ -524,7 +520,7 @@ window.rebuildSearch = function(){
   if (cancel)  cancel.addEventListener('click', closeModal);
   modal?.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
 
-  // Kategorien füllen (kommt aus window.CATS)
+  // Kategorien füllen
   (function fillCats(){
     const cats = Object.keys(window.CATS||{});
     if (!catSel) return;
@@ -538,7 +534,9 @@ window.rebuildSearch = function(){
   });
 })();
 </script>
+  
 
+  
 <!-- 🔍 Suchbox Styles (unverändert) -->
 <style>
   .searchbox{ margin:12px 0 20px; }
@@ -907,8 +905,9 @@ window.rebuildSearch = function(){
   }
 </style>
 
-<script>
-/* ===== DB -> Frontend: Alles laden und ins DOM setzen ===== */
+
+  <script>
+/* ===== DB -> Frontend: Alles laden und ins DOM setzen (gefixt) ===== */
 (function(){
   async function renderRecipeRecord(rec){
     const id = rec.id;
@@ -921,26 +920,17 @@ window.rebuildSearch = function(){
     const ingredients = JSON.parse(rec.ingredients_json || '[]');
     const steps = JSON.parse(rec.steps_json || '[]');
 
-    const resolveTargets = window.resolveTargets;
-    const buildRecipeSection = window.buildRecipeSection;
-
-    if(!resolveTargets || !buildRecipeSection){
-      console.warn('resolveTargets/buildRecipeSection nicht global.');
-      return;
-    }
-
-    const { tocList } = resolveTargets(cat, sub);
+    if(!window.buildRecipeSection){ console.warn('buildRecipeSection fehlt'); return; }
 
     const html = buildRecipeSection({
-      id, title, servings, prep, total, ingredients, steps, cat, sub,
-      dbId: rec.id
+      id, title, servings, prep, total, ingredients, steps, cat, sub, dbId: rec.id
     });
 
     const t = document.createElement('template');
     t.innerHTML = html.trim();
     const section = t.content.firstElementChild;
 
-    // Alphabetisch einsortieren
+    // Alphabetisch in Content einsortieren
     if (typeof insertSortedSection === 'function') {
       insertSortedSection({ section, cat, sub });
     } else {
@@ -949,18 +939,16 @@ window.rebuildSearch = function(){
 
     if (window.initRecipeScaling) window.initRecipeScaling();
 
+    // Richtige TOC-Liste per getTocList
+    const tocList = (window.getTocList ? getTocList(cat, sub) : (window.resolveTargets?.(cat, sub)||{}).tocList);
     if (tocList && !tocList.querySelector(`a[href="#${id}"]`)) {
       const li = document.createElement('li');
       const a = document.createElement('a');
       a.href = '#' + id;
       a.textContent = title;
       li.appendChild(a);
-
-      if (typeof insertSortedTOC === 'function') {
-        insertSortedTOC(tocList, li);
-      } else {
-        tocList.appendChild(li);
-      }
+      if (typeof insertSortedTOC === 'function') insertSortedTOC(tocList, li);
+      else tocList.appendChild(li);
     }
   }
 
@@ -969,10 +957,7 @@ window.rebuildSearch = function(){
       const res = await fetch('/api/recipes', { headers:{accept:'application/json'} });
       if(!res.ok) throw new Error('GET /api/recipes fehlgeschlagen');
       const list = await res.json();
-
-      for(const rec of list){
-        await renderRecipeRecord(rec);
-      }
+      for(const rec of list) await renderRecipeRecord(rec);
 
       if (window.rebuildSearch) window.rebuildSearch();
       if (window.initRecipeScaling) window.initRecipeScaling();
@@ -990,6 +975,7 @@ window.rebuildSearch = function(){
 })();
 </script>
 
+  
 <script>
 /* ========= 1) Portionsrechner ========= */
 (function(){
@@ -1084,8 +1070,10 @@ window.rebuildSearch = function(){
 })();
 </script>
 
-<script>
-/* ========= 3) Modal: Editieren/Löschen + Submit ========= */
+
+
+  <script>
+/* ========= Modal: Editieren/Löschen + Submit (TOC-Fix enthalten) ========= */
 (function(){
   const modal = document.getElementById('addRecipeModal');
   const form  = document.getElementById('recipeForm');
@@ -1101,6 +1089,7 @@ window.rebuildSearch = function(){
     const btn = e.target.closest('button');
     if(!btn) return;
 
+    // Löschen (siehe separater Delete-Block unten für robustere Variante)
     if (btn.classList.contains('btn-delete')) {
       const dbId = btn.dataset.id;
       if (!dbId) return;
@@ -1206,7 +1195,6 @@ window.rebuildSearch = function(){
 
     const targets = (typeof resolveTargets === 'function') ? resolveTargets(category, subcategory) : {};
     const contentAnchor = targets?.contentAnchor || document.body;
-    const tocList = targets?.tocList || document.querySelector('.cat ul');
 
     const html = buildRecipeSection({
       id: domId,
@@ -1227,16 +1215,14 @@ window.rebuildSearch = function(){
 
     if (typeof window.initRecipeScaling === 'function') window.initRecipeScaling();
 
+    // >>> WICHTIG: TOC-Liste korrekt bestimmen
+    const tocList = (window.getTocList ? getTocList(category, subcategory) : (targets?.tocList || document.querySelector('.cat ul')));
     if (tocList) {
       const li = document.createElement('li');
       const a = document.createElement('a'); a.href = '#' + domId; a.textContent = title;
       li.appendChild(a);
-
-      if (typeof insertSortedTOC === 'function') {
-        insertSortedTOC(tocList, li);
-      } else {
-        tocList.appendChild(li);
-      }
+      if (typeof insertSortedTOC === 'function') insertSortedTOC(tocList, li);
+      else tocList.appendChild(li);
     }
 
     if (typeof rebuildSearch === 'function') rebuildSearch();
@@ -1246,7 +1232,6 @@ window.rebuildSearch = function(){
   });
 })();
 </script>
-
 
   
 
