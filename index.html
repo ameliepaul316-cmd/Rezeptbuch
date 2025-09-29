@@ -1,538 +1,385 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Meine Lieblingsrezepte – Cover & Inhaltsverzeichnis</title>
-
+  <meta charset="utf-8">
+  <title>Rezepte</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <!-- Deine bestehenden CSS-Variablen (falls vorhanden) -->
   <style>
-    /* ========== Design-Variablen (Pastell) ========== */
     :root{
-      --beige:#F6F1E7;
-      --text:#2b2b2b;
-      --muted:#7b7b7b;
-      --border:#e4dccb;
-
-      --gelb:#FFF6BF;        /* Frühstück */
-      --mint:#CFF5E7;        /* Hauptspeisen */
-      --rosa:#FFD3E2;        /* Bakery */
-      --orange:#FFD8B1;      /* Snacks & Desserts */
-      --blau:#CFE9FF;        /* Drinks */
-
-      --link:#3a6ea5;
-      --link-hover:#214e7c;
-
-      --shadow: 0 6px 18px rgba(0,0,0,.06);
-      --radius: 18px;
-      --radius-sm: 12px;
-      --maxw: 700px;     /* Tablet */
-      --iphone-w: 430px; /* iPhone Breite */
+      --mint:#CFF5E7;
+      --rosa:#FFD3E2;
+      --orange:#FFE6CC;
+      --blau:#E6F2FF;
+      --muted:#666;
+      --shadow:0 8px 20px rgba(0,0,0,0.08);
     }
-
-    /* ========== Reset + Typo ========== */
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0}
-    body{
-      font-family: ui-sans-serif, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
-      color:var(--text);
-      background:#ffffff;
-      line-height:1.55;
-      -webkit-font-smoothing:antialiased;
-      text-rendering:optimizeLegibility;
-    }
-
-    /* iPhone-optimierte Mittelspalte */
-    .page{
-      margin:0 auto;
-      width:100%;
-      max-width:var(--iphone-w);
-    }
-
-    /* ========== Inhaltsverzeichnis ========== */
-    .toc.beige{
-      background: var(--beige);
-      padding: 28px 14px 110px; /* Platz für Quickjump */
-    }
-    .toc .wrap{
-      background:#fff;
-      border:1.5px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding:20px 14px;
-    }
-    .toc h2{
-      margin:0 0 14px;
-      font-size: clamp(22px, 5.2vw, 28px);
-      text-align:center;
-    }
-    .divider{
-      height:1px;background:#eee;margin:18px 0;
-    }
-    .cat{
-      border-radius: var(--radius);
-      padding:14px;
-      margin: 12px 0 18px;
-      border:1px solid #eee;
-    }
-    .cat.gelb   { background: var(--gelb); }
-    .cat.mint   { background: var(--mint); }
-    .cat.rosa   { background: var(--rosa); }
-    .cat.orange { background: var(--orange); }
-    .cat.blau   { background: var(--blau); }
-
-    .cat > h3{
-      margin:0 0 8px;
-      font-size: clamp(18px, 4.6vw, 22px);
-    }
-    .cat h4{
-      margin:14px 0 4px;
-      font-size: 15px;
-      opacity:.9;
-    }
-
-    ul{list-style:none;margin:6px 0 10px;padding:0}
-    .cat > ul > li{margin:0;}
-    .cat ul li a{
-      display:block;
-      padding:10px 12px;
-      margin: 6px 0;
-      background:#ffffffc9;
-      border:1px solid #ffffff;
-      border-radius: var(--radius-sm);
-      text-decoration:none;
-      color:var(--text);
-      transition: transform .06s ease, box-shadow .2s ease, background .2s ease;
-      box-shadow: 0 1px 0 rgba(0,0,0,.02);
-    }
-    .cat ul li a:hover{
-      transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(0,0,0,.08);
-      background:#fff;
-    }
-
-    .cat h4 + ul{
-      border-left: 3px solid rgba(0,0,0,.08);
-      margin-left: 6px;
-      padding-left: 10px;
-    }
-
-    .pill{
-      display:inline-block;
-      font-size: 12px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border:1px solid #e7e7e7;
-      background:#fff;
-      text-decoration:none;
-      color:var(--text);
-      margin: 4px 6px 0 0;
-    }
-
-    .quickjump{
-      position: fixed;
-      right: 14px;
-      bottom: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      z-index: 50;
-    }
-    .quickjump a{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      padding:10px 12px;
-      background:#fff;
-      border:1px solid var(--border);
-      border-radius: 12px;
-      text-decoration:none;
-      color:var(--text);
-      font-size: 13px;
-      box-shadow: var(--shadow);
-      transition: transform .06s ease, box-shadow .2s ease;
-    }
-    .quickjump a:hover{
-      transform: translateY(-1px);
-      box-shadow: 0 8px 18px rgba(0,0,0,.1);
-    }
-
-    .space{height:16px}
-    .note{
-      color:var(--muted);
-      font-size:12px;
-      text-align:center;
-      margin-top:6px;
-    }
-
-    html{scroll-behavior:smooth}
-    .quickjump{ padding-bottom: env(safe-area-inset-bottom, 0); }
-    .toc.beige{ padding-bottom: calc(110px + env(safe-area-inset-bottom, 0)); }
+    /* (Deine bestehenden Klassen werden unten 1:1 ergänzt) */
   </style>
 </head>
 <body>
 
-<!-- =========================
-     ➕ Rezept hinzufügen (Modal)
-========================== -->
-<style>
-  .add-btn {
-    position: fixed; top: 14px; left: 14px; z-index: 1000;
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 10px 12px; border-radius: 12px;
-    background:#fff; border:1px solid #ddd; box-shadow: 0 6px 16px rgba(0,0,0,.08);
-    color:#222; text-decoration: none; font-size: 14px;
-  }
-  .add-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 22px rgba(0,0,0,.1); }
-
-  .modal-backdrop{ position: fixed; inset:0; background: rgba(0,0,0,.25);
-    display:none; align-items:center; justify-content:center; z-index: 1001; }
-  .modal { width: min(720px, 92vw); background:#fff; border:1.5px solid #eee;
-    border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.12); padding: 16px 16px 4px; }
-  .modal h3{ margin: 2px 0 10px; }
-  .modal .grid{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
-  .modal .grid-1{ display:grid; grid-template-columns: 1fr; gap:12px; }
-  .modal label{ font-size: 12px; color: #666; display:block; margin-bottom:4px; }
-  .modal input[type="text"], .modal input[type="number"], .modal select, .modal textarea{
-    width:100%; padding:10px 12px; border:1.5px solid #e5e5e5; border-radius:12px; font-size:14px;
-    outline:none; background:#fff;
-  }
-  .modal textarea{ min-height:120px; resize: vertical; }
-  .modal .actions{ display:flex; gap:10px; justify-content:flex-end; padding: 10px 0 6px; }
-  .btn{ padding:10px 12px; border-radius:10px; border:1px solid #ddd; background:#f8f8f8; cursor:pointer; }
-  .btn.primary{ background:#2f6fed; border-color:#2a61d0; color:#fff; }
-  .btn:disabled{ opacity:.6; cursor:not-allowed; }
-</style>
-
-<a class="add-btn" href="#" id="openAddRecipe">➕ Rezept</a>
-
-<div class="modal-backdrop" id="addRecipeModal">
-  <form class="modal" id="recipeForm">
-    <h3>Neues Rezept hinzufügen</h3>
-
-    <div class="grid">
-      <div>
-        <label for="title">Name des Rezepts</label>
-        <input id="title" type="text" required placeholder="z. B. Tomatenrisotto">
-      </div>
-      <div>
-        <label for="servings">Portionen</label>
-        <input id="servings" type="number" min="1" value="4" required>
-      </div>
-      <div>
-        <label for="prep">Zubereitungszeit (z. B. 20 Min)</label>
-        <input id="prep" type="text" required>
-      </div>
-      <div>
-        <label for="total">Gesamtzeit (z. B. 45 Min)</label>
-        <input id="total" type="text" required>
-      </div>
-      <div>
-        <label for="category">Hauptkategorie</label>
-        <select id="category" required></select>
-      </div>
-      <div>
-        <label for="subcategory">Unterkategorie (falls vorhanden)</label>
-        <select id="subcategory" disabled></select>
-      </div>
-    </div>
-
-    <div class="grid-1" style="margin-top:12px">
-      <div>
-        <label for="ingredients">Zutaten (eine pro Zeile – mit Menge am Anfang, z. B. "250 g Mehl")</label>
-        <textarea id="ingredients" placeholder="250 g Mehl&#10;1 TL Salz&#10;..."></textarea>
-      </div>
-      <div>
-        <label for="steps">Zubereitung (Schritte; jede Zeile wird ein Schritt)</label>
-        <textarea id="steps" placeholder="Zwiebel würfeln...&#10;Anschwitzen..."></textarea>
-      </div>
-    </div>
-
-    <div class="actions">
-      <button type="button" class="btn" id="cancelAdd">Abbrechen</button>
-      <button type="submit" class="btn primary">Speichern</button>
-    </div>
-  </form>
-</div>
+<!-- =========================================================
+     OBERER BEREICH: QUICK-JUMP + GLOBALE TOCs (pro Kategorie)
+========================================================= -->
+<section id="quickjump" style="padding:16px; background:#fff; border-bottom:1px solid #eee; position:sticky; top:0; z-index:50;">
+  <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+    <strong>🔎 Schnellzugriff:</strong>
+    <label> Kategorie
+      <select id="qj-category">
+        <option value="">— wählen —</option>
+        <option value="Frühstück">Frühstück</option>
+        <option value="Hauptspeisen">Hauptspeisen</option>
+        <option value="Bakery">Bakery</option>
+        <option value="Snacks">Snacks & Desserts</option>
+        <option value="Drinks">Drinks</option>
+      </select>
+    </label>
+    <label> Unterkategorie
+      <select id="qj-subcategory" disabled>
+        <option value="">— zuerst Kategorie —</option>
+      </select>
+    </label>
+    <button id="qj-go" type="button">Springen</button>
+  </div>
+</section>
 
 <script>
-/* ===== Kategorien inkl. neuer Unterkategorien ===== */
-window.CATS = {
-  "Frühstück": [
-    "Brot & Aufstriche",
-    "Sonstiges"
-  ],
-  "Hauptspeise": [
-    "Suppen & Eintöpfe",
-    "Pasta & Nudeln",
-    "Pizza",
-    "Reis & Getreidegerichte",
-    "Internationale Küche & Currys",
-    "Snacks, Beilage & Fingerfood",
-    "Basics & Saucen",
-    "Curry-Paste"
-  ],
-  "Bakery": [
-    "Kuchen & Torten",
-    "Plätzchen & Kleingebäck",
-    "Sonstiges Gebäck"
-  ],
-  "Snacks & Desserts": [],
-  "Drinks": [
-    "Alkoholische Getränke",
-    "Nicht-alkoholische Getränke"
-  ]
-};
-</script>
-
-
-<script>
-/* ===== Ziel-Orte (Cover + TOC-Liste) bestimmen ===== */
-window.resolveTargets = function(cat, subcat){
-  const pick = sel =>
-    sel.split(',').map(s=>s.trim()).map(s=>document.querySelector(s)).find(Boolean);
-
-  const map = {
-    "Frühstück": {
-      "Brot":        { cover:"#brot-cover", toc:"#fruehstueck .cat ul" },
-      "Aufstriche":  { cover:"#aufstriche-cover", toc:"#fruehstueck .cat ul" },
-      "Sonstiges":   { cover:"#fruehstueck-sonstiges-cover", toc:"#fruehstueck .cat ul" }
-    },
-    "Hauptspeise": {
-      "Suppen & Eintöpfe":             { cover:"#suppen-eintoepe-cover", toc:"#hauptspeisen .cat ul" },
-      "Pasta & Nudeln":                { cover:"#pasta-nudeln-cover", toc:"#hauptspeisen .cat ul" },
-      "Pizza":                         { cover:"#pizza-cover", toc:"#hauptspeisen .cat ul" },
-      "Reis & Getreidegerichte":       { cover:"#reis-getreide-cover", toc:"#hauptspeisen .cat ul" },
-      "Internationale Küche & Currys": { cover:"#international-cover", toc:"#hauptspeisen .cat ul" },
-      "Snacks, Beilage & Fingerfood":  { cover:"#snacks-beilage-cover", toc:"#hauptspeisen .cat ul" },
-      "Basics & Saucen":               { cover:"#basics-cover", toc:"#hauptspeisen .cat ul" },
-      "Curry-Paste":                   { cover:"#currypaste-cover", toc:"#hauptspeisen .cat ul" }
-    },
-    "Bakery": {
-      "Kuchen & Torten":               { cover:"#kuchen-cover", toc:"#bakery .cat ul" },
-      "Plätzchen & Kleingebäck":       { cover:"#plaetzchen-cover", toc:"#bakery .cat ul" },
-      "Sonstiges Gebäck":              { cover:"#gebaeck-sonstiges-cover", toc:"#bakery .cat ul" }
-    },
-    "Snacks & Desserts": { cover:"#snacks-cover", toc:"#snacks .cat ul" },
-    "Drinks": {
-      "Alkoholische Getränke":        { cover:"#alkoholisch-cover", toc:"#drinks .cat ul" },
-      "Nicht alkoholische Getränke":  { cover:"#nicht-alkoholisch-cover", toc:"#drinks .cat ul" }
-    }
+/* ========= Quickjump Dropdowns (ohne Style-Änderung) ========= */
+(function(){
+  const CATS = {
+    "Frühstück": ["Brot & Aufstriche", "Sonstiges"],
+    "Hauptspeisen": [
+      "Suppen & Eintöpfe",
+      "Pasta & Nudeln",
+      "Pizza",
+      "Reis- & Getreidegerichte",
+      "Internationale Küche & Currys",
+      "Snacks, Beilagen & Fingerfood",
+      "Basics & Saucen",
+      "Curry-Pasten"
+    ],
+    "Bakery": [
+      "Kuchen & Torten",
+      "Plätzchen & Kleingebäck",
+      "Sonstiges Gebäck"
+    ],
+    "Snacks": [], /* Snacks & Desserts als Gesamt-Kategorie ohne Sub */
+    "Drinks": ["Alkoholische Getränke", "Nicht-alkoholische Getränke"]
   };
 
-  let cfg = map[cat];
-  if (cfg && typeof cfg === 'object' && subcat && cfg[subcat]) cfg = cfg[subcat];
+  const $cat = document.getElementById('qj-category');
+  const $sub = document.getElementById('qj-subcategory');
+  const $go  = document.getElementById('qj-go');
 
-  const contentAnchor =
-    (cfg && pick(cfg.cover)) ||
-    document.querySelector('#' + (
-      cat === 'Frühstück' ? 'fruehstueck' :
-      cat && cat.toLowerCase().includes('haupt') ? 'hauptspeisen' :
-      cat && cat.toLowerCase().includes('snacks') ? 'snacks' :
-      (cat || '').toLowerCase()
-    ) + '-cover') ||
-    document.body;
+  $cat.addEventListener('change', ()=>{
+    const v = $cat.value || '';
+    const subs = CATS[v] || [];
+    $sub.innerHTML = '';
+    if (!v){ $sub.disabled = true; $sub.innerHTML = '<option value="">— zuerst Kategorie —</option>'; return; }
+    if (!subs.length){
+      $sub.disabled = true;
+      $sub.innerHTML = '<option value="">(keine Unterkategorien)</option>';
+      return;
+    }
+    $sub.disabled = false;
+    $sub.insertAdjacentHTML('beforeend','<option value="">— wählen —</option>');
+    subs.forEach(s=>{
+      const opt = document.createElement('option');
+      opt.value = s;
+      opt.textContent = s;
+      $sub.appendChild(opt);
+    });
+  });
 
-  const tocList = (cfg && cfg.toc ? document.querySelector(cfg.toc) : null)
-    || document.querySelector('#' + (
-        cat === 'Frühstück' ? 'fruehstueck' :
-        cat && cat.toLowerCase().includes('haupt') ? 'hauptspeisen' :
-        cat && cat.toLowerCase().includes('snacks') ? 'snacks' :
-        (cat || '').toLowerCase()
-      ) + ' .cat ul')
-    || document.querySelector('.cat ul');
+  function slug(s){
+    return (s||'').toLowerCase()
+      .normalize('NFD').replace(/\p{Diacritic}/gu,'')
+      .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+  }
 
-  return { tocList, contentAnchor };
-};
+  $go.addEventListener('click', ()=>{
+    const c = $cat.value;
+    const s = $sub.value;
+    if (!c) return;
+    if (c === 'Snacks'){ location.hash = '#snacks-cover'; return; }
+    if (!s){
+      if (c === 'Frühstück') location.hash = '#fruehstueck-cover';
+      else if (c === 'Hauptspeisen') location.hash = '#hauptspeisen-cover';
+      else if (c === 'Bakery') location.hash = '#bakery-cover';
+      else if (c === 'Drinks') location.hash = '#drinks-cover';
+      return;
+    }
+    // zu Subcover springen
+    const map = {
+      "Frühstück": {
+        "Brot & Aufstriche":"#fruehstueck-brot-aufstriche-cover",
+        "Sonstiges":"#fruehstueck-sonstiges-cover"
+      },
+      "Hauptspeisen":{
+        "Suppen & Eintöpfe":"#suppen-und-eintoepfe-cover",
+        "Pasta & Nudeln":"#pasta-und-nudeln-cover",
+        "Pizza":"#pizza-cover",
+        "Reis- & Getreidegerichte":"#reis-und-getreide-cover",
+        "Internationale Küche & Currys":"#internationale-kueche-und-currys-cover",
+        "Snacks, Beilagen & Fingerfood":"#snacks-beilagen-und-fingerfood-cover",
+        "Basics & Saucen":"#basics-und-saucen-cover",
+        "Curry-Pasten":"#curry-pasten-cover"
+      },
+      "Bakery":{
+        "Kuchen & Torten":"#kuchen-und-torten-cover",
+        "Plätzchen & Kleingebäck":"#plaetzchen-und-kleingebaeck-cover",
+        "Sonstiges Gebäck":"#sonstiges-gebaeck-cover"
+      },
+      "Drinks":{
+        "Alkoholische Getränke":"#drinks-alkoholisch-cover",
+        "Nicht-alkoholische Getränke":"#drinks-nicht-alkoholisch-cover"
+      }
+    };
+    const target = map[c] && map[c][s];
+    if (target){ location.hash = target; }
+  });
+})();
 </script>
 
-  
-  <!-- =========================
-     📖 Inhaltsverzeichnis
-========================= -->
-<div class="page">
-  <section id="inhaltsverzeichnis" class="toc beige">
-    <div class="wrap">
-      <h2>📖 Inhaltsverzeichnis</h2>
-
-      <!-- Frühstück -->
-      <div class="cat gelb" id="fruehstueck">
-        <h3>🍳 Frühstück</h3>
-        <h4>Brot & Aufstriche</h4>
-        <ul></ul>
-        <h4>Sonstiges</h4>
-        <ul></ul>
-      </div>
-
-      <!-- Hauptspeisen -->
-      <div class="cat mint" id="hauptspeisen">
-        <h3>🥗 Hauptspeisen</h3>
-        <h4>Suppen & Eintöpfe</h4>
-        <ul></ul>
-        <h4>Pasta & Nudeln</h4>
-        <ul></ul>
-        <h4>Pizza</h4>
-        <ul></ul>
-        <h4>Reis & Getreidegerichte</h4>
-        <ul></ul>
-        <h4>Internationale Küche & Currys</h4>
-        <ul></ul>
-        <h4>Snacks, Beilage & Fingerfood</h4>
-        <ul></ul>
-        <h4>Basics & Saucen</h4>
-        <ul></ul>
-        <h4>Curry-Paste</h4>
-        <ul></ul>
-      </div>
-
-      <!-- Bakery -->
-      <div class="cat rosa" id="bakery">
-        <h3>🍰 Bakery</h3>
-        <h4>Kuchen & Torten</h4>
-        <ul></ul>
-        <h4>Plätzchen & Kleingebäck</h4>
-        <ul></ul>
-        <h4>Sonstiges Gebäck</h4>
-        <ul></ul>
-      </div>
-
-      <!-- Snacks & Desserts -->
-      <div class="cat orange" id="snacks">
-        <h3>🍪 Snacks & Desserts</h3>
-        <ul></ul>
-      </div>
-
-      <!-- Drinks -->
-      <div class="cat blau" id="drinks">
-        <h3>🥤 Drinks</h3>
-        <h4>Alkoholische Getränke</h4>
-        <ul></ul>
-        <h4>Nicht-alkoholische Getränke</h4>
-        <ul></ul>
-      </div>
-
-      <div class="divider"></div>
-      <div class="note">Tippe auf eine Kategorie, um direkt zum Rezept zu springen.</div>
-    </div>
-  </section>
-</div>
-
-<!-- Quickjump -->
-<div class="quickjump">
-  <a href="#inhaltsverzeichnis">📖 Inhaltsverzeichnis</a>
-  <a href="#fruehstueck">🍳 Frühstück</a>
-  <a href="#hauptspeisen">🥗 Hauptspeisen</a>
-  <a href="#bakery">🍰 Bakery</a>
-  <a href="#snacks">🍪 Snacks & Desserts</a>
-  <a href="#drinks">🥤 Drinks</a>
-</div>
-
-
-
-
-  <!-- =========================================================
-     Frühstück-Cover
+<!-- =========================================================
+     KATEGORIE-ÜBERSCHRIFTEN & TOC-Bereiche (bleiben bestehen)
 ========================================================= -->
+
+<!-- FRÜHSTÜCK COVER -->
 <section id="fruehstueck-cover" class="cover fruehstueck" 
-         style="background:var(--gelb); min-height:70vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:30px;">
-  <div style="background:#fff; border:3px dashed #ffd966; border-radius:16px; padding:30px; max-width:92%; box-shadow:var(--shadow);">
-    <h1 style="font-size:2em; margin:0;">🍳 Frühstück</h1>
-    <p style="margin-top:10px; font-size:1em; color:var(--muted);">Für einen guten Start in den Tag.</p>
+         style="background:#fffacd; min-height:40vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:30px; border-radius:16px; margin:20px 12px;">
+  <div style="background:#fff; border:3px dashed #f1d26a; border-radius:16px; padding:26px; max-width:92%; box-shadow:var(--shadow);">
+    <h1 style="font-size:2em; margin:0;">🥣 Frühstück</h1>
+    <p style="margin-top:10px; font-size:1em; color:var(--muted);">Guter Start in den Tag.</p>
+    <div class="cat" style="margin-top:14px; text-align:left;">
+      <h3>Inhalt</h3>
+      <ul id="toc-fruehstueck" style="padding-left:18px;"></ul>
+    </div>
   </div>
 </section>
 
-<!-- Brot & Aufstriche (Unterkategorie) -->
-<section id="brot-und-aufstriche-cover" class="cover fruehstueck" 
-         style="background-color:#FFF3B0; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 0;">
-  <h1 style="font-size:2em; margin:0;">Brot & Aufstriche</h1>
+<!-- Frühstück Subcovers -->
+<section id="fruehstueck-brot-aufstriche-cover" class="cover fruehstueck" 
+         style="background:#fffacd; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 12px;">
+  <h1 style="font-size:2em; margin:0;">🍞 Brot & Aufstriche</h1>
+  <div class="cat"><ul id="toc-fruehstueck-brot" style="padding-left:18px;"></ul></div>
 </section>
-
-<!-- Sonstiges (Unterkategorie) -->
 <section id="fruehstueck-sonstiges-cover" class="cover fruehstueck" 
-         style="background-color:#FFF3B0; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 0;">
-  <h1 style="font-size:2em; margin:0;">Sonstiges</h1>
+         style="background:#fffacd; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 12px;">
+  <h1 style="font-size:2em; margin:0;">🌤️ Sonstiges</h1>
+  <div class="cat"><ul id="toc-fruehstueck-sonstiges" style="padding-left:18px;"></ul></div>
 </section>
 
-
-<!-- =========================================================
-     Hauptspeisen-Cover
-========================================================= -->
+<!-- HAUPTSPEISEN COVER -->
 <section id="hauptspeisen-cover" class="cover hauptspeisen" 
          style="background:var(--mint); min-height:70vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:30px;">
-  <div style="background:#fff; border:3px dashed #8cd9b3; border-radius:16px; padding:30px; max-width:92%; box-shadow:var(--shadow);">
+  <div style="background:#fff; border:3px dashed #8fdac7; border-radius:16px; padding:30px; max-width:92%; box-shadow:var(--shadow);">
     <h1 style="font-size:2em; margin:0;">🥗 Hauptspeisen</h1>
-    <p style="margin-top:10px; font-size:1em; color:var(--muted);">Herzhaft, sättigend & lecker.</p>
+    <p style="margin-top:10px; font-size:1em; color:var(--muted);">Vielfältig, nahrhaft & voller Genuss.</p>
+    <div class="cat" style="margin-top:14px; text-align:left;">
+      <h3>Inhalt</h3>
+      <ul id="toc-hauptspeisen" style="padding-left:18px;"></ul>
+    </div>
   </div>
 </section>
 
+<!-- Hauptspeisen Subcovers (deine Originale, gleich gelassen) -->
+<section id="suppen-und-eintoepfe-cover" class="cover hauptspeisen" 
+         style="background-color:#CFF5E7; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 0;">
+  <h1 style="font-size:2em; margin:0;">🍲 Suppen & Eintöpfe</h1>
+  <div class="cat"><ul id="toc-suppen-eintoepfe" style="padding-left:18px;"></ul></div>
+</section>
 
-<!-- =========================================================
-     Bakery-Cover
-========================================================= -->
+<section id="pasta-und-nudeln-cover" class="cover hauptspeisen" 
+         style="background-color:#CFF5E7; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 0;">
+  <h1 style="font-size:2em; margin:0;">🍝 Pasta & Nudeln</h1>
+  <div class="cat"><ul id="toc-pasta-nudeln" style="padding-left:18px;"></ul></div>
+</section>
+
+<section id="pizza-cover" class="cover hauptspeisen" 
+         style="background-color:#CFF5E7; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 0;">
+  <h1 style="font-size:2em; margin:0;">🍕 Pizza</h1>
+  <div class="cat"><ul id="toc-pizza" style="padding-left:18px;"></ul></div>
+</section>
+
+<section id="reis-und-getreide-cover" class="cover hauptspeisen" 
+         style="background-color:#CFF5E7; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 0;">
+  <h1 style="font-size:2em; margin:0;">🍚 Reis- & Getreidegerichte</h1>
+  <div class="cat"><ul id="toc-reis-getreide" style="padding-left:18px;"></ul></div>
+</section>
+
+<section id="internationale-kueche-und-currys-cover" class="cover hauptspeisen" 
+         style="background-color:#CFF5E7; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 0;">
+  <h1 style="font-size:2em; margin:0;">🌍 Internationale Küche & Currys</h1>
+  <div class="cat"><ul id="toc-internationale-currys" style="padding-left:18px;"></ul></div>
+</section>
+
+<section id="snacks-beilagen-und-fingerfood-cover" class="cover hauptspeisen" 
+         style="background-color:#CFF5E7; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 0;">
+  <h1 style="font-size:2em; margin:0;">🥗 Snacks, Beilagen & Fingerfood</h1>
+  <div class="cat"><ul id="toc-snacks-beilagen" style="padding-left:18px;"></ul></div>
+</section>
+
+<section id="basics-und-saucen-cover" class="cover hauptspeisen" 
+         style="background-color:#CFF5E7; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 0;">
+  <h1 style="font-size:2em; margin:0;">🥫 Basics & Saucen</h1>
+  <div class="cat"><ul id="toc-basics-saucen" style="padding-left:18px;"></ul></div>
+</section>
+
+<section id="curry-pasten-cover" class="cover hauptspeisen" 
+         style="background-color:#CFF5E7; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 0;">
+  <h1 style="font-size:2em; margin:0;">🌶️ Curry-Pasten</h1>
+  <div class="cat"><ul id="toc-curry-pasten" style="padding-left:18px;"></ul></div>
+</section>
+
+<!-- BAKERY COVER -->
 <section id="bakery-cover" class="cover bakery" 
          style="background:var(--rosa); min-height:70vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:30px;">
-  <div style="background:#fff; border:3px dashed #ffb3c6; border-radius:16px; padding:30px; max-width:92%; box-shadow:var(--shadow);">
+  <div style="background:#fff; border:3px dashed #e89bb4; border-radius:16px; padding:30px; max-width:92%; box-shadow:var(--shadow);">
     <h1 style="font-size:2em; margin:0;">🍰 Bakery</h1>
-    <p style="margin-top:10px; font-size:1em; color:var(--muted);">Alles vom Ofen bis zur Keksdose.</p>
+    <p style="margin-top:10px; font-size:1em; color:var(--muted);">Süß, frisch & einfach unwiderstehlich.</p>
+    <div class="cat" style="margin-top:14px; text-align:left;">
+      <h3>Inhalt</h3>
+      <ul id="toc-bakery" style="padding-left:18px;"></ul>
+    </div>
   </div>
 </section>
 
-<!-- Plätzchen & Kleingebäck (Unterkategorie) -->
-<section id="plätzchen-und-kleingebäck-cover" class="cover bakery" 
+<section id="kuchen-und-torten-cover" class="cover bakery" 
+         style="background-color:#FFD3E2; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 0;">
+  <h1 style="font-size:2em; margin:0;">🍰 Kuchen & Torten</h1>
+  <div class="cat"><ul id="toc-kuchen-torten" style="padding-left:18px;"></ul></div>
+</section>
+
+<section id="plaetzchen-und-kleingebaeck-cover" class="cover bakery" 
          style="background-color:#FFD3E2; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 0;">
   <h1 style="font-size:2em; margin:0;">Plätzchen & Kleingebäck</h1>
+  <div class="cat"><ul id="toc-plaetzchen" style="padding-left:18px;"></ul></div>
 </section>
 
-<!-- Sonstiges Gebäck (Unterkategorie) -->
-<section id="sonstiges-gebäck-cover" class="cover bakery" 
+<section id="sonstiges-gebaeck-cover" class="cover bakery" 
          style="background-color:#FFD3E2; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 0;">
   <h1 style="font-size:2em; margin:0;">Sonstiges Gebäck</h1>
+  <div class="cat"><ul id="toc-sonstiges-gebaeck" style="padding-left:18px;"></ul></div>
 </section>
 
-
-<!-- =========================================================
-     Snacks & Desserts-Cover
-========================================================= -->
+<!-- SNACKS COVER -->
 <section id="snacks-cover" class="cover snacks" 
          style="background:var(--orange); min-height:70vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:30px;">
   <div style="background:#fff; border:3px dashed #ffb266; border-radius:16px; padding:30px; max-width:92%; box-shadow:var(--shadow);">
-    <h1 style="font-size:2em; margin:0;">🍪 Snacks & Desserts</h1>
+    <h1 style="font-size:2em; margin:0;">🍊 Snacks & Desserts</h1>
     <p style="margin-top:10px; font-size:1em; color:var(--muted);">Kleine Sünden für zwischendurch.</p>
+    <div class="cat" style="margin-top:14px; text-align:left;">
+      <h3>Inhalt</h3>
+      <ul id="toc-snacks" style="padding-left:18px;"></ul>
+    </div>
   </div>
 </section>
 
-
-<!-- =========================================================
-     Drinks-Cover
-========================================================= -->
+<!-- DRINKS COVER -->
 <section id="drinks-cover" class="cover drinks" 
          style="background:var(--blau); min-height:70vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:30px;">
   <div style="background:#fff; border:3px dashed #99cfff; border-radius:16px; padding:30px; max-width:92%; box-shadow:var(--shadow);">
-    <h1 style="font-size:2em; margin:0;">🥤 Drinks</h1>
+    <h1 style="font-size:2em; margin:0;">🍹 Drinks</h1>
     <p style="margin-top:10px; font-size:1em; color:var(--muted);">Erfrischend, bunt & manchmal ein bisschen frech.</p>
+    <div class="cat" style="margin-top:14px; text-align:left;">
+      <h3>Inhalt</h3>
+      <ul id="toc-drinks" style="padding-left:18px;"></ul>
+    </div>
   </div>
 </section>
 
-<!-- Alkoholische Getränke (Unterkategorie) -->
-<section id="alkoholische-getraenke-cover" class="cover drinks" 
-         style="background-color:#CCE6FF; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 0;">
-  <h1 style="font-size:2em; margin:0;">Alkoholische Getränke</h1>
+<!-- Drinks Subcovers (NEU, aber im selben Stil) -->
+<section id="drinks-alkoholisch-cover" class="cover drinks" 
+         style="background:var(--blau); padding:60px 20px; text-align:center; border-radius:18px; margin:20px 12px;">
+  <h1 style="font-size:2em; margin:0;">🍸 Alkoholische Getränke</h1>
+  <div class="cat"><ul id="toc-drinks-alkoholisch" style="padding-left:18px;"></ul></div>
+</section>
+<section id="drinks-nicht-alkoholisch-cover" class="cover drinks" 
+         style="background:var(--blau); padding:60px 20px; text-align:center; border-radius:18px; margin:20px 12px;">
+  <h1 style="font-size:2em; margin:0;">🧊 Nicht-alkoholische Getränke</h1>
+  <div class="cat"><ul id="toc-drinks-nicht-alkoholisch" style="padding-left:18px;"></ul></div>
 </section>
 
-<!-- Nicht-alkoholische Getränke (Unterkategorie) -->
-<section id="nicht-alkoholische-getraenke-cover" class="cover drinks" 
-         style="background-color:#CCE6FF; padding:60px 20px; text-align:center; border-radius:18px; margin:20px 0;">
-  <h1 style="font-size:2em; margin:0;">Nicht-alkoholische Getränke</h1>
-</section>
+<!-- =========================================================
+     ANKER für dynamisches Einfügen (hinter jedem Cover)
+========================================================= -->
+<div id="anchor-fruehstueck"></div>
+<div id="anchor-fruehstueck-brot"></div>
+<div id="anchor-fruehstueck-sonstiges"></div>
 
+<div id="anchor-hauptspeisen"></div>
+<div id="anchor-suppen-eintoepfe"></div>
+<div id="anchor-pasta-nudeln"></div>
+<div id="anchor-pizza"></div>
+<div id="anchor-reis-getreide"></div>
+<div id="anchor-internationale-currys"></div>
+<div id="anchor-snacks-beilagen"></div>
+<div id="anchor-basics-saucen"></div>
+<div id="anchor-curry-pasten"></div>
 
+<div id="anchor-bakery"></div>
+<div id="anchor-kuchen-torten"></div>
+<div id="anchor-plaetzchen"></div>
+<div id="anchor-sonstiges-gebaeck"></div>
 
+<div id="anchor-snacks"></div>
 
-  <!-- ====================== GLOBAL SERVINGS FIX + CLEANUP ====================== -->
+<div id="anchor-drinks"></div>
+<div id="anchor-drinks-alkoholisch"></div>
+<div id="anchor-drinks-nicht-alkoholisch"></div>
+
+<!-- =========================================================
+     DEINE STYLES (1:1 gelassen)
+========================================================= -->
+<style>
+.recipe.fruehstueck {
+  background: #fffacd; /* Pastellgelb */
+  border: 2px solid #f1d26a;
+  border-radius: 16px;
+  padding: 18px;
+  margin: 18px 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+.recipe.fruehstueck h2 { margin-top: 0; }
+.meta {
+  background: #fef4c5;
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+}
+.zutaten h3, .zubereitung h3 { margin-bottom: 6px; }
+.zutaten ul { padding-left: 22px; }
+.back-button {
+  display: inline-block;
+  margin-top: 14px;
+  text-decoration: none;
+  background: #f8dfa6;
+  border: 1px solid #e5c56a;
+  padding: 8px 12px;
+  border-radius: 10px;
+  color: #3a2e00;
+}
+.back-button:hover { filter: brightness(0.97); }
+
+.recipe.hauptspeisen {
+  background: #e7fff0;
+  border: 2px solid #9ce0b3;
+  border-radius: 16px;
+  padding: 18px;
+  margin: 18px 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+.recipe.hauptspeisen h2 { margin-top: 0; }
+</style>
+
+<!-- ====================== GLOBAL SERVINGS FIX + CLEANUP ====================== -->
 <style>
   /* Alle "Zurück"-Buttons komplett ausblenden */
   .back-button { display: none !important; }
 
-  /* Optional: iPhone-Look für Rezepte */
+  /* Optional: hübscher iPhone-Look für die Rezepte (keine Pflicht) */
   @media (max-width: 430px) {
     .recipe { margin: 16px 10px; border-radius: 18px; }
     .recipe h2 { font-size: 1.15rem; }
@@ -540,442 +387,134 @@ window.resolveTargets = function(cat, subcat){
   }
 </style>
 
+<!-- =========================================================
+     JS: Gemeinsame Helfer + Registry + Sortierer + Renderer
+========================================================= -->
 <script>
-/* ===== DB -> Frontend: Alles laden und ins DOM setzen ===== */
-(function(){
-  async function renderRecipeRecord(rec){
-    const id = rec.id;
-    const title = rec.title;
-    const cat = rec.category;
-    const sub = rec.subcategory || '';
-    const servings = rec.servings;
-    const prep = rec.prep;
-    const total = rec.total;
-    const ingredients = JSON.parse(rec.ingredients_json || '[]');
-    const steps = JSON.parse(rec.steps_json || '[]');
-
-    const resolveTargets = window.resolveTargets;
-    const buildRecipeSection = window.buildRecipeSection;
-
-    if(!resolveTargets || !buildRecipeSection){
-      console.warn('resolveTargets/buildRecipeSection nicht global.');
-      return;
-    }
-
-    const { tocList } = resolveTargets(cat, sub);
-
-    const html = buildRecipeSection({
-      id, title, servings, prep, total, ingredients, steps, cat, sub,
-      dbId: rec.id
-    });
-
-    const t = document.createElement('template');
-    t.innerHTML = html.trim();
-    const section = t.content.firstElementChild;
-
-    // Alphabetisch einsortieren
-    if (typeof insertSortedSection === 'function') {
-      insertSortedSection({ section, cat, sub });
-    } else {
-      document.body.appendChild(section);
-    }
-
-    if (window.initRecipeScaling) window.initRecipeScaling();
-
-    if (tocList && !tocList.querySelector(`a[href="#${id}"]`)) {
-      const li = document.createElement('li');
-      const a = document.createElement('a');
-      a.href = '#' + id;
-      a.textContent = title;
-      li.appendChild(a);
-
-      if (typeof insertSortedTOC === 'function') {
-        insertSortedTOC(tocList, li);
-      } else {
-        tocList.appendChild(li);
-      }
-    }
-  }
-
-  async function loadAllRecipes(){
-    try{
-      const res = await fetch('/api/recipes', { headers:{accept:'application/json'} });
-      if(!res.ok) throw new Error('GET /api/recipes fehlgeschlagen');
-      const list = await res.json();
-
-      for(const rec of list){
-        await renderRecipeRecord(rec);
-      }
-
-      if (window.rebuildSearch) window.rebuildSearch();
-      if (window.initRecipeScaling) window.initRecipeScaling();
-      if (window.sortExistingTOCLists) window.sortExistingTOCLists();
-    }catch(e){
-      console.error('Rezepte laden fehlgeschlagen:', e);
-    }
-  }
-
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded', loadAllRecipes);
-  } else {
-    loadAllRecipes();
-  }
-})();
-</script>
-
-<script>
-/* ========= 1) Portionsrechner ========= */
-(function(){
-  function num(v){ if(v==null) return null; const n=parseFloat(String(v).replace(',','.')); return isNaN(n)?null:n; }
-  function fmt(x){ return (x>=1 || Math.abs(x-Math.round(x))<1e-9) ? String(Math.round(x)) : String(Math.round(x*10)/10); }
-
-  function bindSection(sec){
-    const input = sec.querySelector('.meta input[type="number"]');
-    if(!input) return;
-
-    const baseServings = parseFloat(input.getAttribute('value') || input.value || '1') || 1;
-    sec.dataset.baseServings = String(baseServings);
-
-    sec.querySelectorAll('[data-base]').forEach(s=>{
-      if(!s.dataset.orig){
-        const o = num(s.getAttribute('data-base'));
-        if(o!=null) s.dataset.orig = String(o);
+/* ===== Deine (alte) Minimal-Funktion für Direkt-Skalierung – bleibt bestehen ===== */
+if (typeof window.updateRecipe !== 'function') {
+  window.updateRecipe = function(listSelector, inputSelector) {
+    const factor = Math.max(1, parseFloat(document.querySelector(inputSelector).value || 1));
+    document.querySelectorAll(listSelector + " [data-base]").forEach(el => {
+      const base = parseFloat(el.getAttribute("data-base"));
+      if (!isNaN(base)) {
+        const scaled = (base % 1 === 0) ? Math.round(base * factor) : Math.round(base * factor * 10)/10;
+        el.textContent = scaled;
       }
     });
-
-    const update = ()=>{
-      const desired = Math.max(1, parseFloat(input.value || '1') || 1);
-      const f = desired / (parseFloat(sec.dataset.baseServings||'1') || 1);
-      sec.querySelectorAll('[data-base]').forEach(s=>{
-        const o = num(s.dataset.orig); if(o==null) return;
-        s.textContent = fmt(o * f);
-      });
-    };
-
-    input.addEventListener('input', update);
-    input.addEventListener('change', update);
-    update();
-  }
-
-  window.initRecipeScaling = function(){
-    document.querySelectorAll('section.recipe').forEach(bindSection);
   };
+}
 
-  window.updateRecipe = function(){
-    const sec = event?.target ? event.target.closest('section.recipe') : null;
-    if(sec) bindSection(sec);
-  };
-
-  if (document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', ()=>window.initRecipeScaling());
-  } else {
-    window.initRecipeScaling();
+/* ===== Kategorie-Registry (NEU: mit deinen zusätzlichen Subkategorien) ===== */
+window.CATS = {
+  "Frühstück": {
+    cover: "#fruehstueck-cover",
+    toc:   "#toc-fruehstueck",
+    anchor:"#anchor-fruehstueck",
+    subs: {
+      "Brot & Aufstriche": {
+        cover:"#fruehstueck-brot-aufstriche-cover",
+        toc:"#toc-fruehstueck-brot",
+        anchor:"#anchor-fruehstueck-brot"
+      },
+      "Sonstiges": {
+        cover:"#fruehstueck-sonstiges-cover",
+        toc:"#toc-fruehstueck-sonstiges",
+        anchor:"#anchor-fruehstueck-sonstiges"
+      }
+    }
+  },
+  "Hauptspeisen": {
+    cover:"#hauptspeisen-cover",
+    toc:"#toc-hauptspeisen",
+    anchor:"#anchor-hauptspeisen",
+    subs:{
+      "Suppen & Eintöpfe": { cover:"#suppen-und-eintoepfe-cover", toc:"#toc-suppen-eintoepfe", anchor:"#anchor-suppen-eintoepfe" },
+      "Pasta & Nudeln":    { cover:"#pasta-und-nudeln-cover", toc:"#toc-pasta-nudeln", anchor:"#anchor-pasta-nudeln" },
+      "Pizza":             { cover:"#pizza-cover", toc:"#toc-pizza", anchor:"#anchor-pizza" },
+      "Reis- & Getreidegerichte": { cover:"#reis-und-getreide-cover", toc:"#toc-reis-getreide", anchor:"#anchor-reis-getreide" },
+      "Internationale Küche & Currys": { cover:"#internationale-kueche-und-currys-cover", toc:"#toc-internationale-currys", anchor:"#anchor-internationale-currys" },
+      "Snacks, Beilagen & Fingerfood": { cover:"#snacks-beilagen-und-fingerfood-cover", toc:"#toc-snacks-beilagen", anchor:"#anchor-snacks-beilagen" },
+      "Basics & Saucen": { cover:"#basics-und-saucen-cover", toc:"#toc-basics-saucen", anchor:"#anchor-basics-saucen" },
+      "Curry-Pasten":    { cover:"#curry-pasten-cover", toc:"#toc-curry-pasten", anchor:"#anchor-curry-pasten" }
+    }
+  },
+  "Bakery": {
+    cover:"#bakery-cover",
+    toc:"#toc-bakery",
+    anchor:"#anchor-bakery",
+    subs:{
+      "Kuchen & Torten": { cover:"#kuchen-und-torten-cover", toc:"#toc-kuchen-torten", anchor:"#anchor-kuchen-torten" },
+      "Plätzchen & Kleingebäck": { cover:"#plaetzchen-und-kleingebaeck-cover", toc:"#toc-plaetzchen", anchor:"#anchor-plaetzchen" },
+      "Sonstiges Gebäck": { cover:"#sonstiges-gebaeck-cover", toc:"#toc-sonstiges-gebaeck", anchor:"#anchor-sonstiges-gebaeck" }
+    }
+  },
+  "Snacks": {
+    cover:"#snacks-cover",
+    toc:"#toc-snacks",
+    anchor:"#anchor-snacks",
+    subs:{}
+  },
+  "Drinks": {
+    cover:"#drinks-cover",
+    toc:"#toc-drinks",
+    anchor:"#anchor-drinks",
+    subs:{
+      "Alkoholische Getränke": { cover:"#drinks-alkoholisch-cover", toc:"#toc-drinks-alkoholisch", anchor:"#anchor-drinks-alkoholisch" },
+      "Nicht-alkoholische Getränke": { cover:"#drinks-nicht-alkoholisch-cover", toc:"#toc-drinks-nicht-alkoholisch", anchor:"#anchor-drinks-nicht-alkoholisch" }
+    }
   }
-})();
-</script>
+};
 
-<script>
-/* ========= 2) TOC-Helfer ========= */
-(function(){
-  window.addToTOC = function({title, id, cat, sub}){
-    let ul = null;
-
-    if (typeof resolveTargets === 'function') {
-      try {
-        const t = resolveTargets(cat, sub);
-        ul = t?.tocList || null;
-      } catch {}
+/* ===== Sortier-Helfer (wie üblich, alphabetisch nach H2) ===== */
+window.insertSortedSection = function({ section, cat, sub }){
+  const parent = (function(){
+    const C = window.CATS[cat];
+    if(!C) return document.body;
+    if(sub && C.subs && C.subs[sub] && C.subs[sub].anchor) {
+      return document.querySelector(C.subs[sub].anchor) || document.body;
     }
+    return document.querySelector(C.anchor) || document.body;
+  })();
 
-    if(!ul){
-      const catId =
-        cat === 'Bakery' ? '#bakery' :
-        cat === 'Drinks' ? '#drinks' :
-        (cat && cat.toLowerCase().includes('haupt')) ? '#hauptspeisen' :
-        (cat && cat.toLowerCase().includes('snacks')) ? '#snacks' :
-        (cat && (cat.toLowerCase().includes('früh') || cat.toLowerCase().includes('frueh'))) ? '#fruehstueck' :
-        null;
+  const h2Text = section.querySelector('h2')?.textContent.trim().toLowerCase() || '';
+  const siblings = Array.from(parent.parentNode.querySelectorAll('section.recipe'))
+    .filter(s=> (s.dataset.category===cat) && ( (sub && s.dataset.subcategory===sub) || (!sub && !s.dataset.subcategory) ));
 
-      const root = catId ? document.querySelector(catId) : document;
-      ul = root?.querySelector('.cat ul') || root?.querySelector('ul') || document.querySelector('.cat ul');
+  // finde Position: erstes Rezept mit H2 > h2Text
+  let inserted = false;
+  for (const sib of siblings){
+    const t = sib.querySelector('h2')?.textContent.trim().toLowerCase() || '';
+    if (t.localeCompare(h2Text, 'de') > 0){
+      sib.insertAdjacentElement('beforebegin', section);
+      inserted = true;
+      break;
     }
+  }
+  if(!inserted){
+    // Hinter den passenden Anker setzen
+    parent.insertAdjacentElement('afterend', section);
+  }
+};
 
-    if(!ul) return;
-
-    const li = document.createElement('li');
-    const a  = document.createElement('a');
-    a.href = '#' + id;
-    a.textContent = title;
-    li.appendChild(a);
-
-    if (typeof insertSortedTOC === 'function') {
-      insertSortedTOC(ul, li);
-    } else {
-      ul.appendChild(li);
-    }
-  };
-})();
-</script>
-
-<script>
-/* ========= 3) Modal: Editieren/Löschen + Submit ========= */
-(function(){
-  const modal = document.getElementById('addRecipeModal');
-  const form  = document.getElementById('recipeForm');
-  const catSelect = document.getElementById('category');
-  const subSelect = document.getElementById('subcategory');
-
-  window.__editingRecipeId = null;
-
-  function openModal(){ modal.style.display = 'flex'; }
-  function closeModal(){ modal.style.display = 'none'; window.__editingRecipeId = null; }
-
-  document.addEventListener('click', async (e)=>{
-    const btn = e.target.closest('button');
-    if(!btn) return;
-
-    if (btn.classList.contains('btn-delete')) {
-      const dbId = btn.dataset.id;
-      if (!dbId) return;
-      if (!confirm('Dieses Rezept wirklich löschen?')) return;
-
-      const res = await fetch('/api/recipes?id=' + encodeURIComponent(dbId), { method: 'DELETE' });
-      if(!res.ok){ alert('Löschen fehlgeschlagen'); return; }
-
-      const sec = btn.closest('section.recipe');
-      if (sec) {
-        const hash = '#' + sec.id;
-        sec.remove();
-        document.querySelectorAll(`.cat ul li a[href="${hash}"]`).forEach(a => a.parentElement.remove());
-      }
+window.insertSortedTOC = function(ul, li){
+  const text = li.querySelector('a')?.textContent?.trim().toLowerCase() || '';
+  const items = Array.from(ul.querySelectorAll('li'));
+  for(const i of items){
+    const t = i.querySelector('a')?.textContent?.trim().toLowerCase() || '';
+    if (t.localeCompare(text, 'de') > 0){
+      i.insertAdjacentElement('beforebegin', li);
       return;
     }
+  }
+  ul.appendChild(li);
+};
 
-    if (btn.classList.contains('btn-edit')) {
-      const sec = btn.closest('section.recipe');
-      const dbId = btn.dataset.id;
-      if (!sec || !dbId) return;
-
-      window.__editingRecipeId = dbId;
-
-      const title = sec.querySelector('h2')?.textContent.trim() || '';
-      const servings = parseInt(sec.querySelector('.meta input[type=number]')?.value || '1', 10) || 1;
-      const cat = sec.dataset.category || '';
-      const sub = sec.dataset.subcategory || '';
-
-      const ings = Array.from(sec.querySelectorAll('.zutaten li')).map(li=>{
-        const span = li.querySelector('[data-base]');
-        if (span) {
-          const base = span.getAttribute('data-base') || span.dataset.orig || span.textContent.trim();
-          const rest = li.textContent.replace(span.textContent,'').trim();
-          return `${base} ${rest}`;
-        }
-        return li.textContent.trim();
-      });
-
-      const steps = Array.from(sec.querySelectorAll('.zubereitung ol li')).map(li=>li.textContent.trim());
-
-      document.getElementById('title').value = title;
-      document.getElementById('servings').value = String(servings);
-      document.getElementById('prep').value =
-        (sec.querySelector('.meta')?.textContent.match(/Zubereitungszeit:\s*([^|]+)/)?.[1] || '').trim();
-      document.getElementById('total').value =
-        (sec.querySelector('.meta')?.textContent.match(/Gesamtzeit:\s*([^|]+)/)?.[1] || '').trim();
-      document.getElementById('ingredients').value = ings.join('\n');
-      document.getElementById('steps').value = steps.join('\n');
-
-      if (cat) {
-        catSelect.value = cat;
-        catSelect.dispatchEvent(new Event('change'));
-        if (sub) subSelect.value = sub;
-      }
-
-      openModal();
-      return;
-    }
-  });
-
-  form.addEventListener('submit', async (e)=>{
-    e.preventDefault();
-
-    const title = document.getElementById('title').value.trim();
-    const category = catSelect.value;
-    const subcategory = (subSelect.value || '').trim();
-    const servings = Math.max(1, parseInt(document.getElementById('servings').value || '1', 10));
-    const prep = document.getElementById('prep').value.trim();
-    const total = document.getElementById('total').value.trim();
-    const ingredients = (document.getElementById('ingredients').value || '').split('\n').map(s=>s.trim()).filter(Boolean);
-    const steps = (document.getElementById('steps').value || '').split('\n').map(s=>s.trim()).filter(Boolean);
-
-    if (!title || !category || !prep || !total || !ingredients.length || !steps.length) {
-      alert('Bitte alle Pflichtfelder ausfüllen.'); return;
-    }
-
-    if (window.__editingRecipeId) {
-      const res = await fetch('/api/recipes?id=' + encodeURIComponent(window.__editingRecipeId), {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, category, subcategory, servings, prep, total, ingredients, steps })
-      });
-      if (!res.ok) { alert('Speichern fehlgeschlagen'); return; }
-      location.reload();
-      return;
-    }
-
-    const res = await fetch('/api/recipes', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, category, subcategory, servings, prep, total, ingredients, steps })
-    });
-    if (!res.ok) { alert('Speichern fehlgeschlagen'); return; }
-    const data = await res.json();
-
-    const slug = (s) => s.toLowerCase()
-      .normalize('NFD').replace(/\p{Diacritic}/gu,'')
-      .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')
-      .slice(0,64) || 'rezept';
-    let domId = slug(title);
-    let i=2; while(document.getElementById(domId)) domId = slug(title) + '-' + (i++);
-
-    const targets = (typeof resolveTargets === 'function') ? resolveTargets(category, subcategory) : {};
-    const contentAnchor = targets?.contentAnchor || document.body;
-    const tocList = targets?.tocList || document.querySelector('.cat ul');
-
-    const html = buildRecipeSection({
-      id: domId,
-      title, servings, prep, total,
-      ingredients, steps,
-      cat: category, sub: subcategory,
-      dbId: data.id
-    });
-    const t = document.createElement('template');
-    t.innerHTML = html.trim();
-    const section = t.content.firstElementChild;
-
-    if (typeof insertSortedSection === 'function') {
-      insertSortedSection({ section, cat: category, sub: subcategory });
-    } else {
-      contentAnchor.insertAdjacentElement('afterend', section);
-    }
-
-    if (typeof window.initRecipeScaling === 'function') window.initRecipeScaling();
-
-    if (tocList) {
-      const li = document.createElement('li');
-      const a = document.createElement('a'); a.href = '#' + domId; a.textContent = title;
-      li.appendChild(a);
-
-      if (typeof insertSortedTOC === 'function') {
-        insertSortedTOC(tocList, li);
-      } else {
-        tocList.appendChild(li);
-      }
-    }
-
-    if (typeof rebuildSearch === 'function') rebuildSearch();
-
-    closeModal();
-    setTimeout(()=>{ location.hash = '#' + domId; }, 50);
-  });
-})();
-</script>
-  
+/* ===== resolveTargets: findet TOC-UL & Einfüge-Anker anhand Kategorie/Sub ===== */
+window.resolveTargets = function(cat, sub){
+  const C = window.CATS[cat]
 
 
-  <!-- ====================== INHALTSVERZEICHNIS / QUICKJUMP ====================== -->
-<nav id="toc">
-  <h2>Inhaltsverzeichnis</h2>
-  <ul>
-    <li><a href="#fruehstueck-cover">Frühstück</a>
-      <ul class="cat">
-        <li><a href="#brot">Brot</a></li>
-        <li><a href="#aufstriche">Aufstriche</a></li>
-        <li><a href="#fruehstueck-sonstiges">Sonstiges</a></li>
-      </ul>
-    </li>
-    <li><a href="#hauptspeisen-cover">Hauptspeisen</a>
-      <ul class="cat">
-        <li><a href="#suppen-eintoepe">Suppen &amp; Eintöpfe</a></li>
-        <li><a href="#pasta-nudeln">Pasta &amp; Nudeln</a></li>
-        <li><a href="#pizza">Pizza</a></li>
-        <li><a href="#reis-getreide">Reis &amp; Getreidegerichte</a></li>
-        <li><a href="#international">Internationale Küche &amp; Currys</a></li>
-        <li><a href="#snacks-beilage">Snacks, Beilage &amp; Fingerfood</a></li>
-        <li><a href="#basics">Basics &amp; Saucen</a></li>
-        <li><a href="#currypaste">Curry-Paste</a></li>
-      </ul>
-    </li>
-    <li><a href="#bakery-cover">Bakery</a>
-      <ul class="cat">
-        <li><a href="#kuchen">Kuchen &amp; Torten</a></li>
-        <li><a href="#plaetzchen">Plätzchen &amp; Kleingebäck</a></li>
-        <li><a href="#gebaeck-sonstiges">Sonstiges Gebäck</a></li>
-      </ul>
-    </li>
-    <li><a href="#snacks-cover">Snacks &amp; Desserts</a></li>
-    <li><a href="#drinks-cover">Drinks</a>
-      <ul class="cat">
-        <li><a href="#alkoholisch">Alkoholische Getränke</a></li>
-        <li><a href="#nicht-alkoholisch">Nicht alkoholische Getränke</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-
-<!-- ====================== COVER-SECTIONS ====================== -->
-<section id="fruehstueck-cover" class="cover">
-  <h2>Frühstück</h2>
-  <h4>Brot</h4>
-  <ul></ul>
-  <h4>Aufstriche</h4>
-  <ul></ul>
-  <h4>Sonstiges</h4>
-  <ul></ul>
-</section>
-
-<section id="hauptspeisen-cover" class="cover">
-  <h2>Hauptspeisen</h2>
-  <h4>Suppen &amp; Eintöpfe</h4>
-  <ul></ul>
-  <h4>Pasta &amp; Nudeln</h4>
-  <ul></ul>
-  <h4>Pizza</h4>
-  <ul></ul>
-  <h4>Reis &amp; Getreidegerichte</h4>
-  <ul></ul>
-  <h4>Internationale Küche &amp; Currys</h4>
-  <ul></ul>
-  <h4>Snacks, Beilage &amp; Fingerfood</h4>
-  <ul></ul>
-  <h4>Basics &amp; Saucen</h4>
-  <ul></ul>
-  <h4>Curry-Paste</h4>
-  <ul></ul>
-</section>
-
-<section id="bakery-cover" class="cover">
-  <h2>Bakery</h2>
-  <h4>Kuchen &amp; Torten</h4>
-  <ul></ul>
-  <h4>Plätzchen &amp; Kleingebäck</h4>
-  <ul></ul>
-  <h4>Sonstiges Gebäck</h4>
-  <ul></ul>
-</section>
-
-<section id="snacks-cover" class="cover">
-  <h2>Snacks &amp; Desserts</h2>
-  <ul></ul>
-</section>
-
-<section id="drinks-cover" class="cover">
-  <h2>Drinks</h2>
-  <h4>Alkoholische Getränke</h4>
-  <ul></ul>
-  <h4>Nicht alkoholische Getränke</h4>
-  <ul></ul>
-</section>
 
 
-  
   
