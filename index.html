@@ -432,196 +432,127 @@ window.CATS = {
   
 
 <script>
-/* ===== Ziel-Orte (Cover + TOC-Liste) bestimmen (gefixt) ===== */
-window.resolveTargets = function(cat, subcat){
-  const pick = sel =>
-    sel && sel.split(',').map(s=>s.trim()).map(s=>document.querySelector(s)).find(Boolean);
-
-  const map = {
+/* ========= KANONISCHE BEZEICHNUNGEN + Ziele (eine Quelle der Wahrheit) ========= */
+(function(){
+  // 1) Zentrale Definition: Kategorien, Unterkategorien, Cover-IDs und TOC-Ziele
+  const CANON = {
+    "Frühstück": {
+      coverId: "fruehstueck-cover",
+      tocRoot: "#fruehstueck",
+      subcats: {
+        "Brot & Aufstriche": { coverId: "brot-und-aufstriche-cover" },
+        "Sonstiges":         { coverId: "fruehstueck-sonstiges-cover" }
+      }
+    },
     "Hauptspeise": {
-      "Suppen & Eintöpfe":             { cover:"#suppen-und-eintoepfe-cover", toc:"#hauptspeisen ul" },
-      "Pasta & Nudeln":                { cover:"#pasta-und-nudeln-cover",     toc:"#hauptspeisen ul" },
-      "Pizza":                         { cover:"#pizza-cover",                toc:"#hauptspeisen ul" },
-      "Reis & Getreidegerichte":       { cover:"#reis-und-getreide-cover",    toc:"#hauptspeisen ul" },
-      "Internationale Küche & Currys": { cover:"#internationale-kueche-und-currys-cover", toc:"#hauptspeisen ul" },
-      "Snacks, Beilage & Fingerfood":  { cover:"#snacks-beilagen-und-fingerfood-cover",    toc:"#hauptspeisen ul" },
-      "Basics & Saucen":               { cover:"#basics-und-saucen-cover",    toc:"#hauptspeisen ul" },
-      "Curry-Paste":                   { cover:"#curry-pasten-cover",         toc:"#hauptspeisen ul" }
+      coverId: "hauptspeisen-cover",
+      tocRoot: "#hauptspeisen",
+      subcats: {
+        "Suppen & Eintöpfe":             { coverId: "suppen-und-eintoepfe-cover" },
+        "Pasta & Nudeln":                { coverId: "pasta-und-nudeln-cover" },
+        "Pizza":                         { coverId: "pizza-cover" },
+        "Reis & Getreidegerichte":       { coverId: "reis-und-getreide-cover" },
+        "Internationale Küche & Currys": { coverId: "internationale-kueche-und-currys-cover" },
+        // Einheitlich: **Beilagen** (Plural) überall
+        "Snacks, Beilagen & Fingerfood": { coverId: "snacks-beilagen-und-fingerfood-cover" },
+        "Basics & Saucen":               { coverId: "basics-und-saucen-cover" },
+        "Curry-Pasten":                  { coverId: "curry-pasten-cover" }
+      }
     },
     "Bakery": {
-      "Kuchen & Torten":               { cover:"#kuchen-und-torten-cover",            toc:"#bakery ul" },
-      "Plätzchen & Kleingebäck":       { cover:"#plätzchen-und-kleingebäck-cover",    toc:"#bakery ul" },
-      "Sonstiges Gebäck":              { cover:"#sonstiges-gebäck-cover",             toc:"#bakery ul" }
-    },
-    "Snacks & Desserts":               { cover:"#snacks-cover", toc:"#snacks ul" },
-
-    "Drinks": {
-      "Alkoholische Getränke":         { cover:"#alkoholische-getraenke-cover",     toc:"#drinks-alkoholische-list" },
-      "Nicht-alkoholische Getränke":   { cover:"#alkoholfreie-getraenke-cover",     toc:"#drinks-nicht-alkoholische-list" }
-    },
-
-    "Frühstück": {
-      "Brot & Aufstriche":             { cover:"#brot-und-aufstriche-cover",        toc:"#fruehstueck-brot-aufstriche-list" },
-      "Sonstiges":                     { cover:"#fruehstueck-sonstiges-cover",      toc:"#fruehstueck-sonstiges-list" }
-    }
-  };
-
-  let cfg = map[cat];
-  if (cfg && typeof cfg === 'object' && subcat && cfg[subcat]) cfg = cfg[subcat];
-
-  const guessId =
-    cat === 'Frühstück' ? 'fruehstueck' :
-    (cat||'').toLowerCase().includes('haupt') ? 'hauptspeisen' :
-    (cat||'').toLowerCase().includes('snacks') ? 'snacks' :
-    (cat||'').toLowerCase();
-
-  const contentAnchor =
-    (cfg && pick(cfg.cover)) ||
-    document.querySelector('#' + guessId + '-cover') ||
-    document.body;
-
-  const tocList =
-    (cfg && cfg.toc && document.querySelector(cfg.toc)) ||
-    document.querySelector('#' + guessId + ' ul') ||
-    document.querySelector('.cat ul');
-
-  return { tocList, contentAnchor };
-};
-</script>
-  
-
-  
-  
-    <!-- ===== FIX: Rezept-Sektion aufbauen (korrekte Template-Literals) ===== -->
-<script>
-window.buildRecipeSection = function({
-  id, title, servings, prep, total, ingredients, steps, cat, sub, dbId
-}){
-  const ingLis = (ingredients||[]).map(line=>{
-    if (typeof line === 'string') {
-      const m = line.trim().match(/^(\d+(?:[.,]\d+)?)\s+(.*)$/);
-      if (m) {
-        const val = m[1].replace(',','.');
-        return `<li><span data-base="${val}">${val}</span> ${m[2]}</li>`;
+      coverId: "bakery-cover",
+      tocRoot: "#bakery",
+      subcats: {
+        "Kuchen & Torten":         { coverId: "kuchen-und-torten-cover" },
+        "Plätzchen & Kleingebäck": { coverId: "plätzchen-und-kleingebäck-cover" },
+        "Sonstiges Gebäck":        { coverId: "sonstiges-gebäck-cover" }
       }
-      return `<li>${line.trim()}</li>`;
+    },
+    "Snacks & Desserts": {
+      coverId: "snacks-cover",
+      tocRoot: "#snacks",
+      subcats: { }
+    },
+    "Drinks": {
+      coverId: "drinks-cover",
+      tocRoot: "#drinks",
+      // Drinks hat spezielle TOC-Listen je Subcat
+      subcats: {
+        "Alkoholische Getränke":       { coverId: "alkoholische-getraenke-cover", tocList: "#drinks-alkoholische-list" },
+        "Nicht-alkoholische Getränke": { coverId: "alkoholfreie-getraenke-cover", tocList: "#drinks-nicht-alkoholische-list" }
+      }
     }
-    return '';
-  }).join('\n');
-
-  const stepsOl = (steps||[]).map(s=>`<li>${(typeof s==='string'?s:s?.text||'').trim()}</li>`).join('\n');
-
-  const catClass =
-    cat === "Frühstück" ? "fruehstueck" :
-    cat === "Hauptspeise" ? "hauptspeisen" :
-    cat === "Bakery" ? "bakery" :
-    cat === "Snacks & Desserts" ? "snacks" :
-    cat === "Drinks" ? "drinks" : "";
-
-  return `
-<section id="${id}" class="recipe ${catClass}"
-         data-recipe-id="${dbId || id}"
-         data-category="${cat || ''}"
-         data-subcategory="${sub || ''}">
-  <div style="display:flex; gap:8px; justify-content:flex-end; margin-bottom:6px;">
-    <button class="btn btn-edit" data-id="${dbId || id}" style="padding:6px 10px;">✏️ Bearbeiten</button>
-    <button class="btn btn-delete" data-id="${dbId || id}" style="padding:6px 10px;">🗑️ Löschen</button>
-  </div>
-
-  <h2>${title}</h2>
-  <p class="meta">
-    ⏱️ Zubereitungszeit: ${prep} | 🕒 Gesamtzeit: ${total} | 👥 Portionen:
-    <input type="number" value="${servings}" min="1" style="width:60px"
-           oninput="window.updateRecipe && window.updateRecipe()"
-           onchange="window.updateRecipe && window.updateRecipe()">
-  </p>
-
-  <div class="zutaten">
-    <h3>🥕 Zutaten</h3>
-    <ul id="${id}-zutaten">
-      ${ingLis}
-    </ul>
-  </div>
-
-  <div class="zubereitung">
-    <h3>👩‍🍳 Zubereitung</h3>
-    <ol>
-      ${stepsOl}
-    </ol>
-  </div>
-</section>`;
-};
-window.__buildRecipeSection = window.buildRecipeSection;
-</script>
-
-
-<script>
-/* ===== Suche neu binden (wird von unten nachgeladenen Rezepten erneut aufgerufen) ===== */
-window.rebuildSearch = function(){
-  const input = document.getElementById('recipeSearch');
-  const results = document.getElementById('searchResults');
-  if(!input || !results) return;
-
-  const normalize = s => s.toLowerCase();
-  function items(){
-    return Array.from(document.querySelectorAll('.cat ul li a'))
-      .map(a=>({text:a.textContent.trim(), href:a.getAttribute('href')}));
-  }
-  function render(list){
-    results.innerHTML=''; if(!list.length){ results.style.display='none'; return; }
-    results.style.display='block';
-    list.slice(0,25).forEach(it=>{
-      const li=document.createElement('li');
-      const a=document.createElement('a'); a.href=it.href; a.textContent=it.text;
-      li.appendChild(a); results.appendChild(li);
-    });
-  }
-  input.oninput = () => {
-    const q = normalize(input.value||''); if(!q){ results.innerHTML=''; results.style.display='none'; return; }
-    render(items().filter(it=>normalize(it.text).includes(q)));
   };
-};
 
-/* ===== Modal öffnen/schließen (ohne Submit-Logik) ===== */
-(function(){
-  const by = (sel, r=document)=>r.querySelector(sel);
-  const openBtn = by('#openAddRecipe');
-  const modal   = by('#addRecipeModal');
-  const cancel  = by('#cancelAdd');
-  const catSel  = by('#category');
-  const subSel  = by('#subcategory');
+  // 2) Exponiere die kanonische Struktur (falls später nützlich)
+  window.CANON = CANON;
 
-  function openModal(e){ if(e) e.preventDefault(); modal.style.display='flex'; }
-  function closeModal(){ modal.style.display='none'; subSel.innerHTML=''; subSel.disabled=true; }
-  if (openBtn) openBtn.addEventListener('click', openModal);
-  if (cancel)  cancel.addEventListener('click', closeModal);
-  modal?.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
+  // 3) Erzeuge window.CATS **automatisch** aus CANON (für das Formular)
+  window.CATS = Object.fromEntries(
+    Object.entries(CANON).map(([cat, cfg]) => [cat, Object.keys(cfg.subcats || {})])
+  );
 
-  // Kategorien füllen
-  (function fillCats(){
-    const cats = Object.keys(window.CATS||{});
-    if (!catSel) return;
-    catSel.innerHTML = `<option value="" disabled selected>Bitte wählen…</option>` + cats.map(c=>`<option>${c}</option>`).join('');
-  })();
-  catSel?.addEventListener('change', ()=>{
-  const subs = (window.CATS||{})[catSel.value] || [];
-  subSel.innerHTML = '';
-  subSel.disabled = !subs.length;
-  subSel.required = subs.length > 0;     // ← Pflicht, wenn es Unterkategorien gibt
+  // 4) Einheitliche Hilfsfunktionen
+  const pick = sel => sel ? document.querySelector(sel) : null;
+  const q = (root, sel) => root ? root.querySelector(sel) : null;
 
-  if (!subs.length) {
-    // falls keine Unterkategorien: leeren Wert sicherstellen
-    subSel.value = '';
-    return;
-  }
+  // 5) resolveTargets generieren – nutzt ausschließlich CANON
+  window.resolveTargets = function(cat, subcat){
+    const catCfg = CANON[cat] || null;
 
-  subSel.innerHTML =
-    `<option value="" disabled selected>Unterkategorie wählen…</option>` +
-    subs.map(s=>`<option>${s}</option>`).join('');
-});
+    // Fallback-Guessing für alte/abweichende Daten
+    const guessId =
+      cat === 'Frühstück' ? 'fruehstueck' :
+      (cat||'').toLowerCase().includes('haupt') ? 'hauptspeisen' :
+      (cat||'').toLowerCase().includes('snacks') ? 'snacks' :
+      (cat||'').toLowerCase();
+
+    // Content-Anker (Cover der Subcat, sonst Cover der Cat, sonst globaler Fallback)
+    const subCfg = catCfg?.subcats?.[subcat] || null;
+    const contentAnchor =
+      (subCfg && pick('#' + subCfg.coverId)) ||
+      (catCfg && pick('#' + catCfg.coverId)) ||
+      pick('#' + guessId + '-cover') ||
+      document.body;
+
+    // TOC-Liste:
+    // - Drinks: spezielle UL pro Subcat (wenn definiert)
+    // - Alle anderen: die erste UL im Cat-Block bzw. generischer Fallback
+    let tocList = null;
+    if (catCfg) {
+      if (subCfg?.tocList) {
+        tocList = pick(subCfg.tocList);
+      }
+      if (!tocList) {
+        const root = pick(catCfg.tocRoot);
+        tocList = q(root, 'ul') || pick('#' + guessId + ' ul');
+      }
+    }
+    tocList = tocList || document.querySelector('.cat ul');
+
+    return { tocList, contentAnchor };
+  };
+
+  // 6) Optional: Prüfer, der Inkonsistenzen in der Konsole ausgibt
+  window.assertCanonicalLabels = function(){
+    const problems = [];
+    // Prüfe, ob alle Subcat-Cover im DOM vorhanden sind
+    for (const [cat, cfg] of Object.entries(CANON)) {
+      for (const [sub, sc] of Object.entries(cfg.subcats || {})) {
+        if (!document.getElementById(sc.coverId)) {
+          problems.push(`Fehlendes Cover im DOM: [${cat} > ${sub}] -> id="${sc.coverId}"`);
+        }
+      }
+    }
+    // Kurzer Report
+    if (problems.length) {
+      console.warn('⚠️ Canon-Check: Inkonsistenzen gefunden:\n- ' + problems.join('\n- '));
+    } else {
+      console.info('✅ Canon-Check: Alles konsistent.');
+    }
+  };
 })();
 </script>
-  
 
   
 <!-- 🔍 Suchbox Styles (unverändert) -->
