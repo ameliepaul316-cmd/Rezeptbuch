@@ -1280,7 +1280,7 @@ window.rebuildSearch = function(){
     }
 
     if (typeof rebuildSearch === 'function') rebuildSearch();
-
+if (window.resortGroupFor) window.resortGroupFor(section);
     closeModal();
     setTimeout(()=>{ location.hash = '#' + domId; }, 50);
   });
