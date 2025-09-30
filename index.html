@@ -1402,27 +1402,35 @@ if (window.resortGroupFor) window.resortGroupFor(section);
 
 
 
-  <script>
-/* Client-only Fallback: /api/recipes in localStorage emulieren */
+<script>
+/* Client-only Fallback: /api/recipes in localStorage emulieren (robust für file://) */
 (function(){
   const nativeFetch = window.fetch.bind(window);
   const KEY = 'recipes';
 
   function json(data, status=200){
     return new Response(JSON.stringify(data), {
-      status,
-      headers:{'Content-Type':'application/json'}
+      status, headers:{'Content-Type':'application/json'}
     });
   }
 
+  // Hilfen ohne URL()
+  function getQuery(href){
+    const q = href.split('?')[1] || '';
+    return new URLSearchParams(q);
+  }
+
   window.fetch = async function(resource, options={}){
-    const urlStr = typeof resource === 'string' ? resource : (resource?.url || '');
-    if (!urlStr.startsWith('/api/recipes')) {
+    const isReq = typeof Request !== 'undefined' && resource instanceof Request;
+    const urlStr = isReq ? resource.url : String(resource || '');
+    // sowohl '/api/recipes' als auch absolute Variationen abfangen
+    if (!/\/api\/recipes(\b|\/|\?)/.test(urlStr)) {
       return nativeFetch(resource, options);
     }
-    const url = new URL(urlStr, location.origin);
-    const method = (options.method || 'GET').toUpperCase();
-    const id = url.searchParams.get('id');
+
+    const method = (options.method || (isReq ? resource.method : 'GET') || 'GET').toUpperCase();
+    const qs = getQuery(urlStr);
+    const id = qs.get('id');
     let db = JSON.parse(localStorage.getItem(KEY) || '[]');
 
     try{
@@ -1430,8 +1438,11 @@ if (window.resortGroupFor) window.resortGroupFor(section);
         return json(db);
       }
 
+      // Body holen (auch wenn fetch mit Request kommt)
+      const rawBody = options.body || (isReq ? await resource.clone().text() : '');
+      const body = rawBody ? JSON.parse(rawBody) : {};
+
       if (method === 'POST') {
-        const body = JSON.parse(options.body || '{}');
         const newId = String(Date.now());
         const rec = {
           id: newId,
@@ -1450,7 +1461,6 @@ if (window.resortGroupFor) window.resortGroupFor(section);
       }
 
       if (method === 'PUT' && id) {
-        const body = JSON.parse(options.body || '{}');
         db = db.map(r => r.id === id ? {
           ...r,
           title: body.title,
@@ -1471,16 +1481,15 @@ if (window.resortGroupFor) window.resortGroupFor(section);
         localStorage.setItem(KEY, JSON.stringify(db));
         return json({ ok: true });
       }
+
+      return json({ error:'not-found' }, 404);
     }catch(e){
       console.error('LocalStorage-API-Fehler:', e);
-      return json({ error: 'client-fallback-error' }, 500);
+      return json({ error:'client-fallback-error' }, 500);
     }
-
-    return json({ error: 'not-found' }, 404);
   };
 })();
 </script>
-
 
 </body>
 </html>
