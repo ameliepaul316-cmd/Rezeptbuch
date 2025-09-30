@@ -978,7 +978,113 @@ section.recipe .meta input[type=number]{ margin-left:6px; }
   
 
 
+<script>
+/* === FIX 1: Modal öffnen/schließen + Kategorien/Subkategorien füllen === */
+(function(){
+  const $ = (sel, root=document) => root.querySelector(sel);
+  const modal    = $('#addRecipeModal');
+  const openBtn  = $('#openAddRecipe');
+  const cancel   = $('#cancelAdd');
+  const catSel   = $('#category');
+  const subSel   = $('#subcategory');
 
+  function open(e){ if(e) e.preventDefault(); if(modal) modal.style.display = 'flex'; }
+  function close(){ if(modal) modal.style.display = 'none'; }
+
+  openBtn?.addEventListener('click', open);
+  cancel?.addEventListener('click', close);
+  modal?.addEventListener('click', (e)=>{ if(e.target === modal) close(); });
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && modal?.style.display === 'flex') close(); });
+
+  function fillCats(){
+    if(!catSel) return;
+    const cats = Object.keys(window.CATS || {});
+    catSel.innerHTML =
+      `<option value="" disabled selected>Bitte wählen…</option>` +
+      cats.map(c => `<option>${c}</option>`).join('');
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', fillCats);
+  } else {
+    fillCats();
+  }
+
+  catSel?.addEventListener('change', ()=>{
+    const subs = (window.CATS || {})[catSel.value] || [];
+    subSel.innerHTML = '';
+    subSel.disabled  = !subs.length;
+    subSel.required  = subs.length > 0;
+
+    if (!subs.length) return;
+    subSel.innerHTML =
+      `<option value="" disabled selected>Unterkategorie wählen…</option>` +
+      subs.map(s => `<option>${s}</option>`).join('');
+  });
+})();
+</script>
+
+<script>
+/* === FIX 2: buildRecipeSection – Rezeptkarte generieren === */
+window.buildRecipeSection = function({
+  id, title, servings, prep, total, ingredients, steps, cat, sub, dbId
+}){
+  const ingLis = (ingredients||[]).map(line=>{
+    if (typeof line === 'string') {
+      const m = line.trim().match(/^(\d+(?:[.,]\d+)?)\s+(.*)$/);
+      if (m) {
+        const val = m[1].replace(',','.');
+        return `<li><span data-base="${val}">${val}</span> ${m[2]}</li>`;
+      }
+      return `<li>${line.trim()}</li>`;
+    }
+    return '';
+  }).join('');
+
+  const stepsOl = (steps||[]).map(s=>`<li>${(typeof s==='string'?s:s?.text||'').trim()}</li>`).join('');
+
+  const catClass =
+    cat === "Frühstück"          ? "fruehstueck"  :
+    cat === "Hauptspeise"        ? "hauptspeisen" :
+    cat === "Bakery"             ? "bakery"       :
+    cat === "Snacks & Desserts"  ? "snacks"       :
+    cat === "Drinks"             ? "drinks"       : "";
+
+  return `
+<section id="${id}" class="recipe ${catClass}"
+         data-recipe-id="${dbId || id}"
+         data-category="${cat || ''}"
+         data-subcategory="${sub || ''}">
+  <div style="display:flex; gap:8px; justify-content:flex-end; margin-bottom:6px;">
+    <button class="btn btn-edit" data-id="${dbId || id}" style="padding:6px 10px;">✏️ Bearbeiten</button>
+    <button class="btn btn-delete" data-id="${dbId || id}" style="padding:6px 10px;">🗑️ Löschen</button>
+  </div>
+
+  <h2>${title}</h2>
+  <p class="meta">
+    ⏱️ Zubereitungszeit: ${prep} | 🕒 Gesamtzeit: ${total} | 👥 Portionen:
+    <input type="number" value="${servings}" min="1" style="width:60px"
+           oninput="window.updateRecipe && window.updateRecipe()"
+           onchange="window.updateRecipe && window.updateRecipe()">
+  </p>
+
+  <div class="zutaten">
+    <h3>🥕 Zutaten</h3>
+    <ul id="${id}-zutaten">
+      ${ingLis}
+    </ul>
+  </div>
+
+  <div class="zubereitung">
+    <h3>👩‍🍳 Zubereitung</h3>
+    <ol>
+      ${stepsOl}
+    </ol>
+  </div>
+</section>`;
+};
+</script>
+  
   
   <script>
 /* ===== DB -> Frontend: Alles laden und ins DOM setzen (gefixt) ===== */
