@@ -563,11 +563,21 @@ window.rebuildSearch = function(){
     catSel.innerHTML = `<option value="" disabled selected>Bitte wählen…</option>` + cats.map(c=>`<option>${c}</option>`).join('');
   })();
   catSel?.addEventListener('change', ()=>{
-    const subs = (window.CATS||{})[catSel.value] || [];
-    subSel.innerHTML=''; subSel.disabled = !subs.length;
-    if (!subs.length) return;
-    subSel.innerHTML = `<option value="" disabled selected>Unterkategorie wählen…</option>` + subs.map(s=>`<option>${s}</option>`).join('');
-  });
+  const subs = (window.CATS||{})[catSel.value] || [];
+  subSel.innerHTML = '';
+  subSel.disabled = !subs.length;
+  subSel.required = subs.length > 0;     // ← Pflicht, wenn es Unterkategorien gibt
+
+  if (!subs.length) {
+    // falls keine Unterkategorien: leeren Wert sicherstellen
+    subSel.value = '';
+    return;
+  }
+
+  subSel.innerHTML =
+    `<option value="" disabled selected>Unterkategorie wählen…</option>` +
+    subs.map(s=>`<option>${s}</option>`).join('');
+});
 })();
 </script>
   
@@ -1009,7 +1019,11 @@ window.rebuildSearch = function(){
     const total = rec.total;
     const ingredients = JSON.parse(rec.ingredients_json || '[]');
     const steps = JSON.parse(rec.steps_json || '[]');
-
+    const hasSubs = ((window.CATS||{})[category] || []).length > 0;
+if (hasSubs && !subcategory) {
+  alert('Bitte eine Unterkategorie auswählen.');
+  return;
+}
     if(!window.buildRecipeSection){ console.warn('buildRecipeSection fehlt'); return; }
 
     const html = buildRecipeSection({
