@@ -104,6 +104,12 @@
       transition: transform .06s ease, box-shadow .2s ease, background .2s ease;
       box-shadow: 0 1px 0 rgba(0,0,0,.02);
     }
+    /* Override: Rezeptlinks in den (Unter-)kategorien dezenter */
+.cat ul li a{
+  font-size: 14px;
+  padding: 8px 10px;
+  margin: 5px 0;
+}
     .cat ul li a:hover{
       transform: translateY(-1px);
       box-shadow: 0 6px 16px rgba(0,0,0,.08);
@@ -180,12 +186,32 @@ section.recipe{
   margin: 18px 12px;
 }
 
-/* farbige Akzente je Hauptkategorie */
-section.recipe.fruehstueck { border-color:#e6db95; box-shadow: 0 6px 18px rgba(230,219,149,.25); }
-section.recipe.hauptspeisen{ border-color:#8fdac7; box-shadow: 0 6px 18px rgba(143,218,199,.25); }
-section.recipe.bakery      { border-color:#ff99cc; box-shadow: 0 6px 18px rgba(255,153,204,.25); }
-section.recipe.snacks      { border-color:#ffb266; box-shadow: 0 6px 18px rgba(255,178,102,.25); }
-section.recipe.drinks      { border-color:#99cfff; box-shadow: 0 6px 18px rgba(153,207,255,.25); }
+/* farbige Hintergründe + Akzente je Hauptkategorie */
+section.recipe.fruehstueck {
+  background:#FFFAE6;            /* sanftes Gelb */
+  border-color:#e6db95;
+  box-shadow: 0 6px 18px rgba(230,219,149,.25);
+}
+section.recipe.hauptspeisen{
+  background:#F2FBF7;            /* sanftes Mint */
+  border-color:#8fdac7;
+  box-shadow: 0 6px 18px rgba(143,218,199,.25);
+}
+section.recipe.bakery{
+  background:#FFF0F6;            /* sanftes Rosa */
+  border-color:#ff99cc;
+  box-shadow: 0 6px 18px rgba(255,153,204,.25);
+}
+section.recipe.snacks{
+  background:#FFF3E3;            /* sanftes Orange */
+  border-color:#ffb266;
+  box-shadow: 0 6px 18px rgba(255,178,102,.25);
+}
+section.recipe.drinks{
+  background:#F0F8FF;            /* sanftes Blau */
+  border-color:#99cfff;
+  box-shadow: 0 6px 18px rgba(153,207,255,.25);
+}
 
 /* kleine Header-Underline im Akzentton */
 section.recipe.fruehstueck h3{ border-bottom:2px solid #FFF6BF; padding-bottom:4px; }
@@ -1019,11 +1045,7 @@ window.rebuildSearch = function(){
     const total = rec.total;
     const ingredients = JSON.parse(rec.ingredients_json || '[]');
     const steps = JSON.parse(rec.steps_json || '[]');
-    const hasSubs = ((window.CATS||{})[category] || []).length > 0;
-if (hasSubs && !subcategory) {
-  alert('Bitte eine Unterkategorie auswählen.');
-  return;
-}
+    
     if(!window.buildRecipeSection){ console.warn('buildRecipeSection fehlt'); return; }
 
     const html = buildRecipeSection({
