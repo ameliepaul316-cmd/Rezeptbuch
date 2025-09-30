@@ -212,6 +212,21 @@ section.recipe.drinks{
   border-color:#99cfff;
   box-shadow: 0 6px 18px rgba(153,207,255,.25);
 }
+    /* Hover-Lift für Rezeptkarten */
+section.recipe{
+  transition: transform .12s ease, box-shadow .2s ease;
+  will-change: transform;
+}
+section.recipe:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 12px 26px rgba(0,0,0,.12);
+}
+
+/* Weniger Bewegung für Nutzer mit Motion-Reduktion */
+@media (prefers-reduced-motion: reduce){
+  section.recipe{ transition: box-shadow .2s ease; }
+  section.recipe:hover{ transform: none; }
+}
 
 /* kleine Header-Underline im Akzentton */
 section.recipe.fruehstueck h3{ border-bottom:2px solid #FFF6BF; padding-bottom:4px; }
@@ -1385,6 +1400,90 @@ if (window.resortGroupFor) window.resortGroupFor(section);
   
 
 
+
+
+  <script>
+/* Client-only Fallback: /api/recipes in localStorage emulieren */
+(function(){
+  const nativeFetch = window.fetch.bind(window);
+  const KEY = 'recipes';
+
+  function json(data, status=200){
+    return new Response(JSON.stringify(data), {
+      status,
+      headers:{'Content-Type':'application/json'}
+    });
+  }
+
+  window.fetch = async function(resource, options={}){
+    const urlStr = typeof resource === 'string' ? resource : (resource?.url || '');
+    if (!urlStr.startsWith('/api/recipes')) {
+      return nativeFetch(resource, options);
+    }
+    const url = new URL(urlStr, location.origin);
+    const method = (options.method || 'GET').toUpperCase();
+    const id = url.searchParams.get('id');
+    let db = JSON.parse(localStorage.getItem(KEY) || '[]');
+
+    try{
+      if (method === 'GET') {
+        return json(db);
+      }
+
+      if (method === 'POST') {
+        const body = JSON.parse(options.body || '{}');
+        const newId = String(Date.now());
+        const rec = {
+          id: newId,
+          title: body.title,
+          category: body.category,
+          subcategory: body.subcategory,
+          servings: body.servings,
+          prep: body.prep,
+          total: body.total,
+          ingredients_json: JSON.stringify(body.ingredients || []),
+          steps_json: JSON.stringify(body.steps || [])
+        };
+        db.push(rec);
+        localStorage.setItem(KEY, JSON.stringify(db));
+        return json({ id: newId });
+      }
+
+      if (method === 'PUT' && id) {
+        const body = JSON.parse(options.body || '{}');
+        db = db.map(r => r.id === id ? {
+          ...r,
+          title: body.title,
+          category: body.category,
+          subcategory: body.subcategory,
+          servings: body.servings,
+          prep: body.prep,
+          total: body.total,
+          ingredients_json: JSON.stringify(body.ingredients || []),
+          steps_json: JSON.stringify(body.steps || [])
+        } : r);
+        localStorage.setItem(KEY, JSON.stringify(db));
+        return json({ ok: true });
+      }
+
+      if (method === 'DELETE' && id) {
+        db = db.filter(r => r.id !== id);
+        localStorage.setItem(KEY, JSON.stringify(db));
+        return json({ ok: true });
+      }
+    }catch(e){
+      console.error('LocalStorage-API-Fehler:', e);
+      return json({ error: 'client-fallback-error' }, 500);
+    }
+
+    return json({ error: 'not-found' }, 404);
+  };
+})();
+</script>
+
+
+</body>
+</html>
 
 
   
