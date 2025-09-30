@@ -1330,6 +1330,7 @@ document.body.appendChild(section);
     }
 
 if (window.__editingRecipeId) {
+  // 1) Backend aktualisieren
   const res = await fetch('/api/recipes?id=' + encodeURIComponent(window.__editingRecipeId), {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
@@ -1337,16 +1338,30 @@ if (window.__editingRecipeId) {
   });
   if (!res.ok) { alert('Speichern fehlgeschlagen'); return; }
 
-  // Alte Section + TOC entfernen
+  // kleine Hilfsfunktion für DOM-IDs
+  const makeSlug = (s) => (s || '')
+    .toLowerCase()
+    .normalize('NFD').replace(/\p{Diacritic}/gu,'')
+    .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')
+    .slice(0,64) || 'rezept';
+
+  // 2) Alte Section + TOC-Eintrag(e) entfernen
   const oldSec = document.querySelector(`section.recipe[data-recipe-id="${window.__editingRecipeId}"]`);
   if (oldSec) {
-    const hash = '#' + oldSec.id;
+    const oldHash = '#' + oldSec.id;
     oldSec.remove();
-    document.querySelectorAll(`.cat ul li a[href="${hash}"]`).forEach(a => a.parentElement.remove());
+    document.querySelectorAll(`.cat ul li a[href="${oldHash}"]`).forEach(a => a.parentElement?.remove());
   }
 
-  // Neue Section bauen
-  const domId = (slug(title) + '-' + window.__editingRecipeId).slice(0,64);
+  // 3) Neue Section bauen (ID an den Titel koppeln, + DB-ID für Eindeutigkeit)
+  let domId = makeSlug(title) + '-' + window.__editingRecipeId;
+  // falls (sehr unwahrscheinlich) schon vorhanden -> laufende Nummer
+  let n = 2;
+  while (document.getElementById(domId)) domId = makeSlug(title) + '-' + window.__editingRecipeId + '-' + (n++);
+
+  const targets = (typeof resolveTargets === 'function') ? resolveTargets(category, subcategory) : {};
+  const contentAnchor = targets?.contentAnchor || document.body;
+
   const html = buildRecipeSection({
     id: domId,
     title, servings, prep, total,
@@ -1354,33 +1369,37 @@ if (window.__editingRecipeId) {
     cat: category, sub: subcategory,
     dbId: window.__editingRecipeId
   });
-
   const t = document.createElement('template');
   t.innerHTML = html.trim();
   const section = t.content.firstElementChild;
 
+  // 4) Section korrekt einsortieren (unter richtiges Cover, alphabetisch)
   if (typeof insertSortedSection === 'function') {
     insertSortedSection({ section, cat: category, sub: subcategory });
   } else {
-    document.body.appendChild(section);
+    contentAnchor.insertAdjacentElement('afterend', section);
   }
 
-  // TOC neu eintragen
-  const tocList = (window.getTocList ? getTocList(category, subcategory) : document.querySelector('.cat ul'));
+  // 5) TOC-Eintrag in die richtige Liste, alphabetisch
+  const tocList = (window.getTocList ? getTocList(category, subcategory)
+                                     : (targets?.tocList || document.querySelector('.cat ul')));
   if (tocList) {
     const li = document.createElement('li');
-    const a = document.createElement('a'); a.href = '#' + domId; a.textContent = title;
+    const a  = document.createElement('a');
+    a.href = '#' + domId;
+    a.textContent = title;
     li.appendChild(a);
     if (typeof insertSortedTOC === 'function') insertSortedTOC(tocList, li);
     else tocList.appendChild(li);
   }
 
-  if (window.resortGroupFor) window.resortGroupFor(section);
-  if (window.rebuildSearch) window.rebuildSearch();
+  // 6) Helfer reaktivieren + in der Gruppe sicherheitshalber alphabetisch sortieren
   if (window.initRecipeScaling) window.initRecipeScaling();
+  if (window.resortGroupFor)    window.resortGroupFor(section);
+  if (window.rebuildSearch)     window.rebuildSearch();
 
   closeModal();
-  setTimeout(()=>{ location.hash = '#' + domId; }, 50);
+  setTimeout(() => { location.hash = '#' + domId; }, 50);
   return;
 }
     const res = await fetch('/api/recipes', {
