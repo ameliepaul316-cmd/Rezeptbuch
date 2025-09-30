@@ -895,18 +895,7 @@ window.rebuildSearch = function(){
 
   
   
-  <!-- ====================== GLOBAL SERVINGS FIX + CLEANUP ====================== -->
-<style>
-  /* Alle "Zurück"-Buttons komplett ausblenden */
-  .back-button { display: none !important; }
 
-  /* Optional: hübscher iPhone-Look für die Rezepte (keine Pflicht) */
-  @media (max-width: 430px) {
-    .recipe { margin: 16px 10px; border-radius: 18px; }
-    .recipe h2 { font-size: 1.15rem; }
-    .meta input[type="number"] { width: 64px !important; }
-  }
-</style>
 
 
 
@@ -1288,51 +1277,7 @@ if (window.resortGroupFor) window.resortGroupFor(section);
 </script>
 
   
-<script>
-/* ===== Alle Rezeptkarten je (Kategorie, Unterkategorie) alphabetisch einsortieren ===== */
-(function(){
-  const norm = (s)=> (s||'')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/\p{Diacritic}/gu,'')
-    .replace(/[^\p{Letter}\p{Number}]+/gu,' ')
-    .trim();
 
-  window.sortAllSections = function(){
-    const groups = new Map();
-
-    // Gruppen nach cat|sub sammeln
-    document.querySelectorAll('section.recipe').forEach(sec=>{
-      const cat = (sec.dataset.category||'').trim();
-      const sub = (sec.dataset.subcategory||'').trim();
-      const key = cat + '||' + sub;
-      if (!groups.has(key)) groups.set(key, []);
-      groups.get(key).push(sec);
-    });
-
-    // Jede Gruppe sortieren und direkt hinter das passende Cover setzen
-    groups.forEach((list, key)=>{
-      const [cat, sub] = key.split('||');
-      list.sort((a,b)=>{
-        const ta = a.querySelector('h2')?.textContent || '';
-        const tb = b.querySelector('h2')?.textContent || '';
-        return norm(ta).localeCompare(norm(tb));
-      });
-
-      // Anker bestimmen (wie in resolveTargets)
-      let anchor = (typeof resolveTargets==='function' ? resolveTargets(cat, sub)?.contentAnchor : null)
-                || document.querySelector('#cover');
-
-      // Karten in der neuen Reihenfolge direkt hinter den Anker setzen
-      if (anchor) {
-        // in DOM-Reihenfolge platzieren (stabile Reihenfolge)
-        list.forEach(sec => anchor.insertAdjacentElement('afterend', sec));
-      }
-    });
-  };
-})();
-</script>
-  
 
   
 <script>
