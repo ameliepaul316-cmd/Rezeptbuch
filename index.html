@@ -1004,12 +1004,8 @@ section.recipe .meta input[type=number]{ margin-left:6px; }
     t.innerHTML = html.trim();
     const section = t.content.firstElementChild;
 
-    // Alphabetisch in Content einsortieren
-    if (typeof insertSortedSection === 'function') {
-      insertSortedSection({ section, cat, sub });
-    } else {
-      document.body.appendChild(section);
-    }
+// erstmal nur anhängen – alphabetisch sortiert wird global
+document.body.appendChild(section);
 
     if (window.initRecipeScaling) window.initRecipeScaling();
 
