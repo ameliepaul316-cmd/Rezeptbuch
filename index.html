@@ -1329,17 +1329,60 @@ document.body.appendChild(section);
       alert('Bitte alle Pflichtfelder ausfüllen.'); return;
     }
 
-    if (window.__editingRecipeId) {
-      const res = await fetch('/api/recipes?id=' + encodeURIComponent(window.__editingRecipeId), {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, category, subcategory, servings, prep, total, ingredients, steps })
-      });
-      if (!res.ok) { alert('Speichern fehlgeschlagen'); return; }
-      location.reload();
-      return;
-    }
+if (window.__editingRecipeId) {
+  const res = await fetch('/api/recipes?id=' + encodeURIComponent(window.__editingRecipeId), {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ title, category, subcategory, servings, prep, total, ingredients, steps })
+  });
+  if (!res.ok) { alert('Speichern fehlgeschlagen'); return; }
 
+  // Alte Section + TOC entfernen
+  const oldSec = document.querySelector(`section.recipe[data-recipe-id="${window.__editingRecipeId}"]`);
+  if (oldSec) {
+    const hash = '#' + oldSec.id;
+    oldSec.remove();
+    document.querySelectorAll(`.cat ul li a[href="${hash}"]`).forEach(a => a.parentElement.remove());
+  }
+
+  // Neue Section bauen
+  const domId = (slug(title) + '-' + window.__editingRecipeId).slice(0,64);
+  const html = buildRecipeSection({
+    id: domId,
+    title, servings, prep, total,
+    ingredients, steps,
+    cat: category, sub: subcategory,
+    dbId: window.__editingRecipeId
+  });
+
+  const t = document.createElement('template');
+  t.innerHTML = html.trim();
+  const section = t.content.firstElementChild;
+
+  if (typeof insertSortedSection === 'function') {
+    insertSortedSection({ section, cat: category, sub: subcategory });
+  } else {
+    document.body.appendChild(section);
+  }
+
+  // TOC neu eintragen
+  const tocList = (window.getTocList ? getTocList(category, subcategory) : document.querySelector('.cat ul'));
+  if (tocList) {
+    const li = document.createElement('li');
+    const a = document.createElement('a'); a.href = '#' + domId; a.textContent = title;
+    li.appendChild(a);
+    if (typeof insertSortedTOC === 'function') insertSortedTOC(tocList, li);
+    else tocList.appendChild(li);
+  }
+
+  if (window.resortGroupFor) window.resortGroupFor(section);
+  if (window.rebuildSearch) window.rebuildSearch();
+  if (window.initRecipeScaling) window.initRecipeScaling();
+
+  closeModal();
+  setTimeout(()=>{ location.hash = '#' + domId; }, 50);
+  return;
+}
     const res = await fetch('/api/recipes', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
