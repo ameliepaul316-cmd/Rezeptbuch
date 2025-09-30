@@ -168,6 +168,39 @@
     .quickjump{ padding-bottom: env(safe-area-inset-bottom, 0); }
     .toc.beige{ padding-bottom: calc(110px + env(safe-area-inset-bottom, 0)); }
   </style>
+
+  <style>
+/* Grundkarte */
+section.recipe{
+  background:#fff;
+  border:1.5px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding:16px 14px 12px;
+  margin: 18px 12px;
+}
+
+/* farbige Akzente je Hauptkategorie */
+section.recipe.fruehstueck { border-color:#e6db95; box-shadow: 0 6px 18px rgba(230,219,149,.25); }
+section.recipe.hauptspeisen{ border-color:#8fdac7; box-shadow: 0 6px 18px rgba(143,218,199,.25); }
+section.recipe.bakery      { border-color:#ff99cc; box-shadow: 0 6px 18px rgba(255,153,204,.25); }
+section.recipe.snacks      { border-color:#ffb266; box-shadow: 0 6px 18px rgba(255,178,102,.25); }
+section.recipe.drinks      { border-color:#99cfff; box-shadow: 0 6px 18px rgba(153,207,255,.25); }
+
+/* kleine Header-Underline im Akzentton */
+section.recipe.fruehstueck h3{ border-bottom:2px solid #FFF6BF; padding-bottom:4px; }
+section.recipe.hauptspeisen h3{ border-bottom:2px solid #CFF5E7; padding-bottom:4px; }
+section.recipe.bakery h3{ border-bottom:2px solid #FFD3E2; padding-bottom:4px; }
+section.recipe.snacks h3{ border-bottom:2px solid #FFD8B1; padding-bottom:4px; }
+section.recipe.drinks h3{ border-bottom:2px solid #CFE9FF; padding-bottom:4px; }
+
+/* Zutaten-/Schritte-Listen hübsch */
+section.recipe .zutaten ul{ margin:8px 0 0; padding-left: 18px; list-style: disc; }
+section.recipe .zubereitung ol{ margin:8px 0 0; padding-left: 18px; }
+section.recipe .meta{ font-size: .95rem; color: var(--muted); }
+section.recipe .meta input[type=number]{ margin-left:6px; }
+</style>
+  
 </head>
 <body>
 
