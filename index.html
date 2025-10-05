@@ -371,45 +371,49 @@ section.recipe .meta input[type=number]{ margin-left:6px; }
     if (at) ul.insertBefore(li, at); else ul.appendChild(li);
   };
 
-    const mapCoverId = (cat, sub) => {
-    // 1. Falls Subkategorie ein eigenes Cover hat (aus CANON)
+  window.insertSortedSection = function({section, cat, sub}){
+  const norm = s => (s||'')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu,'')
+    .trim();
+
+  // Anker (Cover) bestimmen – Subcat > Cat > Fallback
+  const mapCoverId = (cat, sub) => {
     const sc = (window.CANON?.[cat]?.subcats?.[sub]) || null;
     if (sc?.coverId) return sc.coverId;
-
-    // 2. Sonst Hauptkategorie-Cover
     const cc = window.CANON?.[cat]?.coverId;
     if (cc) return cc;
-
-    // 3. Harte Fallbacks für Hauptkategorien
     const hard = {
-      'Frühstück': 'fruehstueck-cover',
-      'Hauptspeise': 'hauptspeisen-cover',
-      'Bakery': 'bakery-cover',
-      'Snacks & Desserts': 'snacks-cover',
-      'Drinks': 'drinks-cover'
+      'Frühstück':'fruehstueck-cover',
+      'Hauptspeise':'hauptspeisen-cover',
+      'Bakery':'bakery-cover',
+      'Snacks & Desserts':'snacks-cover',
+      'Drinks':'drinks-cover'
     }[cat];
     return hard || 'cover';
   };
 
-  const t = (typeof resolveTargets === 'function') ? resolveTargets(cat, sub) : null;
+  const t = (typeof resolveTargets === 'function') ? resolveTargets(cat, sub) : {};
   const cover =
     t?.contentAnchor ||
     document.getElementById(mapCoverId(cat, sub)) ||
     document.getElementById('cover') ||
     document.body;
-  
-    const all = Array.from(document.querySelectorAll('section.recipe'))
-      .filter(s => s !== section
-        && ((s.dataset.category||'').toLowerCase() === (cat||'').toLowerCase())
-        && ((s.dataset.subcategory||'') === (sub||'')));
 
-    const key = norm(section.querySelector('h2')?.textContent);
-    const before = all.find(s => norm(s.querySelector('h2')?.textContent) > key);
+  // In richtige (cat, sub)-Gruppe alphabetisch einsortieren
+  const all = Array.from(document.querySelectorAll('section.recipe'))
+    .filter(s => s !== section
+      && ((s.dataset.category||'') === (cat||''))
+      && ((s.dataset.subcategory||'') === (sub||'')));
 
-    if (before) before.parentNode.insertBefore(section, before);
-    else cover.insertAdjacentElement('afterend', section);
-  };
+  const key = norm(section.querySelector('h2')?.textContent);
+  const before = all.find(s => norm(s.querySelector('h2')?.textContent) > key);
 
+  if (before) before.parentNode.insertBefore(section, before);
+  else cover.insertAdjacentElement('afterend', section);
+};
+     
   window.sortExistingTOCLists = function(){
     document.querySelectorAll('.cat ul').forEach(ul=>{
       const items = Array.from(ul.children).filter(li=>li.tagName==='LI');
