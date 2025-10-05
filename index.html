@@ -354,16 +354,41 @@ section.recipe .meta input[type=number]{ margin-left:6px; }
   };
 
   window.getTocList = function(cat, sub){
-    const root = catRoot(cat);
-    if(!root) return document.querySelector('.cat ul');
-    if(!sub)  return root.querySelector('.cat ul');
-    const h4 = Array.from(root.querySelectorAll('h4')).find(el => norm(el.textContent).includes(norm(sub)));
-    if(!h4){ return root.querySelector('.cat ul'); }
-    let el = h4.nextElementSibling;
-    while(el && el.tagName !== 'UL') el = el.nextElementSibling;
-    return el || root.querySelector('.cat ul');
-  };
+  // 1) Bevorzugt: eindeutige Liste aus CANON/resolveTargets
+  if (typeof resolveTargets === 'function') {
+    try {
+      const t = resolveTargets(cat, sub);
+      if (t?.tocList) return t.tocList;
+    } catch {}
+  }
 
+  // 2) Fallback: <h4>-Textsuche wie bisher
+  const norm = s => (s||'')
+    .toLowerCase()
+    .normalize('NFD').replace(/\p{Diacritic}/gu,'')
+    .replace(/[^\p{Letter}\p{Number}]+/gu,' ')
+    .trim();
+
+  const map = {
+    'Frühstück':'#fruehstueck',
+    'Hauptspeise':'#hauptspeisen',
+    'Bakery':'#bakery',
+    'Snacks & Desserts':'#snacks',
+    'Drinks':'#drinks'
+  };
+  const root = document.querySelector(map[cat]||null);
+  if(!root) return document.querySelector('.cat ul');
+  if(!sub)  return root.querySelector('.cat ul');
+
+  const h4 = Array.from(root.querySelectorAll('h4'))
+    .find(el => norm(el.textContent).includes(norm(sub)));
+  if(!h4){ return root.querySelector('.cat ul'); }
+
+  let el = h4.nextElementSibling;
+  while(el && el.tagName !== 'UL') el = el.nextElementSibling;
+  return el || root.querySelector('.cat ul');
+};
+  
   window.insertSortedTOC = function(ul, li){
     const key = norm(li.textContent);
     const items = Array.from(ul.children).filter(x=>x.tagName==='LI');
@@ -439,23 +464,23 @@ section.recipe .meta input[type=number]{ margin-left:6px; }
         "Sonstiges":         { coverId: "fruehstueck-sonstiges-cover" }
       }
     },
-    "Hauptspeise": {
-      coverId: "hauptspeisen-cover",
-      tocRoot: "#hauptspeisen",
-      subcats: {
-        "Burger, Wraps & Bowls": { coverId: "burger-wraps-und-bowls-cover" },  tocList: "#haupt-burger-wraps-bowls-list" },
-        "Vegetarische Gerichte": { coverId: "vegetarische-gerichte-cover" },  tocList: "#haupt-vegetarisch-list" },
-        "Suppen & Eintöpfe":             { coverId: "suppen-und-eintoepfe-cover" }, tocList: "#haupt-suppen-list" },
-        "Pasta & Nudeln":                { coverId: "pasta-und-nudeln-cover" },
-        "Pizza":                         { coverId: "pizza-cover" },
-        "Reis & Getreidegerichte":       { coverId: "reis-und-getreide-cover" },
-        "Internationale Küche & Currys": { coverId: "internationale-kueche-und-currys-cover" },
-        // Einheitlich: **Beilagen** (Plural) überall
-        "Snacks, Beilagen & Fingerfood": { coverId: "snacks-beilagen-und-fingerfood-cover" },
-        "Basics & Saucen":               { coverId: "basics-und-saucen-cover" },
-        "Curry-Pasten":                  { coverId: "curry-pasten-cover" }
-      }
-    },
+"Hauptspeise": {
+  coverId: "hauptspeisen-cover",
+  tocRoot: "#hauptspeisen",
+  subcats: {
+    "Burger, Wraps & Bowls":       { coverId: "burger-wraps-und-bowls-cover",   tocList: "#haupt-burger-wraps-bowls-list" },
+    "Vegetarische Gerichte":       { coverId: "vegetarische-gerichte-cover",     tocList: "#haupt-vegetarisch-list" },
+    "Suppen & Eintöpfe":           { coverId: "suppen-und-eintoepfe-cover",      tocList: "#haupt-suppen-list" },
+    "Pasta & Nudeln":              { coverId: "pasta-und-nudeln-cover",          tocList: "#haupt-pasta-list" },
+    "Pizza":                        { coverId: "pizza-cover",                     tocList: "#haupt-pizza-list" },
+    "Reis & Getreidegerichte":     { coverId: "reis-und-getreide-cover",         tocList: "#haupt-reis-list" },
+    "Internationale Küche & Currys": { coverId: "internationale-kueche-und-currys-cover", tocList: "#haupt-internationale-list" },
+    "Snacks, Beilagen & Fingerfood": { coverId: "snacks-beilagen-und-fingerfood-cover",   tocList: "#haupt-snacks-beilagen-list" },
+    "Basics & Saucen":             { coverId: "basics-und-saucen-cover",         tocList: "#haupt-basics-list" },
+    "Curry-Pasten":                { coverId: "curry-pasten-cover",               tocList: "#haupt-curry-pasten-list" }
+  }
+},
+    
     "Bakery": {
       coverId: "bakery-cover",
       tocRoot: "#bakery",
@@ -632,26 +657,25 @@ section.recipe .meta input[type=number]{ margin-left:6px; }
         <ul id="haupt-suppen-list"></ul>
 
         <h4>🍝 Pasta & Nudeln</h4>
-        <ul></ul>
+        <ul id="haupt-pasta-list"></ul>
 
         <h4>🍕 Pizza</h4>
-        <ul></ul>
+        <ul id="haupt-pizza-list"></ul>
 
         <h4>🍚 Reis- & Getreidegerichte</h4>
-        <ul></ul>
+        <ul id="haupt-reis-list"></ul>
 
         <h4>🌍 Internationale Küche & Currys</h4>
-        <ul></ul>
-
+        <ul id="haupt-internationale-list"></ul>
+        
         <h4>🥗 Snacks, Beilagen & Fingerfood</h4>
-        <ul></ul>
-
+        <ul id="haupt-snacks-beilagen-list"></ul>
+        
         <h4>🥫 Basics & Saucen</h4>
-        <ul></ul>
-
+        <ul id="haupt-basics-list"></ul>
+        
         <h4>🌶️ Curry-Pasten</h4>
-        <ul></ul>
-
+        <ul id="haupt-curry-pasten-list"></ul>
         <div><a class="pill" href="#cover">⬆️ Zurück zum Cover</a></div>
       </div>
 
