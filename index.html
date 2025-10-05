@@ -371,13 +371,33 @@ section.recipe .meta input[type=number]{ margin-left:6px; }
     if (at) ul.insertBefore(li, at); else ul.appendChild(li);
   };
 
-  window.insertSortedSection = function({section, cat, sub}){
-    const t = (typeof resolveTargets === 'function') ? resolveTargets(cat, sub) : null;
-    const cover =
-      t?.contentAnchor ||
-      document.querySelector('#' + (cat?.toLowerCase()||'') + '-cover') ||
-      document.querySelector('#cover') || document.body;
+    const mapCoverId = (cat, sub) => {
+    // 1. Falls Subkategorie ein eigenes Cover hat (aus CANON)
+    const sc = (window.CANON?.[cat]?.subcats?.[sub]) || null;
+    if (sc?.coverId) return sc.coverId;
 
+    // 2. Sonst Hauptkategorie-Cover
+    const cc = window.CANON?.[cat]?.coverId;
+    if (cc) return cc;
+
+    // 3. Harte Fallbacks für Hauptkategorien
+    const hard = {
+      'Frühstück': 'fruehstueck-cover',
+      'Hauptspeise': 'hauptspeisen-cover',
+      'Bakery': 'bakery-cover',
+      'Snacks & Desserts': 'snacks-cover',
+      'Drinks': 'drinks-cover'
+    }[cat];
+    return hard || 'cover';
+  };
+
+  const t = (typeof resolveTargets === 'function') ? resolveTargets(cat, sub) : null;
+  const cover =
+    t?.contentAnchor ||
+    document.getElementById(mapCoverId(cat, sub)) ||
+    document.getElementById('cover') ||
+    document.body;
+  
     const all = Array.from(document.querySelectorAll('section.recipe'))
       .filter(s => s !== section
         && ((s.dataset.category||'').toLowerCase() === (cat||'').toLowerCase())
@@ -1111,7 +1131,15 @@ window.buildRecipeSection = function({
     const section = t.content.firstElementChild;
 
 // erstmal nur anhängen – alphabetisch sortiert wird global
-document.body.appendChild(section);
+// Section **richtig** einsortieren (unter passendes Cover, alphabetisch)
+if (typeof insertSortedSection === 'function') {
+  insertSortedSection({ section, cat, sub });
+} else {
+  const targets = (typeof resolveTargets === 'function') ? resolveTargets(cat, sub) : {};
+  (targets?.contentAnchor || document.getElementById('cover') || document.body)
+    .insertAdjacentElement('afterend', section);
+}
+    
 
     if (window.initRecipeScaling) window.initRecipeScaling();
 
