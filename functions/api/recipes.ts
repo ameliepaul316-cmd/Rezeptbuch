@@ -14,6 +14,8 @@ type Category = typeof CATEGORIES[number];
 const SUBCATS: Record<Category, string[]> = {
   'Frühstück': ['Brot & Aufstriche', 'Sonstiges'],
   'Hauptspeise': [
+    'Burger, Wraps & Bowls',
+    'Vegetarische Gerichte',     
     'Suppen & Eintöpfe',
     'Pasta & Nudeln',
     'Pizza',
