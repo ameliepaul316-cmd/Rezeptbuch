@@ -485,9 +485,9 @@ section.recipe .meta input[type=number]{ margin-left:6px; }
       coverId: "bakery-cover",
       tocRoot: "#bakery",
       subcats: {
-        "Kuchen & Torten":         { coverId: "kuchen-und-torten-cover" },
-        "Plätzchen & Kleingebäck": { coverId: "plätzchen-und-kleingebäck-cover" },
-        "Sonstiges Gebäck":        { coverId: "sonstiges-gebäck-cover" }
+     "Kuchen & Torten":         { coverId: "kuchen-und-torten-cover",         tocList: "#bakery-kuchen-list" },
+    "Plätzchen & Kleingebäck": { coverId: "plätzchen-und-kleingebäck-cover", tocList: "#bakery-plaetzchen-list" },
+    "Sonstiges Gebäck":        { coverId: "sonstiges-gebäck-cover",          tocList: "#bakery-sonstiges-list" }
       }
     },
     "Snacks & Desserts": {
@@ -685,14 +685,14 @@ section.recipe .meta input[type=number]{ margin-left:6px; }
       <div class="cat rosa" id="bakery">
         <h3>🍰 Bakery</h3>
 
-        <h4>Kuchen & Torten</h4>
-        <ul></ul>
-
-        <h4>Plätzchen & Kleingebäck</h4>
-        <ul></ul>
-
-        <h4>Sonstiges Gebäck</h4>
-        <ul></ul>
+      <h4>Kuchen & Torten</h4>
+      <ul id="bakery-kuchen-list"></ul>
+      
+      <h4>Plätzchen & Kleingebäck</h4>
+      <ul id="bakery-plaetzchen-list"></ul>
+      
+      <h4>Sonstiges Gebäck</h4>
+      <ul id="bakery-sonstiges-list"></ul>
 
         <div><a class="pill" href="#cover">⬆️ Zurück zum Cover</a></div>
       </div>
