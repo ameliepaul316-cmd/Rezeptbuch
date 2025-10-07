@@ -456,14 +456,14 @@ section.recipe .meta input[type=number]{ margin-left:6px; }
 (function(){
   // 1) Zentrale Definition: Kategorien, Unterkategorien, Cover-IDs und TOC-Ziele
   const CANON = {
-    "Frühstück": {
-      coverId: "fruehstueck-cover",
-      tocRoot: "#fruehstueck",
-      subcats: {
-        "Brot & Aufstriche": { coverId: "brot-und-aufstriche-cover" },
-        "Sonstiges":         { coverId: "fruehstueck-sonstiges-cover" }
-      }
-    },
+"Frühstück": {
+  coverId: "fruehstueck-cover",
+  tocRoot: "#fruehstueck",
+  subcats: {
+    "Brot & Aufstriche": { coverId: "brot-und-aufstriche-cover", tocList: "#fruehstueck-brot-list" },
+    "Sonstiges":         { coverId: "fruehstueck-sonstiges-cover", tocList: "#fruehstueck-sonstiges-list" }
+  }
+},
 "Hauptspeise": {
   coverId: "hauptspeisen-cover",
   tocRoot: "#hauptspeisen",
@@ -628,15 +628,11 @@ section.recipe .meta input[type=number]{ margin-left:6px; }
       <div class="cat gelb" id="fruehstueck">
         <h3>🥐 Frühstück</h3>
 
-        <h4>Brot & Aufstriche</h4>
-        <ul id="fruehstueck-brot-aufstriche-list">
-          <!-- leer – wird dynamisch gefüllt -->
-        </ul>
-
-        <h4>Sonstiges</h4>
-        <ul id="fruehstueck-sonstiges-list">
-          <!-- leer – wird dynamisch gefüllt -->
-        </ul>
+        <h4>🍞 Brot & Aufstriche</h4>
+        <ul id="fruehstueck-brot-list"></ul>
+        
+        <h4>🥐 Sonstiges</h4>
+        <ul id="fruehstueck-sonstiges-list"></ul>
 
         <div><a class="pill" href="#cover">⬆️ Zurück zum Cover</a></div>
       </div>
