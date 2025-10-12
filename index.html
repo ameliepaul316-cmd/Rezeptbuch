@@ -1578,8 +1578,10 @@ if (window.resortGroupFor) window.resortGroupFor(section);
 
 
 <script>
-/* Client-only Fallback: /api/recipes in localStorage emulieren (robust für file://) */
+/* Client-only Fallback: /api/recipes in localStorage – nur für file:// */
 (function(){
+  if (location.protocol !== 'file:') return;   // ⬅️ WICHTIG: nur offline/Datei
+
   const nativeFetch = window.fetch.bind(window);
   const KEY = 'recipes';
 
@@ -1589,7 +1591,6 @@ if (window.resortGroupFor) window.resortGroupFor(section);
     });
   }
 
-  // Hilfen ohne URL()
   function getQuery(href){
     const q = href.split('?')[1] || '';
     return new URLSearchParams(q);
@@ -1598,19 +1599,9 @@ if (window.resortGroupFor) window.resortGroupFor(section);
   window.fetch = async function(resource, options={}){
     const isReq = typeof Request !== 'undefined' && resource instanceof Request;
     const urlStr = isReq ? resource.url : String(resource || '');
-    // sowohl '/api/recipes' als auch absolute Variationen abfangen
+
     if (!/\/api\/recipes(\b|\/|\?)/.test(urlStr)) {
       return nativeFetch(resource, options);
-    }
-
-    const method = (options.method || (isReq ? resource.method : 'GET') || 'GET').toUpperCase();
-    const qs = getQuery(urlStr);
-    const id = qs.get('id');
-    let db = JSON.parse(localStorage.getItem(KEY) || '[]');
-
-    try{
-      if (method === 'GET') {
-        return json(db);
       }
 
       // Body holen (auch wenn fetch mit Request kommt)
