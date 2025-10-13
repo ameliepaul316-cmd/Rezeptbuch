@@ -21,9 +21,9 @@ const SUBCATS: Record<Category, string[]> = {
     'Pizza',
     'Reis & Getreidegerichte',
     'Internationale Küche & Currys',
-    'Snacks, Beilage & Fingerfood',
+    'Snacks, Beilagen & Fingerfood',
     'Basics & Saucen',
-    'Curry-Paste'
+    'Curry-Pasten'
   ],
   'Bakery': ['Kuchen & Torten', 'Plätzchen & Kleingebäck', 'Sonstiges Gebäck'],
   'Snacks & Desserts': [],
